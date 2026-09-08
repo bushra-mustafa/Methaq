@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\Users\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Domains\Events\Models\Event;
+use App\Domains\Payments\Models\Order;
+use App\Domains\Users\Enums\UserRole;
+use App\Domains\Users\Enums\UserStatus;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -15,14 +19,13 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+
+    /** @var list<string> */
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
     ];
 
@@ -34,13 +37,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
@@ -49,8 +49,31 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'created_at' => 'immutable_datetime',
+            'updated_at' => 'immutable_datetime',
+            'email_verified_at' => 'immutable_datetime',
+            'role' => UserRole::class,
+            'status' => UserStatus::class,
+            'suspended_at' => 'immutable_datetime',
+            'two_factor_confirmed_at' => 'immutable_datetime',
+            'two_factor_secret' => 'encrypted',
+            'two_factor_recovery_codes' => 'encrypted:array',
             'password' => 'hashed',
         ];
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function auditLogs(): HasMany
+    {
+        return $this->hasMany(AuditLog::class, 'actor_id');
     }
 }

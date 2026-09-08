@@ -10,7 +10,7 @@
 - [x] إنشاء قائمة تنفيذ ومعايير إكمال وتبعيات لكل مرحلة.
 - [ ] بدء المرحلة 01: التجربة المرجعية.
 
-جميع مربعات المراحل أدناه غير مكتملة حتى تتوفر أدلة التنفيذ والتحقق. المرحلة الحالية: بدء تأسيس Laravel بطلب مباشر من المستخدم؛ التجربة المرجعية وبقية التأسيس لم تكتمل.
+جميع مربعات المراحل أدناه غير مكتملة حتى تتوفر أدلة التنفيذ والتحقق. المرحلة الحالية: Laravel مثبت ومرحلة الجداول 04 مكتملة ومختبرة؛ التجربة المرجعية وبقية التأسيس والمصادقة والواجهة لم تكتمل.
 
 ## طريقة العمل
 
@@ -85,17 +85,17 @@
 
 التسليم: 13 جدول أعمال مع models وcasts وfactories.
 
-- [ ] 04.01 — إنشاء users وtemplates وtemplate_assets ثم template_asset_links.
-- [ ] 04.02 — إنشاء asset_collections وasset_collection_items بالقيود المحددة.
-- [ ] 04.03 — إنشاء events مع category مستقل وtemplate_id اختياري.
-- [ ] 04.04 — إنشاء event_designs مع بطاقة ومشهد ولوحة ومسودة ومؤشرات منشورة.
-- [ ] 04.05 — إنشاء orders وpayment_webhooks بقيود uniqueness المالية.
-- [ ] 04.06 — إنشاء design_renders مع snapshots وleases وretries.
-- [ ] 04.07 — إنشاء rsvps مع submission_token الفريد ضمن المناسبة.
-- [ ] 04.08 — إضافة العلاقات والفهارس وCHECK وenums وسياسات حذف السجلات.
-- [ ] 04.09 — اختبار migrate وrollback والقيود على MySQL بقاعدة اختبار منفصلة.
+- [x] 04.01 — إنشاء users وtemplates وtemplate_assets ثم template_asset_links.
+- [x] 04.02 — إنشاء asset_collections وasset_collection_items بالقيود المحددة.
+- [x] 04.03 — إنشاء events مع category مستقل وtemplate_id اختياري.
+- [x] 04.04 — إنشاء event_designs مع بطاقة ومشهد ولوحة ومسودة ومؤشرات منشورة.
+- [x] 04.05 — إنشاء orders وpayment_webhooks بقيود uniqueness المالية.
+- [x] 04.06 — إنشاء design_renders مع snapshots وleases وretries.
+- [x] 04.07 — إنشاء rsvps مع submission_token الفريد ضمن المناسبة.
+- [x] 04.08 — إضافة العلاقات والفهارس وCHECK وenums وسياسات حذف السجلات.
+- [x] 04.09 — اختبار migrate وrollback والقيود على MySQL بقاعدة اختبار منفصلة.
 
-- [ ] 04.10 — إضافة حقول الدور والتعليق وaudit_logs وضوابطها وفق الملف 11.
+- [x] 04.10 — إضافة حقول الدور والتعليق وaudit_logs وضوابطها وفق الملف 11.
 
 معيار الإكمال: الجداول والعلاقات تعمل، والتكرار غير المسموح والقيم غير الصالحة يرفضان.
 
@@ -330,3 +330,7 @@
 ## تحقق تثبيت Laravel — 2026-09-09
 
 Laravel Framework 12.69.2 على PHP 8.4.3. composer validate --strict وcheck-platform-reqs ناجحان، و3 اختبارات ناجحة (4 assertions) تشمل اختبار ربط نموذج المستخدم وfactory، وPint ناجح. تم فحص ربط نموذج المستخدم وfactory بعد نقله إلى Users Domain. .env وvendor مستبعدان من Git. قاعدة MySQL لم تنشأ ولم تشغل migrations؛ React/Inertia/Fabric غير مثبتة. ملف composer.lock الحالي محلول على PHP 8.4؛ استهداف نشر PHP 8.3 يحتاج إعادة حل الاعتماديات لذلك الإصدار وفحصه قبل النشر.
+
+## إكمال المرحلة 04 — 2026-09-09
+
+تم تنفيذ الجداول الـ13 مع العلاقات والفهارس والقيود وModels وEnums وFactories. [سجل التنفيذ والتحقق](12-database-implementation.md): MySQL 8.0.40 معزول، migrate/rollback/migrate ناجحة، 23 اختباراً و69 assertion. قاعدة التطوير الرئيسية لم تنشأ بعد. مهام المستخدم الأخيرة قدمت هذه المرحلة على ترتيبها السابق دون تعليم المراحل المتبقية كمكتملة.

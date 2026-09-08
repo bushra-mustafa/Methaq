@@ -27,4 +27,6 @@ php artisan test
 composer validate --strict
 ```
 
-تم تأسيس Laravel فقط. React وInertia والمحرر والمصادقة الكاملة لم تثبت بعد. صفحة الترحيب مؤقتة. User في app/Domains/Users/Models حسب معمارية المشروع. لا ترفع .env أو vendor إلى Git.
+تم تأسيس Laravel وتنفيذ migrations وModels وEnums وFactories للجداول الـ13. React وInertia والمحرر والمصادقة الكاملة لم تثبت بعد. صفحة الترحيب مؤقتة. User في app/Domains/Users/Models حسب معمارية المشروع. لا ترفع .env أو vendor إلى Git.
+
+تفاصيل الجداول وتشغيل اختبار MySQL في [سجل قاعدة البيانات](requirements/12-database-implementation.md). لم تطبق migrations على قاعدة التطوير الرئيسية؛ الاختبار تم على قاعدة مؤقتة معزولة.
