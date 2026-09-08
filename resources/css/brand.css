@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'Methaq Arabic';
+    src: url('/brand/fonts/NotoSansArabic.ttf') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 100 900;
+}
+
+@font-face {
+    font-family: 'Methaq Latin';
+    src: url('/brand/fonts/Manrope.ttf') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 200 800;
+}
+
+:root {
+    --methaq-green: #074B36;
+    --methaq-gold: #B69A50;
+    --methaq-ivory: #F5F2E3;
+    --methaq-black: #000000;
+    --methaq-white: #FFFFFF;
+    --methaq-font-ar: 'Methaq Arabic', sans-serif;
+    --methaq-font-en: 'Methaq Latin', 'Methaq Arabic', sans-serif;
+}

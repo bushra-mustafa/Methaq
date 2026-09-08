@@ -1,0 +1,141 @@
+{
+  "primary_identity": "methaq-brand root bilingual identity",
+  "font_source": "identity-v1/fonts",
+  "files": [
+    {
+      "source": "svg/methaq-vertical-flat.svg",
+      "path": "public/brand/logos/methaq-vertical-flat.svg",
+      "sha256": "4b85ec330d1200e528a1ab739b37e66fbf43f56663a1fe39bd995e89e1f43268"
+    },
+    {
+      "source": "svg/methaq-vertical-white.svg",
+      "path": "public/brand/logos/methaq-vertical-white.svg",
+      "sha256": "7d29593b98f0cf7fb86a9313b9d949476a238e758c89f49d7c90691ef6088e29"
+    },
+    {
+      "source": "svg/methaq-vertical-reverse-gold.svg",
+      "path": "public/brand/logos/methaq-vertical-reverse-gold.svg",
+      "sha256": "d0d01ca58bb2270c7e9c914508fce6f11a07ebd27d5d6be8f68f9ffd3de9c562"
+    },
+    {
+      "source": "svg/methaq-horizontal-flat.svg",
+      "path": "public/brand/logos/methaq-horizontal-flat.svg",
+      "sha256": "29774177511dbe62066e49f55635269b91c6cb1a5aa8b00fb1604f442b5b8b93"
+    },
+    {
+      "source": "svg/methaq-horizontal-compact-flat.svg",
+      "path": "public/brand/logos/methaq-horizontal-compact-flat.svg",
+      "sha256": "cd32a96b9a8dd20770f765294a3fcfa0f34ac9e8502b6791aa1a2fe28118b7ba"
+    },
+    {
+      "source": "svg/methaq-horizontal-compact-reverse-gold.svg",
+      "path": "public/brand/logos/methaq-horizontal-compact-reverse-gold.svg",
+      "sha256": "47d40e48870f879e147b69065bae170f97759fa2d97a4ce38e4c6d99f852d8a9"
+    },
+    {
+      "source": "svg/methaq-horizontal-compact-white.svg",
+      "path": "public/brand/logos/methaq-horizontal-compact-white.svg",
+      "sha256": "bac2a01e123d049c1e4dddba4a40d2d9c74aad0dbd66f52871eb3ee83a8a2fee"
+    },
+    {
+      "source": "svg/methaq-horizontal-black.svg",
+      "path": "public/brand/logos/methaq-horizontal-black.svg",
+      "sha256": "126a7f744bbe5d290511c153a0679bff43be3820f2174ac51425bfd96f911b92"
+    },
+    {
+      "source": "svg/methaq-marketing-flat.svg",
+      "path": "public/brand/logos/methaq-marketing-flat.svg",
+      "sha256": "ceafeaccfe558be5e05b977410096589295ce2387c87112f54a908cebb3aa407"
+    },
+    {
+      "source": "svg/methaq-symbol-flat.svg",
+      "path": "public/brand/logos/methaq-symbol-flat.svg",
+      "sha256": "d3e00ffb4e5830280c941a07b5fcf00bf7998fc9245a06b8ad33e81b215e7249"
+    },
+    {
+      "source": "svg/methaq-symbol-small-flat.svg",
+      "path": "public/brand/logos/methaq-symbol-small-flat.svg",
+      "sha256": "26b2c4c65aa8c02de56f06651b45ed9a06ee15ec05c2692bf1bd4004c684d2da"
+    },
+    {
+      "source": "svg/methaq-symbol-small-white.svg",
+      "path": "public/brand/logos/methaq-symbol-small-white.svg",
+      "sha256": "0db60e859a659bc5e59b31c924ca9711ada0ab917f0bbf573c22c3006147efe7"
+    },
+    {
+      "source": "png/methaq-vertical-flat-960.png",
+      "path": "public/brand/images/methaq-vertical-flat-960.png",
+      "sha256": "bcd8d68a2151f99ee0d42fd27bf7495f47c379b997b6ecdff5282f50a562e4cd"
+    },
+    {
+      "source": "png/methaq-horizontal-compact-flat-688.png",
+      "path": "public/brand/images/methaq-horizontal-compact-flat-688.png",
+      "sha256": "0baea527c2832d45436f6b968a3d286b3527f46ae355a50cdbe771e9e125ebb8"
+    },
+    {
+      "source": "png/methaq-marketing-flat-960.png",
+      "path": "public/brand/images/methaq-marketing-flat-960.png",
+      "sha256": "812c34eb6eb40f43fc43cacbd4b268539519a810cf833c8da28956534cdb2efb"
+    },
+    {
+      "source": "favicon/favicon.svg",
+      "path": "public/brand/icons/favicon.svg",
+      "sha256": "96990f2e296e22896e6cd5226c09e1d4158118b3f26b0e221a18700afa6e2419"
+    },
+    {
+      "source": "favicon/favicon.ico",
+      "path": "public/brand/icons/favicon.ico",
+      "sha256": "ccf9888b2cd85c78396b25d7d49d8a0bbedcfd4bffb470a48d64b591302aab83"
+    },
+    {
+      "source": "favicon/favicon-16.png",
+      "path": "public/brand/icons/favicon-16.png",
+      "sha256": "8408d052c6a0eca015bd46ee3a91c475bda7ac42401b11771ffad768b1f0c0c7"
+    },
+    {
+      "source": "favicon/favicon-32.png",
+      "path": "public/brand/icons/favicon-32.png",
+      "sha256": "be6568caee486a8c637b74b0a1bf1bed9d6779106dedd9a6f58f5fa71813b17d"
+    },
+    {
+      "source": "favicon/apple-touch-icon.png",
+      "path": "public/brand/icons/apple-touch-icon.png",
+      "sha256": "7899131c15f9e94d04612b6b43f4ce1da2d706ed8313968f332f1bfca281e4d7"
+    },
+    {
+      "source": "identity-v1/fonts/NotoSansArabic.ttf",
+      "path": "public/brand/fonts/NotoSansArabic.ttf",
+      "sha256": "63111b5b2e074dd48cc67692e0a2726d86ee94c1c37fe8598257b7b4e87e869e"
+    },
+    {
+      "source": "identity-v1/fonts/Manrope.ttf",
+      "path": "public/brand/fonts/Manrope.ttf",
+      "sha256": "d0639be45d0af36e798172419d7bd173c4bd4f29e2b76cbb69db1d11bf8b0a40"
+    },
+    {
+      "source": "identity-v1/fonts/NotoSansArabic-OFL.txt",
+      "path": "public/brand/fonts/NotoSansArabic-OFL.txt",
+      "sha256": "07fc70bfeb985cc1a87a8587d0a0c80bab11c86c9dc3fd95b6f0cb332f983e96"
+    },
+    {
+      "source": "identity-v1/fonts/Manrope-OFL.txt",
+      "path": "public/brand/fonts/Manrope-OFL.txt",
+      "sha256": "e01b637272e0cbdfb240184dd98ea5cc671556d9894dae2668d92ab2c906787c"
+    },
+    {
+      "source": "identity-v1/fonts/SOURCES.txt",
+      "path": "public/brand/fonts/SOURCES.txt",
+      "sha256": "dbc9226e5ebf02272453c68724c967dc805ceffb1ec3e8a739eb7f44c5da6f59"
+    },
+    {
+      "source": "guidelines/brand-guide-ar.md",
+      "path": "resources/brand/guidelines/brand-guide-ar.md",
+      "sha256": "3d90d6313a6c649fdf558e76cbb3e2313f4a535e4555c51a13f4f7768b8c01e1"
+    },
+    {
+      "source": "guidelines/lettering-and-fonts.md",
+      "path": "resources/brand/guidelines/lettering-and-fonts.md",
+      "sha256": "a3ba9b27dad210942d95281dcc66402da108a12b95d11f150fd6c761a0c5e94c"
+    }
+  ]
+}
