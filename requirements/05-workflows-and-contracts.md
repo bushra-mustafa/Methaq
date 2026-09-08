@@ -1,5 +1,7 @@
 # سير العمل والعقود
 
+> تحديث 2.0: راجع [المخطط الشامل الجديد](09-methaq-master-plan-v2.md) قبل التنفيذ. يتقدم على هذا الملف عند التعارض، خصوصاً مكتبة العناصر المشتركة والمشهد التفاعلي والجداول ودورة نشر النسخة المطلوبة.
+
 ## 1. إنشاء المناسبة
 
 CreateEventRequest يتحقق من title، template_id فعال، event_date مستقبلي وtimezone صحيح. CreateEventDTO لا يقبل is_paid أو status أو expires_at. CreateEventAction ينشئ مناسبة draft وتصميماً من نسخة القالب داخل transaction واحدة. SubdomainGenerator يولد label ASCII من العنوان مع suffix عشوائي، أو event-suffix للعناوين التي لا تنتج slug؛ regex بطول 1–63 بلا شرطة أول/آخر الاسم، ورفض المحجوزات. UNIQUE قاعدة البيانات مع retry محدود يعالج السباق. لا يقبل event_id أو user_id من العميل لتحديد المالك.
