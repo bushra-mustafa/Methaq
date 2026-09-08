@@ -1,11 +1,27 @@
 @import 'tailwindcss';
+@import './brand.css';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
-@source '../**/*.js';
+@source '../**/*.tsx';
+@source '../**/*.ts';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Methaq Arabic', sans-serif;
 }
+
+:root { font-family: var(--methaq-font-ar); color: var(--methaq-green); background: var(--methaq-ivory); }
+body { margin: 0; min-width: 320px; }
+.brand-page { min-height: 100svh; display: flex; flex-direction: column; }
+.brand-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 28px clamp(24px, 6vw, 96px); border-bottom: 1px solid #074b3620; }
+.brand-header img { width: 260px; height: auto; }
+.brand-header span { font-size: 14px; }
+.brand-intro { width: min(100%, 760px); margin: auto; text-align: center; padding: 52px 24px; }
+.invitation-mark { display: grid; place-items: center; margin-bottom: 32px; }
+.invitation-mark img { width: 180px; height: auto; }
+.brand-eyebrow { font-size: 14px; margin-bottom: 18px; }
+h1 { font-size: clamp(40px, 6vw, 68px); font-weight: 500; line-height: 1.55; margin: 0 0 24px; }
+.brand-description { max-width: 480px; margin: 0 auto; font-size: 18px; line-height: 2; }
+.brand-notice { display: inline-block; margin: 36px 0 0; padding: 12px 20px; border-block: 1px solid var(--methaq-gold); font-size: 14px; }
+.brand-footer { display: flex; justify-content: space-between; gap: 16px; padding: 20px clamp(24px, 6vw, 96px); border-top: 1px solid #074b3620; font-size: 13px; }
+.brand-footer span { font-family: var(--methaq-font-en); }
+@media (max-width: 480px) { .brand-header { justify-content: center; } .brand-header span { display: none; } .brand-header img { width: 240px; } }
