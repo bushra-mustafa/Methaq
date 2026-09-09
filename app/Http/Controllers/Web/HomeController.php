@@ -12,6 +12,8 @@ final class HomeController extends Controller
 {
     public function __invoke(): Response
     {
-        return Inertia::render('Web/Home');
+        return Inertia::render('Web/Home', [
+            'showPrototype' => app()->isLocal(),
+        ]);
     }
 }

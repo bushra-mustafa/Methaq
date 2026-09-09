@@ -10,4 +10,14 @@ enum RenderStatus: string
     case Processing = 'processing';
     case Completed = 'completed';
     case Failed = 'failed';
+
+    public function canTransitionTo(self $target): bool
+    {
+        return match ($this) {
+            self::Pending => $target === self::Processing,
+            self::Processing => in_array($target, [self::Pending, self::Completed, self::Failed], true),
+            self::Failed => $target === self::Pending,
+            self::Completed => false,
+        };
+    }
 }

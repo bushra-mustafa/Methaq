@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Domains\Editor\Models\Template;
+use App\Domains\Editor\Policies\TemplatePolicy;
+use App\Domains\Events\Models\Event;
+use App\Domains\Events\Policies\EventPolicy;
+use App\Domains\Users\Models\User;
+use App\Domains\Users\Policies\UserPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::policy(Event::class, EventPolicy::class);
+        Gate::policy(Template::class, TemplatePolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
     }
 }

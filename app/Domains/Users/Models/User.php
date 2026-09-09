@@ -9,17 +9,25 @@ use App\Domains\Payments\Models\Order;
 use App\Domains\Users\Enums\UserRole;
 use App\Domains\Users\Enums\UserStatus;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
+
+    /** @var array<string, string> */
+    protected $attributes = [
+        'role' => 'customer',
+        'status' => 'active',
+    ];
 
     /** @var list<string> */
     protected $fillable = [
@@ -46,6 +54,11 @@ class User extends Authenticatable
         return UserFactory::new();
     }
 
+    public function isActive(): bool
+    {
+        return $this->status === UserStatus::Active;
+    }
+
     protected function casts(): array
     {
         return [
@@ -56,8 +69,6 @@ class User extends Authenticatable
             'status' => UserStatus::class,
             'suspended_at' => 'immutable_datetime',
             'two_factor_confirmed_at' => 'immutable_datetime',
-            'two_factor_secret' => 'encrypted',
-            'two_factor_recovery_codes' => 'encrypted:array',
             'password' => 'hashed',
         ];
     }

@@ -23,6 +23,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Laravel\Fortify\Actions\EnableTwoFactorAuthentication;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -179,11 +180,12 @@ class DatabaseSchemaTest extends TestCase
         $user->fill(['name' => 'Owner', 'email' => 'owner@example.test', 'password' => 'a-test-password', 'role' => 'admin', 'status' => 'suspended']);
         $user->save();
         $this->assertSame(UserRole::Customer, $user->fresh()->role);
-        $user->two_factor_secret = 'test-secret';
-        $user->two_factor_recovery_codes = ['test-code'];
-        $user->save();
-        $this->assertNotSame('test-secret', DB::table('users')->where('id', $user->id)->value('two_factor_secret'));
-        $this->assertSame(['test-code'], $user->fresh()->two_factor_recovery_codes);
+        app(EnableTwoFactorAuthentication::class)($user);
+        $rawSecret = DB::table('users')->where('id', $user->id)->value('two_factor_secret');
+        $this->assertIsString($rawSecret);
+        $this->assertNotEmpty($rawSecret);
+        $this->assertCount(8, $user->fresh()->recoveryCodes());
+        $this->assertStringStartsWith('otpauth://totp/', $user->fresh()->twoFactorQrCodeUrl());
         $this->assertArrayNotHasKey('two_factor_secret', $user->toArray());
     }
 

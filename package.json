@@ -6,7 +6,9 @@
         "build": "vite build",
         "dev": "vite",
         "typecheck": "tsc --noEmit",
-        "test:prototype": "node --experimental-strip-types --test tests/Frontend/prototype-design.test.ts"
+        "test:prototype": "node --experimental-strip-types --test tests/Frontend/prototype-design.test.ts",
+        "test:contracts": "node --experimental-strip-types --test tests/Frontend/design-contract.test.ts",
+        "test:frontend": "npm run test:prototype && npm run test:contracts"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

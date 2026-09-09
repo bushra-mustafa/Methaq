@@ -14,7 +14,11 @@ class ExampleTest extends TestCase
     public function test_home_returns_the_react_inertia_page(): void
     {
         $this->withoutVite()->get('/')->assertOk()->assertInertia(
-            fn (AssertableInertia $page) => $page->component('Web/Home', false)->missing('auth')->missing('database')
+            fn (AssertableInertia $page) => $page
+                ->component('Web/Home', false)
+                ->where('auth.user', null)
+                ->where('showPrototype', false)
+                ->missing('database')
         );
     }
 

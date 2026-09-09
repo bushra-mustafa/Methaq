@@ -14,14 +14,19 @@ body { margin: 0; min-width: 320px; }
 .brand-page { min-height: 100svh; display: flex; flex-direction: column; }
 .brand-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 28px clamp(24px, 6vw, 96px); border-bottom: 1px solid #074b3620; }
 .brand-header img { width: 260px; height: auto; }
-.brand-header span { font-size: 14px; }
+.brand-header nav { display: flex; align-items: center; gap: 12px; }
+.brand-header a { color: var(--methaq-green); font-size: 14px; font-weight: 700; text-decoration: none; }
+.brand-login-link { padding: 10px 12px; }
+.brand-account-link { border: 1px solid var(--methaq-green); padding: 10px 18px; }
 .brand-intro { width: min(100%, 760px); margin: auto; text-align: center; padding: 52px 24px; }
 .invitation-mark { display: grid; place-items: center; margin-bottom: 32px; }
 .invitation-mark img { width: 180px; height: auto; }
 .brand-eyebrow { font-size: 14px; margin-bottom: 18px; }
 h1 { font-size: clamp(40px, 6vw, 68px); font-weight: 500; line-height: 1.55; margin: 0 0 24px; }
 .brand-description { max-width: 480px; margin: 0 auto; font-size: 18px; line-height: 2; }
-.brand-notice { display: inline-block; margin: 36px 0 0; padding: 12px 20px; border-block: 1px solid var(--methaq-gold); font-size: 14px; }
+.brand-actions { display: flex; justify-content: center; gap: 12px; margin-top: 36px; }
+.brand-actions a { min-width: 150px; border: 1px solid var(--methaq-green); padding: 12px 18px; color: var(--methaq-green); font-weight: 700; text-decoration: none; }
+.brand-actions .brand-primary-action { background: var(--methaq-green); color: var(--methaq-white); }
 .brand-footer { display: flex; justify-content: space-between; gap: 16px; padding: 20px clamp(24px, 6vw, 96px); border-top: 1px solid #074b3620; font-size: 13px; }
 .brand-footer span { font-family: var(--methaq-font-en); }
-@media (max-width: 480px) { .brand-header { justify-content: center; } .brand-header span { display: none; } .brand-header img { width: 240px; } }
+@media (max-width: 600px) { .brand-header { align-items: flex-start; flex-direction: column; } .brand-header img { width: 220px; } .brand-actions { align-items: stretch; flex-direction: column; } }
