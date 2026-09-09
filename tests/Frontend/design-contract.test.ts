@@ -142,3 +142,36 @@ test('save and snapshot revisions are positive server counters', () => {
     assert.throws(() => parseSaveDesignPayload({ document, expectedRevision: 0 }));
     assert.throws(() => parseDesignSnapshot({ document, revision: -1 }));
 });
+
+test('envelope appearance survives saving without changing legacy scenes', () => {
+    const document = designFixture();
+    assert.ok(document.scene.opening.type === 'envelope');
+    const appearance = { style: 'luxury', sealStyle: 'medallion', sealX: 65, sealY: 60, sealSize: 24 } as const;
+    document.scene.opening.envelope.appearance = appearance;
+    const decoded = parseDesignDocumentJson(serializeDesignDocument(document));
+    assert.deepEqual(decoded, document);
+    for (const style of ['classic', 'luxury', 'minimal', 'rounded', 'gatefold'] as const) {
+        document.scene.opening.envelope.appearance = { ...appearance, style };
+        assert.deepEqual(parseDesignDocumentJson(serializeDesignDocument(document)), document);
+    }
+    for (const invalid of [{ sealX: 19 }, { sealY: 76 }, { sealSize: 30 }, { sealX: 50.5 }, { style: 'custom-html' }, { sealStyle: 'script' }]) {
+        assert.throws(() => parseDesignDocument({ ...document, scene: { ...document.scene, opening: { ...document.scene.opening, envelope: { ...document.scene.opening.envelope, appearance: { ...appearance, ...invalid } } } } }));
+    }
+});
+
+test('optional invitation cover roundtrips and rejects malformed presentation fields', () => {
+    const document = designFixture();
+    const cover = { heading: 'أهلاً', names: 'Lina & Ali', dateLabel: '10 · 10', message: 'بحضوركم', language: 'mixed', decoration: 'floral', animateText: true } as const;
+    document.scene.cover = cover;
+    assert.deepEqual(parseDesignDocument(document).scene.cover, cover);
+    for (const invalid of [{ names: 'a'.repeat(161) }, { heading: '<script>x</script>' }, { decoration: 'custom' }, { animateText: 'true' }]) {
+        assert.throws(() => parseDesignDocument({ ...document, scene: { ...document.scene, cover: { ...cover, ...invalid } } }));
+    }
+});
+
+test('optional scene backdrop is independent from the card palette and has a closed preset list', () => {
+    const document = designFixture();
+    document.scene.backdrop = { preset: 'burgundy-nebula' };
+    assert.deepEqual(parseDesignDocument(document).scene.backdrop, { preset: 'burgundy-nebula' });
+    assert.throws(() => parseDesignDocument({ ...document, scene: { ...document.scene, backdrop: { preset: 'remote-image' } } }));
+});

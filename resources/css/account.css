@@ -55,6 +55,15 @@
     text-underline-offset: 7px;
 }
 
+.account-nav nav a.is-active {
+    color: var(--methaq-green);
+    font-weight: 750;
+    text-decoration: underline;
+    text-decoration-color: var(--methaq-gold);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 7px;
+}
+
 .account-content {
     width: min(1180px, calc(100% - 40px));
     margin-inline: auto;

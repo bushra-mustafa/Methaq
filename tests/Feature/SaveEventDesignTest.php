@@ -9,6 +9,7 @@ use App\Domains\Editor\Models\Template;
 use App\Domains\Editor\Models\TemplateAsset;
 use App\Domains\Events\Models\Event;
 use App\Domains\Users\Models\User;
+use Database\Seeders\InvitationAudioSeeder;
 use Database\Seeders\TemplateLibrarySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -47,6 +48,71 @@ final class SaveEventDesignTest extends TestCase
         $this->assertSame(2, $design->revision);
         $this->assertSame('#4b172a', $design->palette_json['values']['background']);
         $this->assertSame('نص محفوظ على الخادم', $design->design_json['layers'][1]['content']);
+    }
+
+    public function test_envelope_appearance_is_saved_and_invalid_options_do_not_change_revision(): void
+    {
+        [$owner, $event, $document] = $this->eventFixture();
+        $appearance = ['style' => 'luxury', 'sealStyle' => 'wax', 'sealX' => 65, 'sealY' => 60, 'sealSize' => 24];
+        $document['scene']['opening']['envelope']['appearance'] = $appearance;
+        $this->actingAs($owner)->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => 1])
+            ->assertOk()->assertJsonPath('document.scene.opening.envelope.appearance', $appearance);
+        $this->assertEquals($appearance, $event->design()->sole()->scene_json['opening']['envelope']['appearance']);
+
+        $revision = 2;
+        foreach (['rounded', 'gatefold'] as $style) {
+            $document['scene']['opening']['envelope']['appearance'] = array_replace($appearance, ['style' => $style]);
+            $this->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => $revision])
+                ->assertOk()->assertJsonPath('document.scene.opening.envelope.appearance.style', $style);
+            $revision++;
+        }
+
+        foreach ([['sealX' => 19], ['sealY' => 76], ['sealSize' => 27], ['sealX' => 50.5], ['style' => 'script'], ['sealStyle' => 'custom'], ['html' => '<script>']] as $invalid) {
+            $document['scene']['opening']['envelope']['appearance'] = array_replace($appearance, $invalid);
+            $this->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => $revision])->assertUnprocessable();
+        }
+        $this->assertSame($revision, $event->design()->sole()->revision);
+    }
+
+    public function test_cover_and_audio_roundtrip_and_invalid_cover_cannot_overwrite_design(): void
+    {
+        [$owner, $event, $document] = $this->eventFixture();
+        $this->seed(InvitationAudioSeeder::class);
+        $asset = TemplateAsset::query()->where('slug', 'audio-methaq-chime')->sole();
+        $cover = ['heading' => 'أهلاً بكم', 'names' => 'Lina & Ali', 'dateLabel' => '10 · 10 · 2026', 'message' => 'بحضوركم تكتمل الفرحة', 'language' => 'mixed', 'decoration' => 'floral', 'animateText' => true];
+        $document['scene']['cover'] = $cover;
+        $document['scene']['audio'] = ['enabled' => true, 'asset' => ['assetId' => (string) $asset->id, 'version' => 1], 'volume' => 0.5];
+        $this->actingAs($owner)->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => 1])
+            ->assertOk()->assertJsonPath('document.scene.cover', $cover)->assertJsonPath('document.scene.audio.enabled', true);
+        foreach ([['names' => str_repeat('a', 161)], ['heading' => '<script>alert(1)</script>'], ['decoration' => 'html'], ['animateText' => 'true'], ['extra' => 'bad']] as $invalid) {
+            $document['scene']['cover'] = array_replace($cover, $invalid);
+            $this->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => 2])->assertUnprocessable();
+        }
+        $this->assertSame(2, $event->design()->sole()->revision);
+        $this->assertEquals($cover, $event->design()->sole()->scene_json['cover']);
+    }
+
+    public function test_blank_cover_text_is_preserved_by_http_middleware(): void
+    {
+        [$owner, $event, $document] = $this->eventFixture();
+        $document['scene']['cover'] = ['heading' => '  أهلاً  ', 'names' => '', 'dateLabel' => '', 'message' => '', 'language' => 'mixed', 'decoration' => 'none', 'animateText' => true];
+        $this->actingAs($owner)->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => 1])
+            ->assertOk()->assertJsonPath('document.scene.cover.names', '')->assertJsonPath('document.scene.cover.heading', '  أهلاً  ');
+    }
+
+    public function test_optional_scene_backdrop_is_saved_without_changing_the_card_palette(): void
+    {
+        [$owner, $event, $document] = $this->eventFixture();
+        $document['scene']['backdrop'] = ['preset' => 'burgundy-nebula'];
+
+        $this->actingAs($owner)->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => 1])
+            ->assertOk()->assertJsonPath('document.scene.backdrop.preset', 'burgundy-nebula')
+            ->assertJsonPath('document.palette.values.background', $document['palette']['values']['background']);
+
+        $invalid = $document;
+        $invalid['scene']['backdrop'] = ['preset' => 'external-image'];
+        $this->patchJson($this->endpoint($event), ['document' => $invalid, 'expectedRevision' => 2])->assertUnprocessable();
+        $this->assertSame(2, $event->design()->sole()->revision);
     }
 
     public function test_stale_revision_returns_current_snapshot_without_overwriting_it(): void

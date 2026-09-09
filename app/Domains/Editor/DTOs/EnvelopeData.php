@@ -17,6 +17,7 @@ final readonly class EnvelopeData
         public ColorValueData $liningColor,
         public ColorValueData $sealColor,
         public string $monogram,
+        public ?EnvelopeAppearanceData $appearance = null,
     ) {
         $capability = DesignSchema::ENVELOPES[$presetId->value];
         if ($presetVersion !== $capability['version']) {
@@ -31,6 +32,7 @@ final readonly class EnvelopeData
     public function toArray(): array
     {
         return [
+            ...($this->appearance === null ? [] : ['appearance' => $this->appearance->toArray()]),
             'presetId' => $this->presetId->value,
             'presetVersion' => $this->presetVersion,
             'paperColor' => $this->paperColor->toArray(),

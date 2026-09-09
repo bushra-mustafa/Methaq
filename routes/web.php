@@ -9,6 +9,7 @@ use App\Http\Controllers\App\CreateEventController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\DesignLabController;
 use App\Http\Controllers\App\EventEditorController;
+use App\Http\Controllers\App\EventPresentationController;
 use App\Http\Controllers\App\LogoutOtherSessionsController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\SaveEventDesignController;
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'active'])->prefix('app')->name('app.')->group(functi
     Route::post('/events', StoreEventController::class)->name('events.store');
     Route::get('/events/{event}', ShowEventController::class)->whereNumber('event')->name('events.show');
     Route::get('/events/{event}/editor', EventEditorController::class)->whereNumber('event')->name('events.editor');
+    Route::get('/events/{event}/presentation', EventPresentationController::class)->whereNumber('event')->name('events.presentation');
     Route::patch('/events/{event}/design', SaveEventDesignController::class)->whereNumber('event')->name('events.design.update');
     Route::get('/profile', ProfileController::class)->name('profile');
     Route::delete('/sessions/others', LogoutOtherSessionsController::class)->name('sessions.destroy-others');

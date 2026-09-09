@@ -36,6 +36,7 @@ final class EventEditorTest extends TestCase
         $event = Event::factory()->create();
 
         $this->get("/app/events/{$event->getKey()}/editor")->assertRedirect(route('login'));
+        $this->get("/app/events/{$event->getKey()}/presentation")->assertRedirect(route('login'));
     }
 
     public function test_owner_receives_a_complete_editor_document_and_active_library(): void
@@ -61,6 +62,22 @@ final class EventEditorTest extends TestCase
         $serialized = $response->getContent();
         $this->assertStringNotContainsString('original_path', $serialized);
         $this->assertStringNotContainsString('editor/assets/v1/', $serialized);
+    }
+
+    public function test_owner_can_open_the_separate_presentation_page(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+        $owner = User::factory()->create();
+        $template = Template::query()->where('slug', 'powder-gold')->sole();
+        $event = $this->eventFromTemplate($owner, $template);
+
+        $this->actingAs($owner)->withoutVite()->get("/app/events/{$event->getKey()}/presentation")
+            ->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('App/Presentation', false)
+            ->where('event.id', (string) $event->getKey())
+            ->where('revision', 1)
+            ->where('document.scene.opening.type', 'envelope')
+            ->has('assets'));
     }
 
     public function test_inactive_referenced_assets_remain_renderable_without_exposing_unrelated_assets(): void
@@ -90,6 +107,8 @@ final class EventEditorTest extends TestCase
 
         $this->actingAs($other)->get("/app/events/{$event->getKey()}/editor")->assertForbidden();
         $this->actingAs($admin)->get("/app/events/{$event->getKey()}/editor")->assertForbidden();
+        $this->actingAs($other)->get("/app/events/{$event->getKey()}/presentation")->assertForbidden();
+        $this->actingAs($admin)->get("/app/events/{$event->getKey()}/presentation")->assertForbidden();
     }
 
     public function test_visual_assets_use_full_size_raster_previews_while_originals_stay_private(): void

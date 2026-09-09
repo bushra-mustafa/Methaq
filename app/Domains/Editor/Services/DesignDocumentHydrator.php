@@ -10,12 +10,15 @@ use App\Domains\Editor\DTOs\CanvasData;
 use App\Domains\Editor\DTOs\ColorValueData;
 use App\Domains\Editor\DTOs\DesignDocumentData;
 use App\Domains\Editor\DTOs\EffectData;
+use App\Domains\Editor\DTOs\EnvelopeAppearanceData;
 use App\Domains\Editor\DTOs\EnvelopeData;
 use App\Domains\Editor\DTOs\ImageLayerData;
+use App\Domains\Editor\DTOs\InvitationCoverData;
 use App\Domains\Editor\DTOs\LayerData;
 use App\Domains\Editor\DTOs\LayerFrameData;
 use App\Domains\Editor\DTOs\OpeningData;
 use App\Domains\Editor\DTOs\PaletteData;
+use App\Domains\Editor\DTOs\SceneBackdropData;
 use App\Domains\Editor\DTOs\SceneConfigData;
 use App\Domains\Editor\DTOs\ShapeLayerData;
 use App\Domains\Editor\DTOs\TextLayerData;
@@ -150,18 +153,48 @@ final class DesignDocumentHydrator
     private function scene(mixed $value): SceneConfigData
     {
         $scene = $this->object($value, 'document.scene');
-        $this->assertKeys($scene, ['sceneSchemaVersion', 'opening', 'effects', 'audio', 'motionPolicy'], 'document.scene');
+        $this->assertKeys($scene, ['sceneSchemaVersion', 'opening', 'effects', 'audio', 'motionPolicy', ...(array_key_exists('cover', $scene) ? ['cover'] : []), ...(array_key_exists('backdrop', $scene) ? ['backdrop'] : [])], 'document.scene');
         $effects = $scene['effects'];
         if (! is_array($effects) || ! array_is_list($effects)) {
             throw new InvalidArgumentException('document.scene.effects must be a list.');
         }
 
         return new SceneConfigData(
+            cover: array_key_exists('cover', $scene) ? $this->cover($scene['cover']) : null,
             sceneSchemaVersion: $this->integer($scene['sceneSchemaVersion'], 'document.scene.sceneSchemaVersion'),
             opening: $this->opening($scene['opening']),
             effects: array_map(fn (mixed $effect, int $index): EffectData => $this->effect($effect, $index), $effects, array_keys($effects)),
             audio: $this->audio($scene['audio']),
             motionPolicy: $this->enum($scene['motionPolicy'], MotionPolicy::class, 'document.scene.motionPolicy'),
+            backdrop: array_key_exists('backdrop', $scene) ? $this->backdrop($scene['backdrop']) : null,
+        );
+    }
+
+    private function backdrop(mixed $value): SceneBackdropData
+    {
+        $path = 'document.scene.backdrop';
+        $backdrop = $this->object($value, $path);
+        $this->assertKeys($backdrop, ['preset'], $path);
+
+        return new SceneBackdropData(
+            preset: $this->string($backdrop['preset'], "{$path}.preset"),
+        );
+    }
+
+    private function cover(mixed $value): InvitationCoverData
+    {
+        $path = 'document.scene.cover';
+        $cover = $this->object($value, $path);
+        $this->assertKeys($cover, ['heading', 'names', 'dateLabel', 'message', 'language', 'decoration', 'animateText'], $path);
+
+        return new InvitationCoverData(
+            heading: $this->string($cover['heading'], "{$path}.heading"),
+            names: $this->string($cover['names'], "{$path}.names"),
+            dateLabel: $this->string($cover['dateLabel'], "{$path}.dateLabel"),
+            message: $this->string($cover['message'], "{$path}.message"),
+            language: $this->string($cover['language'], "{$path}.language"),
+            decoration: $this->string($cover['decoration'], "{$path}.decoration"),
+            animateText: $this->boolean($cover['animateText'], "{$path}.animateText"),
         );
     }
 
@@ -183,7 +216,7 @@ final class DesignDocumentHydrator
     {
         $path = 'document.scene.opening.envelope';
         $envelope = $this->object($value, $path);
-        $this->assertKeys($envelope, ['presetId', 'presetVersion', 'paperColor', 'liningColor', 'sealColor', 'monogram'], $path);
+        $this->assertKeys($envelope, ['presetId', 'presetVersion', 'paperColor', 'liningColor', 'sealColor', 'monogram', ...(array_key_exists('appearance', $envelope) ? ['appearance'] : [])], $path);
 
         return new EnvelopeData(
             presetId: $this->enum($envelope['presetId'], EnvelopePresetId::class, "{$path}.presetId"),
@@ -192,6 +225,21 @@ final class DesignDocumentHydrator
             liningColor: $this->color($envelope['liningColor'], "{$path}.liningColor"),
             sealColor: $this->color($envelope['sealColor'], "{$path}.sealColor"),
             monogram: $this->string($envelope['monogram'], "{$path}.monogram"),
+            appearance: array_key_exists('appearance', $envelope) ? $this->envelopeAppearance($envelope['appearance'], "{$path}.appearance") : null,
+        );
+    }
+
+    private function envelopeAppearance(mixed $value, string $path): EnvelopeAppearanceData
+    {
+        $appearance = $this->object($value, $path);
+        $this->assertKeys($appearance, ['style', 'sealStyle', 'sealX', 'sealY', 'sealSize'], $path);
+
+        return new EnvelopeAppearanceData(
+            style: $this->string($appearance['style'], "{$path}.style"),
+            sealStyle: $this->string($appearance['sealStyle'], "{$path}.sealStyle"),
+            sealX: $this->integer($appearance['sealX'], "{$path}.sealX"),
+            sealY: $this->integer($appearance['sealY'], "{$path}.sealY"),
+            sealSize: $this->integer($appearance['sealSize'], "{$path}.sealSize"),
         );
     }
 

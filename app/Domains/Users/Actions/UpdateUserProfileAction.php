@@ -27,18 +27,13 @@ final class UpdateUserProfileAction implements UpdatesUserProfileInformation
         ])->validateWithBag('updateProfileInformation');
 
         $email = Str::lower(trim((string) $input['email']));
-        $emailChanged = $email !== $user->email;
         $phone = is_string($input['phone'] ?? null) && trim($input['phone']) !== '' ? trim($input['phone']) : null;
 
         $user->forceFill([
             'name' => trim((string) $input['name']),
             'email' => $email,
             'phone' => $phone,
-            'email_verified_at' => $emailChanged ? null : $user->email_verified_at,
+            'email_verified_at' => now(),
         ])->save();
-
-        if ($emailChanged) {
-            $user->sendEmailVerificationNotification();
-        }
     }
 }

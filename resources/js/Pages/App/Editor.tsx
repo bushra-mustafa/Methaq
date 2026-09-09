@@ -1,5 +1,7 @@
+import type { PresentationCard } from '../../Types/PresentationCard';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
+import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
 import { EditorInspector } from '../../Domains/Editor/Components/EditorInspector';
 import { EditorLayersPanel } from '../../Domains/Editor/Components/EditorLayersPanel';
 import { EditorLibraryPanel } from '../../Domains/Editor/Components/EditorLibraryPanel';
@@ -41,6 +43,7 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
     const history = useHistory(initialDocument);
     const autosave = useAutosave(`/app/events/${event.id}/design`, history.value, revision);
     const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
+    const [preview, setPreview] = useState<{ cardUrl: string; parts: PresentationCard | null; document: DesignDocument } | null>(null);
     const [panel, setPanel] = useState<EditorPanel>('elements');
     const selectedLayer = history.value.canvas.layers.find((layer) => layer.id === selectedLayerId) ?? null;
     const fonts = useMemo(() => assets.filter((asset) => asset.type === 'font'), [assets]);
@@ -67,7 +70,7 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
 
     useEffect(() => {
         const onKeyDown = (keyboard: KeyboardEvent): void => {
-            if (!acceptsShortcut(keyboard.target)) return;
+            if (preview || !acceptsShortcut(keyboard.target)) return;
             const modifier = keyboard.metaKey || keyboard.ctrlKey;
             if (modifier && keyboard.key.toLocaleLowerCase('en') === 'z') {
                 keyboard.preventDefault();
@@ -91,7 +94,12 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
         };
         window.addEventListener('keydown', onKeyDown);
         return () => window.removeEventListener('keydown', onKeyDown);
-    }, [history, selectedLayer, selectedLayerId]);
+    }, [history, selectedLayer, selectedLayerId, preview]);
+
+    const showPreview = (): void => {
+        const cardUrl = canvasState.capturePreview();
+        if (cardUrl) setPreview({ cardUrl, parts: canvasState.captureParts(), document: history.value });
+    };
 
     const addVisualAsset = (asset: EditorAsset): void => history.commit((document) => addAsset(document, asset));
     const addAssetCollection = (collection: EditorCollection): void => history.commit((document) => addCollection(document, collection, assetMap));
@@ -112,7 +120,7 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
         <Head title={`تصميم ${event.title}`} />
         <header className="editor-topbar">
             <div className="editor-brand"><Link href={`/app/events/${event.id}`} aria-label="الرجوع إلى المناسبة">→</Link><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><div><span>{event.categoryLabel}</span><strong>{event.title}</strong></div></div>
-            <div className="editor-history-actions"><span className={`is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} aria-live="polite">{autosave.message}</span><button type="button" disabled={!history.canUndo} onClick={history.undo}>تراجع</button><button type="button" disabled={!history.canRedo} onClick={history.redo}>إعادة</button></div>
+            <div className="editor-history-actions"><Link className="editor-presentation-link" href={`/app/events/${event.id}/presentation`} onBefore={() => !autosave.hasUnsavedChanges} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>الظرف والفتح ←</Link><button type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={showPreview}>معاينة كضيف</button><span className={`is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} aria-live="polite">{autosave.message}</span><button type="button" disabled={!history.canUndo} onClick={history.undo}>تراجع</button><button type="button" disabled={!history.canRedo} onClick={history.redo}>إعادة</button></div>
         </header>
         <div className="editor-layout">
             <nav className="editor-panel-nav" aria-label="أدوات التصميم">{panelLabels.map((item) => <button type="button" className={panel === item.value ? 'is-active' : ''} key={item.value} onClick={() => setPanel(item.value)}><span aria-hidden="true">{item.mark}</span>{item.label}</button>)}</nav>
@@ -123,7 +131,7 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
                 {panel === 'colors' && <EditorPalettePanel palette={history.value.palette} onChange={(role: PaletteRole, color: HexColor) => history.commit((document) => updatePaletteColor(document, role, color))} />}
             </aside>
             <section className="editor-stage" aria-label="معاينة التصميم">
-                <div className="editor-stage-heading"><div><small>مقاس القصة</small><strong>1080 × 1920</strong></div><p>اسحبي العنصر أو استخدمي الأسهم لتحريكه. مفتاح Shift يحركه 10 درجات.</p></div>
+                <div className="editor-stage-heading"><div><small>بطاقتك</small><strong>معاينة حية · 1080 × 1920</strong></div><p>حددي العنصر ثم اسحبيه داخل البطاقة.</p></div>
                 <div className="editor-canvas-shell">
                     <div className="editor-canvas-host" ref={canvasState.host} />
                     <span className="editor-safe-area" aria-hidden="true" />
@@ -134,21 +142,18 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
                 {canvasState.error && <p className="editor-error" role="alert">{canvasState.error}</p>}
                 {warnings.length > 0 && <ul className="editor-warnings">{warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>}
             </section>
-            <div className="editor-properties">
-                <EditorInspector selected={selectedLayer} replacementAssets={visualAssets} onChange={changeSelected} onReplace={(asset) => { if (selectedLayerId) history.commit((document) => replaceImageAsset(document, selectedLayerId, asset)); }} />
-                <aside className={`editor-save-note is-${autosave.status}`} aria-live="polite">
+            {(selectedLayer || autosave.status === 'error' || autosave.status === 'offline' || autosave.status === 'conflict') && <aside className="editor-properties">
+                {selectedLayer && <><EditorInspector selected={selectedLayer} replacementAssets={visualAssets} onChange={changeSelected} onReplace={(asset) => { if (selectedLayerId) history.commit((document) => replaceImageAsset(document, selectedLayerId, asset)); }} /><button className="editor-delete-selected" type="button" onClick={removeSelected}>حذف العنصر المحدد</button></>}
+                {!selectedLayer && <aside className={`editor-save-note is-${autosave.status}`} aria-live="polite">
                     <span>الحفظ التلقائي · النسخة {autosave.revision}</span>
                     <strong>{autosave.message}</strong>
-                    {autosave.status === 'saved' && <p>يمكنك إغلاق الصفحة؛ آخر تعديلاتك محفوظة على الخادم.</p>}
-                    {autosave.status === 'dirty' && <p>سنحفظ التعديلات تلقائياً بعد لحظات.</p>}
-                    {autosave.status === 'saving' && <p>لا تغلقي الصفحة حتى يكتمل الحفظ.</p>}
                     {autosave.status === 'offline' && <p>واصلي العمل، وسنحاول الحفظ تلقائياً عند رجوع الاتصال.</p>}
                     {autosave.status === 'error' && <><p>بقيت تعديلاتك داخل الصفحة ولم نفقدها.</p><button type="button" onClick={autosave.retry}>إعادة المحاولة</button></>}
                     {autosave.status === 'conflict' && <><p>اختاري نسخة الخادم، أو احفظي تعديلات هذه الصفحة فوقها بشكل صريح.</p><div className="editor-conflict-actions"><button type="button" onClick={takeServerVersion}>استخدام نسخة الخادم</button><button type="button" onClick={autosave.keepLocalVersion}>الاحتفاظ بتعديلاتي</button></div></>}
-                </aside>
-                {selectedLayer && <button className="editor-delete-selected" type="button" onClick={removeSelected}>حذف العنصر المحدد</button>}
-            </div>
+                </aside>}
+            </aside>}
         </div>
+        {preview && <InvitationPreview assets={assets} cardParts={preview.parts} scene={preview.document.scene} palette={preview.document.palette} cardUrl={preview.cardUrl} title={event.title} onClose={() => setPreview(null)} />}
     </main>;
 }
 

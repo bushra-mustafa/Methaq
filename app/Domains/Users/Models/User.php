@@ -59,6 +59,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->status === UserStatus::Active;
     }
 
+    public function hasVerifiedEmail(): bool
+    {
+        return true;
+    }
+
     protected function casts(): array
     {
         return [

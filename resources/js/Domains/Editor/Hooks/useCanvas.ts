@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import type { PresentationCard } from '../../../Types/PresentationCard';
+import { capturePresentationCard } from '../Services/capturePresentationCard';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Canvas, Ellipse, FabricImage, Line, Rect, Textbox } from 'fabric';
 import type { FabricObject } from 'fabric';
 import type { DesignDocument } from '../../../Types/DesignDocument';
@@ -20,6 +22,8 @@ interface UseCanvasResult {
     ready: boolean;
     error: string;
     guides: CanvasGuides;
+    capturePreview: () => string | null;
+    captureParts: () => PresentationCard | null;
 }
 
 const SNAP_DISTANCE = 12;
@@ -95,11 +99,23 @@ function layerFromObject(source: Layer, object: FabricObject): Layer {
     return { ...source, frame };
 }
 
+function contentSignature(layer: Layer): string {
+    if (layer.type === 'text') return `text:${layer.content}:${layer.font.assetId}:${layer.font.version}:${layer.fontSize}:${layer.fontWeight}:${JSON.stringify(layer.fill)}`;
+    if (layer.type === 'image') return `image:${layer.asset.assetId}:${layer.asset.version}:${layer.fit}`;
+    return `shape:${layer.shapeKind}:${JSON.stringify(layer.fill)}:${JSON.stringify(layer.stroke)}:${layer.strokeWidth}`;
+}
+
+function paletteSignature(design: DesignDocument): string {
+    return JSON.stringify(design.palette.values);
+}
+
 export function useCanvas({ document: design, assets, selectedLayerId, onSelect, onLayerChange }: UseCanvasOptions): UseCanvasResult {
     const host = useRef<HTMLDivElement>(null);
     const canvas = useRef<Canvas | null>(null);
     const layerIds = useRef(new Map<FabricObject, string>());
     const objects = useRef(new Map<string, FabricObject>());
+    const renderedContent = useRef(new Map<string, string>());
+    const renderedPalette = useRef('');
     const latestDesign = useRef(design);
     const latestSelect = useRef(onSelect);
     const latestChange = useRef(onLayerChange);
@@ -175,6 +191,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
             canvas.current = null;
             layerIds.current.clear();
             objects.current.clear();
+            renderedContent.current.clear();
             void instance.dispose().catch(() => undefined);
             container.replaceChildren();
         };
@@ -187,6 +204,42 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
 
         const abort = new AbortController();
         const assetMap = new Map(assets.map((asset) => [asset.id, asset]));
+
+        const nextPalette = paletteSignature(design);
+        const canUpdateInPlace = ready
+            && renderedPalette.current === nextPalette
+            && renderedContent.current.size === design.canvas.layers.length
+            && design.canvas.layers.every((layer) => renderedContent.current.get(layer.id) === contentSignature(layer) && objects.current.has(layer.id));
+
+        if (canUpdateInPlace) {
+            synchronizing.current = true;
+            for (const layer of design.canvas.layers) {
+                const object = objects.current.get(layer.id);
+                if (!object) continue;
+                const frame = layer.frame;
+                object.set(layer.type === 'image' ? {
+                    left: frame.x,
+                    top: frame.y,
+                    scaleX: frame.scaleX,
+                    scaleY: frame.scaleY,
+                    angle: frame.rotation,
+                    opacity: frame.opacity,
+                    visible: layer.visible,
+                    selectable: !layer.locked,
+                    evented: !layer.locked,
+                    lockMovementX: layer.locked,
+                    lockMovementY: layer.locked,
+                    lockRotation: layer.locked,
+                    lockScalingX: layer.locked,
+                    lockScalingY: layer.locked,
+                } : commonProperties(layer));
+                object.setCoords();
+            }
+            editor.requestRenderAll();
+            synchronizing.current = false;
+            return () => abort.abort();
+        }
+
         setReady(false);
         setError('');
         synchronizing.current = true;
@@ -199,6 +252,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
                 editor.clear();
                 layerIds.current.clear();
                 objects.current.clear();
+                renderedContent.current.clear();
                 editor.backgroundColor = resolveColor(design.canvas.background, design);
                 let failedAssets = 0;
 
@@ -262,6 +316,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
 
                     layerIds.current.set(object, layer.id);
                     objects.current.set(layer.id, object);
+                    renderedContent.current.set(layer.id, contentSignature(layer));
                     editor.add(object);
                 }
 
@@ -270,6 +325,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
                     if (selected?.selectable) editor.setActiveObject(selected);
                 }
                 editor.requestRenderAll();
+                renderedPalette.current = nextPalette;
                 if (failedAssets > 0) setError(`تعذّر عرض ${failedAssets} من العناصر. يمكنك استبدالها من المكتبة.`);
                 setReady(true);
             } catch (exception: unknown) {
@@ -281,7 +337,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
 
         void renderDocument();
         return () => abort.abort();
-    }, [assets, design]);
+    }, [assets, design.canvas, design.palette]);
 
     useEffect(() => {
         const instance = canvas.current;
@@ -292,5 +348,23 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
         instance.requestRenderAll();
     }, [selectedLayerId, ready]);
 
-    return { host, ready, error, guides };
+    const capturePreview = useCallback((): string | null => {
+        const instance = canvas.current;
+        if (!instance || !ready || error || synchronizing.current) return null;
+        try {
+            return instance.toDataURL({ format: 'png', multiplier: 1, enableRetinaScaling: false });
+        } catch {
+            setError('تعذّر تجهيز المعاينة. تأكدي من تحميل جميع العناصر وحاولي مجدداً.');
+            return null;
+        }
+    }, [ready, error]);
+
+    const captureParts = useCallback((): PresentationCard | null => {
+        const instance = canvas.current;
+        if (!instance || !ready || error || synchronizing.current) return null;
+        try { return capturePresentationCard(instance, (object) => object instanceof Textbox); }
+        catch { return null; }
+    }, [ready, error]);
+
+    return { host, ready, error, guides, capturePreview, captureParts };
 }

@@ -138,7 +138,7 @@ export function updatePaletteColor(document: DesignDocument, role: PaletteRole, 
     };
 }
 
-export function resolveColor(color: ColorValue, document: DesignDocument): HexColor {
+export function resolveColor(color: ColorValue, document: Pick<DesignDocument, 'palette'>): HexColor {
     return color.source === 'palette' ? document.palette.values[color.role] : color.value;
 }
 

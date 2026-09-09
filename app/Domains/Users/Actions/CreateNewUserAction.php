@@ -40,6 +40,7 @@ final class CreateNewUserAction implements CreatesNewUsers
             'password' => (string) $input['password'],
             'role' => UserRole::Customer,
             'status' => UserStatus::Active,
+            'email_verified_at' => now(),
         ])->save();
 
         return $user;

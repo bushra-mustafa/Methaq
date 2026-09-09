@@ -16,6 +16,7 @@ import type {
     EffectConfig,
     EffectId,
     EnvelopeConfig,
+    EnvelopeAppearance,
     EnvelopePresetId,
     MotionPolicy,
     OpeningConfig,
@@ -215,12 +216,24 @@ function parsePalette(value: unknown): Palette {
     };
 }
 
+function parseEnvelopeAppearance(value: unknown, path: string): EnvelopeAppearance {
+    const appearance = record(value, path);
+    return {
+        style: literal(appearance.style, ['classic', 'luxury', 'minimal', 'rounded', 'gatefold'] as const, `${path}.style`),
+        sealStyle: literal(appearance.sealStyle, ['wax', 'medallion', 'methaq'] as const, `${path}.sealStyle`),
+        sealX: integerValue(appearance.sealX, `${path}.sealX`, 20, 80),
+        sealY: integerValue(appearance.sealY, `${path}.sealY`, 25, 75),
+        sealSize: integerValue(appearance.sealSize, `${path}.sealSize`, 14, 26),
+    };
+}
+
 function parseEnvelope(value: unknown, path: string): EnvelopeConfig {
     const envelope = record(value, path);
     const presetId = literal<EnvelopePresetId>(envelope.presetId, ['classic-fold'], `${path}.presetId`);
     const capability = ENVELOPE_REGISTRY[presetId];
 
     return {
+        ...(envelope.appearance === undefined ? {} : { appearance: parseEnvelopeAppearance(envelope.appearance, `${path}.appearance`) }),
         presetId,
         presetVersion: literal(envelope.presetVersion, [capability.version] as const, `${path}.presetVersion`),
         paperColor: parseColorValue(envelope.paperColor, `${path}.paperColor`),
@@ -272,6 +285,26 @@ function parseAudio(value: unknown): AudioConfig {
     };
 }
 
+function parseCover(value: unknown): NonNullable<SceneConfig['cover']> {
+    const cover = record(value, 'scene.cover');
+    const text = (key: string, limit: number): string => {
+        const content = stringValue(cover[key], `scene.cover.${key}`, limit);
+        if (/<[^>]*>/.test(content)) throw new DesignContractError(`scene.cover.${key}`, 'النص فقط مسموح.');
+        return content;
+    };
+    return {
+        heading: text('heading', 120), names: text('names', 160), dateLabel: text('dateLabel', 80), message: text('message', 500),
+        language: literal(cover.language, ['ar', 'en', 'mixed'] as const, 'scene.cover.language'),
+        decoration: literal(cover.decoration, ['none', 'floral', 'halo'] as const, 'scene.cover.decoration'),
+        animateText: booleanValue(cover.animateText, 'scene.cover.animateText'),
+    };
+}
+
+function parseBackdrop(value: unknown): NonNullable<SceneConfig['backdrop']> {
+    const backdrop = record(value, 'scene.backdrop');
+    return { preset: literal(backdrop.preset, ['inherit', 'burgundy-nebula', 'blush-cloud', 'midnight-gold', 'emerald-silk'] as const, 'scene.backdrop.preset') };
+}
+
 function parseScene(value: unknown): SceneConfig {
     const scene = record(value, 'scene');
     if (!Array.isArray(scene.effects) || scene.effects.length > DESIGN_CONTRACT.maximumEffects) {
@@ -284,6 +317,8 @@ function parseScene(value: unknown): SceneConfig {
     }
 
     return {
+        ...(scene.cover === undefined ? {} : { cover: parseCover(scene.cover) }),
+        ...(scene.backdrop === undefined ? {} : { backdrop: parseBackdrop(scene.backdrop) }),
         sceneSchemaVersion: literal(scene.sceneSchemaVersion, [1] as const, 'scene.sceneSchemaVersion'),
         opening: parseOpening(scene.opening),
         effects,

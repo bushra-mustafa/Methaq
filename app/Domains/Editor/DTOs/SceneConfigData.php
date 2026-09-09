@@ -17,6 +17,8 @@ final readonly class SceneConfigData
         public array $effects,
         public AudioData $audio,
         public MotionPolicy $motionPolicy,
+        public ?InvitationCoverData $cover = null,
+        public ?SceneBackdropData $backdrop = null,
     ) {
         if ($sceneSchemaVersion !== DesignSchema::SCENE_VERSION) {
             throw new InvalidArgumentException('Unsupported scene schema version.');
@@ -41,6 +43,8 @@ final readonly class SceneConfigData
     public function toArray(): array
     {
         return [
+            ...($this->cover === null ? [] : ['cover' => $this->cover->toArray()]),
+            ...($this->backdrop === null ? [] : ['backdrop' => $this->backdrop->toArray()]),
             'sceneSchemaVersion' => $this->sceneSchemaVersion,
             'opening' => $this->opening->toArray(),
             'effects' => array_map(static fn (EffectData $effect): array => $effect->toArray(), $this->effects),
