@@ -16,11 +16,16 @@ export function useHistory<T>(initialValue: T) {
         setHistory(redoHistory);
     }, []);
 
+    const reset = useCallback((value: T): void => {
+        setHistory(createHistory(value));
+    }, []);
+
     return {
         value: history.present,
         commit,
         undo,
         redo,
+        reset,
         canUndo: history.past.length > 0,
         canRedo: history.future.length > 0,
     };

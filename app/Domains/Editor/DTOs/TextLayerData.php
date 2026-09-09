@@ -25,6 +25,9 @@ final readonly class TextLayerData
         if (mb_strlen($content) > DesignSchema::MAXIMUM_TEXT_LENGTH) {
             throw new InvalidArgumentException('Text layer content is too long.');
         }
+        if (preg_match('/<\s*\/?\s*[a-z][^>]*>|javascript\s*:/i', $content) === 1) {
+            throw new InvalidArgumentException('Text layer content cannot contain markup or executable URLs.');
+        }
         if (! is_finite($fontSize) || $fontSize < 8 || $fontSize > 512) {
             throw new InvalidArgumentException('Font size is outside the supported range.');
         }

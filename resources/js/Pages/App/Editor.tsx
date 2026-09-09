@@ -6,6 +6,7 @@ import { EditorLibraryPanel } from '../../Domains/Editor/Components/EditorLibrar
 import { EditorPalettePanel } from '../../Domains/Editor/Components/EditorPalettePanel';
 import { EditorTextPanel } from '../../Domains/Editor/Components/EditorTextPanel';
 import { useCanvas } from '../../Domains/Editor/Hooks/useCanvas';
+import { useAutosave } from '../../Domains/Editor/Hooks/useAutosave';
 import { useHistory } from '../../Domains/Editor/Hooks/useHistory';
 import { parseDesignDocument } from '../../Domains/Editor/Services/DesignDocumentSerializer';
 import { addAsset, addCollection, addText, layerWarnings, moveLayer, removeLayer, replaceImageAsset, updateLayer, updatePaletteColor } from '../../Domains/Editor/Services/editorDocument';
@@ -38,6 +39,7 @@ function acceptsShortcut(target: EventTarget | null): boolean {
 
 function EditorWorkspace({ event, document: initialDocument, revision, assets, collections, recommendedAssetIds }: Omit<EditorProps, 'document'> & { document: DesignDocument }) {
     const history = useHistory(initialDocument);
+    const autosave = useAutosave(`/app/events/${event.id}/design`, history.value, revision);
     const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
     const [panel, setPanel] = useState<EditorPanel>('elements');
     const selectedLayer = history.value.canvas.layers.find((layer) => layer.id === selectedLayerId) ?? null;
@@ -99,12 +101,18 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
         setSelectedLayerId(null);
     };
     const warnings = layerWarnings(history.value, selectedLayer);
+    const takeServerVersion = (): void => {
+        const snapshot = autosave.takeServerVersion();
+        if (!snapshot) return;
+        history.reset(snapshot.document);
+        setSelectedLayerId(null);
+    };
 
     return <main className="editor-page" dir="rtl">
         <Head title={`تصميم ${event.title}`} />
         <header className="editor-topbar">
             <div className="editor-brand"><Link href={`/app/events/${event.id}`} aria-label="الرجوع إلى المناسبة">→</Link><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><div><span>{event.categoryLabel}</span><strong>{event.title}</strong></div></div>
-            <div className="editor-history-actions"><span title={`نسخة التصميم ${revision}`}>تعديلات محلية غير محفوظة</span><button type="button" disabled={!history.canUndo} onClick={history.undo}>تراجع</button><button type="button" disabled={!history.canRedo} onClick={history.redo}>إعادة</button></div>
+            <div className="editor-history-actions"><span className={`is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} aria-live="polite">{autosave.message}</span><button type="button" disabled={!history.canUndo} onClick={history.undo}>تراجع</button><button type="button" disabled={!history.canRedo} onClick={history.redo}>إعادة</button></div>
         </header>
         <div className="editor-layout">
             <nav className="editor-panel-nav" aria-label="أدوات التصميم">{panelLabels.map((item) => <button type="button" className={panel === item.value ? 'is-active' : ''} key={item.value} onClick={() => setPanel(item.value)}><span aria-hidden="true">{item.mark}</span>{item.label}</button>)}</nav>
@@ -128,7 +136,16 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
             </section>
             <div className="editor-properties">
                 <EditorInspector selected={selectedLayer} replacementAssets={visualAssets} onChange={changeSelected} onReplace={(asset) => { if (selectedLayerId) history.commit((document) => replaceImageAsset(document, selectedLayerId, asset)); }} />
-                <aside className="editor-save-note"><span>الحفظ</span><strong>متاح في المرحلة 08</strong><p>التعديلات الحالية تبقى في هذه الصفحة للتجربة. لا تغلقيها قبل الحفظ القادم.</p></aside>
+                <aside className={`editor-save-note is-${autosave.status}`} aria-live="polite">
+                    <span>الحفظ التلقائي · النسخة {autosave.revision}</span>
+                    <strong>{autosave.message}</strong>
+                    {autosave.status === 'saved' && <p>يمكنك إغلاق الصفحة؛ آخر تعديلاتك محفوظة على الخادم.</p>}
+                    {autosave.status === 'dirty' && <p>سنحفظ التعديلات تلقائياً بعد لحظات.</p>}
+                    {autosave.status === 'saving' && <p>لا تغلقي الصفحة حتى يكتمل الحفظ.</p>}
+                    {autosave.status === 'offline' && <p>واصلي العمل، وسنحاول الحفظ تلقائياً عند رجوع الاتصال.</p>}
+                    {autosave.status === 'error' && <><p>بقيت تعديلاتك داخل الصفحة ولم نفقدها.</p><button type="button" onClick={autosave.retry}>إعادة المحاولة</button></>}
+                    {autosave.status === 'conflict' && <><p>اختاري نسخة الخادم، أو احفظي تعديلات هذه الصفحة فوقها بشكل صريح.</p><div className="editor-conflict-actions"><button type="button" onClick={takeServerVersion}>استخدام نسخة الخادم</button><button type="button" onClick={autosave.keepLocalVersion}>الاحتفاظ بتعديلاتي</button></div></>}
+                </aside>
                 {selectedLayer && <button className="editor-delete-selected" type="button" onClick={removeSelected}>حذف العنصر المحدد</button>}
             </div>
         </div>

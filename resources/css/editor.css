@@ -9,6 +9,9 @@
 .editor-brand span, .editor-stage-heading small { color: #987d38; font-size: 11px; }
 .editor-brand strong { max-width: 260px; overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
 .editor-history-actions > span { border-radius: 999px; padding: 7px 12px; background: #efe8d8; color: #725f33; font-size: 11px; }
+.editor-history-actions > span.is-saved { background: #e5eee7; color: #1f634d; }
+.editor-history-actions > span.is-saving { background: #f4ecd7; color: #80651f; }
+.editor-history-actions > span.is-offline, .editor-history-actions > span.is-error, .editor-history-actions > span.is-conflict { background: #f8e2dd; color: #873f3f; }
 .editor-history-actions button, .editor-panel-nav button, .editor-filter-row button, .editor-layer-actions button { cursor: pointer; border: 1px solid rgb(7 75 54 / 15%); background: transparent; color: var(--methaq-green); font: inherit; }
 .editor-history-actions button { min-width: 66px; border-radius: 3px; padding: 8px 12px; }
 .editor-history-actions button:disabled { cursor: default; opacity: .4; }
@@ -97,6 +100,12 @@
 .editor-save-note span { color: #9b803c; font-size: 9px; }
 .editor-save-note strong { margin: 3px 0 5px; font-size: 13px; }
 .editor-save-note p { margin: 0; color: #6f6a5d; font-size: 10px; line-height: 1.7; }
+.editor-save-note.is-saved { border-color: rgb(40 115 83 / 25%); background: #edf5ef; }
+.editor-save-note.is-error, .editor-save-note.is-offline, .editor-save-note.is-conflict { border-color: rgb(145 58 58 / 23%); background: #fff1ed; }
+.editor-save-note button { cursor: pointer; border: 1px solid rgb(7 75 54 / 20%); border-radius: 3px; padding: 8px 10px; background: #fff; color: var(--methaq-green); font: inherit; font-size: 10px; }
+.editor-save-note > button { margin-top: 10px; }
+.editor-conflict-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 10px; }
+.editor-conflict-actions button:last-child { border-color: var(--methaq-green); background: var(--methaq-green); color: #fff; }
 .editor-delete-selected { width: 100%; margin-top: 14px; cursor: pointer; border: 1px solid rgb(145 58 58 / 23%); padding: 9px; background: transparent; color: #913a3a; font: inherit; font-size: 11px; }
 .editor-contract-error { display: grid; min-height: 100svh; place-content: center; place-items: center; padding: 30px; background: var(--methaq-ivory); text-align: center; }
 .editor-contract-error img { width: 230px; }
