@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="92" y1="120" x2="992" y2="1800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8E6427"/>
+      <stop offset="0.32" stop-color="#E3C06D"/>
+      <stop offset="0.58" stop-color="#A8792F"/>
+      <stop offset="0.82" stop-color="#F0D98E"/>
+      <stop offset="1" stop-color="#8B6023"/>
+    </linearGradient>
+    <linearGradient id="emerald" x1="140" y1="220" x2="940" y2="1700" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F5A49"/>
+      <stop offset="1" stop-color="#063D33"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M82 1814V626C82 362 258 190 540 72C822 190 998 362 998 626V1814" stroke="url(#gold)" stroke-width="18" stroke-linecap="round"/>
+  <path d="M112 1814V638C112 392 272 231 540 116C808 231 968 392 968 638V1814" stroke="url(#emerald)" stroke-width="5"/>
+  <path d="M136 1814V650C136 423 283 275 540 160C797 275 944 423 944 650V1814" stroke="url(#gold)" stroke-width="3"/>
+
+  <path d="M82 1814H998" stroke="url(#gold)" stroke-width="18" stroke-linecap="round"/>
+  <path d="M112 1784H968" stroke="url(#emerald)" stroke-width="5"/>
+  <path d="M136 1760H944" stroke="url(#gold)" stroke-width="3"/>
+
+  <g stroke="url(#gold)" stroke-width="5" stroke-linejoin="round">
+    <path d="M82 520L48 550L82 580L116 550L82 520Z"/>
+    <path d="M998 520L964 550L998 580L1032 550L998 520Z"/>
+    <path d="M82 1658L48 1688L82 1718L116 1688L82 1658Z"/>
+    <path d="M998 1658L964 1688L998 1718L1032 1688L998 1658Z"/>
+  </g>
+
+  <g fill="url(#gold)">
+    <path d="M540 42L553 64L578 58L572 83L594 96L572 109L578 134L553 128L540 150L527 128L502 134L508 109L486 96L508 83L502 58L527 64L540 42Z"/>
+    <circle cx="82" cy="550" r="7"/>
+    <circle cx="998" cy="550" r="7"/>
+    <circle cx="82" cy="1688" r="7"/>
+    <circle cx="998" cy="1688" r="7"/>
+  </g>
+
+  <g stroke="url(#emerald)" stroke-width="4" stroke-linecap="round">
+    <path d="M58 760H106M58 792H106M58 824H106"/>
+    <path d="M974 760H1022M974 792H1022M974 824H1022"/>
+    <path d="M58 1450H106M58 1482H106M58 1514H106"/>
+    <path d="M974 1450H1022M974 1482H1022M974 1514H1022"/>
+  </g>
+</svg>

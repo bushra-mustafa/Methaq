@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="40" y1="30" x2="430" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8C6226"/>
+      <stop offset="0.38" stop-color="#E7C978"/>
+      <stop offset="0.7" stop-color="#B0843A"/>
+      <stop offset="1" stop-color="#F1DC99"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M32 448V211C32 112 112 32 211 32H448" stroke="url(#gold)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M62 448V224C62 135 135 62 224 62H448" stroke="#0B4F40" stroke-width="4" stroke-linecap="round"/>
+  <path d="M92 448V238C92 157 157 92 238 92H448" stroke="url(#gold)" stroke-width="3" stroke-linecap="round"/>
+
+  <g stroke="url(#gold)" stroke-width="7" stroke-linejoin="round">
+    <path d="M32 214L7 239L32 264L57 239L32 214Z"/>
+    <path d="M216 32L241 7L266 32L241 57L216 32Z"/>
+  </g>
+
+  <path d="M74 139C114 139 139 114 139 74C139 114 164 139 204 139C164 139 139 164 139 204C139 164 114 139 74 139Z" fill="url(#gold)"/>
+  <path d="M105 139L139 105L173 139L139 173L105 139Z" fill="#F8F2E5" stroke="#0B4F40" stroke-width="4"/>
+  <circle cx="139" cy="139" r="10" fill="url(#gold)"/>
+
+  <g stroke="url(#gold)" stroke-width="5" stroke-linecap="round">
+    <path d="M110 230C161 217 217 161 230 110"/>
+    <path d="M98 281C184 264 264 184 281 98"/>
+    <path d="M101 328C219 305 305 219 328 101"/>
+  </g>
+
+  <g fill="#0B4F40">
+    <path d="M151 258C177 243 202 244 224 255C206 275 180 278 151 258Z"/>
+    <path d="M258 151C243 177 244 202 255 224C275 206 278 180 258 151Z"/>
+    <path d="M177 307C203 288 232 286 257 296C239 321 211 327 177 307Z"/>
+    <path d="M307 177C288 203 286 232 296 257C321 239 327 211 307 177Z"/>
+  </g>
+</svg>

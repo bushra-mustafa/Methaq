@@ -117,18 +117,23 @@ final class TemplateLibrarySeeder extends Seeder
         ];
 
         return [
-            $this->visualAsset('powder-botanical-frame', 'إطار نباتي بودري', AssetType::Frame, 'frames/powder-botanical-frame.svg', 'templates/powder-gold.svg', 1080, 1920, $visualCapabilities, $visualLicense),
-            $this->visualAsset('burgundy-arch-frame', 'إطار قوس عنابي', AssetType::Frame, 'frames/burgundy-arch-frame.svg', 'templates/burgundy-noir.svg', 1080, 1920, $visualCapabilities, $visualLicense),
-            $this->visualAsset('heritage-geometric-frame', 'إطار تراثي هندسي', AssetType::Frame, 'frames/heritage-geometric-frame.svg', 'templates/heritage-vertical.svg', 1080, 1920, $visualCapabilities, $visualLicense),
-            $this->visualAsset('graduation-rays-frame', 'إطار أشعة التخرج', AssetType::Frame, 'frames/graduation-rays-frame.svg', 'templates/graduation-emerald.svg', 1080, 1920, $visualCapabilities, $visualLicense),
-            $this->visualAsset('botanical-corner-left', 'غصن نباتي يسار', AssetType::Decoration, 'decorations/botanical-corner-left.svg', 'collections/botanical-set.svg', 480, 700, $visualCapabilities, $visualLicense),
-            $this->visualAsset('botanical-corner-right', 'غصن نباتي يمين', AssetType::Decoration, 'decorations/botanical-corner-right.svg', 'collections/botanical-set.svg', 480, 700, $visualCapabilities, $visualLicense),
-            $this->visualAsset('gold-divider', 'فاصل ذهبي', AssetType::Decoration, 'decorations/gold-divider.svg', 'collections/botanical-set.svg', 600, 80, $visualCapabilities, $visualLicense),
-            $this->visualAsset('wax-seal', 'ختم شمعي', AssetType::Icon, 'decorations/wax-seal.svg', 'collections/heritage-set.svg', 320, 320, $visualCapabilities, $visualLicense),
-            $this->fontAsset('font-amiri', 'أميري', 'Amiri-Regular.ttf', 'Amiri', 'SIL Open Font License 1.1'),
-            $this->fontAsset('font-pinyon', 'Pinyon Script', 'PinyonScript-Regular.ttf', 'Pinyon Script', 'SIL Open Font License 1.1'),
-            $this->fontAsset('font-noto-arabic', 'Noto Sans Arabic', 'NotoSansArabic.ttf', 'Noto Sans Arabic', 'SIL Open Font License 1.1'),
-            $this->fontAsset('font-manrope', 'Manrope', 'Manrope.ttf', 'Manrope', 'SIL Open Font License 1.1'),
+            $this->visualAsset('powder-botanical-frame', 'إطار نباتي بودري', AssetType::Frame, 'frames/botanical/powder-botanical-frame.svg', 'assets/v1/frames/botanical/powder-botanical-frame.png', 1080, 1920, $visualCapabilities, $visualLicense),
+            $this->visualAsset('burgundy-arch-frame', 'إطار قوس عنابي', AssetType::Frame, 'frames/arches/burgundy-arch-frame.svg', 'assets/v1/frames/arches/burgundy-arch-frame.png', 1080, 1920, $visualCapabilities, $visualLicense),
+            $this->visualAsset('heritage-geometric-frame', 'إطار تراثي هندسي', AssetType::Frame, 'frames/geometric/heritage-geometric-frame.svg', 'assets/v1/frames/geometric/heritage-geometric-frame.png', 1080, 1920, $visualCapabilities, $visualLicense),
+            $this->visualAsset('graduation-rays-frame', 'إطار أشعة التخرج', AssetType::Frame, 'frames/graduation/graduation-rays-frame.svg', 'assets/v1/frames/graduation/graduation-rays-frame.png', 1080, 1920, $visualCapabilities, $visualLicense),
+            $this->visualAsset('botanical-corner-left', 'غصن نباتي يسار', AssetType::Decoration, 'ornaments/botanical/botanical-corner-left.svg', 'assets/v1/ornaments/botanical/botanical-corner-left.png', 480, 700, $visualCapabilities, $visualLicense),
+            $this->visualAsset('botanical-corner-right', 'غصن نباتي يمين', AssetType::Decoration, 'ornaments/botanical/botanical-corner-right.svg', 'assets/v1/ornaments/botanical/botanical-corner-right.png', 480, 700, $visualCapabilities, $visualLicense),
+            $this->visualAsset('gold-divider', 'فاصل ذهبي', AssetType::Decoration, 'ornaments/dividers/gold-divider.svg', 'assets/v1/ornaments/dividers/gold-divider.png', 600, 80, $visualCapabilities, $visualLicense),
+            $this->visualAsset('wax-seal', 'ختم شمعي', AssetType::Icon, 'seals/wax/wax-seal.svg', 'assets/v1/seals/wax/wax-seal.png', 320, 320, $visualCapabilities, $visualLicense),
+            $this->visualAsset('methaq-pointed-arch-frame', 'إطار محراب ميثاق', AssetType::Frame, 'frames/arches/methaq-pointed-arch-frame.svg', 'assets/v1/frames/arches/methaq-pointed-arch-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-original-islamic-ornaments'),
+            $this->visualAsset('methaq-arabesque-corner', 'زاوية أرابيسك ميثاق', AssetType::Decoration, 'ornaments/corners/methaq-arabesque-corner.svg', 'assets/v1/ornaments/corners/methaq-arabesque-corner.png', 480, 480, $visualCapabilities, $visualLicense, 'methaq-original-islamic-ornaments'),
+            $this->visualAsset('methaq-eight-star-medallion', 'ميدالية النجمة الثمانية', AssetType::Icon, 'ornaments/medallions/methaq-eight-star-medallion.svg', 'assets/v1/ornaments/medallions/methaq-eight-star-medallion.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-original-islamic-ornaments'),
+            $this->visualAsset('methaq-diamond-divider', 'فاصل المعين الإسلامي', AssetType::Decoration, 'ornaments/dividers/methaq-diamond-divider.svg', 'assets/v1/ornaments/dividers/methaq-diamond-divider.png', 720, 120, $visualCapabilities, $visualLicense, 'methaq-original-islamic-ornaments'),
+            $this->visualAsset('methaq-geometric-side-border', 'شريط هندسي إسلامي', AssetType::Decoration, 'ornaments/borders/vertical/methaq-geometric-side-border.svg', 'assets/v1/ornaments/borders/vertical/methaq-geometric-side-border.png', 180, 1200, $visualCapabilities, $visualLicense, 'methaq-original-islamic-ornaments'),
+            $this->fontAsset('font-amiri', 'أميري', 'arabic/Amiri-Regular.ttf', 'Amiri', 'SIL Open Font License 1.1'),
+            $this->fontAsset('font-pinyon', 'Pinyon Script', 'latin/PinyonScript-Regular.ttf', 'Pinyon Script', 'SIL Open Font License 1.1'),
+            $this->fontAsset('font-noto-arabic', 'Noto Sans Arabic', 'arabic/NotoSansArabic.ttf', 'Noto Sans Arabic', 'SIL Open Font License 1.1'),
+            $this->fontAsset('font-manrope', 'Manrope', 'latin/Manrope.ttf', 'Manrope', 'SIL Open Font License 1.1'),
         ];
     }
 
@@ -158,7 +163,18 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::MarriageContract,
                 'thumbnail_path' => 'editor/previews/templates/heritage-vertical.svg',
                 'preset' => TemplatePreset::HeritageVertical,
-                'assets' => ['heritage-geometric-frame', 'gold-divider', 'wax-seal', 'font-amiri', 'font-noto-arabic'],
+                'assets' => [
+                    'heritage-geometric-frame',
+                    'gold-divider',
+                    'wax-seal',
+                    'methaq-pointed-arch-frame',
+                    'methaq-arabesque-corner',
+                    'methaq-eight-star-medallion',
+                    'methaq-diamond-divider',
+                    'methaq-geometric-side-border',
+                    'font-amiri',
+                    'font-noto-arabic',
+                ],
             ],
             [
                 'slug' => TemplatePreset::GraduationEmerald->value,
@@ -178,7 +194,7 @@ final class TemplateLibrarySeeder extends Seeder
             [
                 'slug' => 'botanical-gold-set',
                 'name' => 'أغصان بودرية وفاصل ذهبي',
-                'thumbnail_path' => 'editor/previews/collections/botanical-set.svg',
+                'thumbnail_path' => 'editor/previews/collections/v1/botanical-set.svg',
                 'items' => [
                     ['asset' => 'botanical-corner-left', 'placement' => $this->placement(0, 0, 360, 525, 0.9)],
                     ['asset' => 'botanical-corner-right', 'placement' => $this->placement(720, 1395, 360, 525, 0.9)],
@@ -188,7 +204,7 @@ final class TemplateLibrarySeeder extends Seeder
             [
                 'slug' => 'heritage-seal-set',
                 'name' => 'إطار تراثي وختم',
-                'thumbnail_path' => 'editor/previews/collections/heritage-set.svg',
+                'thumbnail_path' => 'editor/previews/collections/v1/heritage-set.svg',
                 'items' => [
                     ['asset' => 'heritage-geometric-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
                     ['asset' => 'wax-seal', 'placement' => $this->placement(420, 1480, 240, 240, 1)],
@@ -197,18 +213,39 @@ final class TemplateLibrarySeeder extends Seeder
             [
                 'slug' => 'graduation-gold-set',
                 'name' => 'قوس التخرج والفاصل',
-                'thumbnail_path' => 'editor/previews/collections/graduation-set.svg',
+                'thumbnail_path' => 'editor/previews/collections/v1/graduation-set.svg',
                 'items' => [
                     ['asset' => 'graduation-rays-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
                     ['asset' => 'gold-divider', 'placement' => $this->placement(240, 1305, 600, 80, 1)],
+                ],
+            ],
+            [
+                'slug' => 'methaq-islamic-ornament-set',
+                'name' => 'زخارف ميثاق الإسلامية',
+                'thumbnail_path' => 'editor/previews/collections/v1/methaq-islamic-set.svg',
+                'items' => [
+                    ['asset' => 'methaq-pointed-arch-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
+                    ['asset' => 'methaq-eight-star-medallion', 'placement' => $this->placement(390, 210, 300, 300, 1)],
+                    ['asset' => 'methaq-diamond-divider', 'placement' => $this->placement(180, 1210, 720, 120, 1)],
+                    ['asset' => 'methaq-geometric-side-border', 'placement' => $this->placement(845, 410, 120, 800, 0.84)],
                 ],
             ],
         ];
     }
 
     /** @param array<string, mixed> $capabilities @param array<string, mixed> $license */
-    private function visualAsset(string $slug, string $name, AssetType $type, string $original, string $preview, int $width, int $height, array $capabilities, array $license): array
-    {
+    private function visualAsset(
+        string $slug,
+        string $name,
+        AssetType $type,
+        string $original,
+        string $preview,
+        int $width,
+        int $height,
+        array $capabilities,
+        array $license,
+        string $sourceProject = 'methaq-reference-directions',
+    ): array {
         return [
             'slug' => $slug,
             'name' => $name,
@@ -218,7 +255,7 @@ final class TemplateLibrarySeeder extends Seeder
             'mime_type' => 'image/svg+xml',
             'width' => $width,
             'height' => $height,
-            'metadata' => ['sourceProject' => 'methaq-reference-directions', 'neutralExample' => true],
+            'metadata' => $this->visualMetadata($original, $type, $sourceProject),
             'capabilities' => $capabilities,
             'license_metadata' => $license,
             'asset_version' => 1,
@@ -233,7 +270,7 @@ final class TemplateLibrarySeeder extends Seeder
             'name' => $name,
             'type' => AssetType::Font,
             'original_path' => 'editor/assets/v1/fonts/'.$filename,
-            'preview_path' => 'editor/previews/assets/font-sample.svg',
+            'preview_path' => 'editor/previews/assets/v1/fonts/font-sample.svg',
             'mime_type' => 'font/ttf',
             'width' => null,
             'height' => null,
@@ -242,6 +279,57 @@ final class TemplateLibrarySeeder extends Seeder
             'license_metadata' => ['license' => $license, 'redistribution' => true],
             'asset_version' => 1,
         ];
+    }
+
+    /** @return array<string, string|bool> */
+    private function visualMetadata(string $original, AssetType $type, string $sourceProject): array
+    {
+        return [
+            'sourceProject' => $sourceProject,
+            'neutralExample' => true,
+            'family' => $this->assetFamily($original),
+            'category' => match (true) {
+                str_starts_with($original, 'frames/') => 'frame',
+                str_starts_with($original, 'seals/') => 'seal',
+                default => 'ornament',
+            },
+            'placement' => match (true) {
+                $type === AssetType::Frame => 'canvas',
+                str_contains($original, '/corners/'), str_contains($original, '/botanical/') => 'corner',
+                str_contains($original, '/dividers/') => 'divider',
+                str_contains($original, '/medallions/') => 'center',
+                str_contains($original, '/borders/') => 'side',
+                str_starts_with($original, 'seals/') => 'seal',
+                default => 'canvas',
+            },
+            'orientation' => match (true) {
+                str_contains($original, '-left.') => 'left',
+                str_contains($original, '-right.') => 'right',
+                str_contains($original, '/corners/') => 'top-left',
+                str_contains($original, '/dividers/') => 'horizontal',
+                str_contains($original, '/borders/vertical/') => 'vertical',
+                $type === AssetType::Frame => 'full',
+                default => 'center',
+            },
+            'style' => match (true) {
+                str_contains($original, 'botanical') => 'botanical',
+                str_contains($original, 'arabesque') => 'arabesque',
+                str_contains($original, 'graduation') => 'celebratory',
+                str_contains($original, 'wax-seal') => 'classic',
+                default => 'geometric',
+            },
+            'colorMode' => 'tintable',
+        ];
+    }
+
+    private function assetFamily(string $original): string
+    {
+        return match (true) {
+            str_contains($original, 'botanical') => 'botanical',
+            str_contains($original, 'graduation') => 'graduation',
+            str_contains($original, 'wax-seal'), str_contains($original, 'heritage') => 'heritage',
+            default => 'islamic',
+        };
     }
 
     /** @return array{x: int, y: int, width: int, height: int, scaleX: int, scaleY: int, rotation: int, opacity: float, locked: bool} */

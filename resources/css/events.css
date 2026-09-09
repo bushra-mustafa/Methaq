@@ -22,10 +22,18 @@
 
 .events-toolbar .account-primary,
 .dashboard-empty .account-primary,
-.event-form-actions .account-primary {
+.event-form-actions .account-primary,
+.event-overview-actions .account-primary {
     display: inline-grid;
     place-items: center;
     text-decoration: none;
+}
+
+.event-overview-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
 }
 
 .dashboard-empty .account-primary {

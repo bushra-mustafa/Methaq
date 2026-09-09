@@ -35,8 +35,8 @@ final class TemplateLibraryTest extends TestCase
         $this->seed(TemplateLibrarySeeder::class);
 
         $this->assertDatabaseCount('templates', 4);
-        $this->assertDatabaseCount('template_assets', 12);
-        $this->assertDatabaseCount('asset_collections', 3);
+        $this->assertDatabaseCount('template_assets', 17);
+        $this->assertDatabaseCount('asset_collections', 4);
 
         TemplateAsset::query()->each(function (TemplateAsset $asset): void {
             $this->assertTrue(Storage::disk('local')->exists($asset->original_path));
@@ -45,6 +45,15 @@ final class TemplateLibraryTest extends TestCase
             $this->assertStringStartsWith('editor/previews/', $asset->preview_path);
             $this->assertNotEmpty($asset->license_metadata);
             $this->assertNotEmpty($asset->capabilities);
+
+            if ($asset->type->value !== 'font') {
+                $this->assertEqualsCanonicalizing(
+                    ['sourceProject', 'neutralExample', 'family', 'category', 'placement', 'orientation', 'style', 'colorMode'],
+                    array_keys($asset->metadata),
+                );
+                $this->assertSame('tintable', $asset->metadata['colorMode']);
+                $this->assertStringStartsWith('editor/previews/assets/v1/', $asset->preview_path);
+            }
         });
 
         $seededCopy = Template::query()
@@ -90,7 +99,7 @@ final class TemplateLibraryTest extends TestCase
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Web/Templates', false)
             ->has('templates', 3)
-            ->has('collections', 3)
+            ->has('collections', 4)
             ->has('categories', 4)
             ->where('selectedCategory', null));
 
@@ -123,5 +132,37 @@ final class TemplateLibraryTest extends TestCase
                 );
             }
         });
+    }
+
+    public function test_original_islamic_ornaments_are_owned_and_available_as_a_ready_collection(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+
+        $ornaments = TemplateAsset::query()
+            ->whereJsonContains('metadata->sourceProject', 'methaq-original-islamic-ornaments')
+            ->get();
+
+        $this->assertCount(5, $ornaments);
+        $ornaments->each(function (TemplateAsset $asset): void {
+            $this->assertSame('Methaq proprietary', $asset->license_metadata['license']);
+            $this->assertSame('Methaq Design System', $asset->license_metadata['source']);
+            $this->assertTrue($asset->license_metadata['commercialUse']);
+        });
+
+        $collection = AssetCollection::query()
+            ->with('items.asset')
+            ->where('slug', 'methaq-islamic-ornament-set')
+            ->sole();
+
+        $this->assertCount(4, $collection->items);
+        $this->assertEqualsCanonicalizing(
+            [
+                'methaq-pointed-arch-frame',
+                'methaq-eight-star-medallion',
+                'methaq-diamond-divider',
+                'methaq-geometric-side-border',
+            ],
+            $collection->items->pluck('asset.slug')->all(),
+        );
     }
 }

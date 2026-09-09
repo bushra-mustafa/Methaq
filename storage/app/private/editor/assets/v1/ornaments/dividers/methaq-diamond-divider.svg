@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="120" viewBox="0 0 720 120" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="38" y1="30" x2="680" y2="90" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B6023"/>
+      <stop offset="0.28" stop-color="#E6C672"/>
+      <stop offset="0.52" stop-color="#AA7A30"/>
+      <stop offset="0.78" stop-color="#EED88F"/>
+      <stop offset="1" stop-color="#8B6023"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M28 60H256M464 60H692" stroke="url(#gold)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M86 44H276M444 44H634" stroke="#0B4F40" stroke-width="3" stroke-linecap="round"/>
+  <path d="M86 76H276M444 76H634" stroke="#0B4F40" stroke-width="3" stroke-linecap="round"/>
+
+  <path d="M360 8L404 60L360 112L316 60L360 8Z" fill="url(#gold)"/>
+  <path d="M360 27L388 60L360 93L332 60L360 27Z" fill="#F8F2E5" stroke="#0B4F40" stroke-width="4"/>
+  <path d="M360 42L375 60L360 78L345 60L360 42Z" fill="#0B4F40"/>
+
+  <path d="M277 35L302 60L277 85L252 60L277 35Z" fill="url(#gold)"/>
+  <path d="M443 35L468 60L443 85L418 60L443 35Z" fill="url(#gold)"/>
+  <circle cx="28" cy="60" r="8" fill="#0B4F40"/>
+  <circle cx="692" cy="60" r="8" fill="#0B4F40"/>
+</svg>

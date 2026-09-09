@@ -8,6 +8,7 @@ use App\Http\Controllers\App\Admin\UpdateLibraryItemStatusController;
 use App\Http\Controllers\App\CreateEventController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\DesignLabController;
+use App\Http\Controllers\App\EventEditorController;
 use App\Http\Controllers\App\LogoutOtherSessionsController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\ShowEventController;
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'active'])->prefix('app')->name('app.')->group(functi
     Route::get('/events/create', CreateEventController::class)->name('events.create');
     Route::post('/events', StoreEventController::class)->name('events.store');
     Route::get('/events/{event}', ShowEventController::class)->whereNumber('event')->name('events.show');
+    Route::get('/events/{event}/editor', EventEditorController::class)->whereNumber('event')->name('events.editor');
     Route::get('/profile', ProfileController::class)->name('profile');
     Route::delete('/sessions/others', LogoutOtherSessionsController::class)->name('sessions.destroy-others');
 

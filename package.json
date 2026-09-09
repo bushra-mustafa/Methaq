@@ -8,7 +8,8 @@
         "typecheck": "tsc --noEmit",
         "test:prototype": "node --experimental-strip-types --test tests/Frontend/prototype-design.test.ts",
         "test:contracts": "node --experimental-strip-types --test tests/Frontend/design-contract.test.ts",
-        "test:frontend": "npm run test:prototype && npm run test:contracts"
+        "test:editor": "node --experimental-strip-types --test tests/Frontend/editor-document.test.ts",
+        "test:frontend": "npm run test:prototype && npm run test:contracts && npm run test:editor"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="1200" viewBox="0 0 180 1200" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="22" y1="18" x2="158" y2="1182" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#906529"/>
+      <stop offset="0.34" stop-color="#E7C979"/>
+      <stop offset="0.67" stop-color="#A9772E"/>
+      <stop offset="1" stop-color="#F0DC9A"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M22 18V1182M158 18V1182" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M42 18V1182M138 18V1182" stroke="#0B4F40" stroke-width="3"/>
+
+  <g stroke="url(#gold)" stroke-width="5" stroke-linejoin="round">
+    <path d="M90 20L142 72L90 124L38 72L90 20Z"/>
+    <path d="M90 124L142 176L90 228L38 176L90 124Z"/>
+    <path d="M90 228L142 280L90 332L38 280L90 228Z"/>
+    <path d="M90 332L142 384L90 436L38 384L90 332Z"/>
+    <path d="M90 436L142 488L90 540L38 488L90 436Z"/>
+    <path d="M90 540L142 592L90 644L38 592L90 540Z"/>
+    <path d="M90 644L142 696L90 748L38 696L90 644Z"/>
+    <path d="M90 748L142 800L90 852L38 800L90 748Z"/>
+    <path d="M90 852L142 904L90 956L38 904L90 852Z"/>
+    <path d="M90 956L142 1008L90 1060L38 1008L90 956Z"/>
+    <path d="M90 1060L142 1112L90 1164L38 1112L90 1060Z"/>
+  </g>
+
+  <g fill="#0B4F40">
+    <path d="M90 51L111 72L90 93L69 72L90 51Z"/>
+    <path d="M90 155L111 176L90 197L69 176L90 155Z"/>
+    <path d="M90 259L111 280L90 301L69 280L90 259Z"/>
+    <path d="M90 363L111 384L90 405L69 384L90 363Z"/>
+    <path d="M90 467L111 488L90 509L69 488L90 467Z"/>
+    <path d="M90 571L111 592L90 613L69 592L90 571Z"/>
+    <path d="M90 675L111 696L90 717L69 696L90 675Z"/>
+    <path d="M90 779L111 800L90 821L69 800L90 779Z"/>
+    <path d="M90 883L111 904L90 925L69 904L90 883Z"/>
+    <path d="M90 987L111 1008L90 1029L69 1008L90 987Z"/>
+    <path d="M90 1091L111 1112L90 1133L69 1112L90 1091Z"/>
+  </g>
+</svg>
