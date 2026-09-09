@@ -7,11 +7,13 @@ import { usePrototypeCanvas } from '../Hooks/usePrototypeCanvas';
 interface Props { design: PrototypeDesign; onMove?: (slot: TextSlot, position: TextPosition) => void; exportable?: boolean }
 export function PrototypeCard({ design, onMove, exportable = false }: Props) {
     const { host, ready, error, exportPreview } = usePrototypeCanvas(design, onMove);
-    const [exportedImage, setExportedImage] = useState<string | null>(null);
+    const [exportedImage, setExportedImage] = useState<{ url: string; width: number; height: number; quality: 'preview' | '4k' } | null>(null);
+    const [zoomed, setZoomed] = useState(false);
     const [exportError, setExportError] = useState('');
-    function download() {
+    function download(quality: 'preview' | '4k') {
         try {
-            setExportedImage(exportPreview());
+            setExportedImage({ url: exportPreview(quality), width: quality === '4k' ? 2160 : 360, height: quality === '4k' ? 3840 : 640, quality });
+            setZoomed(false);
             setExportError('');
         } catch {
             setExportError('تعذّر تصدير الصورة. حاول مرة أخرى.');
@@ -23,13 +25,14 @@ export function PrototypeCard({ design, onMove, exportable = false }: Props) {
             {ready && <ReferenceAtmosphere color={design.sparkle} intensity={design.intensity} motion={design.motion} />}
             {(!ready || error) && <p className="lab-loading" role="status">{error || 'جاري تحميل الخطوط والمعاينة…'}</p>}
         </div>
-        {exportable && <><button type="button" disabled={!ready} onClick={download}>تصدير ومعاينة الصورة</button><small>صورة ثابتة منخفضة الدقة؛ الحركة تظهر في معاينة الضيف.</small></>}
+        {exportable && <><button type="button" disabled={!ready} onClick={() => download('preview')}>تصدير معاينة خفيفة</button><button type="button" disabled={!ready} onClick={() => download('4k')}>تصدير بأعلى جودة · 4K</button><small>صورة PNG ثابتة؛ الحركة تظهر في معاينة الضيف.</small></>}
         {exportError && <p role="alert">{exportError}</p>}
         {exportedImage && <section className="lab-export-result" aria-label="الصورة بعد التصدير">
             <h2>الصورة بعد التصدير</h2>
-            <p>هذه نسخة ثابتة وقت التصدير، بمقاس 360 × 640 بكسل وبعلامة مائية. اللمعة المتحركة لا تدخل في الصورة.</p>
-            <img src={exportedImage} alt="بطاقة ميثاق المصدرة بعلامة مائية" width={360} height={640} />
-            <a href={exportedImage} download="methaq-watermarked-preview.png">حفظ صورة PNG</a>
+            <p>هذه نسخة ثابتة وقت التصدير، بمقاس {exportedImage.width} × {exportedImage.height} بكسل. اللمعة المتحركة لا تدخل في الصورة.</p>
+            <div className={`lab-export-image ${zoomed ? 'is-zoomed' : ''}`} tabIndex={0} aria-label="معاينة الصورة؛ يمكن التمرير عند التكبير"><img src={exportedImage.url} alt="بطاقة ميثاق المصدرة" width={exportedImage.width} height={exportedImage.height} /></div>
+            <button type="button" aria-pressed={zoomed} onClick={() => setZoomed(!zoomed)}>{zoomed ? 'عرض الصورة كاملة' : 'تكبير لفحص التفاصيل'}</button>
+            <a href={exportedImage.url} download={`methaq-${exportedImage.quality}-${exportedImage.width}x${exportedImage.height}.png`}>حفظ صورة PNG</a>
             <button type="button" onClick={() => setExportedImage(null)}>إغلاق نتيجة التصدير</button>
         </section>}
     </div>;

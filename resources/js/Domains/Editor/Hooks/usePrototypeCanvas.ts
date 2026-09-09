@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Canvas, Textbox, FabricText, loadSVGFromString, util } from 'fabric';
+import { Canvas, Group, Textbox, FabricText, loadSVGFromString, util } from 'fabric';
 import type { FabricObject } from 'fabric';
 import type { PrototypeDesign, TextSlot, TextPosition } from '../../../Types/PrototypeDesign';
 import { cardArtwork } from '../Services/referenceArtwork';
@@ -53,8 +53,8 @@ export function usePrototypeCanvas(design: PrototypeDesign, onMove?: (slot: Text
                 const d = latest.current;
                 const decoration = await createArtwork(d);
                 if (cancelled) return;
-                canvas = new Canvas(element, { width: 360, height: 640, enableRetinaScaling: false, selection: false });
-                canvas.setZoom(1 / 3);
+                canvas = new Canvas(element, { width: 1080, height: 1920, enableRetinaScaling: false, selection: false });
+                canvas.setDimensions({ width: 360, height: 640 }, { cssOnly: true });
                 instance.current = canvas;
                 artwork.current = decoration;
                 renderedArtwork.current = artworkKey(d);
@@ -67,7 +67,7 @@ export function usePrototypeCanvas(design: PrototypeDesign, onMove?: (slot: Text
                 ];
                 const currentLabels: Partial<Record<TextSlot, Textbox>> = {};
                 for (const [slot, text, fontFamily, fontSize, direction] of specs) {
-                    const label = new Textbox(text, { width: 840, fontFamily, fontSize, textAlign: 'center', direction, lineHeight: 1.4, selectable: Boolean(move.current), evented: Boolean(move.current), hasControls: false, lockScalingX: true, lockScalingY: true, lockRotation: true, editable: false });
+                    const label = new Textbox(text, { width: 840, objectCaching: false, fontFamily, fontSize, textAlign: 'center', direction, lineHeight: 1.4, selectable: Boolean(move.current), evented: Boolean(move.current), hasControls: false, lockScalingX: true, lockScalingY: true, lockRotation: true, editable: false });
                     updateLabel(label, slot, d);
                     label.on('modified', () => {
                         const position = { x: Math.max(0, Math.min(240, label.left)), y: Math.max(0, Math.min(1600, label.top)) };
@@ -79,8 +79,7 @@ export function usePrototypeCanvas(design: PrototypeDesign, onMove?: (slot: Text
                     canvas.add(label);
                 }
                 labels.current = currentLabels;
-                canvas.add(new Textbox('بحضوركم تكتمل فرحتنا', { left: 190, top: 1690, width: 700, textAlign: 'center', direction: 'rtl', fontFamily: 'Invitation Amiri', fontSize: 50, fill: d.ink, selectable: false, evented: false }));
-                for (let y = 420; y < 1770; y += 440) canvas.add(new FabricText('ميثاق · معاينة', { left: 360, top: y, fontFamily: 'Invitation Tajawal', fontSize: 38, fill: d.ink, opacity: 0.14, angle: -24, selectable: false, evented: false }));
+                canvas.add(new Textbox('بحضوركم تكتمل فرحتنا', { objectCaching: false, left: 190, top: 1690, width: 700, textAlign: 'center', direction: 'rtl', fontFamily: 'Invitation Amiri', fontSize: 50, fill: d.ink, selectable: false, evented: false }));
                 canvas.requestRenderAll();
                 setReady(true);
             } catch {
@@ -128,11 +127,23 @@ export function usePrototypeCanvas(design: PrototypeDesign, onMove?: (slot: Text
         return () => { cancelled = true; };
     }, [design.background, design.paper, design.accent, design.envelope, design.florals, ready]);
 
-    function exportPreview(): string {
+    function exportPreview(quality: 'preview' | '4k' = 'preview'): string {
         const canvas = instance.current;
         if (!canvas || !ready || error || renderedArtwork.current !== artworkKey(latest.current)) throw new Error('المعاينة غير جاهزة.');
         canvas.discardActiveObject();
-        return canvas.toDataURL({ format: 'png', multiplier: 1, enableRetinaScaling: false });
+        const cacheSettings = new Map<FabricObject, boolean>();
+        function disableCache(object: FabricObject): void {
+            cacheSettings.set(object, object.objectCaching);
+            object.set({ objectCaching: false });
+            if (object instanceof Group) object.getObjects().forEach(disableCache);
+        }
+        canvas.getObjects().forEach(disableCache);
+        try {
+            return canvas.toDataURL({ format: 'png', multiplier: (quality === '4k' ? 2160 : 360) / canvas.getWidth(), enableRetinaScaling: false });
+        } finally {
+            cacheSettings.forEach((objectCaching, object) => object.set({ objectCaching, dirty: true }));
+            canvas.requestRenderAll();
+        }
     }
     return { host, ready, error, exportPreview };
 }

@@ -52,3 +52,5 @@
 .reference-dialog.motion-off *, .reference-dialog.motion-off *::after { animation:none!important; transition:none!important; }
 @media(max-width:600px) { .reference-header { padding:22px 25px 10px; grid-template-columns:1fr auto; } .reference-header>span:first-child { display:none; } .reference-header>div { gap:5px; } .reference-header button { padding:8px 10px; font-size:11px; } .reference-envelope-scene { --envelope-width:clamp(225px,68vw,330px); margin-top:20px; } .reference-florals { width:135px; height:190px; } .reference-florals-left { left:-42px; } .reference-florals-right { right:-42px; top:-20px; } .reference-dialog .reference-seal { width:60px; height:60px; } .reference-letter-names { font-size:27px; } .reference-cover-names { font-size:36px; } .reference-stage { padding-inline:16px; } }
 @media(prefers-reduced-motion:reduce) { .reference-dialog *, .reference-dialog *::after { animation:none!important; transition:none!important; } }
+.reference-opened { width:min(360px,100%); }
+.reference-stage { grid-template-columns:minmax(0,1fr); }
