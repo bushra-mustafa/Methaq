@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title">
+  <title id="title">ختم شمعي قابل للتلوين</title>
+  <defs><radialGradient id="seal"><stop offset="0" stop-color="#e0bbc0"/><stop offset="0.7" stop-color="#b77d88"/><stop offset="1" stop-color="#8e5965"/></radialGradient></defs>
+  <path d="M160 24c25 0 42 18 61 25 21 8 48 4 62 22 14 19 4 44 8 66 4 22 24 43 17 66-7 22-34 29-50 45-16 16-22 44-44 51-22 7-44-12-66-15-22-3-47 8-66-6-19-14-16-41-24-62-8-20-27-37-27-61 0-24 20-40 28-60 9-21 7-48 26-62 19-14 43-3 65-7 10-2 20-2 30-2z" fill="url(#seal)" stroke="#a56c78" stroke-width="6"/>
+  <circle cx="160" cy="160" r="92" fill="none" stroke="#f3dde0" stroke-width="5" opacity="0.66"/><path d="M112 196l48-86 48 86M131 165h58" fill="none" stroke="#f7e9e5" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,2 +1,5 @@
 *
 !.gitignore
+!editor/
+!editor/assets/
+!editor/assets/**

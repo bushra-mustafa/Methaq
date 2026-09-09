@@ -19,6 +19,12 @@ class Template extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
+    /** @var array<string, int|bool> */
+    protected $attributes = [
+        'schema_version' => 1,
+        'is_active' => true,
+    ];
+
     protected $hidden = ['default_design_json', 'default_scene_json', 'default_palette_json'];
 
     protected static function newFactory(): TemplateFactory

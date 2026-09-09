@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" role="img" aria-labelledby="title">
+  <title id="title">إطار قوس عنابي</title>
+  <defs><linearGradient id="gold" x1="0" x2="1"><stop stop-color="#8d693d"/><stop offset="0.5" stop-color="#e7c98e"/><stop offset="1" stop-color="#9c7847"/></linearGradient></defs>
+  <path d="M88 1810V616C88 318 290 92 540 92s452 226 452 524v1194" fill="none" stroke="url(#gold)" stroke-width="7"/>
+  <path d="M112 1810V620c0-278 190-502 428-502s428 224 428 502v1190" fill="none" stroke="#d8b982" stroke-width="2" opacity="0.52"/>
+  <g fill="#d8b982"><circle cx="88" cy="1810" r="10"/><circle cx="992" cy="1810" r="10"/><circle cx="540" cy="92" r="10"/></g>
+  <g fill="none" stroke="#d8b982" stroke-width="3" opacity="0.58"><path d="M155 470c65-118 149-202 255-252"/><path d="M925 470c-65-118-149-202-255-252"/><path d="M142 1470c70 66 115 138 135 230"/><path d="M938 1470c-70 66-115 138-135 230"/></g>
+</svg>

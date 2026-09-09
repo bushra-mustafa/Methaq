@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Domains\Editor\Models\Template;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /** @extends Factory<Template> */
 class TemplateFactory extends Factory
@@ -15,6 +16,7 @@ class TemplateFactory extends Factory
     public function definition(): array
     {
         return [
+            'slug' => 'template-'.Str::lower(Str::random(12)),
             'name' => 'Example template',
             'category' => 'wedding',
             'thumbnail_path' => 'templates/preview.png',

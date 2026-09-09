@@ -18,6 +18,12 @@ class TemplateAsset extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
+    /** @var array<string, int|bool> */
+    protected $attributes = [
+        'asset_version' => 1,
+        'is_active' => true,
+    ];
+
     protected $hidden = ['original_path'];
 
     protected static function newFactory(): TemplateAssetFactory

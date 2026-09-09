@@ -29,6 +29,7 @@ export default function Home({ showPrototype }: HomeProps) {
                     <p className="brand-description">مساحة لتصميم دعواتكم بالألوان والكلمات والتفاصيل التي تحبّونها.</p>
                     <div className="brand-actions">
                         <Link className="brand-primary-action" href={auth.user ? '/app' : '/register'}>{auth.user ? 'افتحي مناسباتك' : 'أنشئي حسابك'}</Link>
+                        <Link className="brand-secondary-action" href="/templates">استعرضي القوالب</Link>
                         {showPrototype && <a className="brand-secondary-action" href="/dev/design-lab">شاهدي البطاقة التجريبية</a>}
                     </div>
                 </section>

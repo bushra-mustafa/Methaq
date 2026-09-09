@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Domains\Editor\Models\AssetCollection;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /** @extends Factory<AssetCollection> */
 class AssetCollectionFactory extends Factory
@@ -15,6 +16,7 @@ class AssetCollectionFactory extends Factory
     public function definition(): array
     {
         return [
+            'slug' => 'collection-'.Str::lower(Str::random(12)),
             'name' => 'Example collection',
         ];
     }

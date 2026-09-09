@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" role="img" aria-labelledby="title">
+  <title id="title">إطار أشعة التخرج</title>
+  <defs><radialGradient id="glow"><stop stop-color="#d7c07d" stop-opacity="0.32"/><stop offset="1" stop-color="#d7c07d" stop-opacity="0"/></radialGradient></defs>
+  <ellipse cx="540" cy="930" rx="500" ry="850" fill="url(#glow)"/>
+  <g fill="none" stroke="#d7c07d"><rect x="65" y="65" width="950" height="1790" rx="475" stroke-width="5"/><rect x="86" y="86" width="908" height="1748" rx="454" stroke-width="1.5" opacity="0.65"/></g>
+  <g stroke="#d7c07d" stroke-width="3" opacity="0.55"><line x1="540" y1="90" x2="540" y2="220"/><line x1="326" y1="132" x2="365" y2="255"/><line x1="754" y1="132" x2="715" y2="255"/><line x1="150" y1="268" x2="244" y2="356"/><line x1="930" y1="268" x2="836" y2="356"/></g>
+</svg>

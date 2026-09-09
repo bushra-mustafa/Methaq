@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Domains\Editor\Models\TemplateAsset;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /** @extends Factory<TemplateAsset> */
 class TemplateAssetFactory extends Factory
@@ -15,6 +16,7 @@ class TemplateAssetFactory extends Factory
     public function definition(): array
     {
         return [
+            'slug' => 'asset-'.Str::lower(Str::random(12)),
             'name' => 'Example frame',
             'type' => 'frame',
             'original_path' => 'assets/frame.svg',

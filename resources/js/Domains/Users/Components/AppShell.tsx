@@ -18,7 +18,7 @@ export function AppShell({ title, eyebrow, children }: AppShellProps) {
             <nav aria-label="حسابي">
                 <Link href="/app">مناسباتي</Link>
                 <Link href="/app/profile">الحساب والأمان</Link>
-                {auth.user?.role === 'admin' && <Link href="/app/admin">الإدارة</Link>}
+                {auth.user?.role === 'admin' && <><Link href="/app/admin">الإدارة</Link><Link href="/app/admin/library">المكتبة</Link></>}
                 <Link href="/logout" method="post" as="button">خروج</Link>
             </nav>
         </header>

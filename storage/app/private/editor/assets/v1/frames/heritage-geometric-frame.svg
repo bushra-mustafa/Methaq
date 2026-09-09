@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" role="img" aria-labelledby="title">
+  <title id="title">إطار تراثي هندسي</title>
+  <g fill="none" stroke="#b69a50">
+    <rect x="58" y="58" width="964" height="1804" stroke-width="4"/>
+    <rect x="78" y="78" width="924" height="1764" stroke-width="1.5" opacity="0.72"/>
+    <path d="M58 210h152V58m660 0v152h152M58 1710h152v152m660 0v-152h152" stroke-width="8"/>
+    <path d="M95 95l72 72-72 72m890-144-72 72 72 72M95 1825l72-72-72-72m890 144-72-72 72-72" stroke-width="3"/>
+    <path d="M268 58l54 38 54-38 54 38 54-38 54 38 54-38 54 38 54-38 54 38 54-38M268 1862l54-38 54 38 54-38 54 38 54-38 54 38 54-38 54 38 54-38 54 38" stroke-width="2" opacity="0.7"/>
+  </g>
+</svg>

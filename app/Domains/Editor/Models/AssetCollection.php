@@ -16,6 +16,11 @@ class AssetCollection extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
+    /** @var array<string, bool> */
+    protected $attributes = [
+        'is_active' => true,
+    ];
+
     protected static function newFactory(): AssetCollectionFactory
     {
         return AssetCollectionFactory::new();

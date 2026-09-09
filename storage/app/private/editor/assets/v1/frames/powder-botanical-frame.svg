@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" role="img" aria-labelledby="title">
+  <title id="title">إطار نباتي بودري</title>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1deb0"/><stop offset="0.5" stop-color="#a78550"/><stop offset="1" stop-color="#d9bd7c"/></linearGradient>
+  </defs>
+  <rect x="54" y="54" width="972" height="1812" rx="26" fill="none" stroke="url(#gold)" stroke-width="4"/>
+  <rect x="74" y="74" width="932" height="1772" rx="20" fill="none" stroke="#a78550" stroke-width="1.5" opacity="0.58"/>
+  <g fill="none" stroke="url(#gold)" stroke-width="5" stroke-linecap="round">
+    <path d="M80 420C135 315 205 250 315 210M78 348c65-12 113-52 145-115M135 305c-12-50 1-98 35-139M196 252c30 5 66-3 104-33"/>
+    <path d="M1000 1500c-55 105-125 170-235 210m237-138c-65 12-113 52-145 115m88-72c12 50-1 98-35 139m-26-86c-30-5-66 3-104 33"/>
+  </g>
+  <g fill="#d8b0b0" stroke="#a78550" stroke-width="3">
+    <ellipse cx="139" cy="314" rx="18" ry="42" transform="rotate(43 139 314)"/><ellipse cx="198" cy="255" rx="18" ry="42" transform="rotate(51 198 255)"/><ellipse cx="941" cy="1606" rx="18" ry="42" transform="rotate(43 941 1606)"/><ellipse cx="882" cy="1665" rx="18" ry="42" transform="rotate(51 882 1665)"/>
+  </g>
+</svg>
