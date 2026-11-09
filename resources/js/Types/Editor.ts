@@ -29,7 +29,7 @@ export interface EditorCollection {
     items: EditorCollectionItem[];
 }
 
-export type EditorPanel = 'elements' | 'text' | 'layers' | 'colors';
+export type EditorPanel = 'elements' | 'text' | 'layers' | 'colors' | 'material';
 
 export interface CanvasGuides {
     horizontal: number | null;

@@ -35,7 +35,7 @@ export function InvitationPlayer({ audioAllowed = true, assets, cardParts, scene
     } as CSSProperties;
     return <section className={`invitation-player is-${viewport} is-motion-${scene.motionPolicy} is-backdrop-${scene.backdrop?.preset ?? 'inherit'} ${motion ? '' : 'motion-off'}`} style={style} data-phase={phase} data-opening={scene.opening.type} dir="rtl" aria-label={title}>
                 <InvitationAtmosphere effects={scene.effects} palette={palette} />
-                <div className="invitation-player-tools"><span>بِكُلِّ الحُبّ</span>{motionAvailable ? <button type="button" onClick={toggleMotion} aria-pressed={paused}>{paused ? 'استئناف الحركة' : 'إيقاف الحركة'}</button> : <span>الحركة متوقفة</span>}</div>
+                <div className="invitation-player-tools"><span>بِكُلِّ الحُبّ</span><div className="invitation-player-tool-actions">{motionAvailable ? <button className="invitation-motion-icon" type="button" onClick={toggleMotion} aria-pressed={paused} aria-label={paused ? 'استئناف الحركة' : 'إيقاف الحركة'} title={paused ? 'استئناف الحركة' : 'إيقاف الحركة'}>{paused ? '▶' : 'Ⅱ'}</button> : <span>الحركة متوقفة</span>}{scene.opening.type !== 'direct' && <button className="invitation-replay-icon" type="button" onClick={replayWithAudio} aria-label="إعادة تجربة الفتح" title="إعادة تجربة الفتح">↺</button>}</div></div>
                 {(audio.available || audio.missing) && <div className="invitation-audio-control">
                     <button type="button" disabled={audio.missing} onClick={() => audio.state === 'playing' || audio.state === 'loading' ? audio.pause() : void audio.play()}>{audio.state === 'playing' ? 'إيقاف الصوت' : audio.state === 'loading' ? 'إلغاء تحميل الصوت' : 'تشغيل الصوت'}</button>
                     <span role="status">{audio.missing ? 'المقطع غير متاح' : audio.state === 'blocked' ? 'اضغطي تشغيل للسماح بالصوت' : audio.state === 'error' ? 'تعذّر تشغيل الصوت؛ يمكنك إعادة المحاولة' : ''}</span>
@@ -51,7 +51,6 @@ export function InvitationPlayer({ audioAllowed = true, assets, cardParts, scene
                     <h1 tabIndex={-1} ref={heading}>{title}</h1>
                     {!imageFailed ? (scene.cover?.animateText && cardParts ? <AnimatedInvitationCard card={cardParts} fallbackUrl={cardUrl} title={title} /> : <img className="invitation-card-image" src={cardUrl} alt={`بطاقة ${title}`} onError={() => setImageFailed(true)} />) : <p role="alert">تعذّر عرض صورة البطاقة. ارجعي للتعديل وأعيدي فتح المعاينة.</p>}
                     <p>بحضوركم تكتمل فرحتنا</p>
-                    {scene.opening.type !== 'direct' && <button type="button" onClick={replayWithAudio}>إعادة تجربة الفتح ↺</button>}
                 </article>}
                 <footer className="invitation-player-footer">ميثاق · عَهْدُ الفرح</footer>
                 <span className="invitation-sr-only" role="status">{phase === 'opening' ? 'جاري فتح الظرف' : phase === 'names-preview' ? 'تظهر الأسماء' : phase === 'opened' ? 'تم فتح الدعوة' : 'الدعوة مغلقة'}</span>

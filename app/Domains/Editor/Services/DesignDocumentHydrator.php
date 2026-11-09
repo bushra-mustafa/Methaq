@@ -7,6 +7,7 @@ namespace App\Domains\Editor\Services;
 use App\Domains\Editor\DTOs\AssetReferenceData;
 use App\Domains\Editor\DTOs\AudioData;
 use App\Domains\Editor\DTOs\CanvasData;
+use App\Domains\Editor\DTOs\CardMaterialData;
 use App\Domains\Editor\DTOs\ColorValueData;
 use App\Domains\Editor\DTOs\DesignDocumentData;
 use App\Domains\Editor\DTOs\EffectData;
@@ -22,6 +23,7 @@ use App\Domains\Editor\DTOs\SceneBackdropData;
 use App\Domains\Editor\DTOs\SceneConfigData;
 use App\Domains\Editor\DTOs\ShapeLayerData;
 use App\Domains\Editor\DTOs\TextLayerData;
+use App\Domains\Editor\Enums\CardMaterialPreset;
 use App\Domains\Editor\Enums\ColorSource;
 use App\Domains\Editor\Enums\EffectId;
 use App\Domains\Editor\Enums\EnvelopePresetId;
@@ -55,7 +57,7 @@ final class DesignDocumentHydrator
     private function canvas(mixed $value): CanvasData
     {
         $canvas = $this->object($value, 'document.canvas');
-        $this->assertKeys($canvas, ['schemaVersion', 'width', 'height', 'background', 'layers'], 'document.canvas');
+        $this->assertKeys($canvas, ['schemaVersion', 'width', 'height', 'background', 'layers', ...(array_key_exists('material', $canvas) ? ['material'] : [])], 'document.canvas');
         $layers = $canvas['layers'];
         if (! is_array($layers) || ! array_is_list($layers)) {
             throw new InvalidArgumentException('document.canvas.layers must be a list.');
@@ -67,6 +69,20 @@ final class DesignDocumentHydrator
             height: $this->integer($canvas['height'], 'document.canvas.height'),
             background: $this->color($canvas['background'], 'document.canvas.background'),
             layers: array_map(fn (mixed $layer, int $index): LayerData => $this->layer($layer, $index), $layers, array_keys($layers)),
+            material: array_key_exists('material', $canvas) ? $this->material($canvas['material']) : null,
+        );
+    }
+
+    private function material(mixed $value): CardMaterialData
+    {
+        $path = 'document.canvas.material';
+        $material = $this->object($value, $path);
+        $this->assertKeys($material, ['preset', 'version', 'intensity'], $path);
+
+        return new CardMaterialData(
+            preset: $this->enum($material['preset'], CardMaterialPreset::class, "{$path}.preset"),
+            version: $this->integer($material['version'], "{$path}.version"),
+            intensity: $this->number($material['intensity'], "{$path}.intensity"),
         );
     }
 

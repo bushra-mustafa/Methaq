@@ -3,6 +3,8 @@ import type { Palette } from '../../../Types/Palette';
 import type { EnvelopeConfig, InvitationCover } from '../../../Types/SceneConfig';
 import { resolveColor } from '../Services/editorDocument';
 import { DEFAULT_ENVELOPE_APPEARANCE } from '../Services/scenePresentation';
+import { InvitationSeal } from './InvitationSeal';
+import '../../../../css/envelope-variants.css';
 
 interface Props { cover?: InvitationCover; envelope: EnvelopeConfig; palette: Palette; cardUrl?: string; title?: string; opening?: boolean; namesPreview?: boolean; onOpen?: () => void }
 
@@ -20,12 +22,6 @@ export function InvitationEnvelope({ cover, envelope, palette, cardUrl, title, o
         <div className="invitation-envelope-front" />
         <div className="invitation-envelope-fold" />
         <div className="invitation-envelope-flap" />
-        {onOpen ? <button type="button" className={`invitation-seal is-${appearance.sealStyle}`} onClick={onOpen} disabled={opening} aria-label={`فتح دعوة ${title}`}>
-            <SealMark style={appearance.sealStyle} monogram={envelope.monogram} />
-        </button> : <span className={`invitation-seal is-${appearance.sealStyle}`} aria-hidden="true"><SealMark style={appearance.sealStyle} monogram={envelope.monogram} /></span>}
+        <InvitationSeal style={appearance.sealStyle} onOpen={onOpen} disabled={opening} title={title} />
     </div>;
-}
-
-function SealMark({ style, monogram }: { style: 'wax' | 'medallion' | 'methaq'; monogram: string }) {
-    return style === 'methaq' ? <i className="invitation-seal-logo" aria-hidden="true" /> : <span dir="auto">{monogram || '♡'}</span>;
 }

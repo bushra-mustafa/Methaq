@@ -10,9 +10,11 @@ use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\DesignLabController;
 use App\Http\Controllers\App\EventEditorController;
 use App\Http\Controllers\App\EventPresentationController;
+use App\Http\Controllers\App\IvoryProposalController;
 use App\Http\Controllers\App\LogoutOtherSessionsController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\SaveEventDesignController;
+use App\Http\Controllers\App\SaveProposalDraftController;
 use App\Http\Controllers\App\ShowEventController;
 use App\Http\Controllers\App\StoreEventController;
 use App\Http\Controllers\Guest\ShowInvitationController;
@@ -35,6 +37,8 @@ Route::get('/templates', TemplateLibraryController::class)->name('templates.inde
 
 Route::middleware(['auth', 'active'])->prefix('app')->name('app.')->group(function (): void {
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::get('/proposals/ivory-wedding', IvoryProposalController::class)->name('proposals.ivory');
+    Route::patch('/proposals/ivory-wedding', SaveProposalDraftController::class)->name('proposals.ivory.update');
     Route::get('/events/create', CreateEventController::class)->name('events.create');
     Route::post('/events', StoreEventController::class)->name('events.store');
     Route::get('/events/{event}', ShowEventController::class)->whereNumber('event')->name('events.show');

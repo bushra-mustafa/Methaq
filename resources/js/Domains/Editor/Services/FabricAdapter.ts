@@ -95,7 +95,9 @@ export function toFabricObject(layer: Layer, palette: Palette): FabricObjectDesc
             fontSize: layer.fontSize,
             fontWeight: layer.fontWeight,
             textAlign: layer.alignment,
-            direction: layer.direction === 'ltr' ? 'ltr' : 'rtl',
+            direction: layer.direction === 'auto'
+                ? (/\p{Script=Arabic}|\p{Script=Hebrew}/u.test(layer.content.match(/\p{Letter}/u)?.[0] ?? '') ? 'rtl' : 'ltr')
+                : layer.direction,
             fill: resolveColor(layer.fill, palette),
         };
     }

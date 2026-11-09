@@ -4,6 +4,7 @@ import { SceneBackdropPicker } from './SceneBackdropPicker';
 import type { EditorAsset } from '../../../Types/Editor';
 import { SceneEffectsPanel } from './SceneEffectsPanel';
 import { EnvelopeStylePicker } from './EnvelopeStylePicker';
+import { SealStylePicker } from './SealStylePicker';
 import type { ColorValue, HexColor, Palette } from '../../../Types/Palette';
 import type { EnvelopeAppearance, EnvelopeConfig, SceneConfig } from '../../../Types/SceneConfig';
 import { resolveColor } from '../Services/editorDocument';
@@ -37,13 +38,14 @@ export function ScenePanel({ assets, scene, palette, onChange, onPreview, previe
                 <SceneColorControl label="لون الظرف" value={envelope.paperColor} palette={palette} onChange={(paperColor) => updateEnvelope({ paperColor })} />
                 <SceneColorControl label="لون البطانة" value={envelope.liningColor} palette={palette} onChange={(liningColor) => updateEnvelope({ liningColor })} />
                 <h3>الختم</h3>
-                <label>شكل الختم<select value={appearance.sealStyle} onChange={(event) => updateAppearance({ sealStyle: event.target.value as EnvelopeAppearance['sealStyle'] })}><option value="wax">ختم شمعي</option><option value="medallion">ختم دائري معدني</option><option value="methaq">ختم ميثاق</option></select></label>
+                <SealStylePicker value={appearance.sealStyle} color={resolveColor(envelope.sealColor, { palette })} onChange={(sealStyle) => updateAppearance({ sealStyle })} />
+                {appearance.sealStyle !== 'none' && <>
                 <SceneColorControl label="لون الختم" value={envelope.sealColor} palette={palette} onChange={(sealColor) => updateEnvelope({ sealColor })} />
-                {appearance.sealStyle !== 'methaq' && <label>الأحرف أو النص داخل الختم<input value={envelope.monogram} maxLength={12} dir="auto" onChange={(event) => updateEnvelope({ monogram: event.target.value })} /></label>}
                 <label>الموضع الأفقي · {appearance.sealX}% من اليسار<input type="range" min={20} max={80} value={appearance.sealX} onChange={(event) => updateAppearance({ sealX: Number(event.target.value) })} /></label>
                 <label>الموضع العمودي · {appearance.sealY}% من الأعلى<input type="range" min={25} max={75} value={appearance.sealY} onChange={(event) => updateAppearance({ sealY: Number(event.target.value) })} /></label>
                 <label>حجم الختم · {appearance.sealSize}% من عرض الظرف<input type="range" min={14} max={26} value={appearance.sealSize} onChange={(event) => updateAppearance({ sealSize: Number(event.target.value) })} /></label>
                 <button className="scene-secondary-button" type="button" onClick={() => updateAppearance({ sealX: 50, sealY: 52, sealSize: 20 })}>إرجاع الختم للمنتصف</button>
+                </>}
             </>}
             {scene.opening.type !== 'direct' && <label>مدة الفتح · {(scene.opening.durationMs / 1000).toFixed(1)} ثانية<input type="range" min={100} max={5000} step={100} value={scene.opening.durationMs} onChange={(event) => { if (scene.opening.type !== 'direct') onChange({ ...scene, opening: { ...scene.opening, durationMs: Number(event.target.value) } }); }} /></label>}
             <SceneCoverPanel cover={scene.cover} onChange={(cover) => onChange({ ...scene, cover })} />

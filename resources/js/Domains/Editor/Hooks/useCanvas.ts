@@ -8,6 +8,9 @@ import type { CanvasGuides, EditorAsset } from '../../../Types/Editor';
 import type { Layer } from '../../../Types/Layer';
 import { resolveColor } from '../Services/editorDocument';
 import { toFabricObject } from '../Services/FabricAdapter';
+import { renderCardMaterial } from '../Services/renderCardMaterial';
+import { imagePlacement } from '../Services/imagePlacement';
+import { DESIGN_CONTRACT } from '../Services/designContract';
 
 interface UseCanvasOptions {
     document: DesignDocument;
@@ -82,8 +85,8 @@ function commonProperties(layer: Layer) {
 
 function layerFromObject(source: Layer, object: FabricObject): Layer {
     const frame = {
-        x: Math.round(object.left),
-        y: Math.round(object.top),
+        x: Math.max(-DESIGN_CONTRACT.maximumCanvasDimension, Math.min(DESIGN_CONTRACT.maximumCanvasDimension, Math.round(object.left))),
+        y: Math.max(-DESIGN_CONTRACT.maximumCanvasDimension, Math.min(DESIGN_CONTRACT.maximumCanvasDimension, Math.round(object.top))),
         width: Math.max(1, Math.round(object.width)),
         height: Math.max(1, Math.round(object.height)),
         scaleX: Number(object.scaleX.toFixed(4)),
@@ -93,20 +96,20 @@ function layerFromObject(source: Layer, object: FabricObject): Layer {
     };
 
     if (source.type === 'text' && object instanceof Textbox) {
-        return { ...source, frame, content: object.text };
+        return { ...source, frame, content: Array.from(object.text).slice(0, DESIGN_CONTRACT.maximumTextLength).join('') };
     }
 
     return { ...source, frame };
 }
 
 function contentSignature(layer: Layer): string {
-    if (layer.type === 'text') return `text:${layer.content}:${layer.font.assetId}:${layer.font.version}:${layer.fontSize}:${layer.fontWeight}:${JSON.stringify(layer.fill)}`;
+    if (layer.type === 'text') return `text:${layer.content}:${layer.font.assetId}:${layer.font.version}:${layer.fontSize}:${layer.fontWeight}:${layer.alignment}:${layer.direction}:${JSON.stringify(layer.fill)}`;
     if (layer.type === 'image') return `image:${layer.asset.assetId}:${layer.asset.version}:${layer.fit}`;
     return `shape:${layer.shapeKind}:${JSON.stringify(layer.fill)}:${JSON.stringify(layer.stroke)}:${layer.strokeWidth}`;
 }
 
 function paletteSignature(design: DesignDocument): string {
-    return JSON.stringify(design.palette.values);
+    return JSON.stringify({ palette: design.palette.values, background: design.canvas.background, material: design.canvas.material });
 }
 
 export function useCanvas({ document: design, assets, selectedLayerId, onSelect, onLayerChange }: UseCanvasOptions): UseCanvasResult {
@@ -144,8 +147,9 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
         canvas.current = instance;
 
         const resize = (): void => {
-            const availableWidth = Math.max(260, Math.min(container.clientWidth, 560));
+            const availableWidth = Math.max(240, Math.min(container.clientWidth, 650));
             instance.setDimensions({ width: availableWidth, height: availableWidth * design.canvas.height / design.canvas.width }, { cssOnly: true });
+            instance.calcOffset();
         };
         resize();
         const observer = new ResizeObserver(resize);
@@ -213,27 +217,18 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
 
         if (canUpdateInPlace) {
             synchronizing.current = true;
-            for (const layer of design.canvas.layers) {
+            for (const [index, layer] of design.canvas.layers.entries()) {
                 const object = objects.current.get(layer.id);
                 if (!object) continue;
-                const frame = layer.frame;
-                object.set(layer.type === 'image' ? {
-                    left: frame.x,
-                    top: frame.y,
-                    scaleX: frame.scaleX,
-                    scaleY: frame.scaleY,
-                    angle: frame.rotation,
-                    opacity: frame.opacity,
-                    visible: layer.visible,
-                    selectable: !layer.locked,
-                    evented: !layer.locked,
-                    lockMovementX: layer.locked,
-                    lockMovementY: layer.locked,
-                    lockRotation: layer.locked,
-                    lockScalingX: layer.locked,
-                    lockScalingY: layer.locked,
+                object.set(layer.type === 'image' && object instanceof FabricImage ? {
+                    ...commonProperties(layer),
+                    width: object.width,
+                    height: object.height,
+                    ...imagePlacement(layer.frame, object.width, object.height, layer.fit),
                 } : commonProperties(layer));
+                if (object instanceof Textbox) object.set({ editable: !layer.locked });
                 object.setCoords();
+                editor.moveObjectTo(object, index);
             }
             editor.requestRenderAll();
             synchronizing.current = false;
@@ -246,14 +241,16 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
 
         async function renderDocument(): Promise<void> {
             try {
-                await loadEditorFonts(assets, abort.signal);
-                if (abort.signal.aborted) return;
+                const [, texture] = await Promise.all([loadEditorFonts(assets, abort.signal), renderCardMaterial(design.canvas, abort.signal)]);
+                if (abort.signal.aborted) { texture?.dispose(); return; }
 
+                editor.backgroundImage?.dispose();
                 editor.clear();
                 layerIds.current.clear();
                 objects.current.clear();
                 renderedContent.current.clear();
                 editor.backgroundColor = resolveColor(design.canvas.background, design);
+                editor.backgroundImage = texture;
                 let failedAssets = 0;
 
                 for (const layer of design.canvas.layers) {
@@ -285,21 +282,11 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
                         try {
                             if (!asset) throw new Error('Missing asset');
                             object = await FabricImage.fromURL(asset.previewUrl, { crossOrigin: 'anonymous', signal: abort.signal });
-                            const intendedWidth = layer.frame.width * layer.frame.scaleX;
-                            const intendedHeight = layer.frame.height * layer.frame.scaleY;
-                            const widthRatio = intendedWidth / Math.max(1, object.width);
-                            const heightRatio = intendedHeight / Math.max(1, object.height);
-                            const scale = descriptor.fit === 'cover' ? Math.max(widthRatio, heightRatio) : Math.min(widthRatio, heightRatio);
-                            const renderedWidth = object.width * scale;
-                            const renderedHeight = object.height * scale;
                             object.set({
                                 ...commonProperties(layer),
                                 width: object.width,
                                 height: object.height,
-                                left: layer.frame.x + (intendedWidth - renderedWidth) / 2,
-                                top: layer.frame.y + (intendedHeight - renderedHeight) / 2,
-                                scaleX: scale,
-                                scaleY: scale,
+                                ...imagePlacement(layer.frame, object.width, object.height, descriptor.fit),
                             });
                         } catch (exception: unknown) {
                             if (abort.signal.aborted) return;

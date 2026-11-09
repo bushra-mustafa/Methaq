@@ -15,6 +15,9 @@
 .presentation-heading p { margin: 0; color: #64756b; font-size: 13px; line-height: 1.8; }
 .presentation-heading > div > p:first-child { color: #8d7338; }
 .presentation-heading > button { flex-shrink: 0; border: 1px solid #074b36; border-radius: 4px; padding: 10px 20px; background: #074b36; color: white; }
+.presentation-preview-actions { display: flex; flex-wrap: wrap; flex-shrink: 0; gap: 8px; }
+.presentation-preview-actions button { border: 1px solid #b69a50; border-radius: 4px; padding: 10px 16px; background: #fffdf7; color: #074b36; font-size: 12px; }
+.presentation-preview-actions button:last-child { background: #074b36; border-color: #074b36; color: white; }
 .presentation-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(330px, 430px); align-items: start; gap: 28px; }
 .presentation-settings { min-width: 0; overflow: hidden; border: 1px solid #dddfd5; border-radius: 8px; background: #fffdf7; }
 .presentation-settings .scene-panel { padding: 26px; }

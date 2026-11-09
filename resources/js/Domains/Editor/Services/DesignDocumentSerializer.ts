@@ -1,4 +1,5 @@
 import type { CanvasData } from '../../../Types/CanvasData';
+import { CARD_MATERIAL_PRESETS, type CardMaterial } from '../../../Types/CardMaterial.ts';
 import type { DesignDocument, DesignSnapshot, SaveDesignPayload } from '../../../Types/DesignDocument';
 import type {
     AssetReference,
@@ -23,6 +24,7 @@ import type {
     SceneConfig,
 } from '../../../Types/SceneConfig';
 import { DESIGN_CONTRACT, EFFECT_REGISTRY, ENVELOPE_REGISTRY } from './designContract.ts';
+import { ENVELOPE_STYLES, SEAL_STYLES } from '../../../Types/SceneConfig.ts';
 
 const IDENTIFIER_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/;
 const ASSET_ID_PATTERN = /^[1-9][0-9]{0,19}$/;
@@ -184,6 +186,15 @@ function parseLayer(value: unknown, index: number): Layer {
     };
 }
 
+function parseMaterial(value: unknown): CardMaterial {
+    const material = record(value, 'canvas.material');
+    return {
+        preset: literal(material.preset, CARD_MATERIAL_PRESETS, 'canvas.material.preset'),
+        version: literal(material.version, [1] as const, 'canvas.material.version'),
+        intensity: numberValue(material.intensity, 'canvas.material.intensity', 0, 1),
+    };
+}
+
 function parseCanvas(value: unknown): CanvasData {
     const canvas = record(value, 'canvas');
     if (!Array.isArray(canvas.layers) || canvas.layers.length > DESIGN_CONTRACT.maximumLayers) {
@@ -200,6 +211,7 @@ function parseCanvas(value: unknown): CanvasData {
         width: literal(canvas.width, [DESIGN_CONTRACT.canvasWidth] as const, 'canvas.width'),
         height: literal(canvas.height, [DESIGN_CONTRACT.canvasHeight] as const, 'canvas.height'),
         background: parseColorValue(canvas.background, 'canvas.background'),
+        ...('material' in canvas ? { material: parseMaterial(canvas.material) } : {}),
         layers,
     };
 }
@@ -219,8 +231,8 @@ function parsePalette(value: unknown): Palette {
 function parseEnvelopeAppearance(value: unknown, path: string): EnvelopeAppearance {
     const appearance = record(value, path);
     return {
-        style: literal(appearance.style, ['classic', 'luxury', 'minimal', 'rounded', 'gatefold'] as const, `${path}.style`),
-        sealStyle: literal(appearance.sealStyle, ['wax', 'medallion', 'methaq'] as const, `${path}.sealStyle`),
+        style: literal(appearance.style, ENVELOPE_STYLES, `${path}.style`),
+        sealStyle: literal(appearance.sealStyle, SEAL_STYLES, `${path}.sealStyle`),
         sealX: integerValue(appearance.sealX, `${path}.sealX`, 20, 80),
         sealY: integerValue(appearance.sealY, `${path}.sealY`, 25, 75),
         sealSize: integerValue(appearance.sealSize, `${path}.sealSize`, 14, 26),

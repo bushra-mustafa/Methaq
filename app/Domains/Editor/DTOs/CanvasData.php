@@ -16,6 +16,7 @@ final readonly class CanvasData
         public int $height,
         public ColorValueData $background,
         public array $layers,
+        public ?CardMaterialData $material = null,
     ) {
         if ($schemaVersion !== DesignSchema::CANVAS_VERSION) {
             throw new InvalidArgumentException('Unsupported canvas schema version.');
@@ -48,6 +49,7 @@ final readonly class CanvasData
             'height' => $this->height,
             'background' => $this->background->toArray(),
             'layers' => array_map(static fn (LayerData $layer): array => $layer->toArray(), $this->layers),
+            ...($this->material === null ? [] : ['material' => $this->material->toArray()]),
         ];
     }
 }

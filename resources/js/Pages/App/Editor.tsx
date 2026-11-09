@@ -1,15 +1,20 @@
 import type { PresentationCard } from '../../Types/PresentationCard';
 import { Head, Link } from '@inertiajs/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { EditorControlPanel } from '../../Domains/Editor/Components/EditorControlPanel';
+import { EditorMobilePanel } from '../../Domains/Editor/Components/EditorMobilePanel';
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
 import { EditorInspector } from '../../Domains/Editor/Components/EditorInspector';
 import { EditorLayersPanel } from '../../Domains/Editor/Components/EditorLayersPanel';
 import { EditorLibraryPanel } from '../../Domains/Editor/Components/EditorLibraryPanel';
 import { EditorPalettePanel } from '../../Domains/Editor/Components/EditorPalettePanel';
+import { EditorMaterialPanel } from '../../Domains/Editor/Components/EditorMaterialPanel';
+import { updateCardBackground, updateCardMaterial } from '../../Domains/Editor/Services/cardMaterials';
+import { resolveColor } from '../../Domains/Editor/Services/editorDocument';
 import { EditorTextPanel } from '../../Domains/Editor/Components/EditorTextPanel';
 import { useCanvas } from '../../Domains/Editor/Hooks/useCanvas';
 import { useAutosave } from '../../Domains/Editor/Hooks/useAutosave';
-import { useHistory } from '../../Domains/Editor/Hooks/useHistory';
+import { useDesignHistory } from '../../Domains/Editor/Hooks/useDesignHistory';
 import { parseDesignDocument } from '../../Domains/Editor/Services/DesignDocumentSerializer';
 import { addAsset, addCollection, addText, layerWarnings, moveLayer, removeLayer, replaceImageAsset, updateLayer, updatePaletteColor } from '../../Domains/Editor/Services/editorDocument';
 import type { DesignDocument } from '../../Types/DesignDocument';
@@ -28,23 +33,23 @@ interface EditorProps {
     recommendedAssetIds: string[];
 }
 
-const panelLabels: Array<{ value: EditorPanel; label: string; mark: string }> = [
-    { value: 'elements', label: 'العناصر', mark: '◇' },
-    { value: 'text', label: 'النص', mark: 'ت' },
-    { value: 'layers', label: 'الطبقات', mark: '≡' },
-    { value: 'colors', label: 'الألوان', mark: '●' },
-];
-
 function acceptsShortcut(target: EventTarget | null): boolean {
     return !(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable));
 }
 
 function EditorWorkspace({ event, document: initialDocument, revision, assets, collections, recommendedAssetIds }: Omit<EditorProps, 'document'> & { document: DesignDocument }) {
-    const history = useHistory(initialDocument);
+    const history = useDesignHistory(initialDocument);
     const autosave = useAutosave(`/app/events/${event.id}/design`, history.value, revision);
     const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
     const [preview, setPreview] = useState<{ cardUrl: string; parts: PresentationCard | null; document: DesignDocument } | null>(null);
-    const [panel, setPanel] = useState<EditorPanel>('elements');
+    const [panel, setPanel] = useState<EditorPanel>('layers');
+    const [tab, setTab] = useState<'elements' | 'properties'>('elements');
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const closeMobile = useCallback(() => setMobileOpen(false), []);
+    const selectLayer = useCallback((id: string | null): void => {
+        setSelectedLayerId(id);
+        if (id) setTab('properties');
+    }, []);
     const selectedLayer = history.value.canvas.layers.find((layer) => layer.id === selectedLayerId) ?? null;
     const fonts = useMemo(() => assets.filter((asset) => asset.type === 'font'), [assets]);
     const visualAssets = useMemo(() => assets.filter((asset) => asset.type !== 'font' && asset.type !== 'audio'), [assets]);
@@ -60,7 +65,7 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
         document: history.value,
         assets,
         selectedLayerId,
-        onSelect: setSelectedLayerId,
+        onSelect: selectLayer,
         onLayerChange: (id, layer) => history.commit((document) => updateLayer(document, id, () => layer)),
     });
 
@@ -116,43 +121,82 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
         setSelectedLayerId(null);
     };
 
+    const goBack = (): boolean => !autosave.hasUnsavedChanges;
+    const exportPng = (): void => {
+        const url = canvasState.capturePreview();
+        if (!url) return;
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `methaq-card-${event.id}.png`;
+        link.click();
+    };
+    const addTextLayer = (font: EditorAsset): void => {
+        const next = addText(history.value, font);
+        history.commit(() => next);
+        const added = next.canvas.layers.at(-1);
+        if (added) selectLayer(added.id);
+    };
+    const controls = <EditorControlPanel tab={tab} tool={panel} hasSelection={Boolean(selectedLayer)} onTab={setTab} onTool={setPanel}>
+        {tab === 'elements' ? <>
+            {panel === 'layers' && <EditorLayersPanel layers={history.value.canvas.layers} assets={assets} selectedId={selectedLayerId} onSelect={selectLayer} onToggleVisibility={(id) => history.commit((document) => updateLayer(document, id, (layer) => ({ ...layer, visible: !layer.visible })))} />}
+            {panel === 'elements' && <EditorLibraryPanel assets={assets} collections={collections} recommendedAssetIds={recommendedAssetIds} placedAssetIds={placedAssetIds} onAddAsset={addVisualAsset} onAddCollection={addAssetCollection} />}
+            {panel === 'text' && <EditorTextPanel mode="add" fonts={fonts} selected={null} onAdd={addTextLayer} onChange={changeText} />}
+            {panel === 'colors' && <EditorPalettePanel palette={history.value.palette} onChange={(role: PaletteRole, color: HexColor) => history.commit((document) => updatePaletteColor(document, role, color))} />}
+            {panel === 'material' && <EditorMaterialPanel material={history.value.canvas.material} background={resolveColor(history.value.canvas.background, history.value)} onChange={(material) => history.commit((document) => updateCardMaterial(document, material))} onColorChange={(color) => history.commit((document) => updateCardBackground(document, color))} />}
+        </> : selectedLayer ? <div className="editor-details">
+            <div className="editor-selection-options">
+                <label><input type="checkbox" checked={selectedLayer.visible} onChange={() => changeSelected((layer) => ({ ...layer, visible: !layer.visible }))} />إظهار العنصر</label>
+                <label><input type="checkbox" checked={selectedLayer.locked} onChange={() => changeSelected((layer) => ({ ...layer, locked: !layer.locked }))} />قفل الحركة</label>
+            </div>
+            {selectedLayer.type === 'text' && <EditorTextPanel mode="edit" fonts={fonts} selected={selectedLayer} onAdd={addTextLayer} onChange={changeText} />}
+            <EditorInspector selected={selectedLayer} replacementAssets={visualAssets} onChange={changeSelected} onReplace={(asset) => { if (selectedLayerId) history.commit((document) => replaceImageAsset(document, selectedLayerId, asset)); }} />
+            <div className="editor-detail-order"><button type="button" onClick={() => history.commit((document) => moveLayer(document, selectedLayer.id, 'forward'))}>للأمام ↑</button><button type="button" onClick={() => history.commit((document) => moveLayer(document, selectedLayer.id, 'backward'))}>للخلف ↓</button></div>
+            <button className="editor-delete-selected" type="button" onClick={removeSelected}>حذف العنصر المحدد</button>
+        </div> : <p className="editor-empty">اختاري عنصراً من البطاقة أو من قائمة العناصر لتعديل تفاصيله.</p>}
+    </EditorControlPanel>;
+
     return <main className="editor-page" dir="rtl">
         <Head title={`تصميم ${event.title}`} />
         <header className="editor-topbar">
-            <div className="editor-brand"><Link href={`/app/events/${event.id}`} aria-label="الرجوع إلى المناسبة">→</Link><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><div><span>{event.categoryLabel}</span><strong>{event.title}</strong></div></div>
-            <div className="editor-history-actions"><Link className="editor-presentation-link" href={`/app/events/${event.id}/presentation`} onBefore={() => !autosave.hasUnsavedChanges} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>الظرف والفتح ←</Link><button type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={showPreview}>معاينة كضيف</button><span className={`is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} aria-live="polite">{autosave.message}</span><button type="button" disabled={!history.canUndo} onClick={history.undo}>تراجع</button><button type="button" disabled={!history.canRedo} onClick={history.redo}>إعادة</button></div>
+            <div className="editor-brand"><Link href={`/app/events/${event.id}`} onBefore={goBack} aria-label="الرجوع إلى المناسبة" title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل المغادرة' : 'الرجوع إلى المناسبة'} aria-disabled={autosave.hasUnsavedChanges}>→</Link><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><span>تصميم البطاقة</span></div>
+            <div className="editor-history-actions">
+                <span className={`editor-save-status is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} role="status">{autosave.message}</span>
+                <button type="button" disabled={!autosave.hasUnsavedChanges || autosave.status === 'saving' || autosave.status === 'conflict'} onClick={autosave.retry}>حفظ التعديلات</button>
+                <button className="editor-history-icon" type="button" disabled={!history.canUndo} onClick={history.undo} aria-label="تراجع" title="تراجع">↶</button>
+                <button className="editor-history-icon" type="button" disabled={!history.canRedo} onClick={history.redo} aria-label="إعادة" title="إعادة">↷</button>
+                <button className="editor-preview-button" type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={showPreview}>معاينة الدعوة</button>
+            </div>
         </header>
+        <section className="editor-heading">
+            <div><p>ميثاق · {event.categoryLabel}</p><h1>{event.title}</h1><span>بطاقتك، بتفاصيل تشبهك.</span></div>
+            <div className="editor-heading-tools">
+                <button className="editor-mobile-open" type="button" aria-haspopup="dialog" onClick={() => setMobileOpen(true)}>العناصر والتفاصيل ☷</button>
+                <button type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={exportPng}>تنزيل المعاينة PNG ↓</button>
+                <Link href={`/app/events/${event.id}/presentation`} onBefore={goBack} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>الظرف وتجربة الفتح ←</Link>
+            </div>
+        </section>
+        {history.error && <aside className="editor-notice" role="alert">{history.error}<button type="button" onClick={history.dismissError}>إغلاق التنبيه</button></aside>}
+        {['offline', 'error', 'conflict'].includes(autosave.status) && <aside className="editor-notice" role="alert">
+            <strong>{autosave.message}</strong>
+            {autosave.status === 'offline' && <p>التعديلات ما زالت داخل هذه الصفحة. أبقيها مفتوحة حتى يرجع الاتصال ويكتمل الحفظ.</p>}
+            {autosave.status === 'error' && <button type="button" onClick={autosave.retry}>إعادة محاولة الحفظ</button>}
+            {autosave.status === 'conflict' && <><p>توجد نسخة أحدث. اختاري النسخة التي تريدين الاحتفاظ بها قبل متابعة الحفظ.</p><button type="button" onClick={takeServerVersion}>استخدام نسخة الخادم</button><button type="button" onClick={autosave.keepLocalVersion}>الاحتفاظ بتعديلاتي</button></>}
+        </aside>}
         <div className="editor-layout">
-            <nav className="editor-panel-nav" aria-label="أدوات التصميم">{panelLabels.map((item) => <button type="button" className={panel === item.value ? 'is-active' : ''} key={item.value} onClick={() => setPanel(item.value)}><span aria-hidden="true">{item.mark}</span>{item.label}</button>)}</nav>
-            <aside className="editor-sidebar">
-                {panel === 'elements' && <EditorLibraryPanel assets={assets} collections={collections} recommendedAssetIds={recommendedAssetIds} placedAssetIds={placedAssetIds} onAddAsset={addVisualAsset} onAddCollection={addAssetCollection} />}
-                {panel === 'text' && <EditorTextPanel fonts={fonts} selected={selectedLayer?.type === 'text' ? selectedLayer : null} onAdd={(font) => history.commit((document) => addText(document, font))} onChange={changeText} />}
-                {panel === 'layers' && <EditorLayersPanel layers={history.value.canvas.layers} assets={assets} selectedId={selectedLayerId} onSelect={setSelectedLayerId} onMove={(id, direction) => history.commit((document) => moveLayer(document, id, direction))} onToggleLock={(id) => history.commit((document) => updateLayer(document, id, (layer) => ({ ...layer, locked: !layer.locked })))} onToggleVisibility={(id) => history.commit((document) => updateLayer(document, id, (layer) => ({ ...layer, visible: !layer.visible })))} onRemove={(id) => history.commit((document) => removeLayer(document, id))} />}
-                {panel === 'colors' && <EditorPalettePanel palette={history.value.palette} onChange={(role: PaletteRole, color: HexColor) => history.commit((document) => updatePaletteColor(document, role, color))} />}
-            </aside>
             <section className="editor-stage" aria-label="معاينة التصميم">
-                <div className="editor-stage-heading"><div><small>بطاقتك</small><strong>معاينة حية · 1080 × 1920</strong></div><p>حددي العنصر ثم اسحبيه داخل البطاقة.</p></div>
                 <div className="editor-canvas-shell">
                     <div className="editor-canvas-host" ref={canvasState.host} />
-                    <span className="editor-safe-area" aria-hidden="true" />
                     {canvasState.guides.vertical !== null && <span className="editor-guide is-vertical" style={{ left: `${canvasState.guides.vertical / history.value.canvas.width * 100}%` }} aria-hidden="true" />}
                     {canvasState.guides.horizontal !== null && <span className="editor-guide is-horizontal" style={{ top: `${canvasState.guides.horizontal / history.value.canvas.height * 100}%` }} aria-hidden="true" />}
-                    {!canvasState.ready && !canvasState.error && <div className="editor-canvas-state" role="status"><span /><p>نجهّز البطاقة…</p></div>}
+                    {!canvasState.ready && !canvasState.error && <div className="editor-canvas-state" role="status"><span /><p>نجهّز تفاصيل بطاقتك…</p></div>}
                 </div>
                 {canvasState.error && <p className="editor-error" role="alert">{canvasState.error}</p>}
                 {warnings.length > 0 && <ul className="editor-warnings">{warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>}
+                <p className="editor-caption">اختاري عنصراً واسحبيه، أو عدّلي تفاصيله من القائمة.</p>
             </section>
-            {(selectedLayer || autosave.status === 'error' || autosave.status === 'offline' || autosave.status === 'conflict') && <aside className="editor-properties">
-                {selectedLayer && <><EditorInspector selected={selectedLayer} replacementAssets={visualAssets} onChange={changeSelected} onReplace={(asset) => { if (selectedLayerId) history.commit((document) => replaceImageAsset(document, selectedLayerId, asset)); }} /><button className="editor-delete-selected" type="button" onClick={removeSelected}>حذف العنصر المحدد</button></>}
-                {!selectedLayer && <aside className={`editor-save-note is-${autosave.status}`} aria-live="polite">
-                    <span>الحفظ التلقائي · النسخة {autosave.revision}</span>
-                    <strong>{autosave.message}</strong>
-                    {autosave.status === 'offline' && <p>واصلي العمل، وسنحاول الحفظ تلقائياً عند رجوع الاتصال.</p>}
-                    {autosave.status === 'error' && <><p>بقيت تعديلاتك داخل الصفحة ولم نفقدها.</p><button type="button" onClick={autosave.retry}>إعادة المحاولة</button></>}
-                    {autosave.status === 'conflict' && <><p>اختاري نسخة الخادم، أو احفظي تعديلات هذه الصفحة فوقها بشكل صريح.</p><div className="editor-conflict-actions"><button type="button" onClick={takeServerVersion}>استخدام نسخة الخادم</button><button type="button" onClick={autosave.keepLocalVersion}>الاحتفاظ بتعديلاتي</button></div></>}
-                </aside>}
-            </aside>}
+            <aside className="editor-sidebar" aria-label="لوحة تحرير البطاقة">{!mobileOpen && controls}</aside>
         </div>
+        <EditorMobilePanel open={mobileOpen} onClose={closeMobile}>{controls}</EditorMobilePanel>
         {preview && <InvitationPreview assets={assets} cardParts={preview.parts} scene={preview.document.scene} palette={preview.document.palette} cardUrl={preview.cardUrl} title={event.title} onClose={() => setPreview(null)} />}
     </main>;
 }

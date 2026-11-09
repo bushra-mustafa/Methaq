@@ -1,5 +1,6 @@
 import type { EditorAsset } from '../../../Types/Editor';
 import type { ImageLayer, Layer } from '../../../Types/Layer';
+import { DESIGN_CONTRACT } from '../Services/designContract';
 
 interface EditorInspectorProps {
     selected: Layer | null;
@@ -15,7 +16,11 @@ function numeric(value: string, fallback: number): number {
 
 export function EditorInspector({ selected, replacementAssets, onChange, onReplace }: EditorInspectorProps) {
     if (!selected) return null;
-    const updateFrame = (field: 'x' | 'y' | 'rotation' | 'opacity', value: string): void => onChange((layer) => ({ ...layer, frame: { ...layer.frame, [field]: field === 'opacity' ? Math.min(1, Math.max(0, numeric(value, layer.frame.opacity))) : numeric(value, layer.frame[field]) } }));
+    const updateFrame = (field: 'x' | 'y' | 'rotation' | 'opacity', value: string): void => {
+        const maximum = field === 'opacity' ? 1 : field === 'rotation' ? 360 : DESIGN_CONTRACT.maximumCanvasDimension;
+        const minimum = field === 'opacity' ? 0 : -maximum;
+        onChange((layer) => ({ ...layer, frame: { ...layer.frame, [field]: Math.min(maximum, Math.max(minimum, numeric(value, layer.frame[field]))) } }));
+    };
 
     return <aside className="editor-inspector" aria-label="خصائص العنصر المحدد">
         <div className="editor-inspector-heading"><strong>خصائص العنصر</strong><span>{selected.type === 'text' ? 'نص' : selected.type === 'image' ? 'عنصر' : 'شكل'}</span></div>

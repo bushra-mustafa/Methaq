@@ -8,6 +8,10 @@ use InvalidArgumentException;
 
 final readonly class EnvelopeAppearanceData
 {
+    public const STYLES = ['classic', 'luxury', 'minimal', 'rounded', 'gatefold', 'portrait', 'wallet', 'scalloped'];
+
+    public const SEAL_STYLES = ['wax', 'wax-oval', 'wax-heart', 'wax-square', 'wax-flower', 'medallion', 'medallion-octagon', 'embossed', 'methaq', 'none'];
+
     public function __construct(
         public string $style,
         public string $sealStyle,
@@ -15,8 +19,8 @@ final readonly class EnvelopeAppearanceData
         public int $sealY,
         public int $sealSize,
     ) {
-        if (! in_array($style, ['classic', 'luxury', 'minimal', 'rounded', 'gatefold'], true)
-            || ! in_array($sealStyle, ['wax', 'medallion', 'methaq'], true)
+        if (! in_array($style, self::STYLES, true)
+            || ! in_array($sealStyle, self::SEAL_STYLES, true)
             || $sealX < 20 || $sealX > 80
             || $sealY < 25 || $sealY > 75
             || $sealSize < 14 || $sealSize > 26) {

@@ -9,6 +9,9 @@ const styles: Array<{ id: EnvelopeAppearance['style']; name: string; detail: str
     { id: 'minimal', name: 'بسيط', detail: 'طية قصيرة بخطوط هادئة' },
     { id: 'rounded', name: 'طية مقوّسة', detail: 'غطاء مستدير وناعم' },
     { id: 'gatefold', name: 'بابين', detail: 'يفتح من المنتصف للجانبين' },
+    { id: 'portrait', name: 'ظرف طولي', detail: 'قَصّة طويلة وغطاء علوي' },
+    { id: 'wallet', name: 'محفظة جانبية', detail: 'غطاء يفتح من الجانب' },
+    { id: 'scalloped', name: 'حافة متموّجة', detail: 'طية مزخرفة بانحناءات ناعمة' },
 ];
 
 interface Props { cardUrl?: string; active: boolean; envelope: EnvelopeConfig; palette: Palette; onChange: (style: EnvelopeAppearance['style']) => void }

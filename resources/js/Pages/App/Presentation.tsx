@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { InvitationPlayer } from '../../Domains/Editor/Components/InvitationPlayer';
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
+import { EnvelopeMotionPreview } from '../../Domains/Editor/Components/EnvelopeMotionPreview';
 import { ScenePanel } from '../../Domains/Editor/Components/ScenePanel';
 import { useAutosave } from '../../Domains/Editor/Hooks/useAutosave';
 import { useHistory } from '../../Domains/Editor/Hooks/useHistory';
@@ -20,6 +21,7 @@ function PresentationWorkspace({ event, document, revision, assets }: Omit<Props
     const autosave = useAutosave(`/app/events/${event.id}/design`, history.value, revision);
     const card = usePresentationCard(history.value, assets);
     const [fullPreview, setFullPreview] = useState(false);
+    const [motionPreview, setMotionPreview] = useState(false);
     const sceneKey = JSON.stringify({ scene: history.value.scene, palette: history.value.palette });
     const useServerVersion = (): void => {
         const snapshot = autosave.takeServerVersion();
@@ -34,14 +36,14 @@ function PresentationWorkspace({ event, document, revision, assets }: Omit<Props
             <div className="presentation-topbar-actions"><span className={`is-${autosave.status}`} role="status">{autosave.message}</span><button type="button" onClick={history.undo} disabled={!history.canUndo}>تراجع</button><button type="button" onClick={history.redo} disabled={!history.canRedo}>إعادة</button></div>
         </header>
         <div className="presentation-content">
-            <header className="presentation-heading"><div><p>{event.title}</p><h1>قبل أن تبدأ الحكاية</h1><p>اختاري الظرف، ضعي ختمك، وجرّبي اللحظة الأولى لفتح الدعوة.</p></div><button type="button" disabled={!canPreview} onClick={() => setFullPreview(true)}>معاينة كاملة ↗</button></header>
+            <header className="presentation-heading"><div><p>{event.title}</p><h1>قبل أن تبدأ الحكاية</h1><p>اختاري الظرف، ضعي ختمك، وجرّبي اللحظة الأولى لفتح الدعوة.</p></div><div className="presentation-preview-actions"><button type="button" disabled={!canPreview} onClick={() => setMotionPreview(true)}>تجربة الفتح الجديدة</button><button type="button" disabled={!canPreview} onClick={() => setFullPreview(true)}>معاينة كاملة ↗</button></div></header>
             <div className="presentation-layout">
                 <div className="presentation-settings">
                     <ScenePanel assets={assets} cardUrl={card.cardUrl ?? undefined} scene={history.value.scene} palette={history.value.palette} onChange={(scene) => history.commit((current) => ({ ...current, scene }))} onPreview={() => setFullPreview(true)} previewReady={canPreview} />
                 </div>
                 <aside className="presentation-live-preview" aria-label="معاينة مباشرة للظرف">
                     <div className="presentation-preview-heading"><strong>هكذا تبدأ دعوتك</strong><span>تتحدث المعاينة مع اختياراتك</span></div>
-                    {canPreview && card.cardUrl ? <InvitationPlayer audioAllowed={!fullPreview} assets={assets} cardParts={card.parts} manageFocus={false} key={sceneKey} scene={history.value.scene} palette={history.value.palette} cardUrl={card.cardUrl} title={event.title} viewport="phone" /> : <div className="presentation-loading" role={card.error ? 'alert' : 'status'}>{card.error || 'نجهّز معاينة بطاقتك…'}</div>}
+                    {canPreview && card.cardUrl ? <InvitationPlayer audioAllowed={!fullPreview && !motionPreview} assets={assets} cardParts={card.parts} manageFocus={false} key={sceneKey} scene={history.value.scene} palette={history.value.palette} cardUrl={card.cardUrl} title={event.title} viewport="phone" /> : <div className="presentation-loading" role={card.error ? 'alert' : 'status'}>{card.error || 'نجهّز معاينة بطاقتك…'}</div>}
                 </aside>
             </div>
             <div className={`presentation-save-status is-${autosave.status}`} aria-live="polite">
@@ -54,6 +56,7 @@ function PresentationWorkspace({ event, document, revision, assets }: Omit<Props
         </div>
         <div className="presentation-render-source" ref={card.host} aria-hidden="true" inert />
         {fullPreview && canPreview && card.cardUrl && <InvitationPreview assets={assets} cardParts={card.parts} scene={history.value.scene} palette={history.value.palette} cardUrl={card.cardUrl} title={event.title} onClose={() => setFullPreview(false)} />}
+        {motionPreview && canPreview && card.cardUrl && <EnvelopeMotionPreview cardUrl={card.cardUrl} title={event.title} names={history.value.scene.cover?.names.trim() || event.title} dateLabel={history.value.scene.cover?.dateLabel ?? ''} language={history.value.scene.cover?.language ?? 'ar'} motionPolicy={history.value.scene.motionPolicy} onClose={() => setMotionPreview(false)} />}
     </main>;
 }
 

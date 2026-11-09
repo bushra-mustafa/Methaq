@@ -603,6 +603,63 @@
     font-size: 13px;
 }
 
+.event-presentation-callout {
+    width: 100%;
+    margin-top: 28px;
+    border: 1px solid rgb(182 154 80 / 35%);
+    padding: 22px;
+    background:
+        radial-gradient(circle at 8% 88%, rgb(182 154 80 / 18%), transparent 38%),
+        #fbf7eb;
+}
+
+.event-presentation-callout > div > span {
+    color: #987d38;
+    font: 600 11px/1.5 var(--methaq-font-en);
+    letter-spacing: .04em;
+}
+
+.event-presentation-callout h2 {
+    margin: 3px 0 5px;
+    color: var(--methaq-green);
+    font-size: 21px;
+}
+
+.event-presentation-callout p {
+    margin: 0;
+    color: #60716a;
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+.event-presentation-callout ul {
+    display: grid;
+    gap: 7px;
+    margin: 17px 0;
+    padding: 0;
+    color: #35574d;
+    font-size: 12px;
+    list-style: none;
+}
+
+.event-presentation-callout li::before {
+    content: '✦';
+    margin-left: 8px;
+    color: var(--methaq-gold);
+}
+
+.event-presentation-callout > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding-inline: 15px;
+    background: var(--methaq-green);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
 @media (max-width: 1000px) {
     .dashboard-events-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));

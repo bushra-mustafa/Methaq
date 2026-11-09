@@ -1,0 +1,30 @@
+.material-current { display: flex; align-items: center; gap: 22px; min-height: 145px; margin-bottom: 22px; padding: 20px; background: #edece5; border-radius: 10px; }
+.material-paper { position: relative; display: block; flex: 0 0 76px; height: 108px; overflow: hidden; transform: rotate(-9deg); border: 1px solid rgb(40 32 19 / 12%); box-shadow: 2px 3px 0 #c7c2b5, 4px 5px 0 #ddd8cd, 8px 12px 14px rgb(43 39 30 / 15%); }
+.material-current > div { display: grid; gap: 7px; }
+.material-current strong { font-size: 15px; }
+.material-current > div > span { color: #66746d; font-size: 11px; }
+.material-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.material-options > button { min-width: 0; padding: 6px 6px 10px; border: 1px solid #e1e6de; border-radius: 9px; background: #fffefa; color: var(--methaq-green); text-align: right; font: inherit; cursor: pointer; }
+.material-options > button[aria-pressed='true'] { border-color: #0d5b43; box-shadow: 0 0 0 1px #0d5b43; }
+.material-options > button:hover { border-color: #9b834e; }
+.material-options button:focus-visible, .material-colors button:focus-visible, .material-panel input:focus-visible { outline: 3px solid #b69a50; outline-offset: 3px; }
+.material-sample { position: relative; display: grid; height: 102px; margin-bottom: 9px; overflow: hidden; place-items: center; border-radius: 5px; }
+.material-paper img, .material-sample img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.material-sample > span { z-index: 1; color: #59432e; font: 34px/1 var(--methaq-font-display, 'Amiri', serif); }
+.material-sample > b { position: absolute; top: 6px; right: 6px; display: grid; width: 20px; height: 20px; place-items: center; border-radius: 50%; background: #0d5b43; color: #fff; font: 11px/1 sans-serif; }
+.material-options strong, .material-options small { display: block; padding-inline: 3px; }
+.material-options strong { font-size: 12px; }
+.material-options small { margin-top: 5px; color: #727b71; font-size: 9px; line-height: 1.7; }
+.material-hint { margin: 15px 0; color: #69776e; font-size: 11px; line-height: 1.9; }
+.material-intensity { display: grid; gap: 10px; margin-block: 24px; font-size: 12px; }
+.material-intensity > span { display: flex; justify-content: space-between; }
+.material-intensity output { color: #69776e; }
+.material-intensity input { width: 100%; margin: 0; accent-color: #0d5b43; }
+.material-colors { margin: 20px 0; padding: 0; border: 0; }
+.material-colors legend { margin-bottom: 12px; font-size: 12px; font-weight: 650; }
+.material-colors > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.material-colors button { display: grid; justify-items: center; gap: 7px; padding: 9px 3px; border: 1px solid #e1e6de; border-radius: 8px; background: transparent; color: #415d4d; font: inherit; font-size: 9px; cursor: pointer; }
+.material-colors button[aria-pressed='true'] { border-color: #0d5b43; background: #eef3ee; }
+.material-colors button > span { width: 30px; height: 30px; border: 1px solid rgb(40 32 19 / 14%); border-radius: 50%; }
+.material-custom-color { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; }
+.material-custom-color input { width: 46px; height: 36px; padding: 2px; border: 1px solid #cbd2cc; border-radius: 6px; background: #fff; cursor: pointer; }

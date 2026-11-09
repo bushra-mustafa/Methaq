@@ -10,11 +10,14 @@ export function capturePresentationCard(canvas: Canvas, isText: (object: FabricO
         else groups.push({ objects: [object], text });
     }
     const background = canvas.backgroundColor;
+    const texture = canvas.backgroundImage;
     const width = canvas.width;
     const height = canvas.height;
     try {
         canvas.backgroundColor = '';
-        return { width, height, background: typeof background === 'string' ? background : 'transparent', parts: groups.flatMap((group) => {
+        const materialParts = texture ? [{ url: canvas.toDataURL({ format: 'png', multiplier: 1, enableRetinaScaling: false, filter: () => false }), x: 0, y: 0, width, height, text: false }] : [];
+        canvas.backgroundImage = undefined;
+        return { width, height, background: typeof background === 'string' ? background : 'transparent', parts: [...materialParts, ...groups.flatMap((group) => {
             const bounds = group.objects.map((object) => object.getBoundingRect());
             const left = Math.max(0, Math.floor(Math.min(...bounds.map((rect) => rect.left))) - 2);
             const top = Math.max(0, Math.floor(Math.min(...bounds.map((rect) => rect.top))) - 2);
@@ -22,8 +25,9 @@ export function capturePresentationCard(canvas: Canvas, isText: (object: FabricO
             const bottom = Math.min(height, Math.ceil(Math.max(...bounds.map((rect) => rect.top + rect.height))) + 2);
             if (right <= left || bottom <= top) return [];
             return [{ url: canvas.toDataURL({ format: 'png', multiplier: 1, enableRetinaScaling: false, left, top, width: right - left, height: bottom - top, filter: (object) => group.objects.some((member) => member === object) }), x: left, y: top, width: right - left, height: bottom - top, text: group.text }];
-        }) };
+        })] };
     } finally {
         canvas.backgroundColor = background;
+        canvas.backgroundImage = texture;
     }
 }

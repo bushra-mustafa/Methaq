@@ -60,10 +60,17 @@ final class SaveEventDesignTest extends TestCase
         $this->assertEquals($appearance, $event->design()->sole()->scene_json['opening']['envelope']['appearance']);
 
         $revision = 2;
-        foreach (['rounded', 'gatefold'] as $style) {
+        foreach (['rounded', 'gatefold', 'portrait', 'wallet', 'scalloped'] as $style) {
             $document['scene']['opening']['envelope']['appearance'] = array_replace($appearance, ['style' => $style]);
             $this->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => $revision])
                 ->assertOk()->assertJsonPath('document.scene.opening.envelope.appearance.style', $style);
+            $revision++;
+        }
+
+        foreach (['wax-oval', 'wax-heart', 'wax-square', 'wax-flower', 'medallion-octagon', 'embossed', 'none'] as $sealStyle) {
+            $document['scene']['opening']['envelope']['appearance'] = array_replace($appearance, ['sealStyle' => $sealStyle]);
+            $this->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => $revision])
+                ->assertOk()->assertJsonPath('document.scene.opening.envelope.appearance.sealStyle', $sealStyle);
             $revision++;
         }
 
@@ -113,6 +120,20 @@ final class SaveEventDesignTest extends TestCase
         $invalid['scene']['backdrop'] = ['preset' => 'external-image'];
         $this->patchJson($this->endpoint($event), ['document' => $invalid, 'expectedRevision' => 2])->assertUnprocessable();
         $this->assertSame(2, $event->design()->sole()->revision);
+    }
+
+    public function test_card_material_is_saved_and_invalid_options_cannot_replace_it(): void
+    {
+        [$owner, $event, $document] = $this->eventFixture();
+        $document['canvas']['material'] = ['preset' => 'wood', 'version' => 1, 'intensity' => 0.65];
+        $this->actingAs($owner)->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => 1])
+            ->assertOk()->assertJsonPath('document.canvas.material.preset', 'wood');
+        $this->assertEquals($document['canvas']['material'], $event->design()->sole()->design_json['material']);
+
+        $document['canvas']['material']['preset'] = 'external';
+        $this->patchJson($this->endpoint($event), ['document' => $document, 'expectedRevision' => 2])->assertUnprocessable();
+        $this->assertSame(2, $event->design()->sole()->revision);
+        $this->assertSame('wood', $event->design()->sole()->design_json['material']['preset']);
     }
 
     public function test_stale_revision_returns_current_snapshot_without_overwriting_it(): void
