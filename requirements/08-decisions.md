@@ -96,3 +96,7 @@
 ## فصل واجهة الإدارة — 2026-11-09
 
 طلب المستخدم فصل واجهة الإدارة تنظيمياً عن `App`. نُقلت Controllers إلى `Http/Controllers/Admin` وصفحات Inertia إلى `Pages/Admin` مع إبقاء URLs وأسماء المسارات وMiddleware والصلاحيات دون تغيير.
+
+## تسمية واجهة الضيف — 2026-11-09
+
+طلب المستخدم استبدال تسمية `Subdomains` بـ`Guest` لأنها تعبّر عن مستخدم الواجهة. نُقلت Controllers إلى `Http/Controllers/Guest` وصفحة Inertia إلى `Pages/Guest` فقط؛ إعداد النطاقات ومساراتها وMiddleware الخاص بها لم تتغير.

@@ -199,7 +199,7 @@ resources/js/
   Domains/Payments/
   Domains/RSVP/
   Pages/App/{Dashboard,CreateEvent,Editor,Guests}.tsx
-  Pages/Subdomains/{Show,Preparing,Expired}.tsx
+  Pages/Guest/{Show,Preparing,Expired}.tsx
   Types/{DesignDocument,CanvasData,Layer,SceneConfig,EventDTO,PaymentDTO}.ts
 ```
 

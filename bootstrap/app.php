@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Domains\Editor\Exceptions\DesignRevisionConflict;
 use App\Domains\Editor\Exceptions\InvalidDesignAssetReference;
+use App\Domains\Editor\Exceptions\ProposalRevisionConflict;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireAdminWithTwoFactor;
@@ -20,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $designPayload = static fn (Request $request): bool => $request->isMethod('PATCH') && $request->is('app/events/*/design');
+        $designPayload = static fn (Request $request): bool => $request->isMethod('PATCH') && ($request->is('app/events/*/design') || $request->is('app/proposals/ivory-wedding'));
         $middleware->convertEmptyStringsToNull(except: [$designPayload]);
         $middleware->trimStrings(except: [$designPayload]);
         $middleware->web(append: [HandleInertiaRequests::class]);
@@ -30,6 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->render(function (ProposalRevisionConflict $exception, Request $request): ?JsonResponse {
+            return $request->expectsJson() ? response()->json(['message' => $exception->getMessage(), 'snapshot' => $exception->snapshot], 409) : null;
+        });
         $exceptions->render(function (DesignRevisionConflict $exception, Request $request): ?JsonResponse {
             if (! $request->expectsJson()) {
                 return null;

@@ -16,7 +16,7 @@ app/
     Controllers/
       Web/
       App/
-      Subdomains/
+      Guest/
       Webhooks/
     Requests/{Events,Editor,Payments,RSVP}/
     Middleware/
@@ -35,7 +35,7 @@ resources/js/
   Pages/
     Web/Home.tsx
     App/{Dashboard,CreateEvent,Editor,Guests}.tsx
-    Subdomains/{Show,Expired,Preparing}.tsx
+    Guest/{Show,Expired,Preparing}.tsx
   Types/{CanvasData,EventDTO,Layer,PaymentDTO}.ts
 routes/{web,subdomains,console}.php
 ```

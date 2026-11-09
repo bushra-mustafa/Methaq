@@ -15,10 +15,20 @@ use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\SaveEventDesignController;
 use App\Http\Controllers\App\ShowEventController;
 use App\Http\Controllers\App\StoreEventController;
+use App\Http\Controllers\Guest\ShowInvitationController;
+use App\Http\Controllers\Guest\StoreRsvpController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\TemplateLibraryController;
 use App\Http\Middleware\LocalDevelopmentOnly;
+use App\Http\Middleware\ResolvePublishedEvent;
 use Illuminate\Support\Facades\Route;
+
+Route::domain('{subdomain}.'.config('methaq.invitation_domain'))
+    ->middleware(ResolvePublishedEvent::class)
+    ->group(function (): void {
+        Route::get('/', ShowInvitationController::class)->name('invitation.show');
+        Route::post('/rsvp', StoreRsvpController::class)->name('invitation.rsvp.store');
+    });
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/templates', TemplateLibraryController::class)->name('templates.index');
