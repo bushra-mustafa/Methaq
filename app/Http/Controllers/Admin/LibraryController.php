@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\App\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Domains\Editor\Actions\ListAdminLibraryAction;
 use App\Http\Controllers\Controller;
@@ -13,6 +13,6 @@ final class LibraryController extends Controller
 {
     public function __invoke(ListAdminLibraryAction $listLibrary): Response
     {
-        return Inertia::render('App/Admin/Library/Index', $listLibrary->execute());
+        return Inertia::render('Admin/Library/Index', $listLibrary->execute());
     }
 }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\App\Admin\AdminDashboardController;
-use App\Http\Controllers\App\Admin\LibraryController;
-use App\Http\Controllers\App\Admin\UpdateLibraryItemStatusController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\LibraryController;
+use App\Http\Controllers\Admin\UpdateLibraryItemStatusController;
 use App\Http\Controllers\App\CreateEventController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\DesignLabController;

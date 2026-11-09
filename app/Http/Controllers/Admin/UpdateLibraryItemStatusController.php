@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\App\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Domains\Editor\Actions\UpdateLibraryItemStatusAction;
 use App\Domains\Users\Models\User;

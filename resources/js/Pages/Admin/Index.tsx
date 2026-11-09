@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { AppShell } from '../../../Domains/Users/Components/AppShell';
+import { AppShell } from '../../Domains/Users/Components/AppShell';
 
 export default function AdminIndex() {
     return <AppShell eyebrow="إدارة ميثاق" title="لوحة التشغيل">

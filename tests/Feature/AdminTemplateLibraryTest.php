@@ -44,7 +44,7 @@ final class AdminTemplateLibraryTest extends TestCase
         $this->actingAs($admin)->withoutVite()->get('/app/admin/library')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->component('App/Admin/Library/Index', false)
+                ->component('Admin/Library/Index', false)
                 ->has('templates', 4)
                 ->has('assets', 17)
                 ->has('collections', 4));

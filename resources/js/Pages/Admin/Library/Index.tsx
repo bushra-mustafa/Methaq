@@ -1,8 +1,8 @@
 import { Head } from '@inertiajs/react';
-import { AdminLibraryStatusForm } from '../../../../Domains/Editor/Components/AdminLibraryStatusForm';
-import { AppShell } from '../../../../Domains/Users/Components/AppShell';
-import type { LibraryAsset, LibraryCollection, LibraryTemplate } from '../../../../Types/Library';
-import '../../../../../css/admin-library.css';
+import { AdminLibraryStatusForm } from '../../../Domains/Editor/Components/AdminLibraryStatusForm';
+import { AppShell } from '../../../Domains/Users/Components/AppShell';
+import type { LibraryAsset, LibraryCollection, LibraryTemplate } from '../../../Types/Library';
+import '../../../../css/admin-library.css';
 
 interface AdminLibraryProps {
     templates: LibraryTemplate[];
