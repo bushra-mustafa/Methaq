@@ -26,3 +26,7 @@ Follow the execution checklist and update completed boxes only with implementati
 Reference projects outside Methaq are read-only design references; do not alter them or copy their personal invitation details as production defaults. Check asset licensing before reuse. Keep credentials and generated dependencies out of version control.
 
 Payment integration is the final implementation phase (14), followed by final verification/release (15). Use isolated test fixtures beforehand, never a production payment bypass. Fixed customer/admin roles and guest access follow document 11. Admin is not a blanket owner-policy override. Include limited administration and audit_logs (13 business tables total).
+
+## Payment webhook invariants
+
+When payment integration begins, webhook controllers must remain thin: receive the provider request, invoke a dedicated Action, and return only the required acknowledgment. The Action is responsible for verifying the provider signature, validating the provider event identity, and enforcing idempotency before any state change. `Order` and `PaymentWebhook` records may be created or updated only through Actions; controllers, jobs, and gateways must not write them directly. A repeated webhook must return safely without duplicating payment, publishing, or rendering work.
