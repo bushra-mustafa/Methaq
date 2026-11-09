@@ -1,0 +1,23 @@
+{
+  "createdAt": "2026-09-13",
+  "project": "Methaq",
+  "scope": "Independent ivory wedding proposal",
+  "provenance": "Generated for this proposal with imagegen. The user reference is used for visual direction, not included or cropped into these assets.",
+  "assets": [
+    {
+      "file": "architecture.png",
+      "prompt": "Create one standalone background asset for an ivory classic wedding invitation. Landscape 3:2 architectural photograph-like relief: front view looking slightly upward at a grand symmetrical classical plaster arch, layered concentric curved stone mouldings, finely carved botanical acanthus leaves and roses in ivory limestone. Fill the whole image with architectural details, soft diffuse daylight, matte pale ivory #F8F5EE and creamy #EEE8DD with gentle beige #D8CFC0 relief shadows. No envelope, no card, no lettering, no people, no logos, no watermark, no glitter, no gold. Elegant realistic high resolution plaster texture, restrained shadows, symmetry, neutral light. The lower edge should be lighter and less busy for overlapping a separate envelope.",
+      "transparent": false
+    },
+    {
+      "file": "swans.png",
+      "prompt": "Create a single isolated ornamental pair of swans for the bottom of a luxury ivory wedding invitation. Transparent alpha background, no ground plane or backdrop. Two elegant swans face each other, curved long necks form a heart-shaped negative space, lifted wings spread outwards with detailed layered embossed feathers. Pearlescent ivory but MATTE plaster/paper bas-relief, gentle beige shadows #D8CFC0, ivory #F8F5EE highlights, soft studio light. Symmetrical cohesive pair, delicate small beaks, no dark colors, no text, no logo, no glitter, no glittery metallic shine. Landscape asset centered with clean complete silhouette and generous transparent margin. Realistic dimensional carved paper relief, not a flat line icon. Asset only, not a whole invitation.",
+      "transparent": true
+    },
+    {
+      "file": "ornament.png",
+      "prompt": "Create a transparent alpha overlay asset for the top edge and upper corners of a long ivory wedding invitation paper. Wide landscape aspect 3:2. An elegant symmetrical botanical embossed paper/plaster decoration: curling acanthus stems, fine raised leaves and small roses across the TOP edge and descending along the upper left and right corners. The large central and lower area must be truly transparent and empty for text. Matte ivory relief #F8F5EE and light creamy #EEE8DD highlights with very subtle beige #D8CFC0 self-shadows. Thin detailed airy ornament, classical baroque botanical style, restrained and tasteful. No solid background, no paper sheet, no arch architecture, no envelope, no swans, no text, no logos, no gold, no glitter. Deliver only one isolated transparent decoration overlay, complete uncropped outer leaves.",
+      "transparent": true
+    }
+  ]
+}

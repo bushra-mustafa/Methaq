@@ -1,0 +1,158 @@
+[
+  {
+    "id": "architecture",
+    "kind": "image",
+    "label": "القوس المعماري",
+    "parent": null
+  },
+  {
+    "id": "paper",
+    "kind": "shape",
+    "label": "ورقة الدعوة",
+    "parent": null
+  },
+  {
+    "id": "ornament",
+    "kind": "image",
+    "label": "زخرفة الورقة",
+    "parent": null
+  },
+  {
+    "id": "envelope",
+    "kind": "group",
+    "label": "الظرف",
+    "parent": null
+  },
+  {
+    "id": "envelope-shadow",
+    "kind": "shape",
+    "label": "ظل الظرف",
+    "parent": "envelope"
+  },
+  {
+    "id": "envelope-body",
+    "kind": "shape",
+    "label": "جسم الظرف",
+    "parent": "envelope"
+  },
+  {
+    "id": "envelope-flap",
+    "kind": "shape",
+    "label": "الغطاء المتموّج",
+    "parent": "envelope"
+  },
+  {
+    "id": "envelope-badge",
+    "kind": "image",
+    "label": "شارة البجعتين",
+    "parent": "envelope"
+  },
+  {
+    "id": "title",
+    "kind": "text",
+    "label": "عنوان الدعوة",
+    "parent": null
+  },
+  {
+    "id": "names",
+    "kind": "text",
+    "label": "أسماء أصحاب المناسبة",
+    "parent": null
+  },
+  {
+    "id": "message",
+    "kind": "group",
+    "label": "رسالة الدعوة",
+    "parent": null
+  },
+  {
+    "id": "message-ar",
+    "kind": "text",
+    "label": "الرسالة العربية",
+    "parent": "message"
+  },
+  {
+    "id": "message-en",
+    "kind": "text",
+    "label": "الرسالة الإنجليزية",
+    "parent": "message"
+  },
+  {
+    "id": "venue",
+    "kind": "group",
+    "label": "بيانات المكان",
+    "parent": null
+  },
+  {
+    "id": "venue-icon",
+    "kind": "image",
+    "label": "أيقونة الثريّا",
+    "parent": "venue"
+  },
+  {
+    "id": "venue-name",
+    "kind": "text",
+    "label": "اسم القاعة",
+    "parent": "venue"
+  },
+  {
+    "id": "venue-address",
+    "kind": "text",
+    "label": "العنوان",
+    "parent": "venue"
+  },
+  {
+    "id": "schedule",
+    "kind": "group",
+    "label": "التاريخ والوقت",
+    "parent": null
+  },
+  {
+    "id": "schedule-icon",
+    "kind": "image",
+    "label": "أيقونة الساعة",
+    "parent": "schedule"
+  },
+  {
+    "id": "date",
+    "kind": "text",
+    "label": "التاريخ",
+    "parent": "schedule"
+  },
+  {
+    "id": "day",
+    "kind": "text",
+    "label": "اليوم",
+    "parent": "schedule"
+  },
+  {
+    "id": "time",
+    "kind": "text",
+    "label": "الوقت كتابةً",
+    "parent": "schedule"
+  },
+  {
+    "id": "closing",
+    "kind": "group",
+    "label": "الختام والتوقيع",
+    "parent": null
+  },
+  {
+    "id": "closing-text",
+    "kind": "text",
+    "label": "العبارة الختامية",
+    "parent": "closing"
+  },
+  {
+    "id": "signature",
+    "kind": "text",
+    "label": "التوقيع",
+    "parent": "closing"
+  },
+  {
+    "id": "swans",
+    "kind": "image",
+    "label": "البجعتان",
+    "parent": null
+  }
+]

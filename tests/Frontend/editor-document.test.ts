@@ -4,6 +4,10 @@ import { addCollection, layerWarnings, replaceImageAsset, resolveColor, updatePa
 import { commitHistory, createHistory, redoHistory, undoHistory } from '../../resources/js/Domains/Editor/Services/editorHistory.ts';
 import type { DesignDocument } from '../../resources/js/Types/DesignDocument.ts';
 import type { EditorAsset, EditorCollection } from '../../resources/js/Types/Editor.ts';
+import { updateCardBackground, updateCardMaterial } from '../../resources/js/Domains/Editor/Services/cardMaterials.ts';
+import { imagePlacement } from '../../resources/js/Domains/Editor/Services/imagePlacement.ts';
+import { toFabricObject } from '../../resources/js/Domains/Editor/Services/FabricAdapter.ts';
+import { addText } from '../../resources/js/Domains/Editor/Services/editorDocument.ts';
 
 function documentFixture(): DesignDocument {
     return {
@@ -17,6 +21,33 @@ function documentFixture(): DesignDocument {
 function asset(id: string, name: string): EditorAsset {
     return { id, slug: `asset-${id}`, name, type: 'decoration', previewUrl: `/asset-${id}.png`, fontFamily: null, fontUrl: null, version: 1, width: 300, height: 400, capabilities: {} };
 }
+
+test('large image previews stay centered in their logical frame after editing', () => {
+    const frame = { x: 100, y: 200, width: 300, height: 400, scaleX: 1, scaleY: 1, rotation: 0, opacity: 1 };
+    const contained = imagePlacement(frame, 2400, 2400, 'contain');
+    assert.deepEqual(contained, { left: 100, top: 250, scaleX: 0.125, scaleY: 0.125 });
+    assert.deepEqual(imagePlacement({ ...frame, x: 140, opacity: 0.5 }, 2400, 2400, 'contain'), { ...contained, left: 140 });
+    const covered = imagePlacement(frame, 2400, 2400, 'cover');
+    assert.equal(covered.left, 50);
+    assert.equal(covered.top, 200);
+    assert.equal(covered.scaleX * 2400, 400);
+});
+
+test('automatic text direction follows the first letter while preserving explicit choices', () => {
+    const design = addText(documentFixture(), { ...asset('1', 'Arabic font'), type: 'font' });
+    const layer = design.canvas.layers[0];
+    assert.ok(layer?.type === 'text');
+    for (const [content, expected] of [['123 Wedding دعوة', 'ltr'], ['2027 دعوة Wedding', 'rtl']] as const) {
+        const descriptor = toFabricObject({ ...layer, content, direction: 'auto', alignment: 'right' }, design.palette);
+        assert.equal(descriptor.fabricType, 'textbox');
+        if (descriptor.fabricType !== 'textbox') throw new Error('Expected text');
+        assert.equal(descriptor.direction, expected);
+        assert.equal(descriptor.textAlign, 'right');
+    }
+    const explicit = toFabricObject({ ...layer, content: 'دعوة', direction: 'ltr' }, design.palette);
+    assert.ok(explicit.fabricType === 'textbox');
+    assert.equal(explicit.direction, 'ltr');
+});
 
 test('adding a collection is one undoable history operation', () => {
     const first = asset('1', 'غصن أول');
@@ -68,4 +99,22 @@ test('editor warns about cropped and unreadable text', () => {
 
     const warnings = layerWarnings(document, textLayer);
     assert.equal(warnings.length, 3);
+});
+
+test('changing material is undoable, replaces the previous texture and preserves the scene and layers', () => {
+    const original = documentFixture();
+    const wooden = commitHistory(createHistory(original), (document) => updateCardMaterial(document, { preset: 'wood', version: 1, intensity: 0.8 }));
+    const cotton = commitHistory(wooden, (document) => updateCardMaterial(document, { preset: 'cotton', version: 1, intensity: 0.4 }));
+    assert.equal(cotton.present.canvas.material?.preset, 'cotton');
+    assert.equal(cotton.present.canvas.layers, original.canvas.layers);
+    assert.equal(cotton.present.scene, original.scene);
+    assert.equal(cotton.present.palette, original.palette);
+    assert.deepEqual(undoHistory(cotton).present, wooden.present);
+    assert.deepEqual(undoHistory(undoHistory(cotton)).present, original);
+    assert.equal(commitHistory(cotton, (document) => updateCardMaterial(document, { preset: 'cotton', version: 1, intensity: 0.4 })), cotton);
+    const colored = updateCardBackground(cotton.present, '#c99d70');
+    assert.deepEqual(colored.canvas.background, { source: 'literal', value: '#c99d70' });
+    assert.equal(colored.canvas.material, cotton.present.canvas.material);
+    assert.equal(colored.palette, original.palette);
+    assert.equal(colored.scene, original.scene);
 });

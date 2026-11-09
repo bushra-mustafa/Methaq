@@ -13,6 +13,8 @@ import {
     toFabricDocument,
 } from '../../resources/js/Domains/Editor/Services/FabricAdapter.ts';
 import { DESIGN_CONTRACT } from '../../resources/js/Domains/Editor/Services/designContract.ts';
+import { CARD_MATERIAL_PRESETS } from '../../resources/js/Types/CardMaterial.ts';
+import { ENVELOPE_STYLES, SEAL_STYLES } from '../../resources/js/Types/SceneConfig.ts';
 
 function designFixture(): DesignDocument {
     return {
@@ -150,9 +152,11 @@ test('envelope appearance survives saving without changing legacy scenes', () =>
     document.scene.opening.envelope.appearance = appearance;
     const decoded = parseDesignDocumentJson(serializeDesignDocument(document));
     assert.deepEqual(decoded, document);
-    for (const style of ['classic', 'luxury', 'minimal', 'rounded', 'gatefold'] as const) {
-        document.scene.opening.envelope.appearance = { ...appearance, style };
-        assert.deepEqual(parseDesignDocumentJson(serializeDesignDocument(document)), document);
+    for (const style of ENVELOPE_STYLES) {
+        for (const sealStyle of SEAL_STYLES) {
+            document.scene.opening.envelope.appearance = { ...appearance, style, sealStyle };
+            assert.deepEqual(parseDesignDocumentJson(serializeDesignDocument(document)), document);
+        }
     }
     for (const invalid of [{ sealX: 19 }, { sealY: 76 }, { sealSize: 30 }, { sealX: 50.5 }, { style: 'custom-html' }, { sealStyle: 'script' }]) {
         assert.throws(() => parseDesignDocument({ ...document, scene: { ...document.scene, opening: { ...document.scene.opening, envelope: { ...document.scene.opening.envelope, appearance: { ...appearance, ...invalid } } } } }));
@@ -174,4 +178,18 @@ test('optional scene backdrop is independent from the card palette and has a clo
     document.scene.backdrop = { preset: 'burgundy-nebula' };
     assert.deepEqual(parseDesignDocument(document).scene.backdrop, { preset: 'burgundy-nebula' });
     assert.throws(() => parseDesignDocument({ ...document, scene: { ...document.scene, backdrop: { preset: 'remote-image' } } }));
+});
+
+test('every card material survives save and Fabric round trips without changing layers or legacy designs', () => {
+    const legacy = designFixture();
+    assert.equal('material' in parseDesignDocument(legacy).canvas, false);
+    for (const preset of CARD_MATERIAL_PRESETS) {
+        const document = designFixture();
+        document.canvas.material = { preset, version: 1, intensity: 0.65 };
+        assert.deepEqual(parseDesignDocumentJson(serializeDesignDocument(document)), document);
+        assert.deepEqual(fromFabricDocument(toFabricDocument(document), document), document);
+    }
+    for (const material of [null, { preset: 'remote-image', version: 1, intensity: 0.5 }, { preset: 'wood', version: 2, intensity: 0.5 }, { preset: 'cotton', version: 1, intensity: -1 }, { preset: 'kraft', version: 1, intensity: 1.1 }]) {
+        assert.throws(() => parseDesignDocument({ ...legacy, canvas: { ...legacy.canvas, material } }));
+    }
 });

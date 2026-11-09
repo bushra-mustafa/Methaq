@@ -22,8 +22,8 @@
 
 | المفتاح | القيم المقبولة |
 |---|---|
-| style | classic / luxury / minimal / rounded / gatefold |
-| sealStyle | wax / medallion / methaq |
+| style | classic / luxury / minimal / rounded / gatefold / portrait / wallet / scalloped |
+| sealStyle | wax / wax-oval / wax-heart / wax-square / wax-flower / medallion / medallion-octagon / embossed / methaq / none |
 | sealX | عدد صحيح 20–80، نسبة من اليسار |
 | sealY | عدد صحيح 25–75، نسبة من الأعلى |
 | sealSize | عدد صحيح 14–26، نسبة من عرض الظرف |
@@ -65,3 +65,5 @@
 استُخدم كود hussen-bushra-invitation لتصحيح الطية السفلية وميل الظرف والهالة، وتدرج الورق وخروج الورقة ثم نزول الظرف، مع دخول البطاقة وخطي Amiri/Tajawal. أضيف InvitationAtmosphere وSceneEffectsPanel للّمعان والضباب وفق العقد الحالي. التفاصيل الدقيقة وحدود المطابقة في [تفصيل المرجع](23-reference-invitation-breakdown.md).
 
 تحديث: اكتمل الغلاف المستقل وحركة نصوص البطاقة وصوت المكتبة ضمن معاينة المالك، كما يفصل [الملف24](24-cover-text-animation-audio.md).
+
+تحديث 2026-09-13: توسع المعرض إلى ثمانية أشكال أظرف وتسعة أنواع ختوم وخيار بدون ختم، وأضيفت خامات الكرت. تفاصيل التنفيذ والتحقق في [الملف26](26-card-materials-envelopes-seals.md).
