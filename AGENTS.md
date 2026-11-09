@@ -30,3 +30,7 @@ Payment integration is the final implementation phase (14), followed by final ve
 ## Payment webhook invariants
 
 When payment integration begins, webhook controllers must remain thin: receive the provider request, invoke a dedicated Action, and return only the required acknowledgment. The Action is responsible for verifying the provider signature, validating the provider event identity, and enforcing idempotency before any state change. `Order` and `PaymentWebhook` records may be created or updated only through Actions; controllers, jobs, and gateways must not write them directly. A repeated webhook must return safely without duplicating payment, publishing, or rendering work.
+
+## Asset access policy
+
+`public/` contains only browser-deliverable assets: editor and template previews, approved public fonts and audio, trusted client-rendered material textures, and published renders that are explicitly safe to expose. Source SVG files, original high-resolution artwork, owner drafts, render snapshots, unapproved assets, and any asset whose entitlement depends on payment, ownership, suspension, or expiry belong under `storage/app/private/`. Private assets are served only through an authorized application response or a short-lived signed storage URL after the relevant policy and entitlement checks; never through the public storage symlink or a stored permanent public URL. Database records store paths, not public URLs, and DTOs expose only the delivery URL appropriate to the current viewer.
