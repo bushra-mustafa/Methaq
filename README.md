@@ -4,40 +4,85 @@
 
 ## المتطلبات
 
-- PHP 8.4 لتشغيل الاعتماديات المقفلة حالياً؛ استهداف PHP 8.3 يحتاج إعادة حل الاعتماديات وفحصها لذلك الإصدار.
-- Composer 2، وMySQL قبل تشغيل migrations.
-- [الخطة المعتمدة](requirements/09-methaq-master-plan-v2.md).
-- [قائمة التنفيذ](requirements/10-execution-checklist.md).
+- PHP `>=8.4.1` و`<9.0` للاعتماديات المقفلة حالياً: يحدد `composer.json` و`composer.lock` قيد المشروع `^8.3`، لكن الحزم المقفلة من Symfony 8.1 تتطلب `>=8.4.1`. اجتاز PHP 8.4.1 المثبت محلياً `composer check-platform-reqs`؛ كما يؤكد `composer prohibits php 8.4.0 --locked` أن 8.4.0 لا يفي بمتطلبات الحزم المقفلة. عند تحديث الاعتماديات، أعد التحقق من الحد الأدنى.
+- Composer 2. يتطلب تشغيل migrations واختبارات MySQL اتصالاً بقاعدة MySQL.
+- React 19 وInertia.js v2 وTypeScript وFabric.js v6؛ الإصدارات المقفلة موضحة في `package.json` و`package-lock.json`.
+- [الخطة المعتمدة](requirements/09-methaq-master-plan-v2.md) و[قائمة التنفيذ](requirements/10-execution-checklist.md).
 
-## التشغيل المحلي
+## إعداد تثبيت جديد
 
 ```sh
 composer install
-cp .env.example .env
-php artisan key:generate
+if [ ! -f .env ]; then cp .env.example .env; fi
+if grep -q '^APP_KEY=$' .env; then php artisan key:generate; fi
+php artisan migrate
 php artisan serve
 ```
 
-ينسخ ملف البيئة فقط عند عدم وجوده؛ لا تستبدل ملف إعدادات موجوداً. صفحة ميثاق تظهر على http://localhost:8000.
+يضبط الأمر الشرطي ملف `.env` فقط إن لم يكن موجوداً، ويولّد `APP_KEY` فقط عندما يكون فارغاً. راجع إعدادات `.env` واضبط اتصال MySQL قبل `php artisan migrate`. تستخدم `.env.example` قاعدة MySQL باسم `methaq` والجلسات وcache وqueue عبر قاعدة البيانات؛ تحتاج قاعدة جديدة إلى migrations المناسبة لهذه الجداول. صفحة ميثاق متاحة افتراضياً على `http://localhost:8000`.
 
-الإعدادات الافتراضية: اسم Methaq، اتصال MySQL بقاعدة methaq، جلسات وcache بالملفات لتشغيل الصفحة الأولية دون قاعدة بيانات. اضبط بيانات الاتصال المحلية قبل تشغيل migrations؛ تم ربط قاعدة التطوير methaq على MAMP وتطبيق migrations لاحقاً بتاريخ 2026-09-09. إعداد queue يستخدم database، ولا يشغل worker قبل تجهيز جداولها.
+## تشغيل تثبيت موجود
+
+احتفظ بملف `.env` و`APP_KEY` الحاليين. لا تنسخ `.env.example` فوق إعداد موجود ولا تشغّل `php artisan key:generate` على تثبيت ذي مفتاح مضبوط؛ تغيير المفتاح قد يبطل البيانات المشفرة والجلسات والكوكيز. بعد تحديث المصدر، استخدم `composer install` و`npm ci` عند الحاجة، ثم شغّل Laravel وVite في نافذتي طرفية منفصلتين:
+
+```sh
+php artisan serve
+npm run dev
+```
+
+قبل تطبيق تغييرات قاعدة البيانات على تثبيت موجود، راجع حالة migrations:
+
+```sh
+php artisan migrate:status
+```
+
+شغّل `php artisan migrate` فقط عندما تتطلب التغييرات المراجعة ذلك.
 
 ```sh
 php artisan test
 composer validate --strict
 ```
 
-تم تأسيس Laravel وتنفيذ migrations وModels وEnums وFactories للجداول الـ13. React 19 وInertia v2 وTypeScript وFabric v6 مثبتة؛ المحرر والمصادقة الكاملة لم ينفذا بعد. صفحة ميثاق الحالية مؤقتة. User في app/Domains/Users/Models حسب معمارية المشروع. لا ترفع .env أو vendor إلى Git.
+## البنية الحالية
 
-تفاصيل الجداول وتشغيل اختبار MySQL في [سجل قاعدة البيانات](requirements/12-database-implementation.md). نجحت الاختبارات أولاً على قاعدة معزولة، ثم طُبقت migrations على قاعدة التطوير الرئيسية methaq.
+يعتمد التطبيق Modular DDD مع حدود المجالات التالية في `app/Domains` و`resources/js/Domains`:
+
+- `Events`: إنشاء المناسبات وبياناتها وملكيتها.
+- `Editor`: مكتبة القوالب والأصول، عقد التصميم، محرر البطاقة ومشهد الدعوة.
+- `Payments`: توجد نماذج `Order` و`PaymentWebhook` وEnums؛ تكامل بوابة الدفع ومعالجة الدفع الفعلية غير منفذين.
+- `RSVP`: استقبال ردود الضيوف.
+- `Users`: الحسابات والصلاحيات وسجل التدقيق.
+
+المجالات غير متساوية في اكتمالها؛ أسماء المجلدات تصف حدود المسؤولية ولا تعني أن كل الميزات المخطط لها مكتملة. تنظم `app/Http/Controllers` محولات HTTP حسب `Web` و`App` و`Admin` و`Guest`، وتحتوي `resources/js/Pages` صفحات Inertia، بينما تضم `resources/js/Types` عقود TypeScript المشتركة.
+
+ضمن `Editor`، تتبع ملفات PHP مجلدات متخصصة مثل `Actions` و`DTOs` و`Enums` و`Models` و`Policies` و`Services`. وفي الواجهة، تفصل `Components` و`Hooks` عن خدمات المجال. **يبقى `resources/js/Domains/Editor/Services` بهيكله الحالي؛ لم تُنقل ملفاته أو تُعد تسميتها.**
+
+## المسارات والوظائف الموجودة
+
+المسارات التالية معرفة في `routes/web.php`، مع تسجيل مسارات المصادقة من Fortify:
+
+- `GET /` للصفحة الرئيسية و`GET /templates` لمكتبة القوالب.
+- مجموعة `/app` محمية بـ`auth` و`active`، وتشمل لوحة المستخدم، إنشاء المناسبة، عرضها، محرر التصميم، العرض التقديمي، الملف الشخصي، ومسودة اقتراح Ivory.
+- `PATCH /app/events/{event}/design` لحفظ وثيقة التصميم؛ يستخدم مسار حفظ مع مراجعة للتصميم.
+- مجموعة الإدارة تحت `/app/admin` داخل مجموعة التطبيق، وتُحمى أيضاً بـ`admin.2fa` التي تتحقق من دور المدير وتفعيل المصادقة الثنائية.
+- على نطاقات الدعوات الفرعية، يسمح `ResolvePublishedEvent` بتحميل دعوة منشورة غير منتهية؛ ويضم المسار عرض الدعوة وإرسال RSVP.
+- `GET /dev/design-lab` متاح فقط في بيئتي `local` و`testing` عبر `LocalDevelopmentOnly`.
+
+تتضمن الشيفرة واجهات Inertia للمصادقة والحسابات، وإدارة المناسبات، ومحرر البطاقة والمشهد، ومكتبة الإدارة، ودعوة الضيف وRSVP. وجود نماذج الدفع أو مسارات الدفع في الخطط لا يعني وجود معالجة دفع جاهزة: لا توجد حالياً مسارات checkout أو webhook في `routes/web.php` ولا تنفيذ مزود دفع في `app/Domains/Payments`.
+
+تفاصيل المخطط وتشغيل اختبارات MySQL موثقة في [سجل قاعدة البيانات](requirements/12-database-implementation.md).
 
 ## بناء الواجهة
 
 ```sh
 npm ci
 npm run typecheck
+npm run test:frontend
 npm run build
-php artisan serve
 ```
 
-للتطوير شغّل npm run dev مع خادم Laravel. Node الحالي 23.6؛ يوصى ببيئة Node LTS متوافقة مع Vite (22.12+). الخطوط محلية في public/brand/fonts؛ تحذير Vite عن روابط الخطوط المطلقة يعني أنها تقدم وقت التشغيل وقد تحقق ظهورها في المتصفح. ملفات build وnode_modules لا تدخل Git.
+للتطوير شغّل `npm run dev` مع خادم Laravel. الخطوط المحلية في `public/brand/fonts`، ومواد البطاقات المعتمدة للعرض في المتصفح ضمن `public/`. راجع سياسة الأصول في `AGENTS.md` قبل إضافة أصول أو تغيير مواقعها. لا ترفع `.env` أو `vendor` أو `node_modules` أو ملفات البناء إلى Git.
+
+## توصيات مستقبلية اختيارية
+
+هذه أفكار تنظيمية وليست تغييرات منفذة أو متطلبات حالية. إذا زادت مسؤوليات خدمات المحرر، يمكن في عمل مستقبلي مستقل دراسة تجميع اتصال HTTP ومحولات Fabric/العرض في وحدات فرعية مع المحافظة على حدود `Editor` والعقود الحالية. لا يتطلب ذلك تغيير بنية `Editor/Services` الحالية، وأي نقل أو إعادة تسمية يحتاج مراجعة مستقلة للاستخدامات والاختبارات وموافقة منفصلة.

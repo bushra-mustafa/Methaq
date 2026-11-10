@@ -19,6 +19,20 @@ Fabric edits the static card. React implements the configurable invitation scene
 
 Server-side payment verification controls publishing and access to high resolution assets. Enforce expiry on every guest/content/RSVP request as well as the daily command. Watermarks deter copying but do not guarantee prevention.
 
+## Current implementation snapshot (verified 2026-11-10)
+
+The codebase has `app/Domains/{Events,Editor,Payments,RSVP,Users}` and matching frontend domain boundaries under `resources/js/Domains`. Their contents and completion status differ; a domain directory does not mean every planned feature in that domain is implemented. Backend HTTP adapters are grouped under `app/Http/Controllers/{Web,App,Admin,Guest}`; Inertia pages are under `resources/js/Pages`, and shared TypeScript contracts are under `resources/js/Types`.
+
+The implemented route groups are defined in `routes/web.php`: public home and template pages; `/app` routes guarded by `auth` and `active`; admin routes additionally guarded by `admin.2fa`; invitation subdomain routes guarded by `ResolvePublishedEvent`; and `/dev/design-lab`, restricted to `local` and `testing` by `LocalDevelopmentOnly`. The invitation middleware resolves only published, unexpired events before the guest page or RSVP route runs. Fortify provides the configured authentication routes and Inertia views.
+
+The editor currently includes event design and presentation pages, document validation/serialization, revision-aware save handling, Fabric integration, and scene configuration. Keep the existing `resources/js/Domains/Editor/Services` layout and its files in place; do not move or rename them as part of unrelated work. The `Payments` domain currently contains order/webhook models and enums, but no checkout or webhook route or payment-provider processing implementation; payment integration remains deferred to phase 14.
+
+This snapshot records verified implementation, not a change to the approved product plan. Update it when implementation status or routes change; do not mark checklist items complete without implementation and verification evidence.
+
+## Optional future refactoring notes
+
+These notes are non-binding proposals, not current architecture requirements. If the editor service area grows, a separate review may consider grouping HTTP transport or Fabric rendering adapters into submodules while preserving the `Editor` boundary and public contracts. The current `Editor/Services` structure remains unchanged unless a later task explicitly authorizes and scopes a refactor.
+
 ## Delivery
 
 Follow the execution checklist and update completed boxes only with implementation and verification evidence. Do not introduce deferred features into the first release. Do not assume unresolved commercial settings. Routine authorized implementation does not require repeated confirmation.
