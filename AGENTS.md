@@ -49,7 +49,19 @@ When payment integration begins, webhook controllers must remain thin: receive t
 
 `public/` contains only browser-deliverable assets: editor and template previews, approved public fonts and audio, trusted client-rendered material textures, and published renders that are explicitly safe to expose. Source SVG files, original high-resolution artwork, owner drafts, render snapshots, unapproved assets, and any asset whose entitlement depends on payment, ownership, suspension, or expiry belong under `storage/app/private/`. Private assets are served only through an authorized application response or a short-lived signed storage URL after the relevant policy and entitlement checks; never through the public storage symlink or a stored permanent public URL. Database records store paths, not public URLs, and DTOs expose only the delivery URL appropriate to the current viewer.
 
-===
+## AI Token Efficiency
+
+- Focus strictly on the requested task.
+- Do not re-audit the entire project.
+- Read only relevant files and dependencies.
+- Use Laravel Boost only when needed.
+- Avoid unnecessary architecture discussions.
+- Preserve existing conventions.
+- Do not perform unrelated refactoring.
+- Run targeted tests first.
+- Keep final reports concise.
+- Report only changes, test results, and blockers.
+- # Do not repeat information already documented.
 
 <laravel-boost-guidelines>
 === foundation rules ===
@@ -61,6 +73,7 @@ When payment integration begins, webhook controllers must remain thin: receive t
 This application is a Laravel application running on PHP 8.4. Always use the APIs that match the installed major version of each package — do not assume a version.
 
 Before relying on a package's API, confirm its installed version:
+
 - PHP packages: run `composer show --direct` to list direct dependencies with versions, or `composer show <vendor/package>` for a single package.
 - JS packages: check `package.json` for the installed versions.
 
@@ -131,7 +144,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - Execute PHP in app context for debugging and testing code. Do not create models without user approval, prefer tests with factories instead. Prefer existing Artisan commands over custom tinker code.
 - Always use single quotes to prevent shell expansion: `php artisan tinker --execute 'Your::code();'`
-  - Double quotes for PHP strings inside: `php artisan tinker --execute 'User::where("active", true)->count();'`
+    - Double quotes for PHP strings inside: `php artisan tinker --execute 'User::where("active", true)->count();'`
 
 === php rules ===
 
