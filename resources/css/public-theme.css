@@ -8,7 +8,7 @@
 | Do not override existing editor or dashboard styles.
 */
 
-@theme static {
+:root {
     /* Brand */
     --color-methaq-primary: #074b36;
     --color-methaq-primary-hover: #063d2c;
