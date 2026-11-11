@@ -24,3 +24,9 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Third-party agent skills (reinstall from skills-lock.json)
+/.agents/
+/.claude/skills/frontend-design
+/.claude/skills/security-audit
+/.claude/skills/web-design-guidelines
