@@ -1,4 +1,6 @@
 import type { PropsWithChildren } from "react";
+import Navbar from "../Components/Public/Navbar";
+import Footer from "../Components/Public/Footer";
 
 type PublicLayoutProps = PropsWithChildren;
 
@@ -9,16 +11,16 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
             dir="rtl"
             lang="ar"
         >
-            <a
-                href="#main-content"
-                className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-3"
-            >
+            <a href="#main-content" className="sr-only focus:not-sr-only">
                 الانتقال إلى المحتوى
             </a>
+
+            <Navbar />
 
             <main id="main-content" className="min-h-dvh">
                 {children}
             </main>
+            <Footer />
         </div>
     );
 }
