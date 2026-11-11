@@ -9,27 +9,28 @@
 */
 
 @theme static {
-    /* Brand Colors */
+    /* Brand */
     --color-methaq-primary: #074b36;
     --color-methaq-primary-hover: #063d2c;
-    --color-methaq-gold: #b69a50;
-
-    /* Backgrounds */
-    --color-methaq-ivory: #f6fbf2;
-    --color-methaq-sage: #f0f5ed;
-    --color-methaq-surface: #ffffff;
-
-    /* Text Colors */
     --color-methaq-ink: #1a2e26;
     --color-methaq-muted: #435443;
 
-    /* Borders */
+    /* Metallic accents */
+    --color-methaq-gold: #b69a50;
+    --color-methaq-gold-light: #e6d28b;
+    --color-methaq-gold-dark: #8b6a2c;
+
+    /* Surfaces */
+    --color-methaq-ivory: #f6fbf2;
+    --color-methaq-cream: #fdfbf7;
+    --color-methaq-sage: #f0f5ed;
+    --color-methaq-surface: #ffffff;
+
     --color-methaq-border: #dce5db;
 
-    /* Typography */
-    --font-methaq-body: "Manrope", "IBM Plex Sans Arabic", Tahoma, sans-serif;
-
-    --font-methaq-display: "Amiri", "Times New Roman", serif;
+    --font-methaq-body: "Manrope", system-ui, sans-serif;
+    --font-methaq-display: "Amiri", "Traditional Arabic", serif;
+    --font-methaq-editorial: "EB Garamond", Georgia, serif;
 
     /* Border Radius */
     --radius-methaq-card: 1rem;
@@ -51,30 +52,39 @@
     font-weight: 400;
     font-display: swap;
 }
+
+@font-face {
+    font-family: "Amiri";
+    src: url("/brand/fonts/Amiri-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
 .methaq-public {
     min-height: 100vh;
     background-color: var(--color-methaq-ivory);
     color: var(--color-methaq-ink);
     font-family: var(--font-methaq-body);
-    line-height: 1.8;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
 }
 
 .methaq-public :where(h1, h2, h3) {
     font-family: var(--font-methaq-display);
-    line-height: 1.5;
+    line-height: 1.25;
 }
 
 /* Keyboard accessibility */
 
 .methaq-public :is(a, button, input, textarea, select):focus-visible {
-    outline: 2px solid var(--color-methaq-gold);
+    outline: 2px solid var(--color-methaq-primary);
     outline-offset: 3px;
 }
 
 /* Text selection */
 
 .methaq-public ::selection {
-    background-color: var(--color-methaq-gold);
+    background-color: var(--color-methaq-gold-light);
     color: var(--color-methaq-ink);
 }

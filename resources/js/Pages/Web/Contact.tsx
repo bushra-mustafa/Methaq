@@ -1,11 +1,12 @@
 import { Head, Link } from "@inertiajs/react";
+import PublicLayout from "../../Layouts/PublicLayout";
 
 export default function Contact() {
     return (
-        <main dir="rtl" className="min-h-screen px-6 py-16">
+        <PublicLayout>
             <Head title="تواصل معنا | ميثاق" />
 
-            <div className="mx-auto max-w-4xl">
+            <section className="mx-auto min-h-screen max-w-4xl px-6 py-16">
                 <Link href="/" className="text-sm">
                     الرئيسية
                 </Link>
@@ -16,7 +17,7 @@ export default function Contact() {
                     يسعدنا تواصلك معنا. ستُضاف قنوات التواصل الرسمية عند
                     اعتمادها.
                 </p>
-            </div>
-        </main>
+            </section>
+        </PublicLayout>
     );
 }
