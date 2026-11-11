@@ -46,8 +46,14 @@ export default function Footer() {
                     </nav>
                 </div>
 
-                <div className="mt-12 border-t border-methaq-border pt-6 text-center text-xs text-methaq-muted">
-                    © {year} ميثاق — جميع الحقوق محفوظة
+                <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-methaq-border pt-6 text-center sm:flex-row">
+                    <p className="font-methaq-display text-lg text-methaq-primary">
+                        «لكل حكاية جميلة... ميثاقٌ يليق بها»
+                    </p>
+
+                    <p className="text-xs text-methaq-muted">
+                        © {year} ميثاق — جميع الحقوق محفوظة
+                    </p>
                 </div>
             </div>
         </footer>
