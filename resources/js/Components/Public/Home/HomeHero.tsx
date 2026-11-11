@@ -1,11 +1,10 @@
 import { Link } from "@inertiajs/react";
-import { ArrowLeft, Play, Sparkles } from "lucide-react";
-import HomeInvitationDemo from "./HomeInvitationDemo";
+import HomeEnvelopeShowcase from "./HomeEnvelopeShowcase";
 
-type HomeHeroProps = {
+interface HomeHeroProps {
     isAuthenticated: boolean;
     showPrototype: boolean;
-};
+}
 
 export default function HomeHero({
     isAuthenticated,
@@ -13,120 +12,49 @@ export default function HomeHero({
 }: HomeHeroProps) {
     return (
         <section
-            className="relative isolate overflow-hidden bg-methaq-ivory py-16 lg:py-24"
             aria-labelledby="home-hero-title"
+            className="px-6 py-14 lg:px-12 lg:py-20"
         >
-            {/* Soft background decorations */}
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-28 -top-36 h-96 w-96 rounded-full bg-methaq-gold/10 blur-3xl"
-            />
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-36 -left-20 h-80 w-80 rounded-full bg-methaq-sage blur-3xl"
-            />
-
-            <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
-                <div className="grid min-w-0 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)] lg:gap-12">
-                    {/* Right: Marketing content */}
-                    <div className="flex min-w-0 flex-col items-start gap-6 text-right lg:pr-2">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-methaq-gold/30 bg-methaq-cream px-4 py-1.5 text-[13px] font-medium text-methaq-gold-dark shadow-methaq-card">
-                            <Sparkles
-                                size={15}
-                                className="text-methaq-gold"
-                                aria-hidden="true"
-                            />
-                            دعوات إلكترونية بتفاصيل تليق بفرحتك
-                        </span>
-
-                        <h1
-                            id="home-hero-title"
-                            className="m-0 font-methaq-display text-[40px] font-bold leading-[1.25] text-methaq-primary md:text-[50px] lg:text-[56px]"
-                        >
-                            لكل حكاية جميلة...
-                            <span className="mt-1 block font-normal text-methaq-gold-dark">
-                                دعوةٌ تليق بها
-                            </span>
-                        </h1>
-
-                        <p className="max-w-xl text-[17px] leading-[1.8] text-methaq-muted md:text-lg">
-                            في ميثاق، نصنع مساحة لتصميم دعوات إلكترونية أنيقة،
-                            تجمع بين جمال الخط العربي والتفاصيل الراقية وتجربة
-                            العرض التفاعلية.
-                        </p>
-
-                        <div className="flex flex-wrap items-center gap-3">
-                            <Link
-                                href={isAuthenticated ? "/app" : "/register"}
-                                className="inline-flex min-h-12 items-center justify-center gap-3 rounded-methaq-button bg-methaq-primary px-6 py-3 text-sm font-semibold text-white shadow-methaq-soft transition hover:-translate-y-0.5 hover:bg-methaq-primary-hover"
-                            >
-                                {isAuthenticated
-                                    ? "مناسباتي"
-                                    : "صمّمي دعوتك الآن"}
-                                <ArrowLeft size={17} aria-hidden="true" />
-                            </Link>
-
-                            <a
-                                href="#hero-envelope-preview"
-                                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-methaq-button border border-methaq-border bg-methaq-surface px-5 py-3 text-sm font-medium text-methaq-primary transition-colors hover:bg-methaq-sage"
-                            >
-                                <Play
-                                    size={17}
-                                    className="text-methaq-gold"
-                                    aria-hidden="true"
-                                />
-                                شاهدي تجربة الظرف
-                            </a>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-5 text-sm">
-                            <Link
-                                href="/templates"
-                                className="font-medium text-methaq-primary underline decoration-methaq-gold underline-offset-4"
-                            >
-                                استعرضي القوالب
-                            </Link>
-
-                            {showPrototype && (
-                                <a
-                                    href="/dev/design-lab"
-                                    className="text-methaq-muted underline underline-offset-4"
-                                >
-                                    البطاقة التجريبية
-                                </a>
-                            )}
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 pt-2">
-                            {[
-                                "تصاميم عربية أنيقة",
-                                "تخصيص تفاصيل الدعوة",
-                                "معاينة تفاعلية",
-                            ].map((feature) => (
-                                <span
-                                    key={feature}
-                                    className="rounded-full border border-methaq-border bg-methaq-sage px-3 py-1.5 text-[13px] text-methaq-primary"
-                                >
-                                    {feature}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Left: Existing invitation player */}
-                    <div
-                        id="hero-envelope-preview"
-                        className="mx-auto w-full min-w-0 max-w-[470px] scroll-mt-24 lg:justify-self-end"
+            <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-10">
+                <div className="flex min-w-0 flex-col items-start gap-6 text-right">
+                    <h1
+                        id="home-hero-title"
+                        className="m-0 max-w-[14ch] font-methaq-display text-[clamp(36px,5vw,56px)] font-normal text-balance text-methaq-primary"
                     >
-                        <div className="rounded-methaq-card border border-methaq-gold/25 bg-methaq-cream p-4 shadow-methaq-raised">
-                            <HomeInvitationDemo
-                                cardUrl="/editor/proposals/ivory-wedding/v1/architecture.png"
-                                viewport="desktop"
-                                envelopeStyle="luxury"
-                                sealStyle="wax"
-                            />
-                        </div>
+                        لكل حكاية جميلة… دعوةٌ تليق بها
+                    </h1>
+
+                    <p className="m-0 max-w-[44ch] text-[17px] leading-[1.9] text-pretty text-methaq-muted">
+                        صمّمي دعوتك، وشاركيها برابط يفتحه ضيوفك كظرف حقيقي،
+                        ويؤكدون حضورهم من الصفحة نفسها.
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1">
+                        <Link
+                            href={isAuthenticated ? "/app" : "/register"}
+                            className="inline-flex min-h-12 touch-manipulation items-center justify-center rounded-methaq-button bg-methaq-primary px-7 text-[15px] font-semibold text-white shadow-methaq-soft transition-[background-color,translate] duration-200 hover:-translate-y-0.5 hover:bg-methaq-primary-hover motion-reduce:hover:translate-y-0"
+                        >
+                            {isAuthenticated ? "افتحي مناسباتك" : "صمّمي دعوتك"}
+                        </Link>
+                        <a
+                            href="#home-envelope-title"
+                            className="text-[15px] font-medium text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
+                        >
+                            جرّبي فتح الظرف
+                        </a>
+                        {showPrototype && (
+                            <a
+                                href="/dev/design-lab"
+                                className="text-[14px] text-methaq-muted underline underline-offset-8"
+                            >
+                                البطاقة التجريبية
+                            </a>
+                        )}
                     </div>
+                </div>
+
+                <div className="min-w-0">
+                    <HomeEnvelopeShowcase mode="auto" />
                 </div>
             </div>
         </section>
