@@ -18,6 +18,17 @@ class Rsvp extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
+    /** @var list<string> */
+    protected $fillable = [
+        'event_id',
+        'submission_token',
+        'guest_name',
+        'guest_phone',
+        'attending_status',
+        'companions_count',
+        'notes',
+    ];
+
     protected $hidden = ['guest_phone', 'notes', 'submission_token'];
 
     protected static function newFactory(): RsvpFactory

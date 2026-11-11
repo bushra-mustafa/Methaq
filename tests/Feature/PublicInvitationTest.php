@@ -32,9 +32,8 @@ final class PublicInvitationTest extends TestCase
     {
         $event = $this->publishedEvent();
 
-        $this->withServerVariables(['HTTP_HOST' => $event->subdomain.'.'.config('methaq.invitation_domain')])
-            ->withoutVite()
-            ->get('/')
+        $this->withoutVite()
+            ->get('http://'.$event->subdomain.'.'.config('methaq.invitation_domain').'/')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Guest/Show', false)
@@ -44,8 +43,7 @@ final class PublicInvitationTest extends TestCase
 
         $draft = Event::factory()->create(['subdomain' => 'still-a-draft']);
         EventDesign::factory()->create(['event_id' => $draft->getKey()]);
-        $this->withServerVariables(['HTTP_HOST' => $draft->subdomain.'.'.config('methaq.invitation_domain')])
-            ->get('/')
+        $this->get('http://'.$draft->subdomain.'.'.config('methaq.invitation_domain').'/')
             ->assertNotFound();
     }
 
@@ -64,10 +62,10 @@ final class PublicInvitationTest extends TestCase
             'notes' => 'سعيدة بمشاركتكم.',
         ];
 
-        $this->withServerVariables(['HTTP_HOST' => $host])->post('/rsvp', $payload)->assertRedirect();
+        $this->post('http://'.$host.'/rsvp', $payload)->assertRedirect();
         $this->assertDatabaseHas('rsvps', ['event_id' => $event->getKey(), 'submission_token' => $token, 'companions_count' => 2]);
 
-        $this->withServerVariables(['HTTP_HOST' => $host])->post('/rsvp', array_replace($payload, [
+        $this->post('http://'.$host.'/rsvp', array_replace($payload, [
             'attending_status' => 'declined',
             'companions_count' => 4,
         ]))->assertRedirect();

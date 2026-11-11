@@ -31,15 +31,15 @@ final class StoreRsvpRequest extends FormRequest
 
     public function toData(): CreateRsvpData
     {
-        /** @var array{submission_token: string, guest_name: string, guest_phone?: string|null, attending_status: AttendingStatus, companions_count: int, notes?: string|null} $validated */
+        /** @var array{submission_token: string, guest_name: string, guest_phone?: string|null, attending_status: string, companions_count: int|string, notes?: string|null} $validated */
         $validated = $this->validated();
 
         return new CreateRsvpData(
             submissionToken: $validated['submission_token'],
             guestName: $validated['guest_name'],
             guestPhone: $validated['guest_phone'] ?? null,
-            attendingStatus: $validated['attending_status'],
-            companionsCount: $validated['companions_count'],
+            attendingStatus: AttendingStatus::from($validated['attending_status']),
+            companionsCount: (int) $validated['companions_count'],
             notes: $validated['notes'] ?? null,
         );
     }

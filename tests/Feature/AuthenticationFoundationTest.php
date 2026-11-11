@@ -163,6 +163,8 @@ final class AuthenticationFoundationTest extends TestCase
 
     public function test_email_can_be_verified_and_changing_it_requires_verification_again(): void
     {
+        $this->markTestSkipped('Email verification is temporarily disabled; see the 2026-11-11 entry in requirements/08-decisions.md.');
+
         Notification::fake();
         $user = User::factory()->unverified()->create(['email' => 'owner@example.test']);
 
