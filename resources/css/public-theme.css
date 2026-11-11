@@ -8,7 +8,7 @@
 | Do not override existing editor or dashboard styles.
 */
 
-:root {
+@theme static {
     /* Brand */
     --color-methaq-primary: #074b36;
     --color-methaq-primary-hover: #063d2c;
@@ -21,14 +21,14 @@
     --color-methaq-gold-dark: #8b6a2c;
 
     /* Surfaces */
-    --color-methaq-ivory: #f5f2e3;
+    --color-methaq-ivory: #f6fbf2;
     --color-methaq-cream: #fdfbf7;
     --color-methaq-sage: #f0f5ed;
     --color-methaq-surface: #ffffff;
 
     --color-methaq-border: #dce5db;
 
-    --font-methaq-body: "Manrope", "Cairo", system-ui, sans-serif;
+    --font-methaq-body: "Manrope", "Methaq Arabic", system-ui, sans-serif;
     --font-methaq-display: "Amiri", "Traditional Arabic", serif;
     --font-methaq-editorial: "EB Garamond", Georgia, serif;
 
