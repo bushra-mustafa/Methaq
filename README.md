@@ -85,9 +85,9 @@ npm run build
 
 ## الموقع العام ونظام التصميم
 
-واجهات الموقع العام موجودة في `resources/js/Pages/Web`: `Home.tsx` و`About.tsx` و`Contact.tsx` و`Templates.tsx`. يوفر `resources/js/Layouts/PublicLayout.tsx` غلافاً عاماً باتجاه RTL، رابط انتقال قابل للوصول إلى المحتوى، وشريط تنقل موحداً من `resources/js/Components/Public/Navbar.tsx`. يستخدمه حالياً `About.tsx`؛ تبقى بقية الصفحات على أغلفتها الحالية إلى أن تُنقل صراحةً.
+واجهات الموقع العام موجودة في `resources/js/Pages/Web`: `Home.tsx` و`About.tsx` و`Contact.tsx` و`Templates.tsx`. اكتمل `PublicLayout` كغلاف RTL قابل للوصول، ويجمع `Navbar` المتجاوب و`main` و`Footer` الموحد. يستخدمه `About.tsx` حالياً؛ نقل `Home` و`Contact` و`Templates` إليه ما زال قيد التنفيذ.
 
-يعتمد المشروع Tailwind CSS v4 عبر إضافة Vite `@tailwindcss/vite`. يستورد `resources/css/app.css` Tailwind والملفات المشتركة، بينما يحتفظ `resources/css/public-theme.css` بنظام التصميم الخاص بالموقع العام فقط: ألوان `methaq-*`، الخطوط، الحدود الدائرية، الظلال، وحالات التركيز. لا يُستخدم هذا الملف لتغيير أنماط المحرر أو لوحة التحكم أو صفحة الضيف.
+يعتمد المشروع Tailwind CSS v4 عبر `@tailwindcss/vite`. يربط `app.css` ملف `public-theme.css` بنظام تصميم الموقع العام فقط: الأخضر الأساسي `#074b36`، الذهبي `#b69a50`، العاجي `#f6fbf2`، وتدرجات النص والحدود، مع Manrope محلياً للنص وAmiri للعناوين، وأنصاف أقطار وظل وحالات تركيز موحّدة. لا يغيّر هذا النظام أنماط المحرر أو لوحة التحكم أو صفحة الضيف.
 
 ## توصيات مستقبلية اختيارية
 
