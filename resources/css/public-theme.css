@@ -1,0 +1,80 @@
+/*
+|--------------------------------------------------------------------------
+| Methaq Public Design System
+| Style: Editorial Serenity
+| Tailwind CSS v4
+|--------------------------------------------------------------------------
+| Public website only: Home, About, Contact, Templates
+| Do not override existing editor or dashboard styles.
+*/
+
+@theme static {
+    /* Brand Colors */
+    --color-methaq-primary: #074b36;
+    --color-methaq-primary-hover: #063d2c;
+    --color-methaq-gold: #b69a50;
+
+    /* Backgrounds */
+    --color-methaq-ivory: #f6fbf2;
+    --color-methaq-sage: #f0f5ed;
+    --color-methaq-surface: #ffffff;
+
+    /* Text Colors */
+    --color-methaq-ink: #1a2e26;
+    --color-methaq-muted: #435443;
+
+    /* Borders */
+    --color-methaq-border: #dce5db;
+
+    /* Typography */
+    --font-methaq-body: "Manrope", "IBM Plex Sans Arabic", Tahoma, sans-serif;
+
+    --font-methaq-display: "Amiri", "Times New Roman", serif;
+
+    /* Border Radius */
+    --radius-methaq-card: 1rem;
+    --radius-methaq-button: 0.75rem;
+
+    /* Shadows */
+    --shadow-methaq-soft: 0 8px 30px rgba(7, 75, 54, 0.08);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Public Layout Base
+|--------------------------------------------------------------------------
+*/
+@font-face {
+    font-family: "Manrope";
+    src: url("/brand/fonts/Manrope/Manrope.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+.methaq-public {
+    min-height: 100vh;
+    background-color: var(--color-methaq-ivory);
+    color: var(--color-methaq-ink);
+    font-family: var(--font-methaq-body);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+}
+
+.methaq-public :where(h1, h2, h3) {
+    font-family: var(--font-methaq-display);
+    line-height: 1.5;
+}
+
+/* Keyboard accessibility */
+
+.methaq-public :is(a, button, input, textarea, select):focus-visible {
+    outline: 2px solid var(--color-methaq-gold);
+    outline-offset: 3px;
+}
+
+/* Text selection */
+
+.methaq-public ::selection {
+    background-color: var(--color-methaq-gold);
+    color: var(--color-methaq-ink);
+}
