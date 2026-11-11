@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ميثاق | المنصة الملكية للبطاقات الرقمية الفاخرة</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@400;500;600;700&amp;family=Noto+Sans+Arabic:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-bright": "#fbfdf9",
+            "on-secondary": "#ffffff",
+            "primary": "#203322",
+            "primary-container": "#2c3d2d",
+            "on-primary": "#ffffff",
+            "surface": "#f6fbf2",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4eb",
+            "surface-container": "#e8eee3",
+            "surface-container-high": "#dfe5da",
+            "surface-container-highest": "#d6dcd1",
+            "on-surface": "#181d18",
+            "on-surface-variant": "#434842",
+            "secondary": "#7a613b",
+            "secondary-container": "#fedeb2",
+            "on-secondary-container": "#523c1b",
+            "secondary-fixed": "#e2c59d",
+            "outline": "#747872",
+            "outline-variant": "#c4c8c0",
+            "tertiary": "#2e3d30"
+          },
+          fontFamily: {
+            amiri: ["Amiri", "serif"],
+            manrope: ["Manrope", "sans-serif"],
+            arabic: ["Noto Sans Arabic", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    :root {
+      font-family: 'Noto Sans Arabic', sans-serif;
+    }
+    .font-amiri {
+      font-family: 'Amiri', serif;
+    }
+    .font-manrope {
+      font-family: 'Manrope', sans-serif;
+    }
+    
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.4deg); }
+    }
+    
+    @keyframes goldenDust {
+      0% { transform: translateY(0) scale(0.85); opacity: 0.2; }
+      50% { transform: translateY(-20px) scale(1.1); opacity: 0.7; }
+      100% { transform: translateY(-40px) scale(0.85); opacity: 0.2; }
+    }
+
+    @keyframes sealPulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(122, 97, 59, 0.4), 0 8px 24px -4px rgba(32, 51, 34, 0.35);
+      }
+      50% {
+        box-shadow: 0 0 0 9px rgba(122, 97, 59, 0), 0 14px 28px -3px rgba(122, 97, 59, 0.45);
+      }
+    }
+
+    .animate-float-card {
+      animation: subtleFloat 6s ease-in-out infinite;
+    }
+
+    .seal-pulse-glow {
+      animation: sealPulseGlow 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .gold-dust {
+      position: absolute;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(254, 222, 178, 0.95) 0%, rgba(226, 197, 157, 0.35) 60%, transparent 100%);
+      pointer-events: none;
+      animation: goldenDust 5s ease-in-out infinite;
+    }
+
+    .luxury-card {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .luxury-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 30px -10px rgba(122, 97, 59, 0.16), 0 6px 14px -4px rgba(32, 51, 34, 0.08);
+    }
+
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+  </style>
+<meta content="web_standard" name="shell-type"/></head>
+<body class="bg-surface font-arabic text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- 1. TOP NAVIGATION BAR -->
+<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30">
+<div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
+<!-- Authentic Unified Brand Logo -->
+<a class="flex items-center gap-3.5 group" href="#"><svg aria-label="ميثاق — Methaq" class="h-10 w-auto" fill="none" role="img" viewbox="0 0 688 150" xmlns="http://www.w3.org/2000/svg"><g fill="#B69A50" id="symbol-layer" transform="translate(510 29) scale(0.403409091)"><g transform="translate(-524 -105)"><path d="M611 247 C606 205 625 176 659 167 C654 142 674 106 694 106 C715 105 737 129 744 150 C751 168 740 187 731 198 C698 191 658 190 636 204 C620 214 618 232 617 240 Z M728 167 C720 149 707 133 693 134 C681 133 672 144 673 153 C678 165 699 162 728 167 Z" fill-rule="evenodd" id="crown"></path><path d="M532 286 C520 274 538 259 562 255 C593 249 625 256 656 267 L641 277 C608 266 557 261 538 281 L532 286 Z" fill-rule="evenodd" id="ribbon-left-top"></path><path d="M527 281 C531 301 559 309 608 297 C610 303 612 309 616 314 C585 324 551 324 535 313 C526 307 522 293 527 281 Z" fill-rule="evenodd" id="ribbon-left-bottom"></path><path d="M619 250 C650 208 684 232 734 264 L720 274 C674 247 651 235 634 253 Z" fill-rule="evenodd" id="ribbon-cross-top"></path><path d="M609 275 L626 279 C629 308 657 322 685 307 L699 317 C677 333 647 335 629 322 C615 312 610 294 609 275 Z" fill-rule="evenodd" id="ribbon-left-fold"></path><path d="M703 237 C740 212 785 223 791 279 L775 277 C771 245 750 234 719 249 Z" fill-rule="evenodd" id="ribbon-right-arch"></path><path d="M788 240 C818 229 860 231 870 248 C875 256 876 266 872 274 C869 256 854 250 833 250 C820 250 806 253 794 257 Z" fill-rule="evenodd" id="ribbon-right-top"></path><path d="M758 278 C801 291 853 290 867 268 C877 279 867 291 848 297 C822 307 782 302 743 289 Z" fill-rule="evenodd" id="ribbon-right-bottom"></path><path d="M632 287 L681 255 L695 264 L642 300 C637 297 634 292 632 287 Z" fill-rule="evenodd" id="ribbon-diagonal-left"></path><path d="M706 289 L754 254 C761 258 764 264 767 270 L721 300 Z" fill-rule="evenodd" id="ribbon-diagonal-right"></path><path d="M667 291 L681 282 C712 301 743 324 766 302 L785 305 C766 334 741 332 721 323 C701 315 683 303 667 291 Z" fill-rule="evenodd" id="ribbon-cross-bottom"></path></g></g><g fill="#074B36" id="arabic-layer" transform="translate(285 40) scale(0.557103064)"><g><g stroke="none" transform="translate(0.000000,122.000000) scale(0.100000,-0.100000)"><path d="M1013 1178 c-41 -42 -41 -44 -33 -88 15 -77 29 -237 39 -425 13 -241 32 -289 136 -350 225 -131 955 -60 1077 105 27 37 30 37 47 -1 25 -56 81 -83 185 -87 115 -5 169 9 217 56 20 21 39 44 42 52 6 12 8 12 13 2 14 -31 71 -86 101 -98 18 -8 67 -14 110 -14 95 0 147 21 193 78 l32 40 47 -29 c60 -36 162 -75 224 -84 42 -7 51 -5 74 16 144 133 55 459 -125 459 -78 0 -129 -43 -208 -177 -81 -137 -137 -172 -254 -159 -105 12 -134 52 -125 179 6 98 2 103 -56 64 -35 -24 -46 -49 -48 -110 -2 -95 -58 -132 -196 -132 -153 1 -188 37 -166 173 14 91 6 103 -42 73 -38 -23 -52 -52 -62 -125 -8 -62 -34 -86 -133 -124 -261 -100 -733 -110 -894 -20 -75 43 -81 64 -89 313 -11 345 -24 455 -52 455 -7 0 -31 -19 -54 -42z m2429 -537 c30 -33 64 -130 55 -155 -7 -19 -29 -16 -115 15 -83 30 -132 58 -132 76 0 8 20 36 45 61 41 41 48 44 82 39 24 -4 48 -17 65 -36z" id="arabic-outline-01"></path><path d="M564 802 c-70 -51 -127 -197 -110 -285 20 -105 179 -157 317 -102 21 8 31 -18 23 -61 -26 -140 -464 -231 -620 -129 -52 34 -105 206 -81 265 13 35 36 144 31 151 -8 13 -40 11 -52 -3 -5 -7 -22 -51 -38 -98 -35 -105 -40 -258 -10 -323 21 -48 90 -123 130 -144 125 -65 353 -56 513 19 56 27 158 124 177 170 49 117 32 357 -34 463 -64 104 -165 136 -246 77z m133 -134 c27 -25 63 -89 63 -112 0 -10 -16 -17 -55 -21 -147 -19 -221 58 -133 139 37 34 85 31 125 -6z" id="arabic-outline-05"></path></g><g><path d="M48 10 L60 18 L52 29 L40 21 Z" fill-rule="evenodd" id="qaf-dot-left"></path><path d="M68 10 L80 18 L72 29 L60 21 Z" fill-rule="evenodd" id="qaf-dot-right"></path><path d="M185 1 L195 9 L187 21 L175 13 Z" fill-rule="evenodd" id="tha-dot-top"></path><path d="M175 21 L186 29 L178 41 L166 33 Z" fill-rule="evenodd" id="tha-dot-left"></path><path d="M195 22 L207 30 L199 41 L187 33 Z" fill-rule="evenodd" id="tha-dot-right"></path><path d="M260 103 L272 111 L264 122 L252 114 Z" fill-rule="evenodd" id="ya-dot-left"></path><path d="M280 103 L292 111 L284 122 L272 114 Z" fill-rule="evenodd" id="ya-dot-right"></path></g></g></g><g fill="#074B36" id="english-layer" transform="translate(34 48) scale(0.598290598)"><g><path d="M0 0 H12 L42 57 L66 0 H78 V56 C78 67 81 73 87 76 V78 C72 78 65 74 65 60 V15 L35 76 H32 L6 15 V75 H0 Z" fill-rule="evenodd" id="latin-M"></path><path d="M141 49 H102 C102 64 107 73 119 73 C127 73 134 67 137 62 L141 65 C134 75 125 79 114 78 C98 77 91 65 91 49 C91 33 100 21 116 21 C134 21 143 33 141 49 Z M102 44 H130 C130 32 125 25 117 25 C108 25 104 32 102 44 Z" fill-rule="evenodd" id="latin-e"></path><path d="M155 7 L163 3 V22 H177 V27 H163 V59 C163 70 166 74 172 74 C175 74 177 72 179 71 L182 75 C178 79 173 80 167 80 C155 80 151 73 151 62 V27 H145 V22 H151 V12 Z" fill-rule="evenodd" id="latin-t"></path><path d="M181 0 H190 C200 0 202 3 202 13 V28 C208 23 215 21 221 21 C234 21 239 29 239 42 V76 H228 V43 C228 32 224 27 216 27 C210 27 206 30 202 33 V76 H191 V14 C191 4 188 2 181 2 Z" fill-rule="evenodd" id="latin-h"></path><path d="M248 35 C249 25 259 21 269 21 C285 21 292 28 292 43 V76 H284 L281 71 C275 76 269 78 262 78 C251 78 244 71 244 61 C244 48 257 44 281 44 V39 C281 29 277 25 269 25 C261 25 257 29 256 36 Z M281 49 C266 49 255 53 255 62 C255 69 260 73 267 73 C273 73 278 69 281 64 Z" fill-rule="evenodd" id="latin-a"></path><path d="M339 27 L351 21 V96 H340 V73 C334 76 329 78 323 78 C308 78 302 67 302 50 C302 33 311 21 325 21 C331 21 336 23 339 27 Z M340 33 C335 28 331 26 326 26 C316 26 312 34 312 49 C312 64 316 74 326 74 C331 74 336 71 340 68 Z" fill-rule="evenodd" id="latin-q"></path></g></g></svg></a>
+<!-- Clean Navigation Links -->
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-primary font-semibold text-[15px] border-b-2 border-secondary pb-1" href="#">الرئيسية</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#templates-section">معرض القوالب</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#how-it-works-section">كيف يعمل ميثاق</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#envelope-spotlight">تجربة فتح الظرف</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#why-methaq-section">عن ميثاق</a>
+</nav>
+<!-- Primary CTA Button -->
+<div class="flex items-center gap-3">
+<a class="inline-flex items-center gap-2 bg-primary hover:bg-[#18271a] text-surface-bright border border-secondary-fixed/40 px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-[14px] font-medium" href="#templates-section">
+<span class="material-symbols-outlined text-[19px] text-secondary-fixed">draw</span>
+<span>صمّم دعوتك</span>
+</a>
+</div>
+</div>
+</header>
+<main class="w-full pt-20"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Top Light -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-40 right-1/4 w-96 h-96 bg-secondary-fixed/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute top-20 -left-20 w-80 h-80 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Editorial Header Section -->
+<section class="relative max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-16">
+<div class="flex flex-col items-center text-center max-w-3xl mx-auto">
+<!-- Monogram / Atelier Stamp Token -->
+<div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-surface-container-high shadow-sm mb-6 text-secondary">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">mark_email_unread</span>
+</div>
+<div class="flex items-center gap-3 mb-4">
+<span class="w-8 h-[1px] bg-secondary"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">أتيليه ميثاق للضيافة الرقمية</span>
+<span class="w-8 h-[1px] bg-secondary"></span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary mb-6 font-amiri">
+          تواصل مع ميثاق
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed font-arabic">
+          نحن هنا لمرافقتكم في صياغة أولى بشائر الفرح، وتقديم تجربة استثنائية تليق بضيوفكم ومناسباتكم الكبرى. يتولى مستشارو المظاريف والخط العربي رعاية كل تفصيلة بدقة متناهية.
+        </p>
+</div>
+</section>
+<!-- Visual Paper Divider with Seal Motif -->
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="relative flex items-center justify-center">
+<div class="w-full h-px bg-surface-container-highest"></div>
+<div class="absolute bg-surface px-4 flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest">METHAQ ATELIER CONCIERGE</span>
+<span class="material-symbols-outlined text-[16px]">stars</span>
+</div>
+</div>
+</div>
+<!-- Main Content Grid: Official Channels & Consultation Request Preview -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Column 1: Verified Channels & Concierge Hours (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Official Channel Card -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-surface-container-low rounded-bl-full pointer-events-none"></div>
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-[24px]">verified</span>
+<h2 class="font-title-lg text-title-lg text-primary font-amiri">القنوات الرسمية المعتمدة</h2>
+</div>
+<!-- Email Spec Block -->
+<div class="flex flex-col gap-4">
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">البريد الإلكتروني للعناية بالضيوف</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-manrope bg-secondary-container text-on-secondary-container font-semibold">
+                    قيد التفعيل الرسمي
+                  </span>
+</div>
+<div class="flex items-center justify-between gap-3">
+<code class="font-manrope text-body-md text-primary font-semibold select-all dir-ltr text-right">
+                    care@methaq.com
+                  </code>
+<button class="text-secondary hover:text-primary transition-colors p-1.5 rounded bg-surface hover:bg-surface-container-high" onclick="navigator.clipboard.writeText('care@methaq.com')" title="نسخ البريد" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<p class="mt-2 text-label-sm text-on-surface-variant">
+                  عنوان رسمي مؤقت وخاص بمرحلة الإطلاق التجريبي ومراجعة الحجوزات المسبقة.
+                </p>
+</div>
+<!-- Secondary Concierge / Atelier Inquiries -->
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">أتيليه المناسبات الخاصة والشراكات</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-manrope bg-surface-container-highest text-on-surface-variant">
+                    للمصممين والمنسقين
+                  </span>
+</div>
+<div class="flex items-center justify-between gap-3">
+<code class="font-manrope text-body-md text-primary font-semibold select-all dir-ltr text-right">
+                    contact@methaq.atelier
+                  </code>
+<button class="text-secondary hover:text-primary transition-colors p-1.5 rounded bg-surface hover:bg-surface-container-high" onclick="navigator.clipboard.writeText('contact@methaq.atelier')" title="نسخ البريد" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<p class="mt-2 text-label-sm text-on-surface-variant">
+                  مخصص لمصممي الأعراس، قصور الأفراح، ومؤسسات تنظيم المؤتمرات الرفيعة.
+                </p>
+</div>
+</div>
+<!-- Transparency / Verification Note -->
+<div class="mt-6 pt-5 bg-surface-container-low/50 rounded-lg p-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5">policy</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                  حرصاً على أعلى معايير الخصوصية الملكية وتجنب الانتحال، لا تعتمد منصة «ميثاق» أي أرقام هواتف غير مدرجة هنا ولا تطلب بياناتكم البنكية عبر تطبيقات المراسلة الفورية إطلاقاً.
+                </p>
+</div>
+</div>
+</div>
+<!-- Working Hours & Ritual of Care -->
+<div class="bg-surface-container rounded-xl p-8 shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary text-[24px]">schedule</span>
+<h2 class="font-title-md text-title-md text-primary font-amiri">ساعات العناية والاستجابة</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
+              فريق العناية بمناسبات ميثاق متاح من الأحد إلى الخميس، من 9:00 صباحاً حتى 6:00 مساءً (بتوقيت مكة المكرمة).
+            </p>
+<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-lg text-label-lg text-primary">زمن الاستجابة المتوقع</span>
+</div>
+<span class="font-manrope text-label-lg text-secondary font-semibold">خلال ٢٤ ساعة عمل</span>
+</div>
+</div>
+<!-- Guidance / Categorized Inquiries -->
+<div class="bg-surface-container-low rounded-xl p-8 shadow-sm">
+<h3 class="font-title-md text-title-md text-primary font-amiri mb-4">مسارات الاستفسارات الموصى بها</h3>
+<ul class="flex flex-col gap-3 font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>تخصيص الختم الشمعي الملكي والرموز العائلية المطرزة رقمياً.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>الدعم الفني وتجربة التفكيك الحسي لفتح الظرف على أجهزة الضيوف.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>التعاون مع منسقي الحفلات ومصممي بطاقات الدعوة الخاصة.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Column 2: Elegant Consultation Request Preview (7 cols) -->
+<div class="lg:col-span-7 flex flex-col justify-between">
+<div class="bg-surface-container-lowest rounded-xl p-8 lg:p-10 shadow-sm relative">
+<!-- Card Header -->
+<div class="flex items-center justify-between mb-8 pb-4 bg-surface-container-low -mx-8 -mt-8 px-8 py-5 rounded-t-xl">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">معاينة واجهة الحجز</span>
+<h2 class="font-title-lg text-title-lg text-primary font-amiri mt-1">طلب استشارة أو تواصل مسبق</h2>
+</div>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded font-label-sm text-label-sm">
+                واجهة أولية
+              </span>
+</div>
+<!-- Descriptive intro -->
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 leading-relaxed">
+              تتيح لكم هذه الاستمارة المبدئية إدراج تفاصيل مناسبتكم الكبرى، ليقوم فريق الأتيليه بدراسة التدرجات اللونية المناسبة والخطوط التراثية المقترحة قبل التواصل المباشر.
+            </p>
+<!-- The Non-Complex Form Interface Preview -->
+<form class="flex flex-col gap-6" onsubmit="event.preventDefault(); showConsultationNotice();">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Name Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-label-lg text-primary">الاسم الكريم / ممثل العائلة</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low px-4 py-3 rounded-lg text-primary placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all font-body-md text-body-md" placeholder="صاحب السمو / سعادة / الاسم الكريم" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-label-lg text-primary">البريد الإلكتروني المعتمد</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low px-4 py-3 rounded-lg text-primary placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all font-body-md text-body-md dir-ltr text-right" placeholder="example@domain.com" type="email"/>
+</div>
+</div>
+</div>
+<!-- Occasion Category Selector -->
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-label-lg text-primary">نوع المناسبة المرتقبة</label>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<label class="flex items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors text-center">
+<input checked="" class="hidden peer" name="occasion" type="radio" value="wedding"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant peer-checked:text-primary peer-checked:font-semibold">حفل زفاف ملكي</span>
+</label>
+<label class="flex items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors text-center">
+<input class="hidden peer" name="occasion" type="radio" value="engagement"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant peer-checked:text-primary peer-checked:font-semibold">عقد قران ومِلْكَة</span>
+</label>
+<label class="flex items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors text-center">
+<input class="hidden peer" name="occasion" type="radio" value="gala"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant peer-checked:text-primary peer-checked:font-semibold">أمسية احتفالية خاصة</span>
+</label>
+<label class="flex items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors text-center">
+<input class="hidden peer" name="occasion" type="radio" value="partner"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant peer-checked:text-primary peer-checked:font-semibold">شراكة وتنسيق</span>
+</label>
+</div>
+</div>
+<!-- Expected Date & Guest Count -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-label-lg text-primary">الموعد التقريبي للمناسبة</label>
+<input class="w-full bg-surface-container-low px-4 py-3 rounded-lg text-primary placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all font-body-md text-body-md" placeholder="الشهر / السنة (مثال: رجب ١٤٤٧ هـ)" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-label-lg text-primary">العدد التقريبي للمدعوين</label>
+<select class="w-full bg-surface-container-low px-4 py-3 rounded-lg text-primary focus:outline-none focus:bg-surface-container transition-all font-body-md text-body-md appearance-none">
+<option>أقل من ١٠٠ ضيف (نطاق حميمي)</option>
+<option selected="">١٠٠ - ٣٠٠ ضيف (حفل رئيسي)</option>
+<option>٣٠٠ - ٧٠٠ ضيف (مناسبة كبرى)</option>
+<option>أكثر من ٧٠٠ ضيف (مراسم ملكية)</option>
+</select>
+</div>
+</div>
+<!-- Personal Vision & Notes -->
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-label-lg text-primary">رؤيتكم الخاصة وملاحظات التصميم</label>
+<textarea class="w-full bg-surface-container-low p-4 rounded-lg text-primary placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all font-body-md text-body-md resize-none" placeholder="شاركنا أفكاركم حول المظروف، درجات الألوان المفضلة، أو رغبتكم في ختم شمعي ذي طابع عائلي خاص..." rows="4"></textarea>
+</div>
+<!-- Status Notice Box -->
+<div class="hidden p-4 rounded-lg bg-surface-container-high text-primary font-body-sm text-body-sm" id="consultation-feedback">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">info</span>
+<span>تم استلام مسودة طلب الاستشارة. نظراً لمرحلة التفعيل المسبق، سيتم التواصل عبر البريد الإلكتروني الرسمي.</span>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+                  تخضع جميع الطلبات لمراجعة سرية الضيوف قبل الاعتماد.
+                </p>
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary px-8 py-3.5 rounded-lg shadow-sm hover:shadow transition-all font-label-lg text-label-lg" type="submit">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span>إرسال مسودة الاستشارة</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Editorial Paper Texture Strip Placeholder Visual -->
+<div class="mt-6 bg-surface-container rounded-xl p-6 flex items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary text-[32px]">cruelty_free</span>
+<div>
+<h4 class="font-title-md text-title-md text-primary font-amiri">تجربة لمس الورق الفاخر... رقمياً</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">كل بطاقة تصاغ بمحاكاة دقيقة لملمس ألياف القطن والذهب الإيطالي المطفأ.</p>
+</div>
+</div>
+<a class="shrink-0 text-secondary hover:text-primary font-label-lg text-label-lg underline underline-offset-4" href="#templates-section">
+              استكشف القوالب
+            </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Photographic Accent (Atelier Craftsmanship) -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="h-44 rounded-lg overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover" data-alt="A close-up aesthetic shot of luxury dark olive paper envelopes with hot-stamped gold foil calligraphy in Arabic, placed on textured cream cotton rag surface under soft diffused daylight, editorial luxury stationery photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJQWWzjY1OJnRL2K79R_ZUn-UCs47XZ_9V7GQ0uMh4ecjFKjJL0RG41iuKKf0fVlrS1XoK0VYZIcFn-MtvFR0b49fFV6xcorDWB7HN6TeVA-L03AG1_a958hfF1e9jo73oaCW2vzqHlOLIGgXPh6-DIW4YoAnUz05Fko2jR15f-cRt7WrijgN21DpnTcIS1tp-B-p1FPxMvaCL0dJWYxA2nvfvmyuEIblr20iu_Z4"/>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">الحرفية البصرية</span>
+<h3 class="font-title-md text-title-md text-primary font-amiri mt-1">تطريز الخط العربي التراثي</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">عناية خاصة باختيار خط الثلث والديواني الجلي للمناسبات الكبرى.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="h-44 rounded-lg overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover" data-alt="Detailed macro view of an authentic handcrafted wax seal in antique bronze and muted olive green holding a folded bespoke wedding invitation card, subtle shimmering gold particles, fine art ceremonial stationery style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwbwFXNnvh453JKtP_CC2d5MGSH1lUVymV8kOv50rLA-nbCpDgqJ8SAK9gTI2ovG-Iz83HW-cxHz9QVN8vQYEFvVkDVVNxvYUdlWBBmEQJ2LJ3V1ixhU65TGFglp1oWgfxOap_js6iFdog5s3eUsttJRQEoQOov5c0inBuKdw5vQ_Q8ErQDWozZjUYvhqxQq-pPIuGFPR7_6mxdA80m1yjlNU-5pbjMsh9GVUjezo"/>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">المحاكاة الحسية</span>
+<h3 class="font-title-md text-title-md text-primary font-amiri mt-1">فض الختم الشمعي التفاعلي</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">صوت تكسير الشمع وحركة انفراج أطراف المظروف لحظة النقر الأولى.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="h-44 rounded-lg overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover" data-alt="An open digital tablet displaying an elegant bilingual wedding invitation with gold foil borders and emerald green accents, placed alongside a cup of Arabic coffee and white jasmine flowers on an ivory marble table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbvj1-KU9qUNwulx2DDIAkZs5xjI9FGfe7KBjYOy5hJgc0ZGu98F4CJL7tp3GcnQIltyF6FySgBGZzwL3d3GV3yS5NfmcRr3ycCO5X9SsV3WRN8fk8tsyEoV15Ij7FIEgoWAnX32e6Mfo7lFDE79FTsPuWRyZKOscLataXTEKz31y0vH6G4eQ8tf5YL06SFZgR9-AbwdVor3ghfePsLoOPQ_DJVSjGE-teD_KwOQ0"/>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">إدارة الضيوف</span>
+<h3 class="font-title-md text-title-md text-primary font-amiri mt-1">روابط خاصة ومحمية</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">تخصيص الاسم ومسح الرمز السريع وإحصائيات التأكيد المباشرة.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section (Accordion with Interactive Toggle) -->
+<section class="max-w-4xl mx-auto px-6 lg:px-12 py-20">
+<div class="text-center mb-12">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">إيضاحات وافية</span>
+<h2 class="font-headline-lg text-headline-lg text-primary font-amiri mt-2">الأسئلة الشائعة قبل التواصل</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3">
+          إجابات دقيقة حول آلية التصميم، الخصوصية، والتجربة الحسية لفتح الظرف الملكي.
+        </p>
+</div>
+<div class="flex flex-col gap-4" id="faq-container">
+<!-- FAQ Item 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" onclick="toggleFaq(1)">
+<div class="flex items-center justify-between gap-4">
+<h3 class="font-title-md text-title-md text-primary font-amiri">كيف يتم استلام وتجربة فتح الظرف التفاعلي؟</h3>
+<span class="material-symbols-outlined text-secondary transition-transform duration-300" id="faq-icon-1">expand_more</span>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container-high hidden" id="faq-answer-1">
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              يتلقى كل ضيف رابطاً خاصاً ومؤمناً. عند الفتح، يظهر المظروف الملكي متمركزاً على شاشة الهاتف، وبمجرد لمس الختم الشمعي المذهب ينفتح المظروف بسلاسة ثلاثية الأبعاد مصحوباً بمؤثرات صوتية هادئة تعزز هيبة الدعوة دون إزعاج.
+            </p>
+</div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" onclick="toggleFaq(2)">
+<div class="flex items-center justify-between gap-4">
+<h3 class="font-title-md text-title-md text-primary font-amiri">هل يمكن حماية الرابط وتخصيصه لكل ضيف باسمه؟</h3>
+<span class="material-symbols-outlined text-secondary transition-transform duration-300" id="faq-icon-2">expand_more</span>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container-high hidden" id="faq-answer-2">
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              نعم بالتأكيد. تدعم منصة «ميثاق» نظام التوجيه الشخصي التام، حيث يظهر اسم المدعو بديباجة ترحيبية خاصة عند فض الختم، مع إمكانية قفل الرابط برقم هاتف المدعو أو رمز دخول حصري لضمان عدم إعادة الإرسال لأطراف غير معنية.
+            </p>
+</div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" onclick="toggleFaq(3)">
+<div class="flex items-center justify-between gap-4">
+<h3 class="font-title-md text-title-md text-primary font-amiri">ما المدة المستغرقة لتجهيز الدعوة؟</h3>
+<span class="material-symbols-outlined text-secondary transition-transform duration-300" id="faq-icon-3">expand_more</span>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container-high hidden" id="faq-answer-3">
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              تستغرق القوالب الجاهزة في معرض ميثاق ما بين ساعتين إلى ٢٤ ساعة بعد إدخال البيانات واعتماد الأسماء. أما التصاميم الملكية الخاصة والمخصصة بالكامل فتستغرق من ٣ إلى ٥ أيام عمل مع مراجعة وموافقة العائلة ومصمم الخطوط.
+            </p>
+</div>
+</div>
+<!-- FAQ Item 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" onclick="toggleFaq(4)">
+<div class="flex items-center justify-between gap-4">
+<h3 class="font-title-md text-title-md text-primary font-amiri">هل يمكن تعديل البيانات بعد إرسال الرابط للضيوف؟</h3>
+<span class="material-symbols-outlined text-secondary transition-transform duration-300" id="faq-icon-4">expand_more</span>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container-high hidden" id="faq-answer-4">
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              تتيح لكم لوحة تحكم ميثاق تعديل أي تفاصيل لوجستية طارئة (مثل مواعيد القاعة، خريطة الوصول، أو تعليمات مواقف السيارات) وتنعكس التعديلات لحظياً ومباشرة لدى كافة الضيوف دون الحاجة لإعادة مشاركة الرابط.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Ceremonial Grand CTA -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+<div class="bg-primary text-on-primary rounded-2xl p-10 lg:p-16 relative overflow-hidden text-center shadow-lg">
+<div class="absolute -top-24 -right-24 w-80 h-80 bg-secondary/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-80 h-80 bg-surface-container-highest/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded bg-primary-container text-secondary-fixed font-label-sm text-label-sm mb-6">
+<span class="material-symbols-outlined text-[16px]">celebration</span>
+<span>ارتقِ بمناسبة العمر</span>
+</span>
+<h2 class="font-headline-lg text-headline-lg font-amiri mb-4">
+            جاهزون لبدء حكاية ميثاقكم؟
+          </h2>
+<p class="font-body-lg text-body-lg text-surface-container-high mb-8 leading-relaxed font-arabic">
+            تصفح معرض النماذج المختارة وشارك ضيوفك دعوة رقمية تحاكي أرقى مطبوعات القصور الملكية بلمسة واحدة.
+          </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-secondary text-on-secondary px-8 py-4 rounded-lg font-label-lg text-label-lg shadow-sm hover:bg-secondary/90 transition-all" href="#templates-section">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span>معاينة تصاميم المعرض</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary-container text-surface-bright px-8 py-4 rounded-lg font-label-lg text-label-lg hover:bg-primary-container/80 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">home</span>
+<span>العودة للرئيسية</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<script>
+  function toggleFaq(index) {
+    const answer = document.getElementById(`faq-answer-${index}`);
+    const icon = document.getElementById(`faq-icon-${index}`);
+    if (!answer || !icon) return;
+
+    const isHidden = answer.classList.contains('hidden');
+    
+    // Close other FAQs
+    for (let i = 1; i <= 4; i++) {
+      const a = document.getElementById(`faq-answer-${i}`);
+      const ic = document.getElementById(`faq-icon-${i}`);
+      if (a && ic) {
+        a.classList.add('hidden');
+        ic.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    if (isHidden) {
+      answer.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  function showConsultationNotice() {
+    const feedback = document.getElementById('consultation-feedback');
+    if (feedback) {
+      feedback.classList.remove('hidden');
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+</script></main>
+<!-- 8. FOOTER -->
+<footer class="w-full bg-surface-container-low border-t border-outline-variant/30">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+<!-- Logo & Brand Statement -->
+<div class="lg:col-span-4 flex flex-col gap-4">
+<div class="flex items-center"><svg aria-label="ميثاق — Methaq" class="h-10 w-auto" fill="none" role="img" viewbox="0 0 688 150" xmlns="http://www.w3.org/2000/svg"><g fill="#B69A50" id="symbol-layer-footer" transform="translate(510 29) scale(0.403409091)"><g transform="translate(-524 -105)"><path d="M611 247 C606 205 625 176 659 167 C654 142 674 106 694 106 C715 105 737 129 744 150 C751 168 740 187 731 198 C698 191 658 190 636 204 C620 214 618 232 617 240 Z M728 167 C720 149 707 133 693 134 C681 133 672 144 673 153 C678 165 699 162 728 167 Z" fill-rule="evenodd"></path><path d="M532 286 C520 274 538 259 562 255 C593 249 625 256 656 267 L641 277 C608 266 557 261 538 281 L532 286 Z" fill-rule="evenodd"></path><path d="M527 281 C531 301 559 309 608 297 C610 303 612 309 616 314 C585 324 551 324 535 313 C526 307 522 293 527 281 Z" fill-rule="evenodd"></path><path d="M619 250 C650 208 684 232 734 264 L720 274 C674 247 651 235 634 253 Z" fill-rule="evenodd"></path><path d="M609 275 L626 279 C629 308 657 322 685 307 L699 317 C677 333 647 335 629 322 C615 312 610 294 609 275 Z" fill-rule="evenodd"></path><path d="M703 237 C740 212 785 223 791 279 L775 277 C771 245 750 234 719 249 Z" fill-rule="evenodd"></path><path d="M788 240 C818 229 860 231 870 248 C875 256 876 266 872 274 C869 256 854 250 833 250 C820 250 806 253 794 257 Z" fill-rule="evenodd"></path><path d="M758 278 C801 291 853 290 867 268 C877 279 867 291 848 297 C822 307 782 302 743 289 Z" fill-rule="evenodd"></path><path d="M632 287 L681 255 L695 264 L642 300 C637 297 634 292 632 287 Z" fill-rule="evenodd"></path><path d="M706 289 L754 254 C761 258 764 264 767 270 L721 300 Z" fill-rule="evenodd"></path><path d="M667 291 L681 282 C712 301 743 324 766 302 L785 305 C766 334 741 332 721 323 C701 315 683 303 667 291 Z" fill-rule="evenodd"></path></g></g><g fill="#074B36" id="arabic-layer-footer" transform="translate(285 40) scale(0.557103064)"><g><g stroke="none" transform="translate(0.000000,122.000000) scale(0.100000,-0.100000)"><path d="M1013 1178 c-41 -42 -41 -44 -33 -88 15 -77 29 -237 39 -425 13 -241 32 -289 136 -350 225 -131 955 -60 1077 105 27 37 30 37 47 -1 25 -56 81 -83 185 -87 115 -5 169 9 217 56 20 21 39 44 42 52 6 12 8 12 13 2 14 -31 71 -86 101 -98 18 -8 67 -14 110 -14 95 0 147 21 193 78 l32 40 47 -29 c60 -36 162 -75 224 -84 42 -7 51 -5 74 16 144 133 55 459 -125 459 -78 0 -129 -43 -208 -177 -81 -137 -137 -172 -254 -159 -105 12 -134 52 -125 179 6 98 2 103 -56 64 -35 -24 -46 -49 -48 -110 -2 -95 -58 -132 -196 -132 -153 1 -188 37 -166 173 14 91 6 103 -42 73 -38 -23 -52 -52 -62 -125 -8 -62 -34 -86 -133 -124 -261 -100 -733 -110 -894 -20 -75 43 -81 64 -89 313 -11 345 -24 455 -52 455 -7 0 -31 -19 -54 -42z m2429 -537 c30 -33 64 -130 55 -155 -7 -19 -29 -16 -115 15 -83 30 -132 58 -132 76 0 8 20 36 45 61 41 41 48 44 82 39 24 -4 48 -17 65 -36z"></path><path d="M564 802 c-70 -51 -127 -197 -110 -285 20 -105 179 -157 317 -102 21 8 31 -18 23 -61 -26 -140 -464 -231 -620 -129 -52 34 -105 206 -81 265 13 35 36 144 31 151 -8 13 -40 11 -52 -3 -5 -7 -22 -51 -38 -98 -35 -105 -40 -258 -10 -323 21 -48 90 -123 130 -144 125 -65 353 -56 513 19 56 27 158 124 177 170 49 117 32 357 -34 463 -64 104 -165 136 -246 77z m133 -134 c27 -25 63 -89 63 -112 0 -10 -16 -17 -55 -21 -147 -19 -221 58 -133 139 37 34 85 31 125 -6z"></path></g><g><path d="M48 10 L60 18 L52 29 L40 21 Z" fill-rule="evenodd"></path><path d="M68 10 L80 18 L72 29 L60 21 Z" fill-rule="evenodd"></path><path d="M185 1 L195 9 L187 21 L175 13 Z" fill-rule="evenodd"></path><path d="M175 21 L186 29 L178 41 L166 33 Z" fill-rule="evenodd"></path><path d="M195 22 L207 30 L199 41 L187 33 Z" fill-rule="evenodd"></path><path d="M260 103 L272 111 L264 122 L252 114 Z" fill-rule="evenodd"></path><path d="M280 103 L292 111 L284 122 L272 114 Z" fill-rule="evenodd"></path></g></g></g><g fill="#074B36" id="english-layer-footer" transform="translate(34 48) scale(0.598290598)"><g><path d="M0 0 H12 L42 57 L66 0 H78 V56 C78 67 81 73 87 76 V78 C72 78 65 74 65 60 V15 L35 76 H32 L6 15 V75 H0 Z" fill-rule="evenodd"></path><path d="M141 49 H102 C102 64 107 73 119 73 C127 73 134 67 137 62 L141 65 C134 75 125 79 114 78 C98 77 91 65 91 49 C91 33 100 21 116 21 C134 21 143 33 141 49 Z M102 44 H130 C130 32 125 25 117 25 C108 25 104 32 102 44 Z" fill-rule="evenodd"></path><path d="M155 7 L163 3 V22 H177 V27 H163 V59 C163 70 166 74 172 74 C175 74 177 72 179 71 L182 75 C178 79 173 80 167 80 C155 80 151 73 151 62 V27 H145 V22 H151 V12 Z" fill-rule="evenodd"></path><path d="M181 0 H190 C200 0 202 3 202 13 V28 C208 23 215 21 221 21 C234 21 239 29 239 42 V76 H228 V43 C228 32 224 27 216 27 C210 27 206 30 202 33 V76 H191 V14 C191 4 188 2 181 2 Z" fill-rule="evenodd"></path><path d="M248 35 C249 25 259 21 269 21 C285 21 292 28 292 43 V76 H284 L281 71 C275 76 269 78 262 78 C251 78 244 71 244 61 C244 48 257 44 281 44 V39 C281 29 277 25 269 25 C261 25 257 29 256 36 Z M281 49 C266 49 255 53 255 62 C255 69 260 73 267 73 C273 73 278 69 281 64 Z" fill-rule="evenodd"></path><path d="M339 27 L351 21 V96 H340 V73 C334 76 329 78 323 78 C308 78 302 67 302 50 C302 33 311 21 325 21 C331 21 336 23 339 27 Z M340 33 C335 28 331 26 326 26 C316 26 312 34 312 49 C312 64 316 74 326 74 C331 74 336 71 340 68 Z" fill-rule="evenodd"></path></g></g></svg></div>
+<p class="text-[14px] text-on-surface-variant leading-relaxed max-w-sm mt-2">
+          المنصة الرائدة في ابتكار الدعوات الرقمية الفاخرة للزفاف والمناسبات الملكية، بمحاكاة حسية للمظروف والختم الشمعي المذهب.
+        </p>
+</div>
+<!-- Links: من نحن -->
+<div class="lg:col-span-3 flex flex-col gap-3">
+<h4 class="font-amiri text-[20px] font-bold text-primary">من نحن</h4>
+<ul class="flex flex-col gap-2.5 text-[14px] text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#why-methaq-section">قصتنا</a></li>
+<li><a class="hover:text-primary transition-colors" href="#why-methaq-section">فلسفة التصميم</a></li>
+<li><a class="hover:text-primary transition-colors" href="#how-it-works-section">الأسئلة الشائعة</a></li>
+</ul>
+</div>
+<!-- Links: قوالب الدعوات -->
+<div class="lg:col-span-2 flex flex-col gap-3">
+<h4 class="font-amiri text-[20px] font-bold text-primary">قوالب الدعوات</h4>
+<ul class="flex flex-col gap-2.5 text-[14px] text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#templates-section">حفلات زفاف</a></li>
+<li><a class="hover:text-primary transition-colors" href="#templates-section">خطوبة وعقد قران</a></li>
+<li><a class="hover:text-primary transition-colors" href="#templates-section">مناسبات خاصة</a></li>
+</ul>
+</div>
+<!-- Links: التواصل والسياسات -->
+<div class="lg:col-span-3 flex flex-col gap-3">
+<h4 class="font-amiri text-[20px] font-bold text-primary">التواصل والسياسات</h4>
+<ul class="flex flex-col gap-2.5 text-[14px] text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">الشروط والأحكام</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">سياسة الخصوصية</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">حقوق الملكية الفكرية</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">ضمان سرية الضيوف</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Copyright & Identity Quote -->
+<div class="bg-surface-container py-4 border-t border-outline-variant/20">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-3 text-[13px] text-on-surface-variant">
+<p class="font-amiri text-[16px] text-primary italic font-semibold">« لكل حكاية جميلة... ميثاقٌ يليق بها »</p>
+<p class="font-manrope">© 2025 METHAQ. جميع الحقوق محفوظة لمنصة ميثاق.</p>
+</div>
+</div>
+</footer>
+<!-- Interactive Scripts -->
+<script>
+    // Hero Envelope Simulation
+    let isHeroOpen = false;
+    function triggerHeroEnvelope() {
+      const flap = document.getElementById('hero-flap');
+      const seal = document.getElementById('hero-seal');
+      const img = document.getElementById('hero-envelope-img');
+      const status = document.getElementById('hero-status-hint');
+
+      if (!flap || !seal) return;
+
+      isHeroOpen = !isHeroOpen;
+      if (isHeroOpen) {
+        flap.style.transform = 'rotateX(180deg)';
+        seal.style.opacity = '0';
+        seal.style.transform = 'translate(-50%, -50%) scale(0.6) rotate(15deg)';
+        seal.style.pointerEvents = 'none';
+        if (img) img.style.transform = 'scale(1.08) translateY(-6px)';
+        if (status) status.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span> تم فض الختم بنجاح!';
+      } else {
+        flap.style.transform = 'rotateX(0deg)';
+        seal.style.opacity = '1';
+        seal.style.transform = 'translate(-50%, -50%) scale(1) rotate(0deg)';
+        seal.style.pointerEvents = 'auto';
+        if (img) img.style.transform = 'scale(1) translateY(0px)';
+        if (status) status.innerHTML = '<span class="material-symbols-outlined text-[16px]">touch_app</span> انقر لمعاينة تجربة فتح الظرف';
+      }
+    }
+
+    // Envelope Spotlight Simulation
+    let isDemoOpen = false;
+    const demoFlap = document.getElementById('envelope-flap');
+    const demoSeal = document.getElementById('interactive-seal');
+    const demoSheet = document.getElementById('demo-invitation-sheet');
+
+    function toggleEnvelopeSimulation() {
+      if (!demoFlap || !demoSeal || !demoSheet) return;
+
+      isDemoOpen = !isDemoOpen;
+      if (isDemoOpen) {
+        demoFlap.style.transform = 'rotateX(180deg)';
+        demoSheet.style.transform = 'translateY(-30px) scale(1.03)';
+        demoSeal.style.opacity = '0';
+        demoSeal.style.transform = 'scale(0.65) rotate(20deg)';
+        demoSeal.style.pointerEvents = 'none';
+      } else {
+        demoFlap.style.transform = 'rotateX(0deg)';
+        demoSheet.style.transform = 'translateY(24px) scale(1)';
+        demoSeal.style.opacity = '1';
+        demoSeal.style.transform = 'scale(1) rotate(0deg)';
+        demoSeal.style.pointerEvents = 'auto';
+      }
+    }
+
+    function setSealColor(hex, label) {
+      if (demoSeal) {
+        demoSeal.style.backgroundColor = hex;
+      }
+      const heroSeal = document.getElementById('hero-seal');
+      if (heroSeal) {
+        heroSeal.style.backgroundColor = hex;
+      }
+    }
+
+    function scrollToEnvelopeDemo(colorHex) {
+      if (colorHex) {
+        setSealColor(colorHex);
+      }
+      const el = document.getElementById('envelope-spotlight');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!isDemoOpen) {
+          setTimeout(() => {
+            toggleEnvelopeSimulation();
+          }, 600);
+        }
+      }
+    }
+  </script>
+</body></html>

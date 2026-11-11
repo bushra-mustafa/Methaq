@@ -1,0 +1,796 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ميثاق | المنصة الملكية للبطاقات الرقمية الفاخرة</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@400;500;600;700&amp;family=Noto+Sans+Arabic:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-bright": "#fbfdf9",
+            "on-secondary": "#ffffff",
+            "primary": "#203322",
+            "primary-container": "#2c3d2d",
+            "on-primary": "#ffffff",
+            "surface": "#f6fbf2",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4eb",
+            "surface-container": "#e8eee3",
+            "surface-container-high": "#dfe5da",
+            "surface-container-highest": "#d6dcd1",
+            "on-surface": "#181d18",
+            "on-surface-variant": "#434842",
+            "secondary": "#7a613b",
+            "secondary-container": "#fedeb2",
+            "on-secondary-container": "#523c1b",
+            "secondary-fixed": "#e2c59d",
+            "outline": "#747872",
+            "outline-variant": "#c4c8c0",
+            "tertiary": "#2e3d30"
+          },
+          fontFamily: {
+            amiri: ["Amiri", "serif"],
+            manrope: ["Manrope", "sans-serif"],
+            arabic: ["Noto Sans Arabic", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    :root {
+      font-family: 'Noto Sans Arabic', sans-serif;
+    }
+    .font-amiri {
+      font-family: 'Amiri', serif;
+    }
+    .font-manrope {
+      font-family: 'Manrope', sans-serif;
+    }
+    
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.4deg); }
+    }
+    
+    @keyframes goldenDust {
+      0% { transform: translateY(0) scale(0.85); opacity: 0.2; }
+      50% { transform: translateY(-20px) scale(1.1); opacity: 0.7; }
+      100% { transform: translateY(-40px) scale(0.85); opacity: 0.2; }
+    }
+
+    @keyframes sealPulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(122, 97, 59, 0.4), 0 8px 24px -4px rgba(32, 51, 34, 0.35);
+      }
+      50% {
+        box-shadow: 0 0 0 9px rgba(122, 97, 59, 0), 0 14px 28px -3px rgba(122, 97, 59, 0.45);
+      }
+    }
+
+    .animate-float-card {
+      animation: subtleFloat 6s ease-in-out infinite;
+    }
+
+    .seal-pulse-glow {
+      animation: sealPulseGlow 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .gold-dust {
+      position: absolute;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(254, 222, 178, 0.95) 0%, rgba(226, 197, 157, 0.35) 60%, transparent 100%);
+      pointer-events: none;
+      animation: goldenDust 5s ease-in-out infinite;
+    }
+
+    .luxury-card {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .luxury-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 30px -10px rgba(122, 97, 59, 0.16), 0 6px 14px -4px rgba(32, 51, 34, 0.08);
+    }
+
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+  </style>
+</head>
+<body class="bg-surface font-arabic text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- 1. TOP NAVIGATION BAR -->
+<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30">
+<div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
+<!-- Authentic Unified Brand Logo -->
+<a class="flex items-center gap-3.5 group" href="#"><svg class="h-10 w-auto" viewBox="0 0 688 150" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ميثاق — Methaq"><g id="symbol-layer" fill="#B69A50" transform="translate(510 29) scale(0.403409091)"><g transform="translate(-524 -105)"><path id="crown" d="M611 247 C606 205 625 176 659 167 C654 142 674 106 694 106 C715 105 737 129 744 150 C751 168 740 187 731 198 C698 191 658 190 636 204 C620 214 618 232 617 240 Z M728 167 C720 149 707 133 693 134 C681 133 672 144 673 153 C678 165 699 162 728 167 Z" fill-rule="evenodd"></path><path id="ribbon-left-top" d="M532 286 C520 274 538 259 562 255 C593 249 625 256 656 267 L641 277 C608 266 557 261 538 281 L532 286 Z" fill-rule="evenodd"></path><path id="ribbon-left-bottom" d="M527 281 C531 301 559 309 608 297 C610 303 612 309 616 314 C585 324 551 324 535 313 C526 307 522 293 527 281 Z" fill-rule="evenodd"></path><path id="ribbon-cross-top" d="M619 250 C650 208 684 232 734 264 L720 274 C674 247 651 235 634 253 Z" fill-rule="evenodd"></path><path id="ribbon-left-fold" d="M609 275 L626 279 C629 308 657 322 685 307 L699 317 C677 333 647 335 629 322 C615 312 610 294 609 275 Z" fill-rule="evenodd"></path><path id="ribbon-right-arch" d="M703 237 C740 212 785 223 791 279 L775 277 C771 245 750 234 719 249 Z" fill-rule="evenodd"></path><path id="ribbon-right-top" d="M788 240 C818 229 860 231 870 248 C875 256 876 266 872 274 C869 256 854 250 833 250 C820 250 806 253 794 257 Z" fill-rule="evenodd"></path><path id="ribbon-right-bottom" d="M758 278 C801 291 853 290 867 268 C877 279 867 291 848 297 C822 307 782 302 743 289 Z" fill-rule="evenodd"></path><path id="ribbon-diagonal-left" d="M632 287 L681 255 L695 264 L642 300 C637 297 634 292 632 287 Z" fill-rule="evenodd"></path><path id="ribbon-diagonal-right" d="M706 289 L754 254 C761 258 764 264 767 270 L721 300 Z" fill-rule="evenodd"></path><path id="ribbon-cross-bottom" d="M667 291 L681 282 C712 301 743 324 766 302 L785 305 C766 334 741 332 721 323 C701 315 683 303 667 291 Z" fill-rule="evenodd"></path></g></g><g id="arabic-layer" fill="#074B36" transform="translate(285 40) scale(0.557103064)"><g><g transform="translate(0.000000,122.000000) scale(0.100000,-0.100000)" stroke="none"><path d="M1013 1178 c-41 -42 -41 -44 -33 -88 15 -77 29 -237 39 -425 13 -241 32 -289 136 -350 225 -131 955 -60 1077 105 27 37 30 37 47 -1 25 -56 81 -83 185 -87 115 -5 169 9 217 56 20 21 39 44 42 52 6 12 8 12 13 2 14 -31 71 -86 101 -98 18 -8 67 -14 110 -14 95 0 147 21 193 78 l32 40 47 -29 c60 -36 162 -75 224 -84 42 -7 51 -5 74 16 144 133 55 459 -125 459 -78 0 -129 -43 -208 -177 -81 -137 -137 -172 -254 -159 -105 12 -134 52 -125 179 6 98 2 103 -56 64 -35 -24 -46 -49 -48 -110 -2 -95 -58 -132 -196 -132 -153 1 -188 37 -166 173 14 91 6 103 -42 73 -38 -23 -52 -52 -62 -125 -8 -62 -34 -86 -133 -124 -261 -100 -733 -110 -894 -20 -75 43 -81 64 -89 313 -11 345 -24 455 -52 455 -7 0 -31 -19 -54 -42z m2429 -537 c30 -33 64 -130 55 -155 -7 -19 -29 -16 -115 15 -83 30 -132 58 -132 76 0 8 20 36 45 61 41 41 48 44 82 39 24 -4 48 -17 65 -36z" id="arabic-outline-01"></path><path d="M564 802 c-70 -51 -127 -197 -110 -285 20 -105 179 -157 317 -102 21 8 31 -18 23 -61 -26 -140 -464 -231 -620 -129 -52 34 -105 206 -81 265 13 35 36 144 31 151 -8 13 -40 11 -52 -3 -5 -7 -22 -51 -38 -98 -35 -105 -40 -258 -10 -323 21 -48 90 -123 130 -144 125 -65 353 -56 513 19 56 27 158 124 177 170 49 117 32 357 -34 463 -64 104 -165 136 -246 77z m133 -134 c27 -25 63 -89 63 -112 0 -10 -16 -17 -55 -21 -147 -19 -221 58 -133 139 37 34 85 31 125 -6z" id="arabic-outline-05"></path></g><g><path id="qaf-dot-left" d="M48 10 L60 18 L52 29 L40 21 Z" fill-rule="evenodd"></path><path id="qaf-dot-right" d="M68 10 L80 18 L72 29 L60 21 Z" fill-rule="evenodd"></path><path id="tha-dot-top" d="M185 1 L195 9 L187 21 L175 13 Z" fill-rule="evenodd"></path><path id="tha-dot-left" d="M175 21 L186 29 L178 41 L166 33 Z" fill-rule="evenodd"></path><path id="tha-dot-right" d="M195 22 L207 30 L199 41 L187 33 Z" fill-rule="evenodd"></path><path id="ya-dot-left" d="M260 103 L272 111 L264 122 L252 114 Z" fill-rule="evenodd"></path><path id="ya-dot-right" d="M280 103 L292 111 L284 122 L272 114 Z" fill-rule="evenodd"></path></g></g></g><g id="english-layer" fill="#074B36" transform="translate(34 48) scale(0.598290598)"><g><path id="latin-M" d="M0 0 H12 L42 57 L66 0 H78 V56 C78 67 81 73 87 76 V78 C72 78 65 74 65 60 V15 L35 76 H32 L6 15 V75 H0 Z" fill-rule="evenodd"></path><path id="latin-e" d="M141 49 H102 C102 64 107 73 119 73 C127 73 134 67 137 62 L141 65 C134 75 125 79 114 78 C98 77 91 65 91 49 C91 33 100 21 116 21 C134 21 143 33 141 49 Z M102 44 H130 C130 32 125 25 117 25 C108 25 104 32 102 44 Z" fill-rule="evenodd"></path><path id="latin-t" d="M155 7 L163 3 V22 H177 V27 H163 V59 C163 70 166 74 172 74 C175 74 177 72 179 71 L182 75 C178 79 173 80 167 80 C155 80 151 73 151 62 V27 H145 V22 H151 V12 Z" fill-rule="evenodd"></path><path id="latin-h" d="M181 0 H190 C200 0 202 3 202 13 V28 C208 23 215 21 221 21 C234 21 239 29 239 42 V76 H228 V43 C228 32 224 27 216 27 C210 27 206 30 202 33 V76 H191 V14 C191 4 188 2 181 2 Z" fill-rule="evenodd"></path><path id="latin-a" d="M248 35 C249 25 259 21 269 21 C285 21 292 28 292 43 V76 H284 L281 71 C275 76 269 78 262 78 C251 78 244 71 244 61 C244 48 257 44 281 44 V39 C281 29 277 25 269 25 C261 25 257 29 256 36 Z M281 49 C266 49 255 53 255 62 C255 69 260 73 267 73 C273 73 278 69 281 64 Z" fill-rule="evenodd"></path><path id="latin-q" d="M339 27 L351 21 V96 H340 V73 C334 76 329 78 323 78 C308 78 302 67 302 50 C302 33 311 21 325 21 C331 21 336 23 339 27 Z M340 33 C335 28 331 26 326 26 C316 26 312 34 312 49 C312 64 316 74 326 74 C331 74 336 71 340 68 Z" fill-rule="evenodd"></path></g></g></svg></a>
+<!-- Clean Navigation Links -->
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-primary font-semibold text-[15px] border-b-2 border-secondary pb-1" href="#">الرئيسية</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#templates-section">معرض القوالب</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#how-it-works-section">كيف يعمل ميثاق</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#envelope-spotlight">تجربة فتح الظرف</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[15px] font-medium" href="#why-methaq-section">عن ميثاق</a>
+</nav>
+<!-- Primary CTA Button -->
+<div class="flex items-center gap-3">
+<a class="inline-flex items-center gap-2 bg-primary hover:bg-[#18271a] text-surface-bright border border-secondary-fixed/40 px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-[14px] font-medium" href="#templates-section">
+<span class="material-symbols-outlined text-[19px] text-secondary-fixed">draw</span>
+<span>صمّم دعوتك</span>
+</a>
+</div>
+</div>
+</header>
+<main class="w-full pt-20">
+<!-- 2. HERO SECTION -->
+<section class="relative w-full overflow-hidden bg-surface py-16 lg:py-24">
+<!-- Ambient Glows -->
+<div class="absolute -top-32 right-1/4 w-96 h-96 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
+<div class="absolute top-1/2 -left-20 w-80 h-80 rounded-full bg-surface-container-high/40 blur-3xl pointer-events-none"></div>
+<!-- Delicate Gold Particles -->
+<div class="gold-dust w-2.5 h-2.5 top-20 right-1/3" style="animation-delay: 0s;"></div>
+<div class="gold-dust w-2 h-2 top-1/2 right-1/5" style="animation-delay: 2s;"></div>
+<div class="gold-dust w-3 h-3 bottom-24 right-1/2" style="animation-delay: 3.5s;"></div>
+<div class="gold-dust w-2 h-2 top-28 left-1/4" style="animation-delay: 1.2s;"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+<!-- Text Column -->
+<div class="lg:col-span-6 flex flex-col gap-6 text-right">
+<!-- Overline Badge -->
+<div class="inline-flex items-center gap-2 self-start bg-surface-container-low border border-outline-variant/30 px-3.5 py-1.5 rounded-full shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-[13px] text-secondary font-medium tracking-wide">المنصة الملكية للدعوات الرقمية الفاخرة</span>
+</div>
+<!-- Headline: Amiri Calligraphic -->
+<h1 class="font-amiri text-[40px] md:text-[50px] lg:text-[56px] text-primary leading-[1.25] tracking-tight font-bold">
+              «لكل حكاية جميلة...<br>
+<span class="text-secondary font-normal italic">دعوةٌ تَليقُ بها»</span>
+</h1>
+<!-- Subtitle -->
+<p class="text-[17px] md:text-[18px] text-on-surface-variant max-w-xl leading-[1.8] font-normal">
+              منصة ميثاق تجمع بين أصالة بطاقات الدعوة الفاخرة وسلاسة التجربة الرقمية التفاعلية؛ لتصل فرحتك إلى قلوب أحبابك بلمسة تفيض أناقة، ختم شمعي، وفخامة لا تُنسى.
+            </p>
+<!-- CTA Buttons -->
+<div class="flex flex-wrap items-center gap-4 pt-1">
+<a class="inline-flex items-center gap-2.5 bg-primary hover:bg-[#172619] text-surface-bright border border-secondary-fixed/50 px-7 py-3.5 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5" href="#templates-section">
+<span class="material-symbols-outlined text-[20px] text-secondary-fixed">workspace_premium</span>
+<span class="text-[16px] font-semibold">صمّم دعوتك الآن</span>
+</a>
+<button class="inline-flex items-center gap-2 bg-surface-container hover:bg-surface-container-high text-primary px-6 py-3.5 rounded-lg border border-outline-variant/30 transition-all duration-300 hover:-translate-y-0.5" onclick="triggerHeroEnvelope()">
+<span class="material-symbols-outlined text-[20px] text-secondary">play_circle</span>
+<span class="text-[15px] font-medium">جرّب فتح الظرف</span>
+</button>
+</div>
+<!-- Functional Value Badges -->
+<div class="pt-4 flex flex-wrap items-center gap-3">
+<div class="inline-flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/30 text-primary text-[14px]">
+<span class="material-symbols-outlined text-secondary text-[17px]">auto_fix_high</span>
+<span>تخصيص تفاعلي فوري</span>
+</div>
+<div class="inline-flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/30 text-primary text-[14px]">
+<span class="material-symbols-outlined text-secondary text-[17px]">lock</span>
+<span>رابط خاص ومحمي لكل ضيف</span>
+</div>
+<div class="inline-flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/30 text-primary text-[14px]">
+<span class="material-symbols-outlined text-secondary text-[17px]">music_note</span>
+<span>موسيقى وختم شمعي حسي</span>
+</div>
+</div>
+</div>
+<!-- Hero Visual Column -->
+<div class="lg:col-span-6 relative flex justify-center items-center">
+<div class="relative w-full max-w-md lg:max-w-lg">
+<!-- Floating Card Wrapper -->
+<div class="animate-float-card relative rounded-2xl bg-surface-container-low p-4 shadow-xl border border-outline-variant/40">
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-inner bg-surface-container cursor-pointer group" onclick="triggerHeroEnvelope()">
+<!-- Background Invitation Image -->
+<img alt="بطاقة دعوة ميثاق الملكية" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" id="hero-envelope-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYJjMWLUpbu1_CfnvpfyLdwQ1yf4aOS30Zgn6soRiU9G6MQ_6cCorTcJvGuyNl6D-s9ux2Wzl6TI80rvALQiEKp0g7IAF1s5ZMktRVIYKFfbQh2vH0qNV3AM5ZnJpA_6kNN-f_2KBw0KeW2H4AkdjLz0zjDRV7HTRD32QW9zalkRBSm1bSBlaFHJGmIO6HMlEgJe5pU5z9ZBjtHV4Pk9bbqlzkaGEBguVssqmOiCo" style="transform: scale(1.08) translateY(-6px);">
+<!-- Envelope Top Flap Simulation -->
+<div class="absolute inset-x-0 top-0 h-1/2 bg-surface-container-highest/90 backdrop-blur-sm origin-top transition-transform duration-700 ease-in-out border-b border-outline-variant/40 shadow-sm flex items-center justify-center" id="hero-flap" style="transform: rotateX(180deg);">
+<div class="w-12 h-1 bg-secondary-fixed/40 rounded-full"></div>
+</div>
+<!-- Golden Wax Seal -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-16 h-16 rounded-full bg-secondary text-surface-bright flex flex-col items-center justify-center border-2 border-secondary-fixed/70 seal-pulse-glow transition-all duration-500 hover:scale-110 active:scale-95" id="hero-seal" style="opacity: 0; transform: translate(-50%, -50%) scale(0.6) rotate(15deg); pointer-events: none;">
+<span class="material-symbols-outlined text-[20px]">lock_open</span>
+<span class="text-[9px] font-bold">انقر للفتح</span>
+</div>
+<!-- Floating Tags -->
+<div class="absolute bottom-3 right-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 text-primary text-[12px] font-medium">
+<span class="material-symbols-outlined text-secondary text-[16px]">draw</span>
+<span>خط عربي مذهب</span>
+</div>
+<div class="absolute top-3 left-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 text-primary text-[12px] font-medium">
+<span class="material-symbols-outlined text-secondary text-[16px]">volume_up</span>
+<span>موسيقى احتفالية</span>
+</div>
+</div>
+<!-- Status line -->
+<div class="mt-3 px-2 flex items-center justify-between text-[13px] text-on-surface-variant">
+<span class="flex items-center gap-1 text-secondary" id="hero-status-hint"><span class="material-symbols-outlined text-[16px]">check_circle</span> تم فض الختم بنجاح!</span>
+<span class="font-amiri text-[15px] font-bold text-primary">زفاف سارة &amp; فهد</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. FEATURED TEMPLATES (قوالب مختارة من ميثاق) -->
+<section class="w-full py-20 bg-surface-container-low" id="templates-section">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-12">
+<!-- Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex flex-col gap-2">
+<span class="text-[13px] font-semibold text-secondary tracking-widest uppercase">نخبة الإبداعات</span>
+<h2 class="font-amiri text-[32px] md:text-[38px] font-bold text-primary leading-tight">قوالب مختارة من ميثاق</h2>
+<p class="text-[16px] text-on-surface-variant max-w-2xl leading-relaxed">
+              تصاميم استثنائية مستوحاة من فخامة الورق القطني وحوافه المعتقة يدوياً، مع لمسات الذهب والخطوط العربية الأصيلة والأختام الشمعية الملكية.
+            </p>
+</div>
+<div class="inline-flex items-center gap-2 text-primary font-medium text-[15px]">
+<span class="material-symbols-outlined text-secondary text-[20px]">filter_vintage</span>
+<span>تصاميم مهيأة للعرض التفاعلي على كافة الأجهزة</span>
+</div>
+</div>
+<!-- 6 Curated Templates Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Template 1: أندلسية العاجية -->
+<div class="luxury-card group flex flex-col bg-surface rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img alt="مجموعة أندلسية العاجية" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvV8kTp4hZarw7pyhwxeTDPpuVQF8xU_gV3ggPwEp9Wch3hQOPCqlxt3fS_e5GQBpKNdMNbYUQ7M1BBwuKX8koggARH1S2zKFdmcfeGuRJVOq0opjpFr33S8MAf8jOEs47Enie3WGZH9pCBaRd1p5i-6mmYwgrmMjdOtDmi2bJ6B0I724cwDy_XsdtqRgcLJ0Ttzo1FkSEzGXCRjRM8A4ZHtH8qtyf5MQPYS1ZYpY">
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] text-secondary font-bold shadow-sm">
+                الأكثر طلباً
+              </div>
+</div>
+<div class="p-6 flex flex-col gap-3 flex-1 justify-between">
+<div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">مجموعة أندلسية العاجية</h3>
+<p class="text-[14px] text-on-surface-variant mt-1.5 leading-relaxed">
+                  طابع أندلسي بزخارف أوراق الزيتون الطبيعية وتطريز برونزي رقيق على ورق قطني ناعم.
+                </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="text-secondary hover:text-primary transition-colors text-[14px] font-semibold inline-flex items-center gap-1" onclick="scrollToEnvelopeDemo('#7a613b')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  معاينة الظرف
+                </button>
+<a class="bg-surface-container hover:bg-primary hover:text-surface-bright text-primary transition-all px-4 py-1.5 rounded-md text-[13px] font-medium" href="#envelope-spotlight">
+                  تخصيص القالب
+                </a>
+</div>
+</div>
+</div>
+<!-- Template 2: زمرد وقصب الذهب -->
+<div class="luxury-card group flex flex-col bg-surface rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img alt="قالب زمرد وقصب الذهب" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZfBNbnJlmfGBYeQmrSMMmpEVeGADgMswuytQzT_hSXJwh8AC5mwlKshiPtjtt0T1Zt_7lL8UTkDTyBvcuTxSEDOjof5Oqj3Ghc74wW7fPaHDyIxCICdMIGtVTC1UdjRbadQYoBTOl3L3Um990MCt-RGNrj0t7YNkH7CwfLBnLlIekicqmLVcJH9XT_EzTLIrCpKs_cgE34f4ZvwSfRq1rG3Ul4QntaCHAF-0rPMw">
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] text-primary font-bold shadow-sm">
+                جديد ميثاق
+              </div>
+</div>
+<div class="p-6 flex flex-col gap-3 flex-1 justify-between">
+<div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">قالب زمرد وقصب الذهب</h3>
+<p class="text-[14px] text-on-surface-variant mt-1.5 leading-relaxed">
+                  تدرجات الزيتوني العتيق مع إطار مذهب ناعم وظرف مطوي بحزام حريري متهدل وأنيق.
+                </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="text-secondary hover:text-primary transition-colors text-[14px] font-semibold inline-flex items-center gap-1" onclick="scrollToEnvelopeDemo('#203322')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  معاينة الظرف
+                </button>
+<a class="bg-surface-container hover:bg-primary hover:text-surface-bright text-primary transition-all px-4 py-1.5 rounded-md text-[13px] font-medium" href="#envelope-spotlight">
+                  تخصيص القالب
+                </a>
+</div>
+</div>
+</div>
+<!-- Template 3: طيف الياسمين الدمشقي -->
+<div class="luxury-card group flex flex-col bg-surface rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img alt="طيف الياسمين الدمشقي" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6tk6JTX3bV5Bd7oJ2CN-cVncfRyJjyq2Hu-V1wlaZ3Mm_Fr4eYXL6O5OEneElv3jWBNehJhoz-3ARYN5i16dpFsOGFp2XXGeDtsYKL6OAbQCwVSGE5H9fj-Rvbd3yS-kPRkgaG3aJwNnrDTWvRH_ZB6bxhHfFYIlX0U4UxJ37MhHJkreMd-DQLMai5XkZV7qcc4IdINabJeaIhe6zN2L8UIXXd_4j6BwpF4KXrbE">
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] text-secondary font-bold shadow-sm">
+                عقد قران
+              </div>
+</div>
+<div class="p-6 flex flex-col gap-3 flex-1 justify-between">
+<div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">طيف الياسمين الدمشقي</h3>
+<p class="text-[14px] text-on-surface-variant mt-1.5 leading-relaxed">
+                  بساطة ملكية مع لمسات المحبة وخط الثلث الرصين محاطاً ببتلات الياسمين النقية.
+                </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="text-secondary hover:text-primary transition-colors text-[14px] font-semibold inline-flex items-center gap-1" onclick="scrollToEnvelopeDemo('#e2c59d')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  معاينة الظرف
+                </button>
+<a class="bg-surface-container hover:bg-primary hover:text-surface-bright text-primary transition-all px-4 py-1.5 rounded-md text-[13px] font-medium" href="#envelope-spotlight">
+                  تخصيص القالب
+                </a>
+</div>
+</div>
+</div>
+<!-- Template 4: نفحات الزيتون الملكي -->
+<div class="luxury-card group flex flex-col bg-surface rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img alt="نفحات الزيتون الملكي" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf-_qLSthOz1Med0NcYU3TJmANvDK31pFxnjnMAVgBikPKhrWhfTPTxPaDg_m6zRRkFl9blsmPeJxasW2gJijjMa7wG4A9wf_SUOjNGVhYqOofilhwY6bQQoCyODmettpcjKDurue3QeCdjWYOhmfo72Il7K79yyWyK5Kh6CFZHtjOiWbO9GCdvP3_mFfLJ-LfZ5WUfRv1wVY1wxxoeJYTyfKjJSRdf1IB-pup3Y4">
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] text-secondary font-bold shadow-sm">
+                ملكي فاخر
+              </div>
+</div>
+<div class="p-6 flex flex-col gap-3 flex-1 justify-between">
+<div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">نفحات الزيتون الملكي</h3>
+<p class="text-[14px] text-on-surface-variant mt-1.5 leading-relaxed">
+                  تناغم ورق الشاموا والختم الزيتوني مع مونوغرام العروسين المحفور بماء الذهب.
+                </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="text-secondary hover:text-primary transition-colors text-[14px] font-semibold inline-flex items-center gap-1" onclick="scrollToEnvelopeDemo('#203322')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  معاينة الظرف
+                </button>
+<a class="bg-surface-container hover:bg-primary hover:text-surface-bright text-primary transition-all px-4 py-1.5 rounded-md text-[13px] font-medium" href="#envelope-spotlight">
+                  تخصيص القالب
+                </a>
+</div>
+</div>
+</div>
+<!-- Template 5: ميثاق الحرير واللؤلؤ -->
+<div class="luxury-card group flex flex-col bg-surface rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img alt="ميثاق الحرير واللؤلؤ" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvV8kTp4hZarw7pyhwxeTDPpuVQF8xU_gV3ggPwEp9Wch3hQOPCqlxt3fS_e5GQBpKNdMNbYUQ7M1BBwuKX8koggARH1S2zKFdmcfeGuRJVOq0opjpFr33S8MAf8jOEs47Enie3WGZH9pCBaRd1p5i-6mmYwgrmMjdOtDmi2bJ6B0I724cwDy_XsdtqRgcLJ0Ttzo1FkSEzGXCRjRM8A4ZHtH8qtyf5MQPYS1ZYpY">
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] text-secondary font-bold shadow-sm">
+                تأكيد حضور ذكي
+              </div>
+</div>
+<div class="p-6 flex flex-col gap-3 flex-1 justify-between">
+<div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">ميثاق الحرير واللؤلؤ</h3>
+<p class="text-[14px] text-on-surface-variant mt-1.5 leading-relaxed">
+                  نعومة الورق المخملي مع بطاقة RSVP تفاعلية فورية وموسيقى كلاسيكية هادئة.
+                </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="text-secondary hover:text-primary transition-colors text-[14px] font-semibold inline-flex items-center gap-1" onclick="scrollToEnvelopeDemo('#682329')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  معاينة الظرف
+                </button>
+<a class="bg-surface-container hover:bg-primary hover:text-surface-bright text-primary transition-all px-4 py-1.5 rounded-md text-[13px] font-medium" href="#envelope-spotlight">
+                  تخصيص القالب
+                </a>
+</div>
+</div>
+</div>
+<!-- Template 6: ديوان الفخامة النجدية -->
+<div class="luxury-card group flex flex-col bg-surface rounded-xl overflow-hidden shadow-sm border border-outline-variant/30">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img alt="ديوان الفخامة النجدية" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYJjMWLUpbu1_CfnvpfyLdwQ1yf4aOS30Zgn6soRiU9G6MQ_6cCorTcJvGuyNl6D-s9ux2Wzl6TI80rvALQiEKp0g7IAF1s5ZMktRVIYKFfbQh2vH0qNV3AM5ZnJpA_6kNN-f_2KBw0KeW2H4AkdjLz0zjDRV7HTRD32QW9zalkRBSm1bSBlaFHJGmIO6HMlEgJe5pU5z9ZBjtHV4Pk9bbqlzkaGEBguVssqmOiCo">
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full text-[12px] text-primary font-bold shadow-sm">
+                تراث ملكي
+              </div>
+</div>
+<div class="p-6 flex flex-col gap-3 flex-1 justify-between">
+<div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">ديوان الفخامة النجدية</h3>
+<p class="text-[14px] text-on-surface-variant mt-1.5 leading-relaxed">
+                  فخامة الطراز العربي الأصيل مع شريط الحرير وزخارف مستوحاة من عراقة قصر الحكم.
+                </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="text-secondary hover:text-primary transition-colors text-[14px] font-semibold inline-flex items-center gap-1" onclick="scrollToEnvelopeDemo('#7a613b')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+                  معاينة الظرف
+                </button>
+<a class="bg-surface-container hover:bg-primary hover:text-surface-bright text-primary transition-all px-4 py-1.5 rounded-md text-[13px] font-medium" href="#envelope-spotlight">
+                  تخصيص القالب
+                </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. HOW IT WORKS (كيف يعمل ميثاق) -->
+<section class="w-full py-24 bg-surface" id="how-it-works-section">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-16">
+<!-- Section Intro -->
+<div class="text-center max-w-2xl mx-auto flex flex-col gap-3">
+<span class="text-[13px] font-semibold text-secondary uppercase tracking-wider">سلاسة الإعداد ورفعة الذوق</span>
+<h2 class="font-amiri text-[34px] md:text-[40px] font-bold text-primary">كيف يعمل ميثاق في ثلاث خطوات؟</h2>
+<p class="text-[16px] text-on-surface-variant leading-relaxed">
+            صممنا المنصة لتمنحك سهولة فائقة في إعداد وتوجيه دعوتك الملكية دون عناء أو تعقيد تقني.
+          </p>
+</div>
+<!-- 3 Steps Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Step 1 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 rounded-2xl p-8 flex flex-col gap-5">
+<div class="flex items-center justify-between">
+<span class="font-amiri text-[36px] text-secondary/40 font-bold leading-none">٠١</span>
+<div class="w-13 h-13 rounded-full bg-secondary-container/60 flex items-center justify-center text-on-secondary-container p-3.5">
+<span class="material-symbols-outlined text-[26px]">palette</span>
+</div>
+</div>
+<h3 class="font-amiri text-[24px] font-bold text-primary">اختر القالب الملهم</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              استعرض تشكيلتنا الراقية من البطاقات المصممة بعناية فائقة، واختر ما يعبر عن رونق وهيبة مناسبتكم الخاصة.
+            </p>
+<div class="pt-2 flex items-center gap-2 text-primary text-[13px] font-medium">
+<span class="material-symbols-outlined text-[16px] text-secondary">check</span>
+              معاينة حية للمظهر والظرف
+            </div>
+</div>
+<!-- Step 2 -->
+<div class="luxury-card bg-surface-container border border-outline-variant/40 rounded-2xl p-8 flex flex-col gap-5">
+<div class="flex items-center justify-between">
+<span class="font-amiri text-[36px] text-secondary/40 font-bold leading-none">٠٢</span>
+<div class="w-13 h-13 rounded-full bg-primary text-surface-bright flex items-center justify-center p-3.5">
+<span class="material-symbols-outlined text-[26px]">edit_note</span>
+</div>
+</div>
+<h3 class="font-amiri text-[24px] font-bold text-primary">خصّص أدق التفاصيل</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              أدخل أسماء العروسين، تفاصيل الحفل، وخيارات الختم الشمعي ولونه، مع اختيار المقطوعة الموسيقية الترحيبية المرافقة.
+            </p>
+<div class="pt-2 flex items-center gap-2 text-primary text-[13px] font-medium">
+<span class="material-symbols-outlined text-[16px] text-secondary">check</span>
+              إدارة تأكيد الحضور التفاعلي
+            </div>
+</div>
+<!-- Step 3 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 rounded-2xl p-8 flex flex-col gap-5">
+<div class="flex items-center justify-between">
+<span class="font-amiri text-[36px] text-secondary/40 font-bold leading-none">٠٣</span>
+<div class="w-13 h-13 rounded-full bg-secondary-container/60 flex items-center justify-center text-on-secondary-container p-3.5">
+<span class="material-symbols-outlined text-[26px]">mark_email_read</span>
+</div>
+</div>
+<h3 class="font-amiri text-[24px] font-bold text-primary">شارك رابط دعوتك الخاص</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              شارك رابطاً أنيقاً وخاصاً لكل ضيف عبر واتساب أو الرسائل، ليعيش تجربة فتح الظرف التفاعلي الفاخر باسمه شخصياً.
+            </p>
+<div class="pt-2 flex items-center gap-2 text-primary text-[13px] font-medium">
+<span class="material-symbols-outlined text-[16px] text-secondary">check</span>
+              إحصائيات فورية ومؤكدة للردود
+            </div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. INTERACTIVE ENVELOPE UNSEALING SPOTLIGHT (تجربة فتح الظرف) -->
+<section class="w-full py-20 bg-surface-container-low border-y border-outline-variant/30" id="envelope-spotlight">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Interactive Preview Box -->
+<div class="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
+<div class="bg-surface p-6 md:p-8 rounded-2xl shadow-xl border border-outline-variant/40 flex flex-col gap-6">
+<!-- Top Simulation Controls -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-amiri text-[20px] font-bold text-primary">محاكاة فتح الظرف الملكي</span>
+</div>
+<button class="bg-surface-container px-3.5 py-1.5 rounded-md text-[13px] text-primary hover:bg-surface-container-high transition-colors font-medium" onclick="toggleEnvelopeSimulation()">
+                  إعادة الظرف
+                </button>
+</div>
+<!-- Interactive Envelope Canvas Container -->
+<div class="relative w-full aspect-[16/10] bg-surface-container rounded-xl flex items-center justify-center overflow-hidden shadow-inner cursor-pointer select-none perspective-1000 border border-outline-variant/30" id="envelope-demo-box" onclick="toggleEnvelopeSimulation()">
+<!-- Inner Sliding Invitation Card -->
+<div class="absolute w-4/5 h-4/5 bg-surface-container-lowest rounded-lg shadow-lg p-6 flex flex-col items-center justify-center text-center transition-all duration-700 ease-out transform translate-y-6 border border-secondary-fixed/30" id="demo-invitation-sheet" style="transform: translateY(24px) scale(1);">
+<span class="text-[12px] text-secondary font-manrope font-semibold tracking-wider">ROYAL INVITATION</span>
+<h4 class="font-amiri text-[28px] font-bold text-primary my-1">سارة &amp; فهد</h4>
+<div class="w-16 h-0.5 bg-secondary-fixed my-2"></div>
+<p class="text-[14px] text-on-surface-variant font-normal">يتشرفان بدعوتكم لحضور حفل زفافهما الميمون</p>
+<span class="text-[13px] text-secondary font-medium mt-3 bg-surface-container-low px-3 py-1 rounded-full">السبت، ٢٤ أكتوبر • قصر الدرعية</span>
+</div>
+<!-- Envelope Top Triangular Flap -->
+<div class="absolute inset-x-0 top-0 h-1/2 bg-surface-container-highest origin-top transition-transform duration-700 ease-in-out border-b border-outline-variant/40 shadow-sm flex items-center justify-center z-10" id="envelope-flap" style="transform: rotateX(0deg);">
+<div class="w-full h-full bg-gradient-to-b from-transparent to-primary/5"></div>
+</div>
+<!-- Wax Seal Stamp Button -->
+<div class="absolute z-20 w-16 h-16 rounded-full bg-secondary text-surface-bright flex flex-col items-center justify-center border-2 border-secondary-fixed/80 seal-pulse-glow transition-all duration-500 hover:scale-110 active:scale-95" id="interactive-seal" style="opacity: 1; transform: scale(1) rotate(0deg); pointer-events: auto;">
+<span class="material-symbols-outlined text-[20px]">lock_open</span>
+<span class="text-[9px] font-bold">افتح الظرف</span>
+</div>
+</div>
+<!-- Color Picker Bar -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-1">
+<span class="text-[14px] text-on-surface-variant font-medium">لون الختم الشمعي:</span>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-[13px] text-primary" onclick="setSealColor('#7a613b', 'ذهبي ملكي')">
+<span class="w-3.5 h-3.5 rounded-full bg-[#7a613b] border border-surface"></span>
+                    ذهبي ملكي
+                  </button>
+<button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-[13px] text-primary" onclick="setSealColor('#203322', 'زيتي كلاسيكي')">
+<span class="w-3.5 h-3.5 rounded-full bg-[#203322] border border-surface"></span>
+                    زيتي كلاسيكي
+                  </button>
+<button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-[13px] text-primary" onclick="setSealColor('#682329', 'برغندي فاخر')">
+<span class="w-3.5 h-3.5 rounded-full bg-[#682329] border border-surface"></span>
+                    برغندي فاخر
+                  </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Description Column -->
+<div class="lg:col-span-5 flex flex-col gap-6 order-1 lg:order-2">
+<div class="inline-flex items-center gap-2 self-start bg-secondary-container/50 border border-secondary-fixed/50 text-on-secondary-container px-3.5 py-1 rounded-full text-[12px] font-semibold">
+              محاكاة واقعية
+            </div>
+<h2 class="font-amiri text-[32px] md:text-[38px] font-bold text-primary leading-tight">
+              أكثر من مجرد رابط... إنها طقوس استلام دعوة حقيقية
+            </h2>
+<p class="text-[16px] text-on-surface-variant leading-relaxed">
+              عندما ينقر ضيفك على رابط ميثاق، لا يرى صورة صامتة أو تصميماً جامداً، بل يعيش محاكاة حسية تبدأ بلمس الختم الشمعي ليفك طيه بنعومة، وينساب كرت الدعوة مصحوباً بموسيقاك المختارة ورسالة ترحيبية خاصة به.
+            </p>
+<ul class="flex flex-col gap-3 text-[15px] text-primary">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">verified</span>
+<span>محاكاة ملمس الورق والكرتون المطرز يدوياً</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">verified</span>
+<span>أصوات ناعمة لفض الختم وسحب المظروف</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">verified</span>
+<span>زر مباشر لإضافة موعد الحفل إلى تقويم الهاتف ونظام الملاحة</span>
+</li>
+</ul>
+<div class="pt-2">
+<button class="inline-flex items-center gap-2 bg-primary text-surface-bright px-6 py-3 rounded-lg text-[14px] font-semibold hover:bg-[#18271a] transition-all" onclick="toggleEnvelopeSimulation()">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">play_arrow</span>
+<span>افتح الظرف التفاعلي</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. WHY METHAQ (لماذا ميثاق - مميزات المحرر الفعلية) -->
+<section class="w-full py-24 bg-surface" id="why-methaq-section">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-16">
+<!-- Section Header -->
+<div class="text-center max-w-2xl mx-auto flex flex-col gap-3">
+<span class="text-[13px] font-semibold text-secondary uppercase tracking-wider">لماذا ميثاق؟</span>
+<h2 class="font-amiri text-[34px] md:text-[40px] font-bold text-primary">مزايا حقيقية صُممت لراحتكم</h2>
+<p class="text-[16px] text-on-surface-variant leading-relaxed">
+            كل خاصية في ميثاق وُضعت بعناية لتجمع بين سهولة إدارة المناسبة وفخامة التجربة التي تليق بمقام ضيوفكم.
+          </p>
+</div>
+<!-- 6 Real Editor Features Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 p-8 rounded-xl flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">design_services</span>
+</div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">محرر تفاعلي فوري</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              عدّل الأسماء، العبارات، وتواريخ الحفل وشاهد التغييرات لحظياً مع معاينة ثلاثية الأبعاد متجاوبة على مختلف شاشات الهواتف.
+            </p>
+</div>
+<!-- Feature 2 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 p-8 rounded-xl flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">mail_lock</span>
+</div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">ظروف تفاعلية ثلاثية الأبعاد</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              محاكاة متقنة لفض الختم الشمعي وانزلاق البطاقة مع تناثر ذرات الذهب الهادئة دون بهرجة زائدة.
+            </p>
+</div>
+<!-- Feature 3 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 p-8 rounded-xl flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">history_edu</span>
+</div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">خطوط عربية محفورة بدقة</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              مكتبة منتقاة من خطوط الثلث والديواني والنسخ المصقولة بما يوافق أصول الخط العربي الكلاسيكي لتعكس هيبة المناسبة.
+            </p>
+</div>
+<!-- Feature 4 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 p-8 rounded-xl flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">security</span>
+</div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">خصوصية وحصانة ملكية</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              روابط مشفرة، إمكانية قفل الدعوة بكلمة مرور خاصة، ومنع إعادة توجيه الرابط لحماية بيانات الضيوف وخصوصية الحفل.
+            </p>
+</div>
+<!-- Feature 5 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 p-8 rounded-xl flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">badge</span>
+</div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">رابط مخصص لكل ضيف</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              توجيه الدعوة باسم الضيف ولقبه الكريم مباشرة عند فتح الرابط، ليشعر بمكانته وتقديركم الخاص لحضوره.
+            </p>
+</div>
+<!-- Feature 6 -->
+<div class="luxury-card bg-surface-container-low border border-outline-variant/30 p-8 rounded-xl flex flex-col gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">checklist_rtl</span>
+</div>
+<h3 class="font-amiri text-[22px] font-bold text-primary">إدارة تأكيد الحضور (RSVP)</h3>
+<p class="text-[15px] text-on-surface-variant leading-relaxed">
+              متابعة الردود لحظياً ومعرفة أعداد الحضور مع إمكانية تصدير قوائم المدعوين بضغطة زر لتسهيل تنظيم القاعة.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. FINAL CALL TO ACTION (CTA أخير) -->
+<section class="w-full py-20 bg-primary text-surface-bright relative overflow-hidden border-t border-secondary-fixed/20">
+<!-- Glow ambient -->
+<div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-surface-container-highest/10 blur-3xl pointer-events-none"></div>
+<div class="max-w-4xl mx-auto px-6 lg:px-12 text-center flex flex-col items-center gap-7 relative z-10">
+<div class="w-14 h-14 rounded-full bg-surface/10 border border-secondary-fixed/40 flex items-center justify-center text-secondary-fixed shadow-inner">
+<span class="material-symbols-outlined text-[28px]">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-3">
+<h2 class="font-amiri text-[36px] md:text-[46px] font-bold text-surface-bright leading-tight">
+            حكايتك تستحق دعوة مميزة
+          </h2>
+<p class="text-[16px] md:text-[18px] text-surface-container-highest max-w-xl mx-auto leading-relaxed font-normal">
+            ابدأ الآن بصياغة دعوتك الراقية بمزيج من روح التراث العربي والأناقة الرقمية، وشارك أحبتك بهجة المناسبة كما ينبغي لها أن تكون.
+          </p>
+</div>
+<div class="pt-2 flex flex-col sm:flex-row items-center gap-4">
+<a class="inline-flex items-center gap-3 bg-secondary text-surface-bright hover:bg-[#665030] px-8 py-3.5 rounded-lg font-semibold text-[15px] shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 border border-secondary-fixed/50" href="#templates-section">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+<span>ابدأ تصميم دعوتك الآن</span>
+</a>
+<a class="inline-flex items-center gap-2 bg-surface/10 hover:bg-surface/20 text-surface-bright px-6 py-3.5 rounded-lg text-[15px] font-medium transition-all" href="#envelope-spotlight">
+<span>تجربة فتح المظروف</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- 8. FOOTER -->
+<footer class="w-full bg-surface-container-low border-t border-outline-variant/30">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+<!-- Logo & Brand Statement -->
+<div class="lg:col-span-4 flex flex-col gap-4">
+<div class="flex items-center"><svg class="h-10 w-auto" viewBox="0 0 688 150" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ميثاق — Methaq"><g id="symbol-layer-footer" fill="#B69A50" transform="translate(510 29) scale(0.403409091)"><g transform="translate(-524 -105)"><path d="M611 247 C606 205 625 176 659 167 C654 142 674 106 694 106 C715 105 737 129 744 150 C751 168 740 187 731 198 C698 191 658 190 636 204 C620 214 618 232 617 240 Z M728 167 C720 149 707 133 693 134 C681 133 672 144 673 153 C678 165 699 162 728 167 Z" fill-rule="evenodd"></path><path d="M532 286 C520 274 538 259 562 255 C593 249 625 256 656 267 L641 277 C608 266 557 261 538 281 L532 286 Z" fill-rule="evenodd"></path><path d="M527 281 C531 301 559 309 608 297 C610 303 612 309 616 314 C585 324 551 324 535 313 C526 307 522 293 527 281 Z" fill-rule="evenodd"></path><path d="M619 250 C650 208 684 232 734 264 L720 274 C674 247 651 235 634 253 Z" fill-rule="evenodd"></path><path d="M609 275 L626 279 C629 308 657 322 685 307 L699 317 C677 333 647 335 629 322 C615 312 610 294 609 275 Z" fill-rule="evenodd"></path><path d="M703 237 C740 212 785 223 791 279 L775 277 C771 245 750 234 719 249 Z" fill-rule="evenodd"></path><path d="M788 240 C818 229 860 231 870 248 C875 256 876 266 872 274 C869 256 854 250 833 250 C820 250 806 253 794 257 Z" fill-rule="evenodd"></path><path d="M758 278 C801 291 853 290 867 268 C877 279 867 291 848 297 C822 307 782 302 743 289 Z" fill-rule="evenodd"></path><path d="M632 287 L681 255 L695 264 L642 300 C637 297 634 292 632 287 Z" fill-rule="evenodd"></path><path d="M706 289 L754 254 C761 258 764 264 767 270 L721 300 Z" fill-rule="evenodd"></path><path d="M667 291 L681 282 C712 301 743 324 766 302 L785 305 C766 334 741 332 721 323 C701 315 683 303 667 291 Z" fill-rule="evenodd"></path></g></g><g id="arabic-layer-footer" fill="#074B36" transform="translate(285 40) scale(0.557103064)"><g><g transform="translate(0.000000,122.000000) scale(0.100000,-0.100000)" stroke="none"><path d="M1013 1178 c-41 -42 -41 -44 -33 -88 15 -77 29 -237 39 -425 13 -241 32 -289 136 -350 225 -131 955 -60 1077 105 27 37 30 37 47 -1 25 -56 81 -83 185 -87 115 -5 169 9 217 56 20 21 39 44 42 52 6 12 8 12 13 2 14 -31 71 -86 101 -98 18 -8 67 -14 110 -14 95 0 147 21 193 78 l32 40 47 -29 c60 -36 162 -75 224 -84 42 -7 51 -5 74 16 144 133 55 459 -125 459 -78 0 -129 -43 -208 -177 -81 -137 -137 -172 -254 -159 -105 12 -134 52 -125 179 6 98 2 103 -56 64 -35 -24 -46 -49 -48 -110 -2 -95 -58 -132 -196 -132 -153 1 -188 37 -166 173 14 91 6 103 -42 73 -38 -23 -52 -52 -62 -125 -8 -62 -34 -86 -133 -124 -261 -100 -733 -110 -894 -20 -75 43 -81 64 -89 313 -11 345 -24 455 -52 455 -7 0 -31 -19 -54 -42z m2429 -537 c30 -33 64 -130 55 -155 -7 -19 -29 -16 -115 15 -83 30 -132 58 -132 76 0 8 20 36 45 61 41 41 48 44 82 39 24 -4 48 -17 65 -36z"></path><path d="M564 802 c-70 -51 -127 -197 -110 -285 20 -105 179 -157 317 -102 21 8 31 -18 23 -61 -26 -140 -464 -231 -620 -129 -52 34 -105 206 -81 265 13 35 36 144 31 151 -8 13 -40 11 -52 -3 -5 -7 -22 -51 -38 -98 -35 -105 -40 -258 -10 -323 21 -48 90 -123 130 -144 125 -65 353 -56 513 19 56 27 158 124 177 170 49 117 32 357 -34 463 -64 104 -165 136 -246 77z m133 -134 c27 -25 63 -89 63 -112 0 -10 -16 -17 -55 -21 -147 -19 -221 58 -133 139 37 34 85 31 125 -6z"></path></g><g><path d="M48 10 L60 18 L52 29 L40 21 Z" fill-rule="evenodd"></path><path d="M68 10 L80 18 L72 29 L60 21 Z" fill-rule="evenodd"></path><path d="M185 1 L195 9 L187 21 L175 13 Z" fill-rule="evenodd"></path><path d="M175 21 L186 29 L178 41 L166 33 Z" fill-rule="evenodd"></path><path d="M195 22 L207 30 L199 41 L187 33 Z" fill-rule="evenodd"></path><path d="M260 103 L272 111 L264 122 L252 114 Z" fill-rule="evenodd"></path><path d="M280 103 L292 111 L284 122 L272 114 Z" fill-rule="evenodd"></path></g></g></g><g id="english-layer-footer" fill="#074B36" transform="translate(34 48) scale(0.598290598)"><g><path d="M0 0 H12 L42 57 L66 0 H78 V56 C78 67 81 73 87 76 V78 C72 78 65 74 65 60 V15 L35 76 H32 L6 15 V75 H0 Z" fill-rule="evenodd"></path><path d="M141 49 H102 C102 64 107 73 119 73 C127 73 134 67 137 62 L141 65 C134 75 125 79 114 78 C98 77 91 65 91 49 C91 33 100 21 116 21 C134 21 143 33 141 49 Z M102 44 H130 C130 32 125 25 117 25 C108 25 104 32 102 44 Z" fill-rule="evenodd"></path><path d="M155 7 L163 3 V22 H177 V27 H163 V59 C163 70 166 74 172 74 C175 74 177 72 179 71 L182 75 C178 79 173 80 167 80 C155 80 151 73 151 62 V27 H145 V22 H151 V12 Z" fill-rule="evenodd"></path><path d="M181 0 H190 C200 0 202 3 202 13 V28 C208 23 215 21 221 21 C234 21 239 29 239 42 V76 H228 V43 C228 32 224 27 216 27 C210 27 206 30 202 33 V76 H191 V14 C191 4 188 2 181 2 Z" fill-rule="evenodd"></path><path d="M248 35 C249 25 259 21 269 21 C285 21 292 28 292 43 V76 H284 L281 71 C275 76 269 78 262 78 C251 78 244 71 244 61 C244 48 257 44 281 44 V39 C281 29 277 25 269 25 C261 25 257 29 256 36 Z M281 49 C266 49 255 53 255 62 C255 69 260 73 267 73 C273 73 278 69 281 64 Z" fill-rule="evenodd"></path><path d="M339 27 L351 21 V96 H340 V73 C334 76 329 78 323 78 C308 78 302 67 302 50 C302 33 311 21 325 21 C331 21 336 23 339 27 Z M340 33 C335 28 331 26 326 26 C316 26 312 34 312 49 C312 64 316 74 326 74 C331 74 336 71 340 68 Z" fill-rule="evenodd"></path></g></g></svg></div>
+<p class="text-[14px] text-on-surface-variant leading-relaxed max-w-sm mt-2">
+          المنصة الرائدة في ابتكار الدعوات الرقمية الفاخرة للزفاف والمناسبات الملكية، بمحاكاة حسية للمظروف والختم الشمعي المذهب.
+        </p>
+</div>
+<!-- Links: من نحن -->
+<div class="lg:col-span-3 flex flex-col gap-3">
+<h4 class="font-amiri text-[20px] font-bold text-primary">من نحن</h4>
+<ul class="flex flex-col gap-2.5 text-[14px] text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#why-methaq-section">قصتنا</a></li>
+<li><a class="hover:text-primary transition-colors" href="#why-methaq-section">فلسفة التصميم</a></li>
+<li><a class="hover:text-primary transition-colors" href="#how-it-works-section">الأسئلة الشائعة</a></li>
+</ul>
+</div>
+<!-- Links: قوالب الدعوات -->
+<div class="lg:col-span-2 flex flex-col gap-3">
+<h4 class="font-amiri text-[20px] font-bold text-primary">قوالب الدعوات</h4>
+<ul class="flex flex-col gap-2.5 text-[14px] text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#templates-section">حفلات زفاف</a></li>
+<li><a class="hover:text-primary transition-colors" href="#templates-section">خطوبة وعقد قران</a></li>
+<li><a class="hover:text-primary transition-colors" href="#templates-section">مناسبات خاصة</a></li>
+</ul>
+</div>
+<!-- Links: التواصل والسياسات -->
+<div class="lg:col-span-3 flex flex-col gap-3">
+<h4 class="font-amiri text-[20px] font-bold text-primary">التواصل والسياسات</h4>
+<ul class="flex flex-col gap-2.5 text-[14px] text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">الشروط والأحكام</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">سياسة الخصوصية</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">حقوق الملكية الفكرية</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">ضمان سرية الضيوف</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Copyright & Identity Quote -->
+<div class="bg-surface-container py-4 border-t border-outline-variant/20">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-3 text-[13px] text-on-surface-variant">
+<p class="font-amiri text-[16px] text-primary italic font-semibold">« لكل حكاية جميلة... ميثاقٌ يليق بها »</p>
+<p class="font-manrope">© 2025 METHAQ. جميع الحقوق محفوظة لمنصة ميثاق.</p>
+</div>
+</div>
+</footer>
+<!-- Interactive Scripts -->
+<script>
+    // Hero Envelope Simulation
+    let isHeroOpen = false;
+    function triggerHeroEnvelope() {
+      const flap = document.getElementById('hero-flap');
+      const seal = document.getElementById('hero-seal');
+      const img = document.getElementById('hero-envelope-img');
+      const status = document.getElementById('hero-status-hint');
+
+      if (!flap || !seal) return;
+
+      isHeroOpen = !isHeroOpen;
+      if (isHeroOpen) {
+        flap.style.transform = 'rotateX(180deg)';
+        seal.style.opacity = '0';
+        seal.style.transform = 'translate(-50%, -50%) scale(0.6) rotate(15deg)';
+        seal.style.pointerEvents = 'none';
+        if (img) img.style.transform = 'scale(1.08) translateY(-6px)';
+        if (status) status.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span> تم فض الختم بنجاح!';
+      } else {
+        flap.style.transform = 'rotateX(0deg)';
+        seal.style.opacity = '1';
+        seal.style.transform = 'translate(-50%, -50%) scale(1) rotate(0deg)';
+        seal.style.pointerEvents = 'auto';
+        if (img) img.style.transform = 'scale(1) translateY(0px)';
+        if (status) status.innerHTML = '<span class="material-symbols-outlined text-[16px]">touch_app</span> انقر لمعاينة تجربة فتح الظرف';
+      }
+    }
+
+    // Envelope Spotlight Simulation
+    let isDemoOpen = false;
+    const demoFlap = document.getElementById('envelope-flap');
+    const demoSeal = document.getElementById('interactive-seal');
+    const demoSheet = document.getElementById('demo-invitation-sheet');
+
+    function toggleEnvelopeSimulation() {
+      if (!demoFlap || !demoSeal || !demoSheet) return;
+
+      isDemoOpen = !isDemoOpen;
+      if (isDemoOpen) {
+        demoFlap.style.transform = 'rotateX(180deg)';
+        demoSheet.style.transform = 'translateY(-30px) scale(1.03)';
+        demoSeal.style.opacity = '0';
+        demoSeal.style.transform = 'scale(0.65) rotate(20deg)';
+        demoSeal.style.pointerEvents = 'none';
+      } else {
+        demoFlap.style.transform = 'rotateX(0deg)';
+        demoSheet.style.transform = 'translateY(24px) scale(1)';
+        demoSeal.style.opacity = '1';
+        demoSeal.style.transform = 'scale(1) rotate(0deg)';
+        demoSeal.style.pointerEvents = 'auto';
+      }
+    }
+
+    function setSealColor(hex, label) {
+      if (demoSeal) {
+        demoSeal.style.backgroundColor = hex;
+      }
+      const heroSeal = document.getElementById('hero-seal');
+      if (heroSeal) {
+        heroSeal.style.backgroundColor = hex;
+      }
+    }
+
+    function scrollToEnvelopeDemo(colorHex) {
+      if (colorHex) {
+        setSealColor(colorHex);
+      }
+      const el = document.getElementById('envelope-spotlight');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!isDemoOpen) {
+          setTimeout(() => {
+            toggleEnvelopeSimulation();
+          }, 600);
+        }
+      }
+    }
+  </script>
+
+
+</body></html>

@@ -13,7 +13,7 @@ export default function HomeHero({
 }: HomeHeroProps) {
     return (
         <section
-            className="relative isolate overflow-hidden bg-methaq-ivory py-12 sm:py-16 lg:py-20"
+            className="relative isolate overflow-hidden bg-methaq-ivory py-16 lg:py-24"
             aria-labelledby="home-hero-title"
         >
             {/* Soft background decorations */}
@@ -26,11 +26,11 @@ export default function HomeHero({
                 className="pointer-events-none absolute -bottom-36 -left-20 h-80 w-80 rounded-full bg-methaq-sage blur-3xl"
             />
 
-            <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
                 <div className="grid min-w-0 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)] lg:gap-12">
                     {/* Right: Marketing content */}
                     <div className="flex min-w-0 flex-col items-start gap-6 text-right lg:pr-2">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-methaq-gold/30 bg-methaq-cream px-4 py-2 text-xs font-medium text-methaq-primary">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-methaq-gold/30 bg-methaq-cream px-4 py-1.5 text-[13px] font-medium text-methaq-gold-dark shadow-methaq-card">
                             <Sparkles
                                 size={15}
                                 className="text-methaq-gold"
@@ -41,15 +41,15 @@ export default function HomeHero({
 
                         <h1
                             id="home-hero-title"
-                            className="font-methaq-display text-[40px] font-normal text-methaq-primary sm:text-[46px] lg:text-[50px]"
+                            className="m-0 font-methaq-display text-[40px] font-bold leading-[1.25] text-methaq-primary md:text-[50px] lg:text-[56px]"
                         >
                             لكل حكاية جميلة...
-                            <span className="mt-1 block text-methaq-gold">
+                            <span className="mt-1 block font-normal text-methaq-gold-dark">
                                 دعوةٌ تليق بها
                             </span>
                         </h1>
 
-                        <p className="max-w-[520px] text-[15px] leading-8 text-methaq-muted sm:text-base">
+                        <p className="max-w-xl text-[17px] leading-[1.8] text-methaq-muted md:text-lg">
                             في ميثاق، نصنع مساحة لتصميم دعوات إلكترونية أنيقة،
                             تجمع بين جمال الخط العربي والتفاصيل الراقية وتجربة
                             العرض التفاعلية.
@@ -105,7 +105,7 @@ export default function HomeHero({
                             ].map((feature) => (
                                 <span
                                     key={feature}
-                                    className="rounded-full border border-methaq-border bg-methaq-sage/70 px-3 py-1.5 text-xs text-methaq-muted"
+                                    className="rounded-full border border-methaq-border bg-methaq-sage px-3 py-1.5 text-[13px] text-methaq-primary"
                                 >
                                     {feature}
                                 </span>
@@ -118,12 +118,14 @@ export default function HomeHero({
                         id="hero-envelope-preview"
                         className="mx-auto w-full min-w-0 max-w-[470px] scroll-mt-24 lg:justify-self-end"
                     >
-                        <HomeInvitationDemo
-                            cardUrl="/editor/proposals/ivory-wedding/v1/architecture.png"
-                            viewport="desktop"
-                            envelopeStyle="luxury"
-                            sealStyle="wax"
-                        />
+                        <div className="rounded-methaq-card border border-methaq-gold/25 bg-methaq-cream p-4 shadow-methaq-raised">
+                            <HomeInvitationDemo
+                                cardUrl="/editor/proposals/ivory-wedding/v1/architecture.png"
+                                viewport="desktop"
+                                envelopeStyle="luxury"
+                                sealStyle="wax"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
