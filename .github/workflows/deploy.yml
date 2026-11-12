@@ -1,0 +1,247 @@
+name: Deploy Production
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify release candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: methaq_schema_test
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: bcmath, ctype, fileinfo, mbstring, openssl, pdo_mysql, tokenizer, xml
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Prepare test environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Check PHP style
+        run: vendor/bin/pint --test
+
+      - name: Check frontend and build release assets
+        run: |
+          npm run typecheck
+          npm run test:frontend
+          npm run build
+
+      - name: Run application tests on MySQL
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: php artisan test -c phpunit.mysql.xml
+
+      - name: Package the verified release
+        env:
+          RELEASE_ID: ${{ github.sha }}
+        run: |
+          tar \
+            --create \
+            --gzip \
+            --file="$RUNNER_TEMP/methaq-$RELEASE_ID.tar.gz" \
+            --exclude-vcs \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='./storage/framework' \
+            --exclude='./storage/logs' \
+            --exclude='./storage/app/public' \
+            --exclude='vendor' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='.github' \
+            --exclude='docs' \
+            .
+
+      - name: Upload verified release
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-release-${{ github.sha }}
+          path: ${{ runner.temp }}/methaq-${{ github.sha }}.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy:
+    name: Deploy verified release
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+
+    steps:
+      - name: Download verified release
+        uses: actions/download-artifact@v4
+        with:
+          name: verified-release-${{ github.sha }}
+          path: ${{ runner.temp }}
+
+      - name: Configure trusted SSH connection
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
+        run: |
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$SSH_KNOWN_HOSTS"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/methaq_deploy_key
+          chmod 600 ~/.ssh/methaq_deploy_key
+
+      - name: Validate deployment settings
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_HEALTHCHECK_URL: ${{ vars.DEPLOY_HEALTHCHECK_URL || 'https://methq.ly/up' }}
+        run: |
+          [[ "$DEPLOY_HOST" =~ ^[A-Za-z0-9.-]+$ ]]
+          [[ "$DEPLOY_PORT" =~ ^[0-9]{1,5}$ ]]
+          [[ "$DEPLOY_USER" =~ ^[A-Za-z0-9._-]+$ ]]
+          [[ "$DEPLOY_PATH" =~ ^/[A-Za-z0-9._/-]+$ ]]
+          [[ "$DEPLOY_HEALTHCHECK_URL" =~ ^https:// ]]
+
+      - name: Upload release archive
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          RELEASE_ID: ${{ github.sha }}
+        run: |
+          SSH_OPTIONS=(-i "$HOME/.ssh/methaq_deploy_key" -p "$DEPLOY_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          DEPLOY_TARGET="$DEPLOY_USER@$DEPLOY_HOST"
+          ssh "${SSH_OPTIONS[@]}" "$DEPLOY_TARGET" "mkdir -p '$DEPLOY_PATH/incoming' '$DEPLOY_PATH/releases' '$DEPLOY_PATH/shared/storage/framework/cache' '$DEPLOY_PATH/shared/storage/framework/sessions' '$DEPLOY_PATH/shared/storage/framework/views' '$DEPLOY_PATH/shared/storage/logs'"
+          scp "${SSH_OPTIONS[@]}" "$RUNNER_TEMP/methaq-$RELEASE_ID.tar.gz" "$DEPLOY_TARGET:$DEPLOY_PATH/incoming/$RELEASE_ID.tar.gz"
+
+      - name: Record current release for rollback
+        id: previous
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          SSH_OPTIONS=(-i "$HOME/.ssh/methaq_deploy_key" -p "$DEPLOY_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          DEPLOY_TARGET="$DEPLOY_USER@$DEPLOY_HOST"
+          PREVIOUS_RELEASE="$(ssh "${SSH_OPTIONS[@]}" "$DEPLOY_TARGET" "if [ -L '$DEPLOY_PATH/current' ]; then readlink '$DEPLOY_PATH/current'; fi")"
+          echo "release=$PREVIOUS_RELEASE" >> "$GITHUB_OUTPUT"
+
+      - name: Activate new release
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          RELEASE_ID: ${{ github.sha }}
+        run: |
+          SSH_OPTIONS=(-i "$HOME/.ssh/methaq_deploy_key" -p "$DEPLOY_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          DEPLOY_TARGET="$DEPLOY_USER@$DEPLOY_HOST"
+          ssh "${SSH_OPTIONS[@]}" "$DEPLOY_TARGET" "DEPLOY_PATH='$DEPLOY_PATH' RELEASE_ID='$RELEASE_ID' bash -s" <<'REMOTE_SCRIPT'
+          set -euo pipefail
+
+          release="$DEPLOY_PATH/releases/$RELEASE_ID"
+          archive="$DEPLOY_PATH/incoming/$RELEASE_ID.tar.gz"
+          shared="$DEPLOY_PATH/shared"
+
+          test -f "$archive"
+          test -f "$shared/.env"
+          test ! -e "$release"
+          command -v php >/dev/null
+          command -v composer >/dev/null
+          mv --help | grep -q -- ' -T'
+
+          mkdir "$release"
+          tar -xzf "$archive" -C "$release"
+
+          # Versioned library originals (fonts, SVG artwork) live in git under storage/app/private/editor.
+          # Copy them into the shared storage (add/overwrite only, never delete), then link storage.
+          mkdir -p "$shared/storage/app/private"
+          if [ -d "$release/storage/app/private/editor" ]; then
+            cp -R "$release/storage/app/private/editor" "$shared/storage/app/private/"
+          fi
+          rm -rf "$release/storage"
+
+          ln -s "$shared/.env" "$release/.env"
+          ln -s "$shared/storage" "$release/storage"
+
+          cd "$release"
+          composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+          ln -s "$release" "$DEPLOY_PATH/current.next"
+          mv -Tf "$DEPLOY_PATH/current.next" "$DEPLOY_PATH/current"
+          REMOTE_SCRIPT
+
+      - name: Check production health
+        env:
+          DEPLOY_HEALTHCHECK_URL: ${{ vars.DEPLOY_HEALTHCHECK_URL || 'https://methq.ly/up' }}
+        run: curl --fail --silent --show-error --retry 3 --retry-delay 5 "$DEPLOY_HEALTHCHECK_URL"
+
+      - name: Roll back after failed deployment
+        if: ${{ failure() && steps.previous.outputs.release != '' }}
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          PREVIOUS_RELEASE: ${{ steps.previous.outputs.release }}
+        run: |
+          SSH_OPTIONS=(-i "$HOME/.ssh/methaq_deploy_key" -p "$DEPLOY_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          DEPLOY_TARGET="$DEPLOY_USER@$DEPLOY_HOST"
+          ssh "${SSH_OPTIONS[@]}" "$DEPLOY_TARGET" "DEPLOY_PATH='$DEPLOY_PATH' PREVIOUS_RELEASE='$PREVIOUS_RELEASE' bash -s" <<'REMOTE_SCRIPT'
+          set -euo pipefail
+
+          case "$PREVIOUS_RELEASE" in
+            "$DEPLOY_PATH"/releases/*) ;;
+            *) echo 'Unsafe rollback target.' >&2; exit 1 ;;
+          esac
+
+          test -d "$PREVIOUS_RELEASE"
+          ln -s "$PREVIOUS_RELEASE" "$DEPLOY_PATH/current.rollback"
+          mv -Tf "$DEPLOY_PATH/current.rollback" "$DEPLOY_PATH/current"
+          REMOTE_SCRIPT
