@@ -55,7 +55,7 @@ final class EventEditorTest extends TestCase
             ->where('document.canvas.width', 1080)
             ->where('document.canvas.height', 1920)
             ->where('revision', 1)
-            ->has('assets', 17)
+            ->has('assets', 22)
             ->has('collections', 4)
             ->has('recommendedAssetIds', 5));
 
@@ -93,7 +93,7 @@ final class EventEditorTest extends TestCase
 
         $response = $this->actingAs($owner)->withoutVite()->get("/app/events/{$event->getKey()}/editor");
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
-            ->has('assets', 16)
+            ->has('assets', 21)
             ->where('assets', fn ($assets): bool => collect($assets)->pluck('slug')->contains('powder-botanical-frame')
                 && ! collect($assets)->pluck('slug')->contains('wax-seal')));
     }
@@ -115,7 +115,7 @@ final class EventEditorTest extends TestCase
     {
         $this->seed(TemplateLibrarySeeder::class);
 
-        TemplateAsset::query()->where('type', '!=', 'font')->each(function (TemplateAsset $asset): void {
+        TemplateAsset::query()->whereNotIn('type', ['font', 'audio'])->each(function (TemplateAsset $asset): void {
             $this->assertStringEndsWith('.png', $asset->preview_path);
             $this->assertFileExists(public_path($asset->preview_path));
             $dimensions = getimagesize(public_path($asset->preview_path));

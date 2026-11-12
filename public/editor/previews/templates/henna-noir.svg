@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 960" width="540" height="960" role="img" aria-label="معاينة قالب ليلة عنابية">
+  <defs>
+    <radialGradient id="smoke" cx="0.8" cy="0.15" r="0.9">
+      <stop offset="0" stop-color="#c2586f"/>
+      <stop offset="0.35" stop-color="#6e1d35"/>
+      <stop offset="1" stop-color="#2a0c18"/>
+    </radialGradient>
+  </defs>
+  <rect width="540" height="960" fill="url(#smoke)"/>
+  <rect x="42" y="70" width="456" height="820" fill="#fff8ea"/>
+  <g fill="none" stroke="#b48a4a" stroke-linecap="round">
+    <rect x="54" y="82" width="432" height="796" stroke-width="1.4" stroke-opacity="0.5"/>
+    <rect x="62" y="90" width="416" height="780" stroke-width="0.8" stroke-opacity="0.22"/>
+    <path d="M200 150H252M288 150H340" stroke-opacity="0.45"/>
+    <path d="M270 136C272 146 275 148 285 150C275 152 272 155 270 164C268 155 265 152 255 150C265 148 268 146 270 136Z" stroke-opacity="0.85"/>
+    <path d="M226 590H256M284 590H314" stroke-opacity="0.45"/>
+    <path d="M270 600C262 594 256 589 256 583C256 579 260 576 264 576C267 576 269 578 270 580C271 578 273 576 276 576C280 576 284 579 284 583C284 589 278 594 270 600Z" stroke-opacity="0.75"/>
+    <path d="M110 770H430" stroke-opacity="0.3"/>
+  </g>
+  <g font-family="Amiri, 'Times New Roman', serif" text-anchor="middle">
+    <text x="270" y="200" font-size="18" fill="#936b47">لَيْلَةٌ مِنَ الفَرَح</text>
+    <text x="270" y="250" font-size="15" fill="#7f5a4a">يسعدنا أن نجتمع بكم في ليلة نحتفل فيها</text>
+    <text x="270" y="276" font-size="15" fill="#7f5a4a">بالحب والفرح، ونرجو لأيامنا البركة.</text>
+    <text x="270" y="330" font-size="24" fill="#5b1830">اللهم بارك لنا وبارك علينا</text>
+    <text x="270" y="364" font-size="24" fill="#5b1830">واجمع بيننا في خير</text>
+    <text x="270" y="412" font-size="14" fill="#7f5a4a">يسعدنا دعوتكم لمشاركتنا ليلة الحنّة</text>
+    <text x="270" y="520" font-size="64" fill="#5b1830">نوارة</text>
+    <text x="270" y="632" font-size="13" fill="#7f5a4a">الموعد</text>
+    <text x="270" y="690" font-size="44" fill="#5b1830" font-family="'Cormorant Garamond', Georgia, serif" direction="ltr">18 / 9</text>
+    <text x="270" y="722" font-size="12" fill="#7f5a4a">الخميس، الثامنة مساءً</text>
+    <text x="270" y="820" font-size="24" fill="#5b1830">بحضوركم تكتمل فرحتنا</text>
+  </g>
+</svg>

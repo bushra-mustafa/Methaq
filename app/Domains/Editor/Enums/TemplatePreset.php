@@ -10,4 +10,5 @@ enum TemplatePreset: string
     case BurgundyNoir = 'burgundy-noir';
     case HeritageVertical = 'heritage-vertical';
     case GraduationEmerald = 'graduation-emerald';
+    case HennaNoir = 'henna-noir';
 }

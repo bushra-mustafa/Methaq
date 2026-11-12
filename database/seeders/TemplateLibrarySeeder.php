@@ -26,7 +26,11 @@ final class TemplateLibrarySeeder extends Seeder
 
     public function run(): void
     {
+        $this->call(InvitationAudioSeeder::class);
         $assets = $this->seedAssets();
+        $assets[InvitationAudioSeeder::HENNA_CELEBRATION_SLUG] = TemplateAsset::query()
+            ->where('slug', InvitationAudioSeeder::HENNA_CELEBRATION_SLUG)
+            ->firstOrFail();
         $this->seedTemplates($assets);
         $this->seedCollections($assets);
     }
@@ -134,6 +138,9 @@ final class TemplateLibrarySeeder extends Seeder
             $this->fontAsset('font-pinyon', 'Pinyon Script', 'latin/PinyonScript-Regular.ttf', 'Pinyon Script', 'SIL Open Font License 1.1'),
             $this->fontAsset('font-noto-arabic', 'Noto Sans Arabic', 'arabic/NotoSansArabic.ttf', 'Noto Sans Arabic', 'SIL Open Font License 1.1'),
             $this->fontAsset('font-manrope', 'Manrope', 'latin/Manrope.ttf', 'Manrope', 'SIL Open Font License 1.1'),
+            $this->fontAsset('font-cormorant', 'Cormorant Garamond', 'latin/CormorantGaramond.ttf', 'Cormorant Garamond', 'SIL Open Font License 1.1'),
+            $this->fontAsset('font-aref-ruqaa', 'عارف رقعة', 'arabic/ArefRuqaa-Regular.ttf', 'Aref Ruqaa', 'SIL Open Font License 1.1'),
+            $this->visualAsset('noir-paper-frame', 'إطار ورقة ليلة عنابية', AssetType::Frame, 'frames/paper/noir-paper-frame.svg', 'assets/v1/frames/paper/noir-paper-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-henna-noir'),
         ];
     }
 
@@ -183,6 +190,14 @@ final class TemplateLibrarySeeder extends Seeder
                 'thumbnail_path' => 'editor/previews/templates/graduation-emerald.svg',
                 'preset' => TemplatePreset::GraduationEmerald,
                 'assets' => ['graduation-rays-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic', 'font-manrope'],
+            ],
+            [
+                'slug' => TemplatePreset::HennaNoir->value,
+                'name' => 'ليلة عنابية',
+                'category' => EventCategory::Henna,
+                'thumbnail_path' => 'editor/previews/templates/henna-noir.svg',
+                'preset' => TemplatePreset::HennaNoir,
+                'assets' => ['noir-paper-frame', 'font-amiri', 'font-aref-ruqaa', 'font-cormorant', 'font-noto-arabic'],
             ],
         ];
     }
@@ -275,7 +290,7 @@ final class TemplateLibrarySeeder extends Seeder
             'width' => null,
             'height' => null,
             'metadata' => ['fontFamily' => $family, 'format' => 'truetype'],
-            'capabilities' => ['languages' => str_contains($slug, 'pinyon') || str_contains($slug, 'manrope') ? ['en'] : ['ar', 'en']],
+            'capabilities' => ['languages' => str_contains($slug, 'pinyon') || str_contains($slug, 'manrope') || str_contains($slug, 'cormorant') ? ['en'] : ['ar', 'en']],
             'license_metadata' => ['license' => $license, 'redistribution' => true],
             'asset_version' => 1,
         ];
@@ -328,6 +343,7 @@ final class TemplateLibrarySeeder extends Seeder
             str_contains($original, 'botanical') => 'botanical',
             str_contains($original, 'graduation') => 'graduation',
             str_contains($original, 'wax-seal'), str_contains($original, 'heritage') => 'heritage',
+            str_contains($original, 'noir') => 'noir',
             default => 'islamic',
         };
     }

@@ -73,7 +73,9 @@ final readonly class EditorAssetData
             'font-amiri' => '/brand/fonts/Amiri-Regular.ttf',
             'font-pinyon' => '/brand/fonts/PinyonScript-Regular.ttf',
             'font-noto-arabic' => '/brand/fonts/NotoSansArabic.ttf',
-            'font-manrope' => '/brand/fonts/Manrope.ttf',
+            'font-manrope' => '/brand/fonts/Manrope/Manrope.ttf',
+            'font-cormorant' => '/brand/fonts/CormorantGaramond.ttf',
+            'font-aref-ruqaa' => '/brand/fonts/ArefRuqaa-Regular.ttf',
             default => null,
         };
     }

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920" role="img" aria-label="إطار ورقة ليلة عنابية">
+  <title>Henna noir paper frame</title>
+  <desc>Original Methaq artwork: double hairline gold frame with a star ornament and a heart divider.</desc>
+  <g fill="none" stroke="#b48a4a" stroke-linecap="round">
+    <rect x="40" y="40" width="1000" height="1840" stroke-width="2.5" stroke-opacity="0.5"/>
+    <rect x="60" y="60" width="960" height="1800" stroke-width="1.5" stroke-opacity="0.2"/>
+    <path d="M370 172H492M588 172H710" stroke-width="2" stroke-opacity="0.4"/>
+    <path d="M540 138C545 160 552 167 574 172C552 177 545 184 540 206C535 184 528 177 506 172C528 167 535 160 540 138Z" stroke-width="2.2" stroke-opacity="0.85"/>
+    <path d="M430 1218H500M580 1218H650" stroke-width="2" stroke-opacity="0.4"/>
+    <path d="M540 1240C522 1226 510 1216 510 1203C510 1193 518 1186 527 1186C533 1186 538 1190 540 1195C542 1190 547 1186 553 1186C562 1186 570 1193 570 1203C570 1216 558 1226 540 1240Z" stroke-width="2.2" stroke-opacity="0.75"/>
+    <path d="M150 1572H930" stroke-width="1.5" stroke-opacity="0.28"/>
+  </g>
+</svg>

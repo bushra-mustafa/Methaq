@@ -45,8 +45,8 @@ final class AdminTemplateLibraryTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Admin/Library/Index', false)
-                ->has('templates', 4)
-                ->has('assets', 17)
+                ->has('templates', 5)
+                ->has('assets', 22)
                 ->has('collections', 4));
     }
 

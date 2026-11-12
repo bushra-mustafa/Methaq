@@ -48,7 +48,7 @@ final class EventManagementTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('App/Events/Create', false)
-                ->has('templates', 4)
+                ->has('templates', 5)
                 ->has('categories', 4)
                 ->where('selectedTemplateSlug', 'powder-gold'));
     }
@@ -82,6 +82,28 @@ final class EventManagementTest extends TestCase
         $this->assertSame($template->default_scene_json, $event->design->scene_json);
         $this->assertSame($template->default_palette_json, $event->design->palette_json);
         $this->assertSame(1, $event->design->revision);
+    }
+
+    public function test_event_from_henna_noir_template_opens_its_scene_and_music_in_the_editor(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-10-01 00:00:00 UTC'));
+        $this->seed(TemplateLibrarySeeder::class);
+        $user = User::factory()->create();
+        $template = Template::query()->where('slug', 'henna-noir')->sole();
+        $audioId = $template->default_scene_json['audio']['asset']['assetId'];
+
+        $this->actingAs($user)->post('/app/events', $this->validPayload([
+            'category' => EventCategory::Henna->value,
+            'template_id' => $template->getKey(),
+        ]))->assertRedirect();
+
+        $event = Event::query()->sole();
+        $this->withoutVite()->get(route('app.events.editor', $event))
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->where('document.scene.backdrop.preset', 'henna-noir')
+                ->where('document.scene.audio.asset.assetId', $audioId)
+                ->where('assets', fn ($assets): bool => collect($assets)->contains(fn (array $asset): bool => $asset['id'] === $audioId && $asset['type'] === 'audio')));
     }
 
     public function test_blank_event_receives_a_safe_empty_design(): void

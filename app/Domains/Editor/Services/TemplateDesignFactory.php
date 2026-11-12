@@ -13,10 +13,12 @@ use App\Domains\Editor\DTOs\DesignDocumentData;
 use App\Domains\Editor\DTOs\EffectData;
 use App\Domains\Editor\DTOs\EnvelopeData;
 use App\Domains\Editor\DTOs\ImageLayerData;
+use App\Domains\Editor\DTOs\InvitationCoverData;
 use App\Domains\Editor\DTOs\LayerData;
 use App\Domains\Editor\DTOs\LayerFrameData;
 use App\Domains\Editor\DTOs\OpeningData;
 use App\Domains\Editor\DTOs\PaletteData;
+use App\Domains\Editor\DTOs\SceneBackdropData;
 use App\Domains\Editor\DTOs\SceneConfigData;
 use App\Domains\Editor\DTOs\TextLayerData;
 use App\Domains\Editor\Enums\EffectId;
@@ -35,6 +37,9 @@ use InvalidArgumentException;
 
 final class TemplateDesignFactory
 {
+    /** Library audio track referenced by the henna-noir template. */
+    public const HENNA_AUDIO_SLUG = 'audio-henna-celebration';
+
     /** @param array<string, TemplateAsset> $assets */
     public function make(TemplatePreset $preset, array $assets): DesignDocumentData
     {
@@ -43,6 +48,7 @@ final class TemplateDesignFactory
             TemplatePreset::BurgundyNoir => $this->burgundyNoir($assets),
             TemplatePreset::HeritageVertical => $this->heritageVertical($assets),
             TemplatePreset::GraduationEmerald => $this->graduationEmerald($assets),
+            TemplatePreset::HennaNoir => $this->hennaNoir($assets),
         };
     }
 
@@ -126,6 +132,52 @@ final class TemplateDesignFactory
                 MotionPolicy::System,
             ),
         );
+    }
+
+    /**
+     * «ليلة عنابية»: an editable paper card shown inside the henna-noir scene
+     * (animated smoke backdrop, tilted envelope and henna music).
+     *
+     * @param  array<string, TemplateAsset>  $assets
+     */
+    private function hennaNoir(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('paper_frame', $assets, 'noir-paper-frame', 0, 0, 1080, 1920, true),
+            $this->text('kicker', $assets, 'font-amiri', 'لَيْلَةٌ مِنَ الفَرَح', Language::Arabic, TextDirection::RightToLeft, 190, 225, 700, 80, 40, 400, PaletteRole::Accent),
+            $this->text('message', $assets, 'font-amiri', "يسعدنا أن نجتمع بكم في ليلة\nنحتفل فيها بالحب والفرح،\nونرجو أن تكون أيامنا مليئة بالبركة.", Language::Arabic, TextDirection::RightToLeft, 120, 320, 840, 220, 35, 400, PaletteRole::SecondaryText),
+            $this->text('blessing', $assets, 'font-amiri', "اللهم بارك لنا وبارك علينا\nواجمع بيننا في خير", Language::Arabic, TextDirection::RightToLeft, 120, 585, 840, 220, 56, 400, PaletteRole::PrimaryText),
+            $this->text('intro', $assets, 'font-noto-arabic', 'يسعدنا دعوتكم لمشاركتنا ليلة الحنّة', Language::Arabic, TextDirection::RightToLeft, 150, 845, 780, 80, 32, 400, PaletteRole::SecondaryText),
+            $this->text('names', $assets, 'font-aref-ruqaa', 'نوارة', Language::Arabic, TextDirection::RightToLeft, 120, 945, 840, 230, 150, 400, PaletteRole::PrimaryText),
+            $this->text('date_label', $assets, 'font-noto-arabic', 'الموعد', Language::Arabic, TextDirection::RightToLeft, 340, 1270, 400, 60, 28, 400, PaletteRole::SecondaryText),
+            $this->text('date', $assets, 'font-cormorant', '18 / 9', Language::English, TextDirection::LeftToRight, 240, 1330, 600, 140, 104, 400, PaletteRole::PrimaryText),
+            $this->text('date_note', $assets, 'font-noto-arabic', 'الخميس، الثامنة مساءً', Language::Arabic, TextDirection::RightToLeft, 240, 1475, 600, 60, 28, 400, PaletteRole::SecondaryText),
+            $this->text('closing', $assets, 'font-amiri', 'بحضوركم تكتمل فرحتنا', Language::Arabic, TextDirection::RightToLeft, 140, 1630, 800, 110, 56, 400, PaletteRole::PrimaryText),
+        ];
+
+        $palette = new PaletteData(1, '#fff8ea', '#fffdf7', '#5b1830', '#7f5a4a', '#b48a4a', '#f2b3c1');
+        $scene = new SceneConfigData(
+            1,
+            new OpeningData(
+                OpeningType::Envelope,
+                1700,
+                new EnvelopeData(
+                    EnvelopePresetId::ClassicFold,
+                    1,
+                    ColorValueData::literal('#71334a'),
+                    ColorValueData::palette(PaletteRole::Background),
+                    ColorValueData::palette(PaletteRole::Accent),
+                    'ن',
+                ),
+            ),
+            [new EffectData(EffectId::Sparkle, 1, true, ColorValueData::palette(PaletteRole::Effect), 0.5, 0.9)],
+            new AudioData(true, $this->reference($assets, self::HENNA_AUDIO_SLUG), 0.7),
+            MotionPolicy::System,
+            new InvitationCoverData('فرحتنا تحلى بوجودكم', 'نوارة', '18 / 9', 'اللهم بارك لنا وبارك علينا واجمع بيننا في خير', 'ar', 'halo', false),
+            new SceneBackdropData('henna-noir'),
+        );
+
+        return $this->document($layers, $palette, $scene);
     }
 
     /** @param list<LayerData> $layers */

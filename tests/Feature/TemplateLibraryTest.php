@@ -34,11 +34,11 @@ final class TemplateLibraryTest extends TestCase
         $this->seed(TemplateLibrarySeeder::class);
         $this->seed(TemplateLibrarySeeder::class);
 
-        $this->assertDatabaseCount('templates', 4);
-        $this->assertDatabaseCount('template_assets', 17);
+        $this->assertDatabaseCount('templates', 5);
+        $this->assertDatabaseCount('template_assets', 22);
         $this->assertDatabaseCount('asset_collections', 4);
 
-        TemplateAsset::query()->each(function (TemplateAsset $asset): void {
+        TemplateAsset::query()->where('type', '!=', 'audio')->each(function (TemplateAsset $asset): void {
             $this->assertTrue(Storage::disk('local')->exists($asset->original_path));
             $this->assertFileExists(public_path($asset->preview_path));
             $this->assertStringStartsWith('editor/assets/v1/', $asset->original_path);
@@ -98,7 +98,7 @@ final class TemplateLibraryTest extends TestCase
 
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Web/Templates', false)
-            ->has('templates', 3)
+            ->has('templates', 4)
             ->has('collections', 4)
             ->has('categories', 4)
             ->where('selectedCategory', null));
@@ -117,6 +117,25 @@ final class TemplateLibraryTest extends TestCase
                 ->where('selectedCategory', 'graduation'));
 
         $this->withoutVite()->get('/templates?category=unknown')->assertSessionHasErrors('category');
+    }
+
+    public function test_henna_noir_template_opens_in_the_animated_scene_with_its_music(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+        $template = Template::query()->where('slug', 'henna-noir')->firstOrFail();
+        $audio = TemplateAsset::query()->where('slug', 'audio-henna-celebration')->firstOrFail();
+
+        $this->assertSame('henna', $template->category->value);
+        $this->assertSame('henna-noir', $template->default_scene_json['backdrop']['preset']);
+        $this->assertSame('envelope', $template->default_scene_json['opening']['type']);
+        $this->assertTrue($template->default_scene_json['audio']['enabled']);
+        $this->assertSame((string) $audio->getKey(), $template->default_scene_json['audio']['asset']['assetId']);
+        $this->assertSame('audio/mpeg', $audio->mime_type);
+        $this->assertTrue($audio->license_metadata['commercialUse']);
+        $this->assertNotEmpty(array_filter(
+            $template->default_design_json['layers'],
+            static fn (array $layer): bool => $layer['type'] === 'text' && $layer['locked'] === false,
+        ));
     }
 
     public function test_collections_keep_typed_placement_for_each_item(): void
