@@ -19,7 +19,7 @@ final class ListAdminLibraryAction
         return [
             'templates' => Template::query()
                 ->with(['assets' => static fn ($query) => $query->orderByPivot('sort_order')])
-                ->orderBy('id')
+                ->libraryOrder()
                 ->get()
                 ->map(static fn (Template $template): array => LibraryTemplateData::fromModel($template)->toArray())
                 ->all(),

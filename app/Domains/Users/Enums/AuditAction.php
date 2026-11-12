@@ -11,6 +11,7 @@ enum AuditAction: string
     case TemplateDeactivated = 'template.deactivated';
     case TemplateFeatured = 'template.featured';
     case TemplateUnfeatured = 'template.unfeatured';
+    case TemplateCommerceUpdated = 'template.commerce_updated';
     case TemplateAssetActivated = 'template_asset.activated';
     case TemplateAssetDeactivated = 'template_asset.deactivated';
     case AssetCollectionActivated = 'asset_collection.activated';

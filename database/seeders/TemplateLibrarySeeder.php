@@ -55,7 +55,7 @@ final class TemplateLibrarySeeder extends Seeder
     /** @param array<string, TemplateAsset> $assets */
     private function seedTemplates(array $assets): void
     {
-        foreach ($this->templateDefinitions() as $definition) {
+        foreach ($this->templateDefinitions() as $position => $definition) {
             $document = $this->designFactory->make($definition['preset'], $assets);
             $columns = $document->toStorageColumns();
             $template = Template::query()->where('slug', $definition['slug'])->first() ?? new Template;
@@ -69,7 +69,8 @@ final class TemplateLibrarySeeder extends Seeder
                 'default_scene_json' => $columns['scene_json'],
                 'default_palette_json' => $columns['palette_json'],
                 'schema_version' => $columns['schema_version'],
-                ...($isNew ? ['is_active' => true, 'is_featured' => true] : []),
+                // Visibility, order, price and locked features belong to the administrator after the first seed.
+                ...($isNew ? ['is_active' => true, 'is_featured' => true, 'sort_order' => $position + 1] : []),
             ])->save();
 
             $links = [];

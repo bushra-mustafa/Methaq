@@ -14,7 +14,7 @@ final class ListEventCreationOptionsAction
     {
         $templates = Template::query()
             ->where('is_active', true)
-            ->orderBy('id')
+            ->libraryOrder()
             ->get()
             ->map(static fn (Template $template): array => [
                 'id' => (string) $template->getKey(),

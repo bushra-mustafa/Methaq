@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domains\Editor\Models;
 
+use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Events\Enums\EventCategory;
 use App\Domains\Events\Models\Event;
 use Database\Factories\TemplateFactory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -24,6 +27,8 @@ class Template extends Model
         'schema_version' => 1,
         'is_active' => true,
         'is_featured' => false,
+        'price_minor' => 0,
+        'sort_order' => 0,
     ];
 
     protected $hidden = ['default_design_json', 'default_scene_json', 'default_palette_json'];
@@ -45,7 +50,26 @@ class Template extends Model
             'schema_version' => 'integer',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
+            'price_minor' => 'integer',
+            'sort_order' => 'integer',
+            'locked_features' => AsEnumCollection::of(TemplateFeature::class),
         ];
+    }
+
+    /**
+     * The order chosen by the administrator, then creation order.
+     *
+     * @param  Builder<Template>  $query
+     * @return Builder<Template>
+     */
+    public function scopeLibraryOrder(Builder $query): Builder
+    {
+        return $query->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function isFeatureLocked(TemplateFeature $feature): bool
+    {
+        return (bool) $this->locked_features?->contains($feature);
     }
 
     /** @return HasMany<Event, $this> */

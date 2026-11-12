@@ -20,7 +20,7 @@ final class ListTemplateLibraryAction
             ->where('is_active', true)
             ->when($category, static fn (Builder $query, EventCategory $selected): Builder => $query->where('category', $selected->value))
             ->with(['assets' => static fn ($query) => $query->where('template_assets.is_active', true)->orderByPivot('sort_order')])
-            ->orderBy('id')
+            ->libraryOrder()
             ->get()
             ->map(static fn (Template $template): array => LibraryTemplateData::fromModel($template)->toArray())
             ->values()

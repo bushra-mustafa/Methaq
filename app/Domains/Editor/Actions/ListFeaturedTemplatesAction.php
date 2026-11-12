@@ -19,7 +19,7 @@ final class ListFeaturedTemplatesAction
             ->where('is_active', true)
             ->where('is_featured', true)
             ->with(['assets' => static fn ($query) => $query->where('template_assets.is_active', true)->orderByPivot('sort_order')])
-            ->orderBy('id')
+            ->libraryOrder()
             ->limit(self::LIMIT)
             ->get()
             ->map(static fn (Template $template): array => LibraryTemplateData::fromModel($template)->toArray())
