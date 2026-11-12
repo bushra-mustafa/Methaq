@@ -11,6 +11,7 @@ use App\Domains\Events\DTOs\CreateEventData;
 use App\Domains\Events\Enums\EventStatus;
 use App\Domains\Events\Models\Event;
 use App\Domains\Events\Services\EventSubdomainGenerator;
+use App\Domains\Events\Services\InvitationExpiry;
 use App\Domains\Users\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,7 @@ final class CreateEventAction
     public function __construct(
         private readonly EventSubdomainGenerator $subdomains,
         private readonly BlankDesignFactory $blankDesignFactory,
+        private readonly InvitationExpiry $expiry,
     ) {}
 
     public function execute(User $owner, CreateEventData $data): Event
@@ -45,7 +47,7 @@ final class CreateEventAction
                         ];
 
                     $eventDate = $data->eventDate->setTimezone('UTC');
-                    $expiresAt = $data->eventDate->setTimezone($data->timezone)->addDays(10)->setTimezone('UTC');
+                    $expiresAt = $this->expiry->expiresAt($data->eventDate);
                     $category = $template?->category ?? $data->category;
                     $event = new Event;
                     $event->forceFill([

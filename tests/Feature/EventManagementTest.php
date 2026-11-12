@@ -53,7 +53,7 @@ final class EventManagementTest extends TestCase
                 ->where('selectedTemplateSlug', 'powder-gold'));
     }
 
-    public function test_event_created_from_template_copies_design_and_uses_calendar_expiry(): void
+    public function test_event_created_from_template_copies_design_and_closes_after_the_tripoli_grace_days(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-10-01 00:00:00 UTC'));
         $this->seed(TemplateLibrarySeeder::class);
@@ -76,7 +76,8 @@ final class EventManagementTest extends TestCase
         $this->assertFalse($event->is_paid);
         $this->assertNull($event->paid_at);
         $this->assertSame('2027-03-26 12:00', $event->event_date->setTimezone('Europe/London')->format('Y-m-d H:i'));
-        $this->assertSame('2027-04-05 12:00', $event->expires_at->setTimezone('Europe/London')->format('Y-m-d H:i'));
+        // 12:00 London = 14:00 Tripoli on 26/3; open through 28/3, closes 29/3 00:00 Tripoli.
+        $this->assertSame('2027-03-29 00:00', $event->expires_at->setTimezone('Africa/Tripoli')->format('Y-m-d H:i'));
         $this->assertMatchesRegularExpression('/^[a-z0-9]+(?:-[a-z0-9]+)*-2027$/', $event->subdomain);
         $this->assertSame($template->default_design_json, $event->design->design_json);
         $this->assertSame($template->default_scene_json, $event->design->scene_json);
