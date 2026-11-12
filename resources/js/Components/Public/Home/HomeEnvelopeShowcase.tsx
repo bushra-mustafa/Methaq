@@ -1,15 +1,24 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, RefObject } from "react";
 import { Pause, Play, RotateCcw } from "lucide-react";
-import HomeEnvelope from "./HomeEnvelope";
-import type { HomeEnvelopeHandle } from "./HomeEnvelope";
+import {
+    EnvelopeLetter,
+    InvitationEnvelope,
+} from "../../../Domains/Editor/Components/InvitationEnvelope";
 import { emeraldTheme, envelopeThemes } from "./envelopeThemes";
 import type { EnvelopeTheme } from "./envelopeThemes";
 
-/** One full cycle per colour lasts about 4.5 seconds. */
-const SEALED_HOLD_SECONDS = 0.6;
-const OPENED_HOLD_SECONDS = 1.4;
-const THEME_SWAP_SECONDS = 0.35;
+/** One full cycle per envelope lasts about 4.8 seconds. */
+const OPENING_MS = 1400;
+const SEALED_HOLD_MS = 600;
+const OPENED_HOLD_MS = 1100;
+const SWAP_MS = 300;
+
+/**
+ * closed → open → closing → swapping (fade to the next envelope) → closed.
+ * The envelope itself only knows "closed" or "open"; CSS transitions do the motion.
+ */
+type ShowcasePhase = "closed" | "open" | "closing" | "swapping";
 
 function usePrefersReducedMotion(): boolean {
     const [reduced, setReduced] = useState(
@@ -27,6 +36,33 @@ function usePrefersReducedMotion(): boolean {
     return reduced;
 }
 
+function useVisibleOnScreen(element: RefObject<HTMLElement | null>): boolean {
+    const [inView, setInView] = useState(false);
+    const [pageVisible, setPageVisible] = useState(true);
+
+    useEffect(() => {
+        const target = element.current;
+        if (!target) {
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => setInView(entry?.isIntersecting ?? false),
+            { threshold: 0.35 },
+        );
+        observer.observe(target);
+        const onVisibility = (): void =>
+            setPageVisible(document.visibilityState === "visible");
+        document.addEventListener("visibilitychange", onVisibility);
+
+        return () => {
+            observer.disconnect();
+            document.removeEventListener("visibilitychange", onVisibility);
+        };
+    }, [element]);
+
+    return inView && pageVisible;
+}
+
 function nextTheme(current: EnvelopeTheme): EnvelopeTheme {
     const index = envelopeThemes.findIndex((theme) => theme.id === current.id);
 
@@ -42,159 +78,83 @@ export default function HomeEnvelopeShowcase({
     mode,
     initialTheme = emeraldTheme,
 }: HomeEnvelopeShowcaseProps) {
-    const envelope = useRef<HomeEnvelopeHandle>(null);
     const container = useRef<HTMLDivElement>(null);
-    const pendingCall = useRef<gsap.core.Tween | null>(null);
-    const runId = useRef(0);
-    const animationToken = useRef(0);
+    const pendingTheme = useRef<EnvelopeTheme | null>(null);
     const reducedMotion = usePrefersReducedMotion();
+    const visible = useVisibleOnScreen(container);
 
     const [theme, setTheme] = useState<EnvelopeTheme>(initialTheme);
-    const [isOpen, setIsOpen] = useState(false);
-    const [isAnimating, setIsAnimating] = useState(false);
+    const [phase, setPhase] = useState<ShowcasePhase>("closed");
     const [autoplay, setAutoplay] = useState(mode === "auto");
-    const [inView, setInView] = useState(false);
-    const [pageVisible, setPageVisible] = useState(true);
     const [announcement, setAnnouncement] = useState("");
 
-    const themeRef = useRef(theme);
-    themeRef.current = theme;
-    const isOpenRef = useRef(isOpen);
-    isOpenRef.current = isOpen;
-
-    const isRunning = autoplay && inView && pageVisible && !reducedMotion;
-
-    const stopLoop = useCallback((): void => {
-        runId.current += 1;
-        pendingCall.current?.kill();
-        pendingCall.current = null;
-    }, []);
-
-    const animate = useCallback(
-        async (direction: "open" | "close"): Promise<void> => {
-            const handle = envelope.current;
-            if (!handle) {
-                return;
-            }
-            const token = ++animationToken.current;
-            setIsAnimating(true);
-            await (direction === "open" ? handle.open() : handle.close());
-            if (token !== animationToken.current) {
-                return;
-            }
-            setIsOpen(direction === "open");
-            setIsAnimating(false);
-        },
-        [],
-    );
-
-    useEffect(() => {
-        const element = container.current;
-        if (!element) {
-            return;
-        }
-        const observer = new IntersectionObserver(
-            ([entry]) => setInView(entry?.isIntersecting ?? false),
-            { threshold: 0.35 },
-        );
-        observer.observe(element);
-        const onVisibility = (): void =>
-            setPageVisible(document.visibilityState === "visible");
-        document.addEventListener("visibilitychange", onVisibility);
-
-        return () => {
-            observer.disconnect();
-            document.removeEventListener("visibilitychange", onVisibility);
-        };
-    }, []);
+    const isRunning = autoplay && visible && !reducedMotion;
 
     useEffect(() => {
         if (reducedMotion) {
-            stopLoop();
-            envelope.current?.jumpTo("open");
-            setIsOpen(true);
-            setIsAnimating(false);
+            setPhase("open");
         }
-    }, [reducedMotion, stopLoop]);
+    }, [reducedMotion]);
 
     useEffect(() => {
-        if (!isRunning) {
-            stopLoop();
-
+        const step: Partial<Record<ShowcasePhase, [number, () => void]>> = {
+            closing: [
+                OPENING_MS,
+                () =>
+                    setPhase(
+                        pendingTheme.current || isRunning
+                            ? "swapping"
+                            : "closed",
+                    ),
+            ],
+            swapping: [
+                SWAP_MS,
+                () => {
+                    const chosen = pendingTheme.current;
+                    pendingTheme.current = null;
+                    setTheme((current) => chosen ?? nextTheme(current));
+                    setPhase("closed");
+                },
+            ],
+        };
+        if (isRunning) {
+            step.closed = [SEALED_HOLD_MS, () => setPhase("open")];
+            step.open = [OPENING_MS + OPENED_HOLD_MS, () => setPhase("closing")];
+        }
+        const next = step[phase];
+        if (!next) {
             return;
         }
+        const timer = window.setTimeout(next[1], next[0]);
 
-        const id = ++runId.current;
-        const alive = (): boolean => runId.current === id;
-        const wait = (seconds: number, next: () => void): void => {
-            pendingCall.current = gsap.delayedCall(seconds, () => {
-                if (alive()) {
-                    next();
-                }
-            });
-        };
-
-        const cycleFromClosed = (): void => {
-            wait(SEALED_HOLD_SECONDS, () => {
-                void animate("open").then(() => {
-                    if (!alive()) {
-                        return;
-                    }
-                    wait(OPENED_HOLD_SECONDS, () => {
-                        void animate("close").then(() => {
-                            if (!alive()) {
-                                return;
-                            }
-                            setTheme(nextTheme(themeRef.current));
-                            wait(THEME_SWAP_SECONDS, cycleFromClosed);
-                        });
-                    });
-                });
-            });
-        };
-
-        if (isOpenRef.current) {
-            wait(OPENED_HOLD_SECONDS, () => {
-                void animate("close").then(() => {
-                    if (alive()) {
-                        setTheme(nextTheme(themeRef.current));
-                        wait(THEME_SWAP_SECONDS, cycleFromClosed);
-                    }
-                });
-            });
-        } else {
-            cycleFromClosed();
-        }
-
-        return stopLoop;
-    }, [isRunning, animate, stopLoop]);
-
-    const takeControl = (): void => {
-        setAutoplay(false);
-        stopLoop();
-    };
+        return () => window.clearTimeout(timer);
+    }, [phase, isRunning]);
 
     const openManually = (): void => {
-        takeControl();
+        if (phase === "swapping") {
+            return;
+        }
+        setAutoplay(false);
         setAnnouncement(`الظرف ال${theme.colorName}، مفتوح`);
-        void animate("open");
+        setPhase("open");
     };
 
     const closeManually = (): void => {
-        takeControl();
+        setAutoplay(false);
         setAnnouncement(`الظرف ال${theme.colorName}، مغلق`);
-        void animate("close");
+        setPhase("closing");
     };
 
     const chooseTheme = (selected: EnvelopeTheme): void => {
-        takeControl();
+        setAutoplay(false);
         setAnnouncement(`الظرف ال${selected.colorName}`);
-        if (reducedMotion || (!isOpen && !isAnimating)) {
+        if (reducedMotion) {
             setTheme(selected);
 
             return;
         }
-        void animate("close").then(() => setTheme(selected));
+        pendingTheme.current = selected;
+        setPhase(phase === "open" ? "closing" : "swapping");
     };
 
     const toggleAutoplay = (): void => {
@@ -207,14 +167,24 @@ export default function HomeEnvelopeShowcase({
             ref={container}
             className="mx-auto flex w-full max-w-[440px] flex-col items-center gap-7"
         >
-            <div className="relative w-full">
-                <HomeEnvelope
-                    ref={envelope}
-                    theme={theme}
-                    sealDisabled={isOpen || isAnimating}
+            <div
+                className={`relative w-full pt-[18%] transition-opacity duration-300 ${phase === "swapping" ? "opacity-0" : "opacity-100"}`}
+                style={{ "--opening-duration": `${OPENING_MS}ms` } as CSSProperties}
+            >
+                <InvitationEnvelope
+                    colors={theme.colors}
+                    appearance={theme.appearance}
+                    state={phase === "open" ? "open" : "closed"}
+                    letter={
+                        <EnvelopeLetter
+                            names={theme.letter.names}
+                            detail={theme.letter.detail}
+                        />
+                    }
+                    sealLabel={theme.letter.names}
                     onSealClick={openManually}
                 />
-                {!autoplay && isOpen && !isAnimating && !reducedMotion && (
+                {!autoplay && phase === "open" && !reducedMotion && (
                     <button
                         type="button"
                         onClick={closeManually}
@@ -246,7 +216,7 @@ export default function HomeEnvelopeShowcase({
                                     aria-hidden="true"
                                     className="size-3.5 rounded-full border border-methaq-gold/60"
                                     style={{
-                                        backgroundColor: option.colors.bottom,
+                                        backgroundColor: option.colors.paper,
                                     }}
                                 />
                                 {option.colorName}

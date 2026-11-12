@@ -1,39 +1,27 @@
+import type { EnvelopeAppearance } from "../../../Types/SceneConfig";
+import type { EnvelopeColors } from "../../../Domains/Editor/Services/scenePresentation";
+
 export interface EnvelopeTheme {
     id: string;
     colorName: string;
-    category: "wedding" | "henna" | "marriage_contract" | "graduation";
-    colors: {
-        back: string;
-        sides: string;
-        bottom: string;
-        flap: string;
-        inner: string;
-        shadow: string;
-    };
+    colors: EnvelopeColors;
+    /** A real envelope and seal shape from the editor, so the showcase only promises what owners can pick. */
+    appearance: EnvelopeAppearance;
     letter: {
-        occasion: string;
         names: string;
         detail: string;
     };
 }
 
+const SEAL_POSITION = { sealX: 50, sealY: 52, sealSize: 20 } as const;
+const GOLD = "#b69a50";
+
 export const emeraldTheme: EnvelopeTheme = {
     id: "emerald",
     colorName: "زمردي",
-    category: "wedding",
-    colors: {
-        back: "#04301f",
-        sides: "#06432f",
-        bottom: "#074b36",
-        flap: "#085a40",
-        inner: "#053a28",
-        shadow: "rgb(5 54 42 / 30%)",
-    },
-    letter: {
-        occasion: "دعوة عرس",
-        names: "محمد وأسماء",
-        detail: "الخميس 14/8/2027، طرابلس",
-    },
+    colors: { paper: "#074b36", lining: "#f6fbf2", seal: GOLD },
+    appearance: { style: "classic", sealStyle: "wax", ...SEAL_POSITION },
+    letter: { names: "محمد وأسماء", detail: "طرابلس · 14/8/2027" },
 };
 
 /**
@@ -46,109 +34,43 @@ export const envelopeThemes: EnvelopeTheme[] = [
     {
         id: "henna",
         colorName: "حنّائي",
-        category: "henna",
-        colors: {
-            back: "#3d170f",
-            sides: "#4e1f15",
-            bottom: "#5a2418",
-            flap: "#6b2d1f",
-            inner: "#461b12",
-            shadow: "rgb(61 23 15 / 30%)",
-        },
-        letter: {
-            occasion: "ليلة الحنّة",
-            names: "نوارة",
-            detail: "الأربعاء 13/8/2027، بنغازي",
-        },
+        colors: { paper: "#5a2418", lining: "#fbf1e4", seal: "#d1a867" },
+        appearance: { style: "luxury", sealStyle: "wax-heart", ...SEAL_POSITION },
+        letter: { names: "نوارة", detail: "بنغازي · 13/8/2027" },
     },
     {
         id: "navy",
         colorName: "كحلي",
-        category: "marriage_contract",
-        colors: {
-            back: "#0f1a2e",
-            sides: "#16243f",
-            bottom: "#1c2d4d",
-            flap: "#22365b",
-            inner: "#132036",
-            shadow: "rgb(15 26 46 / 30%)",
-        },
-        letter: {
-            occasion: "عقد قران",
-            names: "عبدالسلام وخديجة",
-            detail: "الجمعة 5/9/2027، مصراتة",
-        },
+        colors: { paper: "#1c2d4d", lining: "#f3f1ea", seal: "#c9ab69" },
+        appearance: { style: "minimal", sealStyle: "medallion", ...SEAL_POSITION },
+        letter: { names: "عبدالسلام وخديجة", detail: "مصراتة · 5/9/2027" },
     },
     {
         id: "ivory",
         colorName: "عاجي",
-        category: "graduation",
-        colors: {
-            back: "#e5dccb",
-            sides: "#efe9dc",
-            bottom: "#f8f6ed",
-            flap: "#fbf9f2",
-            inner: "#ece5d4",
-            shadow: "rgb(135 121 101 / 25%)",
-        },
-        letter: {
-            occasion: "حفل تخرّج",
-            names: "ريم سالم",
-            detail: "دفعة 2027، جامعة طرابلس",
-        },
+        colors: { paper: "#f1ebdd", lining: "#fffdf7", seal: "#074b36" },
+        appearance: { style: "rounded", sealStyle: "wax-flower", ...SEAL_POSITION },
+        letter: { names: "ريم سالم", detail: "جامعة طرابلس · دفعة 2027" },
     },
     {
         id: "olive",
         colorName: "زيتوني",
-        category: "wedding",
-        colors: {
-            back: "#1c271d",
-            sides: "#243325",
-            bottom: "#2c3d2d",
-            flap: "#364a37",
-            inner: "#213022",
-            shadow: "rgb(28 39 29 / 30%)",
-        },
-        letter: {
-            occasion: "دعوة عرس",
-            names: "مفتاح وفاطمة",
-            detail: "السبت 2/10/2027، الزاوية",
-        },
+        colors: { paper: "#2c3d2d", lining: "#f4f1e6", seal: GOLD },
+        appearance: { style: "scalloped", sealStyle: "wax-oval", ...SEAL_POSITION },
+        letter: { names: "مفتاح وفاطمة", detail: "الزاوية · 2/10/2027" },
     },
     {
         id: "bronze",
         colorName: "برونزي",
-        category: "henna",
-        colors: {
-            back: "#4a3a22",
-            sides: "#5f4a2c",
-            bottom: "#725b38",
-            flap: "#846a43",
-            inner: "#55432a",
-            shadow: "rgb(74 58 34 / 30%)",
-        },
-        letter: {
-            occasion: "ليلة الحنّة",
-            names: "سعاد",
-            detail: "الخميس 21/10/2027، سبها",
-        },
+        colors: { paper: "#725b38", lining: "#fbf5e8", seal: "#e2c88f" },
+        appearance: { style: "gatefold", sealStyle: "medallion-octagon", ...SEAL_POSITION },
+        letter: { names: "سعاد", detail: "سبها · 21/10/2027" },
     },
     {
         id: "burgundy",
         colorName: "عنابي",
-        category: "marriage_contract",
-        colors: {
-            back: "#3f1418",
-            sides: "#561c22",
-            bottom: "#682329",
-            flap: "#7a2c33",
-            inner: "#4a181d",
-            shadow: "rgb(63 20 24 / 30%)",
-        },
-        letter: {
-            occasion: "عقد قران",
-            names: "أنس ومريم",
-            detail: "الجمعة 12/11/2027، طرابلس",
-        },
+        colors: { paper: "#682329", lining: "#fdf3ee", seal: "#d8b982" },
+        appearance: { style: "wallet", sealStyle: "wax-square", ...SEAL_POSITION },
+        letter: { names: "عمر ومريم", detail: "طرابلس · 12/11/2027" },
     },
 ];
