@@ -5,6 +5,7 @@ const footerLinks = [
     { label: "القوالب", href: "/templates" },
     { label: "من نحن", href: "/about" },
     { label: "تواصل معنا", href: "/contact" },
+    { label: "سياسة الخصوصية", href: "/privacy" },
 ];
 
 export default function Footer() {

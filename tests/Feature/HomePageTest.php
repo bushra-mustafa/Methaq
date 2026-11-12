@@ -26,10 +26,12 @@ final class HomePageTest extends TestCase
         }
     }
 
-    public function test_home_features_a_limited_set_of_active_templates_only(): void
+    public function test_home_shows_only_active_templates_the_admin_featured(): void
     {
-        $inactive = Template::factory()->create(['is_active' => false, 'name' => 'Hidden template']);
-        Template::factory()->count(ListFeaturedTemplatesAction::LIMIT + 1)->create(['is_active' => true]);
+        $notFeatured = Template::factory()->create(['is_active' => true, 'is_featured' => false]);
+        $inactive = Template::factory()->create(['is_active' => false, 'is_featured' => true]);
+        Template::factory()->count(ListFeaturedTemplatesAction::LIMIT + 1)->create(['is_active' => true, 'is_featured' => true]);
+        $hidden = [(string) $notFeatured->getKey(), (string) $inactive->getKey()];
 
         $this->withoutVite()
             ->get('/')
@@ -38,6 +40,14 @@ final class HomePageTest extends TestCase
                 ->component('Web/Home')
                 ->has('featuredTemplates', ListFeaturedTemplatesAction::LIMIT)
                 ->where('featuredTemplates', fn ($templates): bool => collect($templates)
-                    ->every(fn (array $template): bool => $template['isActive'] === true && $template['id'] !== (string) $inactive->getKey())));
+                    ->every(fn (array $template): bool => $template['isFeatured'] === true && ! in_array($template['id'], $hidden, true))));
+    }
+
+    public function test_privacy_policy_page_is_public(): void
+    {
+        $this->withoutVite()
+            ->get('/privacy')
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page->component('Web/Privacy'));
     }
 }
