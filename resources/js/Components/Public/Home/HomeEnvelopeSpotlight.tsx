@@ -11,8 +11,9 @@ const guestMoments: { text: string; comingSoon?: boolean }[] = [
 export default function HomeEnvelopeSpotlight() {
     return (
         <section
+            id="home-envelope"
             aria-labelledby="home-envelope-title"
-            className="scroll-mt-24 border-y border-methaq-gold/20 bg-methaq-paper px-6 py-20 lg:px-12 lg:py-24"
+            className="scroll-mt-24 border-y border-methaq-border bg-methaq-paper px-6 py-20 lg:px-12 lg:py-24"
         >
             <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12">
                 <Reveal className="flex flex-col gap-6 text-right lg:col-span-5">

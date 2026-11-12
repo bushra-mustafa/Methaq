@@ -41,8 +41,8 @@ export default function HomeTemplateCard({
         : "/register";
 
     return (
-        <article className="group flex h-full flex-col overflow-hidden rounded-methaq-card border border-methaq-border bg-methaq-surface shadow-methaq-card transition-[translate,box-shadow] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_18px_30px_-10px_rgba(139,106,44,0.18),0_6px_14px_-4px_rgba(7,75,54,0.08)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-            <div className="relative aspect-[4/5] overflow-hidden bg-methaq-paper">
+        <article className="group flex h-full flex-col overflow-hidden rounded-methaq-card border border-methaq-border bg-methaq-ivory shadow-methaq-card transition-[translate,box-shadow] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_18px_30px_-10px_rgba(139,106,44,0.18),0_6px_14px_-4px_rgba(7,75,54,0.08)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+            <div className="relative aspect-[4/5] overflow-hidden bg-methaq-sage">
                 <img
                     src={template.thumbnailUrl}
                     alt={`معاينة قالب ${template.name}`}

@@ -18,7 +18,7 @@ export default function HomeTemplates({
         <section
             id="home-templates"
             aria-labelledby="home-templates-title"
-            className="scroll-mt-24 bg-methaq-sage px-6 py-20 lg:px-12"
+            className="scroll-mt-24 bg-methaq-paper px-6 py-20 lg:px-12"
         >
             <div className="mx-auto flex max-w-7xl flex-col gap-12">
                 <Reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">

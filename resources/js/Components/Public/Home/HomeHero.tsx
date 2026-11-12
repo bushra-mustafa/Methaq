@@ -25,7 +25,7 @@ export default function HomeHero({
         >
             <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-32 right-1/4 size-96 rounded-full bg-methaq-gold-light/20 blur-3xl"
+                className="pointer-events-none absolute -top-32 right-1/4 size-96 rounded-full bg-methaq-gold-soft/20 blur-3xl"
             />
             <div
                 aria-hidden="true"
@@ -35,7 +35,7 @@ export default function HomeHero({
                 <span
                     key={speck.className}
                     aria-hidden="true"
-                    className={`pointer-events-none absolute rounded-full bg-[radial-gradient(circle,rgba(230,210,139,0.95)_0%,rgba(182,154,80,0.35)_60%,transparent_100%)] opacity-40 motion-safe:animate-methaq-dust ${speck.className}`}
+                    className={`pointer-events-none absolute rounded-full bg-[radial-gradient(circle,rgba(254,222,178,0.95)_0%,rgba(226,197,157,0.35)_60%,transparent_100%)] opacity-40 motion-safe:animate-methaq-dust ${speck.className}`}
                     style={{ animationDelay: speck.delay }}
                 />
             ))}

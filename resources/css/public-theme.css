@@ -9,25 +9,28 @@
 */
 
 @theme static {
-    /* Brand */
-    --color-methaq-primary: #074b36;
-    --color-methaq-primary-hover: #063d2c;
-    --color-methaq-ink: #1a2e26;
-    --color-methaq-muted: #435443;
+    /* Colours: exactly the Stitch home.html palette (requirements/design-reference/editorial-serenity). */
+    --color-methaq-primary: #203322; /* primary */
+    --color-methaq-primary-hover: #18271a;
+    --color-methaq-ink: #181d18; /* on-surface */
+    --color-methaq-muted: #434842; /* on-surface-variant */
 
-    /* Metallic accents */
-    --color-methaq-gold: #b69a50;
-    --color-methaq-gold-light: #e6d28b;
-    --color-methaq-gold-dark: #8b6a2c;
+    /* Bronze accents (Stitch "secondary") */
+    --color-methaq-gold: #7a613b; /* secondary */
+    --color-methaq-gold-light: #e2c59d; /* secondary-fixed */
+    --color-methaq-gold-dark: #7a613b; /* small accent text, 5.6:1 on surface */
+    --color-methaq-gold-soft: #fedeb2; /* secondary-container */
+    --color-methaq-gold-hover: #665030;
 
     /* Surfaces */
-    --color-methaq-ivory: #f6fbf2;
-    --color-methaq-cream: #fdfbf7;
-    --color-methaq-paper: #f8f6ed;
-    --color-methaq-sage: #f0f5ed;
-    --color-methaq-surface: #ffffff;
+    --color-methaq-ivory: #f6fbf2; /* surface */
+    --color-methaq-cream: #fbfdf9; /* surface-bright */
+    --color-methaq-paper: #eff4eb; /* surface-container-low */
+    --color-methaq-sage: #e8eee3; /* surface-container */
+    --color-methaq-surface: #ffffff; /* surface-container-lowest */
+    --color-methaq-mist: #d6dcd1; /* surface-container-highest */
 
-    --color-methaq-border: #dce5db;
+    --color-methaq-border: #dfe5da; /* outline-variant at 30% on surface */
 
     /* Fonts exactly as the Stitch reference: Noto Sans Arabic body, Amiri (bold) headings, Manrope Latin. */
     --font-methaq-body: "Methaq Arabic", "Manrope", system-ui, sans-serif;
@@ -39,11 +42,11 @@
     --radius-methaq-button: 0.5rem;
 
     /* Shadows: warm, diffused paper depth */
-    --shadow-methaq-soft: 0 8px 30px rgba(7, 75, 54, 0.08);
-    --shadow-methaq-card: 0 4px 20px -2px rgba(7, 75, 54, 0.05),
-        0 2px 6px -1px rgba(7, 75, 54, 0.03);
-    --shadow-methaq-raised: 0 12px 32px -4px rgba(7, 75, 54, 0.1),
-        0 4px 12px -2px rgba(182, 154, 80, 0.14);
+    --shadow-methaq-soft: 0 8px 30px rgba(32, 51, 34, 0.08);
+    --shadow-methaq-card: 0 4px 20px -2px rgba(32, 51, 34, 0.05),
+        0 2px 6px -1px rgba(32, 51, 34, 0.03);
+    --shadow-methaq-raised: 0 12px 32px -4px rgba(32, 51, 34, 0.1),
+        0 4px 12px -2px rgba(122, 97, 59, 0.14);
 
     /* Motion */
     --animate-methaq-float: methaq-float 6s ease-in-out infinite;
@@ -94,12 +97,12 @@
         0%,
         100% {
             box-shadow:
-                0 0 0 0 rgba(182, 154, 80, 0.45),
+                0 0 0 0 rgba(122, 97, 59, 0.45),
                 0 8px 18px -4px rgba(103, 83, 41, 0.45);
         }
         50% {
             box-shadow:
-                0 0 0 10px rgba(182, 154, 80, 0),
+                0 0 0 10px rgba(122, 97, 59, 0),
                 0 12px 24px -4px rgba(103, 83, 41, 0.5);
         }
     }
@@ -151,6 +154,12 @@
     font-family: var(--font-methaq-body);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html:has(.methaq-public) {
+        scroll-behavior: smooth;
+    }
 }
 
 .methaq-public :where(h1, h2, h3) {

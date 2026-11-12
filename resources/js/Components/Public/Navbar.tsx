@@ -1,24 +1,61 @@
 import { useState } from "react";
 import { Link, usePage } from "@inertiajs/react";
-import { Menu, X } from "lucide-react";
+import { Menu, PenLine, X } from "lucide-react";
 import type { SharedPageProps } from "../../Types/PageProps";
 
-const navigation = [
+interface NavigationItem {
+    label: string;
+    href: string;
+    /** Home-page sections are plain anchors so the browser scrolls to them. */
+    section?: boolean;
+}
+
+/** Same labels and order as the Stitch home navigation. */
+const navigation: NavigationItem[] = [
     { label: "الرئيسية", href: "/" },
-    { label: "القوالب", href: "/templates" },
-    { label: "من نحن", href: "/about" },
-    { label: "تواصل معنا", href: "/contact" },
+    { label: "معرض القوالب", href: "/templates" },
+    { label: "كيف يعمل ميثاق", href: "/#home-steps", section: true },
+    { label: "تجربة فتح الظرف", href: "/#home-envelope", section: true },
+    { label: "عن ميثاق", href: "/#home-features", section: true },
 ];
+
+function NavigationLink({
+    item,
+    current,
+    className,
+    onNavigate,
+}: {
+    item: NavigationItem;
+    current: boolean;
+    className: string;
+    onNavigate?: () => void;
+}) {
+    const props = {
+        href: item.href,
+        "aria-current": current ? ("page" as const) : undefined,
+        className,
+        onClick: onNavigate,
+    };
+
+    return item.section ? (
+        <a {...props}>{item.label}</a>
+    ) : (
+        <Link {...props}>{item.label}</Link>
+    );
+}
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const page = usePage<SharedPageProps>();
     const { auth } = page.props;
     const currentPath = page.url.split("?")[0];
+    const ctaHref = auth.user ? "/app" : "/register";
+    const ctaLabel = auth.user ? "مناسباتي" : "صمّمي دعوتك";
+
     return (
-        <header className="border-b border-methaq-border bg-methaq-ivory">
+        <header className="sticky top-0 z-50 border-b border-methaq-border bg-methaq-ivory/90 backdrop-blur-md">
             <nav
-                className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8"
+                className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6 lg:px-12"
                 aria-label="التنقل الرئيسي"
             >
                 <Link href="/" aria-label="ميثاق - الرئيسية">
@@ -30,48 +67,44 @@ export default function Navbar() {
                 </Link>
 
                 <div className="hidden items-center gap-8 lg:flex">
-                    {navigation.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            aria-current={
-                                currentPath === item.href ? "page" : undefined
-                            }
-                            className={`border-b-2 pb-1 text-[15px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-methaq-primary ${
-                                currentPath === item.href
-                                    ? "border-methaq-gold text-methaq-primary"
-                                    : "border-transparent text-methaq-muted hover:text-methaq-primary"
-                            }`}
-                        >
-                            {item.label}
-                        </Link>
-                    ))}
+                    {navigation.map((item) => {
+                        const current = !item.section && currentPath === item.href;
+
+                        return (
+                            <NavigationLink
+                                key={item.href}
+                                item={item}
+                                current={current}
+                                className={`border-b-2 pb-1 text-[15px] transition-colors ${
+                                    current
+                                        ? "border-methaq-gold font-semibold text-methaq-primary"
+                                        : "border-transparent font-medium text-methaq-muted hover:text-methaq-primary"
+                                }`}
+                            />
+                        );
+                    })}
                 </div>
 
-                <div className="hidden items-center gap-3 lg:flex">
-                    {auth.user ? (
+                <div className="hidden items-center gap-4 lg:flex">
+                    {!auth.user && (
                         <Link
-                            href="/app"
-                            className="rounded-methaq-button bg-methaq-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-methaq-primary-hover"
+                            href="/login"
+                            className="text-[14px] font-medium text-methaq-primary hover:underline hover:underline-offset-4"
                         >
-                            مناسباتي
+                            دخول
                         </Link>
-                    ) : (
-                        <>
-                            <Link
-                                href="/login"
-                                className="text-sm text-methaq-primary"
-                            >
-                                دخول
-                            </Link>
-                            <Link
-                                href="/register"
-                                className="rounded-methaq-button bg-methaq-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-methaq-primary-hover"
-                            >
-                                ابدئي الآن
-                            </Link>
-                        </>
                     )}
+                    <Link
+                        href={ctaHref}
+                        className="inline-flex items-center gap-2 rounded-methaq-button border border-methaq-gold-light/40 bg-methaq-primary px-5 py-2.5 text-[14px] font-medium text-methaq-cream shadow-sm transition-[background-color,box-shadow] duration-300 hover:bg-methaq-primary-hover hover:shadow-md"
+                    >
+                        <PenLine
+                            size={18}
+                            aria-hidden="true"
+                            className="text-methaq-gold-light"
+                        />
+                        {ctaLabel}
+                    </Link>
                 </div>
 
                 <button
@@ -89,39 +122,49 @@ export default function Navbar() {
             {menuOpen && (
                 <nav
                     id="methaq-mobile-menu"
-                    className="border-t border-methaq-border px-5 py-4 lg:hidden"
+                    className="border-t border-methaq-border bg-methaq-ivory px-6 py-4 lg:hidden"
                     aria-label="التنقل عبر الهاتف"
                 >
                     <div className="flex flex-col gap-4">
-                        {navigation.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                onClick={() => setMenuOpen(false)}
-                                aria-current={
-                                    currentPath === item.href
-                                        ? "page"
-                                        : undefined
-                                }
-                                className={`text-sm font-medium transition-colors ${
-                                    currentPath === item.href
-                                        ? "text-methaq-primary"
-                                        : "text-methaq-muted hover:text-methaq-primary"
-                                }`}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
+                        {navigation.map((item) => {
+                            const current =
+                                !item.section && currentPath === item.href;
 
-                        <div className="border-t border-methaq-border pt-4">
-                            {auth.user ? (
-                                <Link href="/app">مناسباتي</Link>
-                            ) : (
-                                <div className="flex gap-5">
-                                    <Link href="/login">دخول</Link>
-                                    <Link href="/register">ابدئي الآن</Link>
-                                </div>
+                            return (
+                                <NavigationLink
+                                    key={item.href}
+                                    item={item}
+                                    current={current}
+                                    onNavigate={() => setMenuOpen(false)}
+                                    className={`text-[15px] font-medium transition-colors ${
+                                        current
+                                            ? "text-methaq-primary"
+                                            : "text-methaq-muted hover:text-methaq-primary"
+                                    }`}
+                                />
+                            );
+                        })}
+
+                        <div className="flex items-center gap-5 border-t border-methaq-border pt-4">
+                            {!auth.user && (
+                                <Link
+                                    href="/login"
+                                    className="text-[15px] text-methaq-primary"
+                                >
+                                    دخول
+                                </Link>
                             )}
+                            <Link
+                                href={ctaHref}
+                                className="inline-flex items-center gap-2 rounded-methaq-button bg-methaq-primary px-4 py-2 text-[14px] font-medium text-methaq-cream"
+                            >
+                                <PenLine
+                                    size={16}
+                                    aria-hidden="true"
+                                    className="text-methaq-gold-light"
+                                />
+                                {ctaLabel}
+                            </Link>
                         </div>
                     </div>
                 </nav>

@@ -56,8 +56,9 @@ const features: Feature[] = [
 export default function HomeFeatures() {
     return (
         <section
+            id="home-features"
             aria-labelledby="home-features-title"
-            className="px-6 py-24 lg:px-12"
+            className="scroll-mt-24 px-6 py-24 lg:px-12"
         >
             <div className="mx-auto flex max-w-7xl flex-col gap-16">
                 <Reveal className="mx-auto flex max-w-2xl flex-col gap-3 text-center">
@@ -83,7 +84,7 @@ export default function HomeFeatures() {
                                 key={title}
                                 delay={(index % 3) * 110}
                             >
-                                <div className="group flex h-full flex-col gap-4 rounded-methaq-card border border-methaq-border bg-methaq-cream p-8 text-right transition-[translate,box-shadow] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_18px_30px_-10px_rgba(139,106,44,0.16),0_6px_14px_-4px_rgba(7,75,54,0.08)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                                <div className="group flex h-full flex-col gap-4 rounded-methaq-card border border-methaq-border bg-methaq-paper p-8 text-right transition-[translate,box-shadow] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_18px_30px_-10px_rgba(139,106,44,0.16),0_6px_14px_-4px_rgba(7,75,54,0.08)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
                                 <div className="flex items-center justify-between">
                                     <span className="grid size-12 place-items-center rounded-lg bg-methaq-surface text-methaq-gold-dark shadow-sm transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:rotate-0 motion-reduce:group-hover:scale-100">
                                         <Icon size={24} aria-hidden="true" />

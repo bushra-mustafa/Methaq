@@ -143,7 +143,7 @@ export default function HomeSteps() {
                                 key={step.numeral}
                                 data-reached={reached}
                                 aria-current={isCurrent ? "step" : undefined}
-                                className="group/step relative flex flex-col gap-5 rounded-2xl border border-methaq-border bg-methaq-cream p-8 transition-[border-color,box-shadow,translate] duration-500 data-[reached=true]:border-methaq-gold/50 aria-[current=step]:-translate-y-1.5 aria-[current=step]:shadow-methaq-raised motion-reduce:transition-none motion-reduce:aria-[current=step]:translate-y-0"
+                                className="group/step relative flex flex-col gap-5 rounded-2xl border border-methaq-border bg-methaq-paper p-8 transition-[border-color,box-shadow,translate] duration-500 data-[reached=true]:border-methaq-gold/50 aria-[current=step]:-translate-y-1.5 aria-[current=step]:shadow-methaq-raised motion-reduce:transition-none motion-reduce:aria-[current=step]:translate-y-0"
                             >
                                 <div className="flex items-center justify-between">
                                     <span className="font-methaq-display text-[36px] leading-none font-bold text-methaq-gold/40 tabular-nums transition-colors duration-500 group-data-[reached=true]/step:text-methaq-gold">
