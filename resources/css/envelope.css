@@ -1,0 +1,94 @@
+/*
+| The one Methaq envelope (InvitationEnvelope + InvitationSeal), shared by the editor,
+| the guest player, every scene theme and the home page.
+| The state lives in [data-state]: closed → open (reversible transitions) → presenting.
+| The Methaq logo inside the seal is fixed; only the seal shape and colour change.
+*/
+@font-face { font-family: 'Invitation Amiri'; src: url('/brand/fonts/Amiri-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Invitation Pinyon'; src: url('/brand/fonts/PinyonScript-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+
+.invitation-envelope { --envelope-duration: var(--opening-duration, 1800ms); position: relative; width: min(86%, 390px); aspect-ratio: 36 / 23; margin: 50px auto 42px; container-type: inline-size; perspective: 1100px; transform: rotate(-5deg); filter: drop-shadow(0 24px 23px #26152224); }
+.invitation-envelope-back { position: absolute; inset: 0; border-radius: 5px; background: color-mix(in srgb, var(--envelope-paper), black 15%); }
+.invitation-envelope-letter { position: absolute; inset: -7% 5% 7%; overflow: hidden; box-sizing: border-box; border: 1px solid color-mix(in srgb, var(--seal-color), transparent 70%); border-radius: 2px; background: var(--envelope-lining); box-shadow: 0 0 0 5px var(--envelope-lining), 0 0 0 6px color-mix(in srgb, var(--seal-color), transparent 60%); }
+.invitation-envelope-letter img { width: 100%; height: auto; display: block; }
+.invitation-envelope-front { position: absolute; inset: 0; z-index: 2; border-radius: 5px; background: linear-gradient(130deg, color-mix(in srgb, var(--envelope-paper), white 18%), var(--envelope-paper) 80%); clip-path: polygon(0 0, 50% 57%, 100% 0, 100% 100%, 0 100%); }
+.invitation-envelope-fold { position: absolute; inset: 0; z-index: 3; border-radius: 5px; background: linear-gradient(15deg, color-mix(in srgb, var(--envelope-paper), white 24%), color-mix(in srgb, var(--envelope-paper), white 10%)); clip-path: polygon(0 100%, 50% 43%, 100% 100%); }
+.invitation-envelope-flap { position: absolute; inset: 0; z-index: 4; background: linear-gradient(175deg, color-mix(in srgb, var(--envelope-paper), white 25%), color-mix(in srgb, var(--envelope-paper), black 8%)); clip-path: polygon(0 0, 100% 0, 50% 59%); transform-origin: top; backface-visibility: hidden; }
+
+/* Letter teaser (names and date peeking out of the envelope) */
+.invitation-letter-teaser { display: flex; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 4cqi; padding: 4cqi; box-sizing: border-box; color: #634b46; background: var(--envelope-lining); text-align: center; }
+.invitation-letter-teaser > span { font-size: max(12px, 4.5cqi); line-height: 1; }
+.invitation-letter-teaser strong { font-family: 'Invitation Amiri', serif; font-weight: 400; font-size: clamp(16px, 8cqi, 34px); line-height: 1.5; overflow-wrap: anywhere; }
+.invitation-letter-teaser.is-en strong, .invitation-letter-teaser.is-mixed strong:dir(ltr) { font-family: 'Invitation Pinyon', 'Invitation Amiri', cursive; }
+.invitation-letter-teaser small { font-family: Georgia, 'Invitation Amiri', serif; font-size: clamp(10px, 3.4cqi, 14px); overflow-wrap: anywhere; }
+
+/* Envelope shapes */
+.invitation-envelope.is-rounded .invitation-envelope-fold, .invitation-envelope.is-gatefold .invitation-envelope-fold, .invitation-envelope.is-minimal .invitation-envelope-fold, .invitation-envelope.is-wallet .invitation-envelope-fold, .invitation-envelope.is-scalloped .invitation-envelope-fold { display: none; }
+.invitation-envelope.is-luxury .invitation-envelope-front::after { content: ''; position: absolute; inset: 7%; border: 1px solid var(--seal-color); box-shadow: 0 0 0 4px #ffffff06; }
+.invitation-envelope.is-luxury .invitation-envelope-flap { background: linear-gradient(130deg, transparent 20%, #fff4 45%, transparent 70%), var(--envelope-paper); }
+.invitation-envelope.is-minimal .invitation-envelope-front { clip-path: polygon(0 30%, 50% 45%, 100% 30%, 100% 100%, 0 100%); background: var(--envelope-paper); }
+.invitation-envelope.is-minimal .invitation-envelope-flap { inset-block-end: 40%; clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 76%, 0 50%); }
+.invitation-envelope.is-rounded .invitation-envelope-front { clip-path: none; background: var(--envelope-paper); }
+.invitation-envelope.is-rounded .invitation-envelope-flap { inset: 0 0 43%; clip-path: none; border-radius: 0 0 50% 50%; box-shadow: 0 2px 2px #0003; background: linear-gradient(165deg, #ffffff20, #00000012), var(--envelope-paper); }
+.invitation-envelope.is-gatefold .invitation-envelope-front { clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); transform-origin: right center; background: linear-gradient(to right, #0003, transparent 75%), var(--envelope-paper); }
+.invitation-envelope.is-gatefold .invitation-envelope-flap { inset: 0; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); transform-origin: left center; background: linear-gradient(to right, #fff1, #fff2), var(--envelope-paper); }
+.invitation-envelope.is-portrait { width: min(65%, 280px); aspect-ratio: 4 / 5; }
+.invitation-envelope.is-portrait .invitation-envelope-flap { clip-path: polygon(0 0, 100% 0, 100% 18%, 50% 40%, 0 18%); }
+.invitation-envelope.is-portrait .invitation-envelope-front { clip-path: polygon(0 18%, 50% 40%, 100% 18%, 100% 100%, 0 100%); }
+.invitation-envelope.is-portrait .invitation-envelope-fold { clip-path: polygon(0 100%, 50% 72%, 100% 100%); }
+.invitation-envelope.is-wallet { aspect-ratio: 17 / 10; }
+.invitation-envelope.is-wallet .invitation-envelope-front { clip-path: none; border-radius: 8px; background: linear-gradient(90deg, #0000000b, #ffffff08), var(--envelope-paper); }
+.invitation-envelope.is-wallet .invitation-envelope-flap { inset: 0; clip-path: polygon(46% 0, 100% 0, 100% 100%, 46% 100%, 34% 85%, 34% 15%); transform-origin: right center; background: linear-gradient(270deg, #ffffff24, #0000000c), var(--envelope-paper); }
+.invitation-envelope.is-scalloped .invitation-envelope-front { clip-path: none; background: var(--envelope-paper); }
+.invitation-envelope.is-scalloped .invitation-envelope-flap { inset: 0 0 40%; clip-path: polygon(0 0, 100% 0, 100% 70%, 98% 78%, 95% 82%, 92% 78%, 90% 72%, 87% 81%, 83% 85%, 79% 81%, 76% 76%, 73% 85%, 69% 90%, 65% 86%, 62% 81%, 59% 91%, 55% 96%, 50% 100%, 45% 96%, 41% 91%, 38% 81%, 35% 86%, 31% 90%, 27% 85%, 24% 76%, 21% 81%, 17% 85%, 13% 81%, 10% 72%, 8% 78%, 5% 82%, 2% 78%, 0 70%); }
+
+/* Seal: fixed Methaq logo, configurable shape and colour */
+.invitation-seal { position: absolute; z-index: 5; left: var(--seal-x); top: var(--seal-y); display: grid; place-items: center; width: var(--seal-size); aspect-ratio: 1; transform: translate(-50%, -50%); border: 0; padding: 0; border-radius: 45% 51% 44% 49% / 49% 44% 53% 47%; color: #231506; background: radial-gradient(ellipse at 35% 25%, #ffffff66, transparent 50%), var(--seal-color); box-shadow: 2px 6px 9px #17091e55, inset 2px 3px 3px #fff6, inset -3px -3px 5px #0004; }
+button.invitation-seal { cursor: pointer; }
+.invitation-seal::before { position: absolute; content: ''; inset: 10%; border: 1px solid #38250777; border-radius: 50%; box-shadow: inset 0 0 0 2px #fff2; }
+.invitation-seal-logo { position: absolute; inset: 24%; background: currentColor; mask: url('/brand/logos/methaq-symbol-small-flat.svg') center / contain no-repeat; }
+.invitation-seal.is-medallion, .invitation-seal.is-methaq { border-radius: 50%; }
+.invitation-seal.is-wax { border: 2px solid color-mix(in srgb, var(--seal-color), white 15%); background: radial-gradient(circle at 35% 25%, color-mix(in srgb, var(--seal-color), white 15%), color-mix(in srgb, var(--seal-color), black 15%)); box-shadow: 2px 5px 9px #2710193d, inset 0 0 0 3px color-mix(in srgb, var(--seal-color), black 8%); }
+.invitation-seal.is-wax::before { border-color: color-mix(in srgb, var(--seal-color), black 25%); box-shadow: 0 1px 0 #ffffff30; }
+.invitation-seal.has-wax-finish { border: 2px solid color-mix(in srgb, var(--seal-color), white 15%); background: radial-gradient(ellipse at 28% 20%, color-mix(in srgb, var(--seal-color), white 32%), var(--seal-color) 50%, color-mix(in srgb, var(--seal-color), black 22%)); box-shadow: 2px 5px 9px #2710193d, inset 0 0 0 3px color-mix(in srgb, var(--seal-color), black 8%); }
+.invitation-seal.is-wax-oval { aspect-ratio: 4 / 5; border-radius: 48%; }
+.invitation-seal.is-wax-oval::before { border-radius: 48%; }
+.invitation-seal.is-wax-square, .invitation-seal.is-wax-square::before { border-radius: 18% 23% 16% 21%; }
+.invitation-seal.is-wax-heart { border-radius: 0; clip-path: polygon(50% 95%, 10% 55%, 3% 39%, 4% 23%, 14% 10%, 28% 5%, 41% 9%, 50% 20%, 59% 9%, 72% 5%, 86% 10%, 96% 23%, 97% 39%, 90% 55%); }
+.invitation-seal.is-wax-heart::before { inset: 19% 24% 28%; border-radius: 45% 45% 38% 38%; }
+.invitation-seal.is-wax-heart .invitation-seal-logo { inset: 21% 24% 32%; }
+.invitation-seal.is-wax-flower { border-radius: 0; clip-path: polygon(50% 0, 60% 8%, 74% 3%, 79% 16%, 93% 19%, 92% 33%, 100% 43%, 93% 55%, 98% 69%, 85% 75%, 81% 90%, 67% 89%, 56% 100%, 44% 94%, 30% 98%, 24% 85%, 9% 81%, 10% 66%, 0 55%, 7% 43%, 2% 29%, 15% 23%, 20% 9%, 35% 10%); }
+.invitation-seal.is-medallion, .invitation-seal.is-medallion-octagon { background: conic-gradient(from 20deg, #ffffff70, #00000018, #ffffff60, #00000030, #ffffff70), var(--seal-color); }
+.invitation-seal.is-medallion-octagon { border-radius: 0; clip-path: polygon(29% 0, 71% 0, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0 71%, 0 29%); }
+.invitation-seal.is-medallion-octagon::before { border-radius: 20%; }
+.invitation-seal.is-embossed { border: 1px solid color-mix(in srgb, var(--seal-color), transparent 45%); border-radius: 50%; background: color-mix(in srgb, var(--seal-color), transparent 93%); color: color-mix(in srgb, var(--seal-color), black 25%); box-shadow: 1px 1px 0 #ffffff90, inset 2px 2px 4px #0002; }
+.invitation-seal.is-embossed::before { border: 1px dashed currentColor; box-shadow: none; }
+.invitation-envelope[data-state='closed'] button.invitation-seal:not(:disabled)::after { content: ''; position: absolute; inset: -6px; border: 1px solid color-mix(in srgb, var(--seal-color), transparent 45%); border-radius: 50%; animation: invitation-seal-pulse 3s ease-out infinite; }
+
+/*
+| Motion. Transitions reverse on their own, so closing replays the opening backwards.
+| Closing timing (base rules): letter sinks → flap folds down → seal returns.
+*/
+.invitation-envelope-letter { transition: transform calc(var(--envelope-duration) * .45) cubic-bezier(.4, 0, .2, 1); }
+.invitation-envelope-flap, .invitation-envelope.is-gatefold .invitation-envelope-front { transition: transform calc(var(--envelope-duration) * .4) calc(var(--envelope-duration) * .35) ease-in-out; }
+.invitation-seal { transition: opacity calc(var(--envelope-duration) * .2) calc(var(--envelope-duration) * .7) ease, transform calc(var(--envelope-duration) * .2) calc(var(--envelope-duration) * .7) ease; }
+
+/* Opening timing: seal lifts → flap turns → letter rises. */
+.invitation-envelope:is([data-state='open'], [data-state='presenting']) .invitation-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.15); pointer-events: none; transition-delay: 0s; }
+.invitation-envelope:is([data-state='open'], [data-state='presenting']) :is(.invitation-envelope-flap, .invitation-envelope-front) { transition-delay: calc(var(--envelope-duration) * .1); }
+.invitation-envelope:is([data-state='open'], [data-state='presenting']) .invitation-envelope-flap { transform: rotateX(180deg); }
+.invitation-envelope.is-gatefold:is([data-state='open'], [data-state='presenting']) .invitation-envelope-flap { transform: rotateY(-135deg); }
+.invitation-envelope.is-gatefold:is([data-state='open'], [data-state='presenting']) .invitation-envelope-front { transform: rotateY(135deg); }
+.invitation-envelope.is-wallet:is([data-state='open'], [data-state='presenting']) .invitation-envelope-flap { transform: rotateY(145deg); }
+.invitation-envelope[data-state='open'] .invitation-envelope-letter { transform: translateY(-48%); transition-delay: calc(var(--envelope-duration) * .4); }
+
+/* Presenting: the letter leaves the envelope and the envelope drops away. */
+.invitation-envelope[data-state='presenting'] { animation: invitation-envelope-exit .9s ease both; }
+.invitation-envelope[data-state='presenting'] .invitation-envelope-letter { z-index: 6; transform: translateY(-66%); transition-delay: 0s; }
+
+@keyframes invitation-seal-pulse { from { transform: scale(.94); opacity: .65; } to { transform: scale(1.35); opacity: 0; } }
+@keyframes invitation-envelope-exit { 0%, 60% { transform: rotate(-5deg); opacity: 1; } 100% { transform: translateY(75px) rotate(0); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .invitation-envelope, .invitation-envelope *, .invitation-envelope *::before, .invitation-envelope *::after { animation: none !important; transition: none !important; }
+}

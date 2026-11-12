@@ -32,7 +32,7 @@ interface Props {
     sparkleSelector?: string;
 }
 
-export function InvitationAmbience({ preset, paused, interactionRoot, sparkleSelector = '.invitation-noir-seal, .invitation-seal' }: Props) {
+export function InvitationAmbience({ preset, paused, interactionRoot, sparkleSelector = '.invitation-seal' }: Props) {
     const host = useRef<HTMLDivElement>(null);
     const image = useRef<HTMLImageElement>(null);
     const smoke = useRef<HTMLCanvasElement>(null);

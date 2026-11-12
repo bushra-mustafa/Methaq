@@ -1,8 +1,27 @@
-import type { EnvelopeAppearance, EnvelopeConfig, OpeningConfig } from '../../../Types/SceneConfig';
+import type { HexColor, Palette } from '../../../Types/Palette.ts';
+import type { EnvelopeAppearance, EnvelopeConfig, OpeningConfig } from '../../../Types/SceneConfig.ts';
+import { resolveColor } from './editorDocument.ts';
 
 export const DEFAULT_ENVELOPE_APPEARANCE: EnvelopeAppearance = {
     style: 'classic', sealStyle: 'wax', sealX: 50, sealY: 52, sealSize: 20,
 };
+
+export interface EnvelopeColors {
+    paper: HexColor;
+    lining: HexColor;
+    seal: HexColor;
+}
+
+/** Resolves an envelope's palette references into the colours InvitationEnvelope paints. */
+export function envelopeColors(envelope: EnvelopeConfig, palette: Palette): EnvelopeColors {
+    const document = { palette };
+
+    return {
+        paper: resolveColor(envelope.paperColor, document),
+        lining: resolveColor(envelope.liningColor, document),
+        seal: resolveColor(envelope.sealColor, document),
+    };
+}
 
 export function createEnvelope(): EnvelopeConfig {
     return {

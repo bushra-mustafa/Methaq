@@ -4,12 +4,13 @@ import { Heart, LoaderCircle, Pause, Play, RotateCcw, Volume2, VolumeX } from 'l
 import type { EditorAsset } from '../../../Types/Editor';
 import type { Palette } from '../../../Types/Palette';
 import type { PresentationCard } from '../../../Types/PresentationCard';
-import type { EnvelopeConfig, SceneConfig } from '../../../Types/SceneConfig';
-import { resolveColor } from '../Services/editorDocument';
+import type { SceneConfig } from '../../../Types/SceneConfig';
+import { envelopeColors } from '../Services/scenePresentation';
 import { useInvitationOpening } from '../Hooks/useInvitationOpening';
 import { useInvitationAudio } from '../Hooks/useInvitationAudio';
 import { AnimatedInvitationCard } from './AnimatedInvitationCard';
 import { InvitationAmbience } from './InvitationAmbience';
+import { EnvelopeLetter, InvitationEnvelope } from './InvitationEnvelope';
 import '../../../../css/invitation-noir.css';
 
 interface Props {
@@ -26,16 +27,6 @@ interface Props {
 
 const LATIN = /[A-Za-z]/;
 const ARABIC = /[\u0600-\u06FF]/;
-
-function envelopeStyle(envelope: EnvelopeConfig | null, palette: Palette): CSSProperties {
-    const document = { palette };
-
-    return {
-        '--noir-envelope': envelope ? resolveColor(envelope.paperColor, document) : '#71334a',
-        '--noir-lining': envelope ? resolveColor(envelope.liningColor, document) : '#fff8ea',
-        '--noir-seal': envelope ? resolveColor(envelope.sealColor, document) : '#d8b982',
-    } as CSSProperties;
-}
 
 /**
  * «ليلة عنابية»: the high-fidelity guest presentation for the `henna-noir` backdrop.
@@ -90,7 +81,7 @@ export function NoirInvitationScene({ audioAllowed, assets, cardParts, scene, pa
         ref={root}
         className={`invitation-player invitation-noir is-${viewport} ${motion ? '' : 'motion-off'}`}
         data-phase={visualPhase}
-        style={{ ...envelopeStyle(envelope, palette), '--opening-duration': `${scene.opening.durationMs}ms` } as CSSProperties}
+        style={{ '--opening-duration': `${scene.opening.durationMs}ms` } as CSSProperties}
         dir="rtl"
         aria-label={title}
     >
@@ -113,23 +104,17 @@ export function NoirInvitationScene({ audioAllowed, assets, cardParts, scene, pa
                     <h2 className="invitation-noir-title" dir="auto">{cover?.heading || title}</h2>
                     {envelope && <div className="invitation-noir-envelope-scene">
                         <div className="invitation-noir-halo" aria-hidden="true" />
-                        <div className="invitation-noir-envelope">
-                            <div className="invitation-noir-envelope-back" aria-hidden="true" />
-                            <div className="invitation-noir-letter" aria-hidden="true">
-                                <Heart strokeWidth={1} />
-                                <span className={`invitation-noir-letter-names ${namesAreLatin ? 'is-latin' : ''}`} dir="auto">{names}</span>
-                                {dateLabel && <span className="invitation-noir-letter-date" dir={dateDirection}>{dateLabel}</span>}
-                            </div>
-                            <div className="invitation-noir-envelope-front" aria-hidden="true" />
-                            <div className="invitation-noir-envelope-fold" aria-hidden="true" />
-                            <div className="invitation-noir-envelope-flap" aria-hidden="true" />
-                            <button ref={opener} type="button" className="invitation-noir-seal" onClick={openInvitation} disabled={phase !== 'sealed'} aria-label={`افتح دعوة ${title}`}>
-                                <span dir="auto">{envelope.monogram}</span>
-                                <span className="invitation-noir-seal-ring" aria-hidden="true" />
-                            </button>
-                        </div>
+                        <InvitationEnvelope
+                            colors={envelopeColors(envelope, palette)}
+                            appearance={envelope.appearance}
+                            state={phase === 'sealed' ? 'closed' : 'open'}
+                            letter={<EnvelopeLetter names={names} detail={dateLabel} language={cover?.language} />}
+                            sealLabel={title}
+                            onSealClick={openInvitation}
+                            sealRef={opener}
+                        />
                     </div>}
-                    {!envelope && <button ref={opener} type="button" className="invitation-noir-open" onClick={openInvitation} disabled={phase !== 'sealed'}>افتح الدعوة</button>}
+                    {(!envelope || envelope.appearance?.sealStyle === 'none') && <button ref={opener} type="button" className="invitation-noir-open" onClick={openInvitation} disabled={phase !== 'sealed'}>افتح الدعوة</button>}
                     <p className={`invitation-noir-cover-names ${namesAreLatin ? 'is-latin' : ''}`} dir="auto">{names}</p>
                     {cover?.message && <p className="invitation-noir-blessing" dir="auto">{cover.message}</p>}
                 </div>

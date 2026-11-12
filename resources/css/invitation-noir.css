@@ -46,22 +46,15 @@
 .invitation-noir.is-phone .invitation-noir-envelope-scene { height: 280px; }
 .invitation-noir-halo { position: absolute; width: min(450px, 90%); aspect-ratio: 1; border: 1px solid #d8b98222; border-radius: 50%; box-shadow: 0 0 80px #d8b98208; pointer-events: none; transition: opacity 0.6s; }
 .invitation-noir-halo::after { content: ''; position: absolute; inset: 13px; border: 1px solid #d8b9820e; border-radius: inherit; }
-.invitation-noir-envelope { position: relative; width: min(400px, calc(100% - 64px)); aspect-ratio: 36 / 23; transform: rotate(-5deg); filter: drop-shadow(0 24px 28px #1a081650); transition: transform 0.5s 1.2s ease, opacity 0.5s 1.2s ease; }
-.invitation-noir-envelope-back, .invitation-noir-envelope-front, .invitation-noir-envelope-fold, .invitation-noir-envelope-flap { position: absolute; inset: 0; border-radius: 3px; }
-.invitation-noir-envelope-back { border: 1px solid #d8b98244; background: color-mix(in srgb, var(--noir-envelope) 55%, #1a0710); }
-.invitation-noir-letter { position: absolute; inset: 9px 11px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px 8px; border: 1px solid var(--noir-gold); background: var(--noir-lining); box-shadow: inset 0 0 0 7px var(--noir-lining), inset 0 0 0 8px #d8b98260; color: var(--noir-wine); transform: translateY(-13%); transition: transform 0.85s 0.45s cubic-bezier(0.2, 0.65, 0.3, 1); }
-.invitation-noir-letter svg { width: 19px; height: 19px; color: #ad8452; }
-.invitation-noir-letter-names { max-width: 100%; font-family: 'Invitation Amiri', serif; font-size: clamp(1.3rem, 4.4vw, 2rem); line-height: 1.3; overflow-wrap: anywhere; }
-.invitation-noir-letter-names.is-latin { font-family: 'Noir Cormorant', Georgia, serif; font-size: clamp(1.5rem, 5vw, 2.3rem); font-style: italic; line-height: 1.15; }
-.invitation-noir-letter-date { color: #986f42; font-family: 'Noir Cormorant', Georgia, serif; font-size: 1rem; letter-spacing: 0.15em; }
-.invitation-noir-envelope-front { z-index: 2; background: linear-gradient(110deg, color-mix(in srgb, var(--noir-envelope) 85%, #fff), var(--noir-envelope) 60%, color-mix(in srgb, var(--noir-envelope) 80%, #fff)); clip-path: polygon(0 0, 50% 57%, 100% 0, 100% 100%, 0 100%); }
-.invitation-noir-envelope-fold { z-index: 3; background: linear-gradient(165deg, color-mix(in srgb, var(--noir-envelope) 90%, #fff), color-mix(in srgb, var(--noir-envelope) 70%, #fff)); clip-path: polygon(0 100%, 50% 43%, 100% 100%); }
-.invitation-noir-envelope-flap { z-index: 4; background: linear-gradient(155deg, color-mix(in srgb, var(--noir-envelope) 62%, #fff), color-mix(in srgb, var(--noir-envelope) 92%, #fff) 65%); clip-path: polygon(0 0, 100% 0, 50% 59%); transform-origin: top center; backface-visibility: hidden; transition: transform 0.8s 0.1s cubic-bezier(0.4, 0, 0.2, 1); }
-.invitation-noir-seal { position: absolute; top: 54%; left: 50%; z-index: 5; display: grid; place-items: center; width: clamp(62px, 12vw, 78px); height: clamp(62px, 12vw, 78px); padding: 0; border: 2px solid color-mix(in srgb, var(--noir-seal) 88%, #fff); border-radius: 50%; background: linear-gradient(135deg, color-mix(in srgb, var(--noir-seal) 60%, #fff), color-mix(in srgb, var(--noir-seal) 85%, #6b4a1f) 60%, color-mix(in srgb, var(--noir-seal) 75%, #fff)); box-shadow: 0 4px 13px #30121e50, 0 0 0 3px #b7875255, inset 0 1px 3px #fff8ea80; color: #552237; cursor: pointer; transform: translate(-50%, -50%); transition: opacity 0.3s, transform 0.3s, box-shadow 0.25s; animation: invitation-noir-seal-pulse 3.4s ease-in-out infinite; }
-.invitation-noir-seal:hover { box-shadow: 0 4px 18px #30121e50, 0 0 25px #d8b98230; }
-.invitation-noir-seal:disabled { cursor: default; }
-.invitation-noir-seal > span:first-child { max-width: 80%; overflow: hidden; font-family: 'Noir Cormorant', 'Invitation Amiri', Georgia, serif; font-size: clamp(1.15rem, 3vw, 1.45rem); font-weight: 500; line-height: 1; white-space: nowrap; }
-.invitation-noir-seal-ring { position: absolute; inset: 6px; border: 1px solid #804e4259; border-radius: 50%; pointer-events: none; }
+/* The shared InvitationEnvelope, staged for this theme: larger, and it drops away once the letter is out. */
+.invitation-noir-envelope-scene .invitation-envelope { width: min(400px, calc(100% - 64px)); margin: 0; filter: drop-shadow(0 24px 28px #1a081650); transition: transform .5s ease, opacity .5s ease; }
+.invitation-noir.is-phone .invitation-noir-envelope-scene .invitation-envelope { width: min(330px, calc(100% - 72px)); }
+@media (max-width: 600px) { .invitation-noir-envelope-scene .invitation-envelope { width: min(330px, calc(100% - 72px)); } }
+.invitation-noir[data-phase='opening'] .invitation-noir-envelope-scene .invitation-envelope { opacity: 0; transform: translateY(60px) rotate(0); transition-delay: calc(var(--opening-duration) * .7); }
+.invitation-noir .invitation-letter-teaser { color: var(--noir-wine); }
+.invitation-noir .invitation-letter-teaser > span { color: #ad8452; }
+.invitation-noir .invitation-letter-teaser.is-en strong { font-family: 'Noir Cormorant', Georgia, serif; font-style: italic; }
+.invitation-noir .invitation-letter-teaser small { color: #986f42; font-family: 'Noir Cormorant', Georgia, serif; letter-spacing: .15em; }
 .invitation-noir-open { min-height: 48px; margin-top: 18px; padding: 10px 28px; border: 1px solid var(--noir-gold); border-radius: 2px; background: transparent; color: var(--noir-gold); cursor: pointer; }
 .invitation-noir-cover-names { margin: 2px 0 0; max-width: 100%; color: var(--noir-gold); font-family: 'Noir Ruqaa', 'Invitation Amiri', serif; font-size: clamp(1.9rem, 5.5vw, 2.8rem); line-height: 1.5; overflow-wrap: anywhere; }
 .invitation-noir-cover-names.is-latin { font-family: 'Noir Cormorant', Georgia, serif; font-size: clamp(2rem, 6vw, 3rem); font-style: italic; line-height: 1.25; }
@@ -72,10 +65,6 @@
 .invitation-noir-skip:hover { color: #e3c9bd; }
 
 /* Opening sequence */
-.invitation-noir[data-phase='opening'] .invitation-noir-envelope-flap { transform: rotateX(180deg); }
-.invitation-noir[data-phase='opening'] .invitation-noir-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.15); animation: none; }
-.invitation-noir[data-phase='opening'] .invitation-noir-letter { transform: translateY(-73%); }
-.invitation-noir[data-phase='opening'] .invitation-noir-envelope { opacity: 0; transform: translateY(60px) rotate(0); }
 .invitation-noir[data-phase='opening'] .invitation-noir-frame, .invitation-noir[data-phase='opening'] .invitation-noir-halo { opacity: 0; }
 .invitation-noir[data-phase='opening'] :is(.invitation-noir-kicker, .invitation-noir-cover-names, .invitation-noir-blessing, .invitation-noir-title, .invitation-noir-entry-bottom, .invitation-noir-skip) { animation: invitation-noir-fade-out 0.5s both; }
 
@@ -93,12 +82,11 @@
 .invitation-noir-sound-notice { max-width: 240px; padding: 10px 15px; border: 1px solid var(--noir-gold); background: var(--noir-ivory); color: var(--noir-wine); font-size: 0.875rem; line-height: 1.6; }
 .invitation-noir-spin { animation: invitation-noir-spin 1s linear infinite; }
 
-.invitation-noir.motion-off :is(.invitation-noir-paper, .invitation-noir-seal) { animation: none; }
+.invitation-noir.motion-off .invitation-noir-paper { animation: none; }
 
 @keyframes invitation-noir-fade-out { to { opacity: 0; transform: translateY(-8px); } }
 @keyframes invitation-noir-paper-enter { from { opacity: 0; transform: translateY(35px) scale(0.97); } to { opacity: 1; transform: none; } }
 @keyframes invitation-noir-spin { to { transform: rotate(360deg); } }
-@keyframes invitation-noir-seal-pulse { 0%, 100% { box-shadow: 0 4px 13px #30121e50, 0 0 0 3px #b7875255, inset 0 1px 3px #fff8ea80; } 50% { box-shadow: 0 4px 13px #30121e50, 0 0 0 9px #b7875200, inset 0 1px 3px #fff8ea80; } }
 
 @media (max-width: 600px) {
     .invitation-noir-header { grid-template-columns: minmax(0, 1fr) auto; padding: 16px 20px; }

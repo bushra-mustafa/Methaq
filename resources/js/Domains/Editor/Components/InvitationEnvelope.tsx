@@ -1,27 +1,57 @@
-import type { CSSProperties } from 'react';
-import type { Palette } from '../../../Types/Palette';
-import type { EnvelopeConfig, InvitationCover } from '../../../Types/SceneConfig';
-import { resolveColor } from '../Services/editorDocument';
+import type { CSSProperties, ReactNode, Ref } from 'react';
+import type { EnvelopeAppearance, InvitationCover } from '../../../Types/SceneConfig';
+import type { EnvelopeColors } from '../Services/scenePresentation';
 import { DEFAULT_ENVELOPE_APPEARANCE } from '../Services/scenePresentation';
 import { InvitationSeal } from './InvitationSeal';
-import '../../../../css/envelope-variants.css';
+import '../../../../css/envelope.css';
 
-interface Props { cover?: InvitationCover; envelope: EnvelopeConfig; palette: Palette; cardUrl?: string; title?: string; opening?: boolean; namesPreview?: boolean; onOpen?: () => void }
+export type EnvelopeState = 'closed' | 'open' | 'presenting';
 
-export function InvitationEnvelope({ cover, envelope, palette, cardUrl, title, opening, namesPreview, onOpen }: Props) {
-    const appearance = envelope.appearance ?? DEFAULT_ENVELOPE_APPEARANCE;
+interface Props {
+    colors: EnvelopeColors;
+    appearance?: EnvelopeAppearance;
+    state?: EnvelopeState;
+    /** What peeks out of the envelope: names/date (EnvelopeLetter) or the card image. */
+    letter?: ReactNode;
+    /** Invitation title, read in the seal button's accessible name. */
+    sealLabel?: string;
+    onSealClick?: () => void;
+    sealRef?: Ref<HTMLButtonElement>;
+}
+
+/**
+ * The single Methaq envelope. Every surface (editor pickers, guest player, scene themes
+ * and the home page) renders this component and only decides when `state` changes.
+ */
+export function InvitationEnvelope({ colors, appearance = DEFAULT_ENVELOPE_APPEARANCE, state = 'closed', letter, sealLabel, onSealClick, sealRef }: Props) {
     const style = {
-        '--envelope-paper': resolveColor(envelope.paperColor, { palette }),
-        '--envelope-lining': resolveColor(envelope.liningColor, { palette }),
-        '--seal-color': resolveColor(envelope.sealColor, { palette }),
+        '--envelope-paper': colors.paper,
+        '--envelope-lining': colors.lining,
+        '--seal-color': colors.seal,
         '--seal-x': `${appearance.sealX}%`, '--seal-y': `${appearance.sealY}%`, '--seal-size': `${appearance.sealSize}%`,
     } as CSSProperties;
-    return <div className={`invitation-envelope is-${appearance.style} ${opening ? 'is-opening' : ''} ${namesPreview ? 'is-names-preview' : ''}`} style={style}>
+
+    return <div className={`invitation-envelope is-${appearance.style}`} data-state={state} style={style}>
         <div className="invitation-envelope-back" />
-        <div className="invitation-envelope-letter" aria-hidden="true">{cover ? <div className={`invitation-letter-teaser is-${cover.language}`}><span>♡</span><strong dir="auto">{cover.names}</strong><small dir="auto">{cover.dateLabel}</small></div> : cardUrl && <img src={cardUrl} alt="" />}</div>
+        <div className="invitation-envelope-letter" aria-hidden="true">{letter}</div>
         <div className="invitation-envelope-front" />
         <div className="invitation-envelope-fold" />
         <div className="invitation-envelope-flap" />
-        <InvitationSeal style={appearance.sealStyle} onOpen={onOpen} disabled={opening} title={title} />
+        <InvitationSeal style={appearance.sealStyle} onOpen={onSealClick} disabled={state !== 'closed'} title={sealLabel} ref={sealRef} />
+    </div>;
+}
+
+interface LetterProps {
+    names: string;
+    detail?: string;
+    language?: InvitationCover['language'];
+}
+
+/** The names-and-date note inside the envelope. */
+export function EnvelopeLetter({ names, detail, language = 'ar' }: LetterProps) {
+    return <div className={`invitation-letter-teaser is-${language}`}>
+        <span>♡</span>
+        <strong dir="auto">{names}</strong>
+        {detail && <small dir="auto">{detail}</small>}
     </div>;
 }
