@@ -16,6 +16,7 @@
 /auth.json
 /node_modules
 /public/hot
+/public/js/filament
 /public/storage
 /storage/*.key
 /storage/pail
@@ -29,3 +30,6 @@ Thumbs.db
 /.claude/skills/frontend-design
 /.claude/skills/security-audit
 /.claude/skills/web-design-guidelines
+
+/public/css/filament
+/public/fonts/filament

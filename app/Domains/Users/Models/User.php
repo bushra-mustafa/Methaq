@@ -9,6 +9,8 @@ use App\Domains\Payments\Models\Order;
 use App\Domains\Users\Enums\UserRole;
 use App\Domains\Users\Enums\UserStatus;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
@@ -57,6 +59,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isActive(): bool
     {
         return $this->status === UserStatus::Active;
+    }
+
+    /**
+     * The Filament admin panel follows the same rule as the `admin.2fa` middleware:
+     * an active administrator who has confirmed two-factor authentication.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isActive()
+            && $this->role === UserRole::Admin
+            && $this->hasEnabledTwoFactorAuthentication();
     }
 
     public function hasVerifiedEmail(): bool
