@@ -69,7 +69,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'default_scene_json' => $columns['scene_json'],
                 'default_palette_json' => $columns['palette_json'],
                 'schema_version' => $columns['schema_version'],
-                ...($isNew ? ['is_active' => true] : []),
+                ...($isNew ? ['is_active' => true, 'is_featured' => true] : []),
             ])->save();
 
             $links = [];

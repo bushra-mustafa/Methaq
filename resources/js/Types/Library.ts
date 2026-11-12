@@ -21,6 +21,8 @@ export interface LibraryTemplate {
     thumbnailUrl: string;
     palette: Record<string, string>;
     isActive: boolean;
+    /** Chosen by the admin for the home page's featured section. */
+    isFeatured: boolean;
     assets: LibraryAsset[];
 }
 

@@ -82,6 +82,37 @@ final class AdminTemplateLibraryTest extends TestCase
         $this->assertDatabaseCount('audit_logs', 1);
     }
 
+    public function test_admin_chooses_which_templates_are_featured_on_the_home_page(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+        $admin = $this->confirmedAdmin();
+        $template = Template::query()->where('slug', 'powder-gold')->sole();
+        $url = "/app/admin/library/template/{$template->getKey()}/featured";
+
+        $this->actingAs(User::factory()->create())
+            ->patch($url, ['is_featured' => false, 'reason' => 'محاولة'])
+            ->assertForbidden();
+
+        $this->actingAs($admin)->patch($url, ['is_featured' => false, 'reason' => ''])
+            ->assertSessionHasErrors('reason');
+
+        $this->actingAs($admin)->patch($url, [
+            'is_featured' => false,
+            'reason' => 'نعرض قوالب الحنّة هذا الشهر',
+        ])->assertSessionHas('status', 'template-featured-updated');
+
+        $this->assertFalse($template->fresh()->is_featured);
+        $this->assertDatabaseHas('audit_logs', [
+            'actor_id' => $admin->getKey(),
+            'action' => 'template.unfeatured',
+            'subject_type' => 'template',
+            'subject_id' => $template->getKey(),
+        ]);
+
+        $this->actingAs($admin)->patch($url, ['is_featured' => false, 'reason' => 'طلب مكرر']);
+        $this->assertDatabaseCount('audit_logs', 1);
+    }
+
     private function confirmedAdmin(): User
     {
         $admin = User::factory()->create(['role' => UserRole::Admin]);

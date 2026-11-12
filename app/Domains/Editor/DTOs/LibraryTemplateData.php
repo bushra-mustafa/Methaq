@@ -21,6 +21,7 @@ final readonly class LibraryTemplateData
         public string $thumbnailUrl,
         public array $palette,
         public bool $isActive,
+        public bool $isFeatured,
         public array $assets,
     ) {}
 
@@ -38,13 +39,14 @@ final readonly class LibraryTemplateData
             thumbnailUrl: '/'.ltrim($template->thumbnail_path, '/'),
             palette: is_array($palette) ? array_filter($palette, 'is_string') : [],
             isActive: $template->is_active,
+            isFeatured: $template->is_featured,
             assets: $template->assets->map(
                 static fn (TemplateAsset $asset): LibraryAssetData => LibraryAssetData::fromModel($asset),
             )->values()->all(),
         );
     }
 
-    /** @return array{id: string, slug: string, name: string, category: string, thumbnailUrl: string, palette: array<string, string>, isActive: bool, assets: list<array<string, mixed>>} */
+    /** @return array{id: string, slug: string, name: string, category: string, thumbnailUrl: string, palette: array<string, string>, isActive: bool, isFeatured: bool, assets: list<array<string, mixed>>} */
     public function toArray(): array
     {
         return [
@@ -55,6 +57,7 @@ final readonly class LibraryTemplateData
             'thumbnailUrl' => $this->thumbnailUrl,
             'palette' => $this->palette,
             'isActive' => $this->isActive,
+            'isFeatured' => $this->isFeatured,
             'assets' => array_map(static fn (LibraryAssetData $asset): array => $asset->toArray(), $this->assets),
         ];
     }

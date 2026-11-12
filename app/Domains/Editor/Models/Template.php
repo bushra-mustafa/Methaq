@@ -23,6 +23,7 @@ class Template extends Model
     protected $attributes = [
         'schema_version' => 1,
         'is_active' => true,
+        'is_featured' => false,
     ];
 
     protected $hidden = ['default_design_json', 'default_scene_json', 'default_palette_json'];
@@ -43,6 +44,7 @@ class Template extends Model
             'default_palette_json' => 'array',
             'schema_version' => 'integer',
             'is_active' => 'boolean',
+            'is_featured' => 'boolean',
         ];
     }
 
