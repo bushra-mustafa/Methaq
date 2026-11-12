@@ -11,9 +11,7 @@ class AboutController extends Controller
     /**
      * Handle the incoming request.
      */
-
-
-      public function __invoke(): Response
+    public function __invoke(): Response
     {
         return Inertia::render('Web/About');
     }

@@ -62,15 +62,12 @@
 //     ->middleware(LocalDevelopmentOnly::class)
 //     ->name('dev.design-lab');
 
-
-
-
 declare(strict_types=1);
 
-use App\Http\Middleware\ResolvePublishedEvent;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\App\DesignLabController;
 use App\Http\Middleware\LocalDevelopmentOnly;
+use App\Http\Middleware\ResolvePublishedEvent;
+use Illuminate\Support\Facades\Route;
 
 // Guest invitations
 Route::domain('{subdomain}.'.config('methaq.invitation_domain'))
@@ -98,6 +95,6 @@ Route::middleware(['auth', 'active'])
                 require __DIR__.'/admin.php';
             });
     });
-    Route::get('/dev/design-lab', DesignLabController::class)
+Route::get('/dev/design-lab', DesignLabController::class)
     ->middleware(LocalDevelopmentOnly::class)
     ->name('dev.design-lab');
