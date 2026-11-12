@@ -37,12 +37,18 @@ final class AdminPanelAccessTest extends TestCase
         $this->actingAs($this->administrator())->get('/admin')->assertOk();
     }
 
-    public function test_customers_and_unconfirmed_or_suspended_administrators_are_refused(): void
+    public function test_administrator_without_two_factor_is_sent_to_set_it_up(): void
+    {
+        $withoutTwoFactor = User::factory()->create(['role' => UserRole::Admin]);
+
+        $this->actingAs($withoutTwoFactor)->get('/admin')
+            ->assertRedirect(route('app.profile'))
+            ->assertSessionHasErrors('two_factor');
+    }
+
+    public function test_customers_and_suspended_administrators_are_refused(): void
     {
         $this->actingAs(User::factory()->create())->get('/admin')->assertForbidden();
-
-        $withoutTwoFactor = User::factory()->create(['role' => UserRole::Admin]);
-        $this->actingAs($withoutTwoFactor)->get('/admin')->assertForbidden();
 
         $suspended = $this->administrator();
         $suspended->forceFill(['status' => UserStatus::Suspended])->save();

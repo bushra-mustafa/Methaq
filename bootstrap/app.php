@@ -9,6 +9,8 @@ use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireAdminWithTwoFactor;
 use App\Http\Middleware\RestrictPrototypeRoutes;
+use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
+use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -31,6 +33,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'active' => EnsureUserIsActive::class,
             'admin.2fa' => RequireAdminWithTwoFactor::class,
         ]);
+        // Laravel moves authentication ahead of plain middleware; keep the /admin
+        // two-factor setup redirect before Filament's Authenticate (403).
+        $middleware->prependToPriorityList(AuthenticatesRequests::class, SendAdministratorsToTwoFactorSetup::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (ProposalRevisionConflict $exception, Request $request): ?JsonResponse {
