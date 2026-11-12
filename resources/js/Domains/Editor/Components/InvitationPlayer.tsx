@@ -10,11 +10,22 @@ import type { SceneConfig } from '../../../Types/SceneConfig';
 import { useInvitationOpening } from '../Hooks/useInvitationOpening';
 import { InvitationEnvelope } from './InvitationEnvelope';
 import { InvitationAtmosphere } from './InvitationAtmosphere';
+import { InvitationAmbience } from './InvitationAmbience';
+import { NoirInvitationScene } from './NoirInvitationScene';
 import '../../../../css/invitation.css';
 
 interface Props { audioAllowed?: boolean; assets: EditorAsset[]; cardParts?: PresentationCard | null; scene: SceneConfig; palette: Palette; cardUrl: string; title: string; viewport?: 'phone' | 'desktop'; manageFocus?: boolean }
 
-export function InvitationPlayer({ audioAllowed = true, assets, cardParts, scene, palette, cardUrl, title, viewport = 'desktop', manageFocus = true }: Props) {
+export function InvitationPlayer({ audioAllowed = true, viewport = 'desktop', manageFocus = true, ...props }: Props) {
+    if (props.scene.backdrop?.preset === 'henna-noir') {
+        return <NoirInvitationScene {...props} audioAllowed={audioAllowed} viewport={viewport} manageFocus={manageFocus} />;
+    }
+
+    return <ClassicInvitationPlayer {...props} audioAllowed={audioAllowed} viewport={viewport} manageFocus={manageFocus} />;
+}
+
+function ClassicInvitationPlayer({ audioAllowed = true, assets, cardParts, scene, palette, cardUrl, title, viewport = 'desktop', manageFocus = true }: Props) {
+    const root = useRef<HTMLElement>(null);
     const heading = useRef<HTMLHeadingElement>(null);
     const openButton = useRef<HTMLButtonElement>(null);
     const [imageFailed, setImageFailed] = useState(false);
@@ -33,7 +44,8 @@ export function InvitationPlayer({ audioAllowed = true, assets, cardParts, scene
         '--invitation-accent': palette.values.accent,
         '--opening-duration': `${scene.opening.durationMs}ms`,
     } as CSSProperties;
-    return <section className={`invitation-player is-${viewport} is-motion-${scene.motionPolicy} is-backdrop-${scene.backdrop?.preset ?? 'inherit'} ${motion ? '' : 'motion-off'}`} style={style} data-phase={phase} data-opening={scene.opening.type} dir="rtl" aria-label={title}>
+    return <section ref={root} className={`invitation-player is-${viewport} is-motion-${scene.motionPolicy} is-backdrop-${scene.backdrop?.preset ?? 'inherit'} ${motion ? '' : 'motion-off'}`} style={style} data-phase={phase} data-opening={scene.opening.type} dir="rtl" aria-label={title}>
+                <InvitationAmbience preset={scene.backdrop?.preset ?? 'inherit'} paused={paused || !motion} interactionRoot={root} />
                 <InvitationAtmosphere effects={scene.effects} palette={palette} />
                 <div className="invitation-player-tools"><span>بِكُلِّ الحُبّ</span><div className="invitation-player-tool-actions">{motionAvailable ? <button className="invitation-motion-icon" type="button" onClick={toggleMotion} aria-pressed={paused} aria-label={paused ? 'استئناف الحركة' : 'إيقاف الحركة'} title={paused ? 'استئناف الحركة' : 'إيقاف الحركة'}>{paused ? '▶' : 'Ⅱ'}</button> : <span>الحركة متوقفة</span>}{scene.opening.type !== 'direct' && <button className="invitation-replay-icon" type="button" onClick={replayWithAudio} aria-label="إعادة تجربة الفتح" title="إعادة تجربة الفتح">↺</button>}</div></div>
                 {(audio.available || audio.missing) && <div className="invitation-audio-control">

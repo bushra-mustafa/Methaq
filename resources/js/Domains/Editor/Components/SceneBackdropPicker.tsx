@@ -8,6 +8,7 @@ const OPTIONS: BackdropOption[] = [
     { preset: 'blush-cloud', name: 'سحاب بودري', detail: 'وردي ناعم لحفلات هادئة' },
     { preset: 'midnight-gold', name: 'ليل ذهبي', detail: 'كحلي عميق بنجوم ذهبية' },
     { preset: 'emerald-silk', name: 'حرير زمردي', detail: 'أخضر داكن بلمعة ناعمة' },
+    { preset: 'henna-noir', name: 'ليلة عنابية', detail: 'دخان عنابي متحرك وذرات ضوء ولمعات عند اللمس' },
 ];
 
 interface Props { backdrop?: SceneBackdrop; onChange: (backdrop: SceneBackdrop) => void }

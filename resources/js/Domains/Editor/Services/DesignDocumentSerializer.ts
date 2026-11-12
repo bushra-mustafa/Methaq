@@ -314,7 +314,7 @@ function parseCover(value: unknown): NonNullable<SceneConfig['cover']> {
 
 function parseBackdrop(value: unknown): NonNullable<SceneConfig['backdrop']> {
     const backdrop = record(value, 'scene.backdrop');
-    return { preset: literal(backdrop.preset, ['inherit', 'burgundy-nebula', 'blush-cloud', 'midnight-gold', 'emerald-silk'] as const, 'scene.backdrop.preset') };
+    return { preset: literal(backdrop.preset, ['inherit', 'burgundy-nebula', 'blush-cloud', 'midnight-gold', 'emerald-silk', 'henna-noir'] as const, 'scene.backdrop.preset') };
 }
 
 function parseScene(value: unknown): SceneConfig {

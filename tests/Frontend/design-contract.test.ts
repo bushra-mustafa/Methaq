@@ -177,6 +177,8 @@ test('optional scene backdrop is independent from the card palette and has a clo
     const document = designFixture();
     document.scene.backdrop = { preset: 'burgundy-nebula' };
     assert.deepEqual(parseDesignDocument(document).scene.backdrop, { preset: 'burgundy-nebula' });
+    document.scene.backdrop = { preset: 'henna-noir' };
+    assert.deepEqual(parseDesignDocument(document).scene.backdrop, { preset: 'henna-noir' });
     assert.throws(() => parseDesignDocument({ ...document, scene: { ...document.scene, backdrop: { preset: 'remote-image' } } }));
 });
 

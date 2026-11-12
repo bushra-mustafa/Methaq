@@ -9,7 +9,7 @@ use InvalidArgumentException;
 final readonly class SceneBackdropData
 {
     /** @var list<string> */
-    private const PRESETS = ['inherit', 'burgundy-nebula', 'blush-cloud', 'midnight-gold', 'emerald-silk'];
+    private const PRESETS = ['inherit', 'burgundy-nebula', 'blush-cloud', 'midnight-gold', 'emerald-silk', 'henna-noir'];
 
     public function __construct(public string $preset)
     {

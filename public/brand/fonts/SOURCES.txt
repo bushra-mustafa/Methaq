@@ -1,3 +1,6 @@
 Noto Sans Arabic: https://github.com/google/fonts/tree/main/ofl/notosansarabic
 Manrope: https://github.com/google/fonts/tree/main/ofl/manrope
 Downloaded 2026-09-09. Original font binaries and SIL Open Font License files included.
+Cormorant Garamond: https://github.com/google/fonts/tree/main/ofl/cormorantgaramond
+Aref Ruqaa: https://github.com/google/fonts/tree/main/ofl/arefruqaa
+Downloaded 2026-11-12 for the henna-noir invitation scene. SIL Open Font License files included.

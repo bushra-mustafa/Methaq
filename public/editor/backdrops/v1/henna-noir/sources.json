@@ -1,0 +1,22 @@
+{
+  "createdAt": "2026-11-12",
+  "project": "Methaq",
+  "scope": "Henna noir scene backdrop",
+  "provenance": "Owner-provided asset from the platform owner's own invitation project (anas-lamar-invitation). The owner confirmed commercial use and redistribution within Methaq on 2026-11-12.",
+  "assets": [
+    {
+      "file": "burgundy-smoke.jpeg",
+      "width": 576,
+      "height": 1024,
+      "license": "owner-provided",
+      "commercialUse": true
+    }
+  ],
+  "related": [
+    {
+      "file": "public/brand/audio/henna-celebration.mp3",
+      "license": "owner-provided",
+      "commercialUse": true
+    }
+  ]
+}

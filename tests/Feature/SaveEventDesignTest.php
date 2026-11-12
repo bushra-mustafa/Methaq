@@ -116,10 +116,15 @@ final class SaveEventDesignTest extends TestCase
             ->assertOk()->assertJsonPath('document.scene.backdrop.preset', 'burgundy-nebula')
             ->assertJsonPath('document.palette.values.background', $document['palette']['values']['background']);
 
+        $noir = $document;
+        $noir['scene']['backdrop'] = ['preset' => 'henna-noir'];
+        $this->patchJson($this->endpoint($event), ['document' => $noir, 'expectedRevision' => 2])
+            ->assertOk()->assertJsonPath('document.scene.backdrop.preset', 'henna-noir');
+
         $invalid = $document;
         $invalid['scene']['backdrop'] = ['preset' => 'external-image'];
-        $this->patchJson($this->endpoint($event), ['document' => $invalid, 'expectedRevision' => 2])->assertUnprocessable();
-        $this->assertSame(2, $event->design()->sole()->revision);
+        $this->patchJson($this->endpoint($event), ['document' => $invalid, 'expectedRevision' => 3])->assertUnprocessable();
+        $this->assertSame(3, $event->design()->sole()->revision);
     }
 
     public function test_card_material_is_saved_and_invalid_options_cannot_replace_it(): void
