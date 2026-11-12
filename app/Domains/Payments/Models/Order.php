@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\Payments\Models;
 
+use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
 use App\Domains\Payments\Enums\PaymentGateway;
 use App\Domains\Users\Models\User;
 use Database\Factories\OrderFactory;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,7 +23,7 @@ class Order extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
-    protected $hidden = ['transaction_id', 'checkout_id', 'idempotency_key'];
+    protected $hidden = ['transaction_id', 'checkout_id', 'idempotency_key', 'receipt_path', 'receipt_sha256'];
 
     protected static function newFactory(): OrderFactory
     {
@@ -37,6 +39,8 @@ class Order extends Model
             'gateway' => PaymentGateway::class,
             'amount' => 'string',
             'completed_at' => 'immutable_datetime',
+            'entitlements' => AsEnumCollection::of(TemplateFeature::class),
+            'reviewed_at' => 'immutable_datetime',
         ];
     }
 
@@ -50,6 +54,12 @@ class Order extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    /** @return BelongsTo<User, $this> */
+    public function reviewer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
     }
 
     /** @return HasMany<PaymentWebhook, $this> */

@@ -6,10 +6,13 @@ namespace App\Domains\Events\Actions;
 
 use App\Domains\Editor\Models\Template;
 use App\Domains\Events\Enums\EventCategory;
+use App\Domains\Events\Services\InvitationExpiry;
 
 final class ListEventCreationOptionsAction
 {
-    /** @return array{templates: list<array{id: string, slug: string, name: string, category: string, thumbnailUrl: string}>, categories: list<array{value: string, label: string}>, timezones: list<array{value: string, label: string}>, selectedTemplateSlug: string|null} */
+    public function __construct(private readonly InvitationExpiry $expiry) {}
+
+    /** @return array{templates: list<array{id: string, slug: string, name: string, category: string, thumbnailUrl: string}>, categories: list<array{value: string, label: string}>, timezones: list<array{value: string, label: string}>, selectedTemplateSlug: string|null, graceDays: int} */
     public function execute(?string $selectedTemplateSlug): array
     {
         $templates = Template::query()
@@ -41,6 +44,7 @@ final class ListEventCreationOptionsAction
                 ['value' => 'Europe/London', 'label' => 'لندن'],
             ],
             'selectedTemplateSlug' => $selectedTemplateSlug,
+            'graceDays' => $this->expiry->graceDays(),
         ];
     }
 }

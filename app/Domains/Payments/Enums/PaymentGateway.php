@@ -8,4 +8,5 @@ enum PaymentGateway: string
 {
     case Stripe = 'stripe';
     case Tap = 'tap';
+    case ManualTransfer = 'manual_transfer';
 }

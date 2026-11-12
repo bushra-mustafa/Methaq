@@ -11,6 +11,7 @@ use App\Domains\Editor\Enums\LibraryResource;
 use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Editor\Models\Template;
 use App\Domains\Events\Enums\EventCategory;
+use App\Domains\Payments\Services\LydAmount;
 use App\Domains\Users\Models\User;
 use App\Filament\Resources\Templates\Pages\ManageTemplates;
 use BackedEnum;
@@ -109,7 +110,7 @@ final class TemplateResource extends Resource
             return 'بدون سعر';
         }
 
-        return rtrim(rtrim(number_format($priceMinor / 1000, 3, '.', ''), '0'), '.').' د.ل';
+        return LydAmount::format($priceMinor);
     }
 
     private static function commerceAction(): Action

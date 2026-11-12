@@ -11,6 +11,7 @@ interface CreateEventProps {
     categories: SelectOption<EventCategory>[];
     timezones: SelectOption<string>[];
     selectedTemplateSlug: string | null;
+    graceDays: number;
 }
 
 interface CreateEventForm {
@@ -21,7 +22,14 @@ interface CreateEventForm {
     timezone: string;
 }
 
-export default function CreateEvent({ templates, categories, timezones, selectedTemplateSlug }: CreateEventProps) {
+function graceLabel(days: number): string {
+    if (days === 0) return 'في نهاية يوم المناسبة';
+    if (days === 1) return 'بعد يوم من المناسبة';
+    if (days === 2) return 'بعد يومين من المناسبة';
+    return `بعد ${days} أيام من المناسبة`;
+}
+
+export default function CreateEvent({ templates, categories, timezones, selectedTemplateSlug, graceDays }: CreateEventProps) {
     const initialTemplate = templates.find((template) => template.slug === selectedTemplateSlug) ?? null;
     const form = useForm<CreateEventForm>({
         title: '',
@@ -57,7 +65,7 @@ export default function CreateEvent({ templates, categories, timezones, selected
                 {templates.map((template) => <button className={form.data.template_id === template.id ? 'is-selected' : ''} type="button" key={template.id} onClick={() => selectTemplate(template)}><img src={template.thumbnailUrl} alt="" /><strong>{template.name}</strong><small>{categories.find((category) => category.value === template.category)?.label}</small></button>)}
             </div></section>
 
-            <footer className="event-form-actions"><Link href="/app">إلغاء</Link><div><p>يُحجز رابط فريد وتُغلق الدعوة بعد 10 أيام من الموعد.</p><button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري إنشاء المناسبة…' : 'إنشاء المسودة'}</button></div></footer>
+            <footer className="event-form-actions"><Link href="/app">إلغاء</Link><div><p>يُحجز رابط فريد، ويُغلق رابط الدعوة تلقائياً {graceLabel(graceDays)} بتوقيت ليبيا.</p><button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري إنشاء المناسبة…' : 'إنشاء المسودة'}</button></div></footer>
         </form>
     </AppShell>;
 }
