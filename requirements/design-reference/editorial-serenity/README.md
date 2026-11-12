@@ -18,19 +18,20 @@
 - **تجربة الظرف** تستخدم `InvitationPlayer` الحالي، وليس محاكاة الـ DOM (`onclick`) الموجودة في الـ mockups.
 - **الشعار:** يُستخدم ملف الشعار الموجود في `public/brand/logos`، ولا يُنسخ الـ SVG المضمّن في الـ mockups.
 
-## القرار المعتمد (2026-11-11)
+## القرار المعتمد (حُدّث 2026-11-12)
 
-يُؤخذ من المرجع **الأسلوب فقط**: المساحات، وتناوب الأقسام، وAmiri للعناوين، والكروت الخفيفة، والظلال الدافئة. أما **الألوان فهي ألوان الشعار**، من متغيرات `methaq-*` في `resources/css/public-theme.css`:
+في 2026-11-11 اعتُمد الأسلوب فقط مع ألوان الشعار. في 2026-11-12 طلبت المستخدمة أن تطابق الصفحات العامة `home.html` **في الألوان أيضاً**، فصارت متغيرات `methaq-*` في `resources/css/public-theme.css` تحمل لوحة `home.html` بالضبط. ملف الشعار نفسه والظرف لم يتغيرا، ولوحة التحكم والمحرر يستخدمان متغيرات `brand.css` المنفصلة.
 
-| الدور | المتغير | القيمة |
+| الدور | المتغير | القيمة (اسمها في Stitch) |
 |---|---|---|
-| الأزرار والعناوين | `methaq-primary` | `#074b36` |
-| تفاصيل ذهبية (خطوط، أيقونات، شارات)، وليس خلفيات | `methaq-gold` | `#b69a50` |
-| نص ذهبي صغير (تباين كافٍ) | `methaq-gold-dark` | `#8b6a2c` |
-| خلفية الصفحة | `methaq-ivory` | `#f6fbf2` |
-| الكروت والخلفيات الفاتحة | `methaq-cream` / `methaq-surface` | `#fdfbf7` / `#ffffff` |
-| تناوب الأقسام | `methaq-sage` | `#f0f5ed` |
+| الأزرار والعناوين | `methaq-primary` | `#203322` (primary) |
+| تفاصيل برونزية (خطوط، أيقونات، شارات، نص صغير) | `methaq-gold` / `methaq-gold-dark` | `#7a613b` (secondary) |
+| ذهبي فاتح | `methaq-gold-light` / `methaq-gold-soft` | `#e2c59d` / `#fedeb2` |
+| خلفية الصفحة | `methaq-ivory` | `#f6fbf2` (surface) |
+| الأقسام المتناوبة والكروت | `methaq-paper` / `methaq-sage` | `#eff4eb` / `#e8eee3` |
+| النص | `methaq-ink` / `methaq-muted` | `#181d18` / `#434842` |
 
+- **الشريط العلوي:** ثابت أعلى الصفحة بنفس عناوين `home.html`: الرئيسية، معرض القوالب، كيف يعمل ميثاق، تجربة فتح الظرف، عن ميثاق، وزر «صمّمي دعوتك».
 - **الخطوط (كما في mockups الصفحات بالضبط):** Amiri **بوزن 700** للعناوين (ملف `Amiri-Bold.ttf` محلي)، وNoto Sans Arabic (`Methaq Arabic`) للنص، وManrope للاتيني. لا تُستخدم EB Garamond ولا Plus Jakarta Sans الموجودتان في `DESIGN.md` فقط.
 - **الزوايا:** `rounded-methaq-button` (0.5rem) و`rounded-methaq-card` (0.75rem).
 - **الظلال:** `shadow-methaq-card` و`shadow-methaq-raised`.
