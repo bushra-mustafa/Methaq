@@ -49,6 +49,10 @@ final class TemplateDesignFactory
             TemplatePreset::HeritageVertical => $this->heritageVertical($assets),
             TemplatePreset::GraduationEmerald => $this->graduationEmerald($assets),
             TemplatePreset::HennaNoir => $this->hennaNoir($assets),
+            TemplatePreset::JasmineWhite => $this->jasmineWhite($assets),
+            TemplatePreset::MediterraneanBlue => $this->mediterraneanBlue($assets),
+            TemplatePreset::GhadamesTerracotta => $this->ghadamesTerracotta($assets),
+            TemplatePreset::LavenderSilver => $this->lavenderSilver($assets),
         };
     }
 
@@ -58,7 +62,7 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'powder-botanical-frame', 0, 0, 1080, 1920, true),
             $this->text('basmala', $assets, 'font-amiri', 'بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم', Language::Arabic, TextDirection::RightToLeft, 140, 335, 800, 100, 44, 400, PaletteRole::SecondaryText),
-            $this->text('names_en', $assets, 'font-pinyon', 'Asma & Mohamed', Language::English, TextDirection::LeftToRight, 90, 640, 900, 210, 150, 400, PaletteRole::PrimaryText),
+            $this->text('names_en', $assets, 'font-pinyon', 'Asma & Mohamed', Language::English, TextDirection::LeftToRight, 90, 650, 900, 190, 128, 400, PaletteRole::PrimaryText),
             $this->text('invitation', $assets, 'font-amiri', 'يسرّنا دعوتكم لمشاركتنا ليلة الفرح', Language::Arabic, TextDirection::RightToLeft, 120, 910, 840, 120, 53, 400, PaletteRole::SecondaryText),
             $this->image('divider', $assets, 'gold-divider', 240, 1115, 600, 80, true),
             $this->text('details', $assets, 'font-noto-arabic', "السبت · السابعة مساءً\nقاعة ميثاق · طرابلس", Language::Arabic, TextDirection::RightToLeft, 140, 1255, 800, 190, 40, 500, PaletteRole::SecondaryText),
@@ -178,6 +182,86 @@ final class TemplateDesignFactory
         );
 
         return $this->document($layers, $palette, $scene);
+    }
+
+    /** «ياسمين أبيض». @param array<string, TemplateAsset> $assets */
+    private function jasmineWhite(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'jasmine-white-frame', 0, 0, 1080, 1920, true),
+            $this->text('basmala', $assets, 'font-amiri', 'بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم', Language::Arabic, TextDirection::RightToLeft, 160, 300, 760, 90, 42, 400, PaletteRole::SecondaryText),
+            $this->text('names', $assets, 'font-aref-ruqaa', 'يوسف وملاك', Language::Arabic, TextDirection::RightToLeft, 110, 520, 860, 230, 128, 400, PaletteRole::PrimaryText),
+            $this->text('invitation', $assets, 'font-amiri', 'يتشرفان بدعوتكم لحضور حفل زفافهما', Language::Arabic, TextDirection::RightToLeft, 120, 820, 840, 110, 50, 400, PaletteRole::SecondaryText),
+            $this->image('divider', $assets, 'jasmine-divider', 180, 990, 720, 120, true),
+            $this->text('details', $assets, 'font-noto-arabic', "الخميس 14/8/2027 · الثامنة مساءً\nقاعة الياسمين · طرابلس", Language::Arabic, TextDirection::RightToLeft, 150, 1170, 780, 190, 40, 500, PaletteRole::SecondaryText),
+            $this->text('closing', $assets, 'font-amiri', 'بحضوركم تكتمل فرحتنا', Language::Arabic, TextDirection::RightToLeft, 160, 1470, 760, 110, 48, 400, PaletteRole::PrimaryText),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#fbfaf5', '#ffffff', '#3f5a4a', '#6f7f72', '#8fae96', '#e9f0e6'),
+            $this->envelopeScene('#dfe8dc', 'ي م', true, false),
+        );
+    }
+
+    /** «زرقة المتوسط». @param array<string, TemplateAsset> $assets */
+    private function mediterraneanBlue(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('arch', $assets, 'mediterranean-arch-frame', 0, 0, 1080, 1920, true),
+            $this->text('opening', $assets, 'font-amiri', 'بسم الله وعلى بركة الله', Language::Arabic, TextDirection::RightToLeft, 240, 330, 600, 90, 44, 400, PaletteRole::SecondaryText),
+            $this->text('occasion', $assets, 'font-amiri', 'عقد قِران', Language::Arabic, TextDirection::RightToLeft, 200, 520, 680, 150, 92, 400, PaletteRole::PrimaryText),
+            $this->text('names', $assets, 'font-aref-ruqaa', 'عبدالسلام وخديجة', Language::Arabic, TextDirection::RightToLeft, 170, 760, 740, 170, 88, 400, PaletteRole::PrimaryText),
+            $this->image('divider', $assets, 'mediterranean-wave-divider', 180, 1000, 720, 120, true),
+            $this->text('details', $assets, 'font-noto-arabic', "الجمعة 5/9/2027 · بعد صلاة العصر\nبيت العائلة · المدينة القديمة، طرابلس", Language::Arabic, TextDirection::RightToLeft, 190, 1170, 700, 190, 38, 500, PaletteRole::SecondaryText),
+            $this->text('verse', $assets, 'font-amiri', 'وجعل بينكم مودّة ورحمة', Language::Arabic, TextDirection::RightToLeft, 200, 1440, 680, 100, 46, 400, PaletteRole::PrimaryText),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#f4efe4', '#fffaf0', '#1d3557', '#4a6380', '#c8a165', '#a8c5da'),
+            $this->envelopeScene('#1d3557', 'ع خ', true, false),
+        );
+    }
+
+    /** «تراب غدامس». @param array<string, TemplateAsset> $assets */
+    private function ghadamesTerracotta(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('wall', $assets, 'ghadames-wall-frame', 0, 0, 1080, 1920, true),
+            $this->text('occasion', $assets, 'font-amiri', 'ليلة الحنّة', Language::Arabic, TextDirection::RightToLeft, 240, 450, 600, 110, 64, 400, PaletteRole::Accent),
+            $this->text('name', $assets, 'font-aref-ruqaa', 'سعاد', Language::Arabic, TextDirection::RightToLeft, 140, 600, 800, 240, 160, 400, PaletteRole::PrimaryText),
+            $this->text('message', $assets, 'font-amiri', 'يسعدنا حضوركم لمشاركتنا فرحتنا', Language::Arabic, TextDirection::RightToLeft, 130, 900, 820, 110, 50, 400, PaletteRole::SecondaryText),
+            $this->image('divider', $assets, 'ghadames-divider', 180, 1060, 720, 120, true),
+            $this->text('details', $assets, 'font-noto-arabic', "الخميس 21/10/2027 · الثامنة مساءً\nبيت العائلة · غدامس", Language::Arabic, TextDirection::RightToLeft, 150, 1230, 780, 190, 40, 500, PaletteRole::SecondaryText),
+            $this->text('closing', $assets, 'font-amiri', 'بحضوركم تحلى الليلة', Language::Arabic, TextDirection::RightToLeft, 160, 1490, 760, 110, 48, 400, PaletteRole::PrimaryText),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#f6ead7', '#fff6e8', '#7a2e1c', '#8a5440', '#b4442a', '#e8b48a'),
+            $this->envelopeScene('#b4442a', 'س', true, false),
+        );
+    }
+
+    /** «لافندر وفضة». @param array<string, TemplateAsset> $assets */
+    private function lavenderSilver(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'lavender-silver-frame', 0, 0, 1080, 1920, true),
+            $this->text('kicker', $assets, 'font-amiri', 'بكلّ الحب', Language::Arabic, TextDirection::RightToLeft, 290, 270, 500, 90, 44, 400, PaletteRole::SecondaryText),
+            $this->text('names_en', $assets, 'font-pinyon', 'Malak & Ali', Language::English, TextDirection::LeftToRight, 110, 430, 860, 230, 150, 400, PaletteRole::PrimaryText),
+            $this->text('names_ar', $assets, 'font-amiri', 'ملاك وعلي', Language::Arabic, TextDirection::RightToLeft, 240, 680, 600, 110, 60, 400, PaletteRole::Accent),
+            $this->text('invitation', $assets, 'font-amiri', 'يتشرفان بدعوتكم لحضور حفل زفافهما', Language::Arabic, TextDirection::RightToLeft, 120, 830, 840, 110, 48, 400, PaletteRole::SecondaryText),
+            $this->image('divider', $assets, 'lavender-divider', 180, 980, 720, 120, true),
+            $this->text('details', $assets, 'font-noto-arabic', "السبت 2/10/2027 · السابعة مساءً\nقاعة اللافندر · بنغازي", Language::Arabic, TextDirection::RightToLeft, 180, 1140, 720, 190, 40, 500, PaletteRole::SecondaryText),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#f5f2f8', '#fdfcff', '#4f3f6e', '#7d7393', '#9b87c4', '#d9cdea'),
+            $this->envelopeScene('#cbbfe3', 'م ع', true, false),
+        );
     }
 
     /** @param list<LayerData> $layers */

@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 final class TemplateLibraryTest extends TestCase
@@ -34,9 +35,9 @@ final class TemplateLibraryTest extends TestCase
         $this->seed(TemplateLibrarySeeder::class);
         $this->seed(TemplateLibrarySeeder::class);
 
-        $this->assertDatabaseCount('templates', 5);
-        $this->assertDatabaseCount('template_assets', 22);
-        $this->assertDatabaseCount('asset_collections', 4);
+        $this->assertDatabaseCount('templates', 9);
+        $this->assertDatabaseCount('template_assets', 38);
+        $this->assertDatabaseCount('asset_collections', 8);
 
         TemplateAsset::query()->where('type', '!=', 'audio')->each(function (TemplateAsset $asset): void {
             $this->assertTrue(Storage::disk('local')->exists($asset->original_path));
@@ -98,8 +99,8 @@ final class TemplateLibraryTest extends TestCase
 
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Web/Templates', false)
-            ->has('templates', 4)
-            ->has('collections', 4)
+            ->has('templates', 8)
+            ->has('collections', 8)
             ->has('categories', 4)
             ->where('selectedCategory', null));
 
@@ -136,6 +137,32 @@ final class TemplateLibraryTest extends TestCase
             $template->default_design_json['layers'],
             static fn (array $layer): bool => $layer['type'] === 'text' && $layer['locked'] === false,
         ));
+    }
+
+    /** @return array<string, array{string, string}> */
+    public static function templatePackages(): array
+    {
+        return [
+            'jasmine' => ['jasmine-white', 'jasmine'],
+            'mediterranean' => ['mediterranean-blue', 'mediterranean'],
+            'ghadames' => ['ghadames-terracotta', 'ghadames'],
+            'lavender' => ['lavender-silver', 'lavender'],
+        ];
+    }
+
+    #[DataProvider('templatePackages')]
+    public function test_each_theme_template_recommends_its_whole_package_and_has_a_ready_set(string $templateSlug, string $family): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+
+        $template = Template::query()->where('slug', $templateSlug)->with('assets')->sole();
+        $packageAssets = $template->assets->filter(fn (TemplateAsset $asset): bool => ($asset->metadata['family'] ?? null) === $family);
+        $this->assertCount(4, $packageAssets, 'frame, corner, divider and medallion are recommended together');
+        $this->assertEqualsCanonicalizing(['frame', 'decoration', 'decoration', 'icon'], $packageAssets->map(fn (TemplateAsset $asset): string => $asset->type->value)->values()->all());
+
+        $set = AssetCollection::query()->where('slug', "{$templateSlug}-set")->with('items.asset')->sole();
+        $this->assertNotEmpty($set->items);
+        $this->assertTrue($set->items->every(fn ($item): bool => $packageAssets->contains('id', $item->asset->getKey())));
     }
 
     public function test_collections_keep_typed_placement_for_each_item(): void

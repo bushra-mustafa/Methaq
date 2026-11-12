@@ -45,9 +45,9 @@ final class AdminTemplateLibraryTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Admin/Library/Index', false)
-                ->has('templates', 5)
-                ->has('assets', 22)
-                ->has('collections', 4));
+                ->has('templates', 9)
+                ->has('assets', 38)
+                ->has('collections', 8));
     }
 
     public function test_admin_status_change_requires_a_reason_and_is_audited_once(): void

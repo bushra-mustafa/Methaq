@@ -11,4 +11,8 @@ enum TemplatePreset: string
     case HeritageVertical = 'heritage-vertical';
     case GraduationEmerald = 'graduation-emerald';
     case HennaNoir = 'henna-noir';
+    case JasmineWhite = 'jasmine-white';
+    case MediterraneanBlue = 'mediterranean-blue';
+    case GhadamesTerracotta = 'ghadames-terracotta';
+    case LavenderSilver = 'lavender-silver';
 }

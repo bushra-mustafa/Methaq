@@ -55,8 +55,8 @@ final class EventEditorTest extends TestCase
             ->where('document.canvas.width', 1080)
             ->where('document.canvas.height', 1920)
             ->where('revision', 1)
-            ->has('assets', 22)
-            ->has('collections', 4)
+            ->has('assets', 38)
+            ->has('collections', 8)
             ->has('recommendedAssetIds', 5));
 
         $serialized = $response->getContent();
@@ -93,7 +93,7 @@ final class EventEditorTest extends TestCase
 
         $response = $this->actingAs($owner)->withoutVite()->get("/app/events/{$event->getKey()}/editor");
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
-            ->has('assets', 21)
+            ->has('assets', 37)
             ->where('assets', fn ($assets): bool => collect($assets)->pluck('slug')->contains('powder-botanical-frame')
                 && ! collect($assets)->pluck('slug')->contains('wax-seal')));
     }

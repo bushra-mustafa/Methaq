@@ -140,6 +140,22 @@ final class TemplateLibrarySeeder extends Seeder
             $this->fontAsset('font-manrope', 'Manrope', 'latin/Manrope.ttf', 'Manrope', 'SIL Open Font License 1.1'),
             $this->fontAsset('font-cormorant', 'Cormorant Garamond', 'latin/CormorantGaramond.ttf', 'Cormorant Garamond', 'SIL Open Font License 1.1'),
             $this->fontAsset('font-aref-ruqaa', 'عارف رقعة', 'arabic/ArefRuqaa-Regular.ttf', 'Aref Ruqaa', 'SIL Open Font License 1.1'),
+            $this->visualAsset('jasmine-white-frame', 'إطار الياسمين الأبيض', AssetType::Frame, 'frames/jasmine/jasmine-white-frame.svg', 'assets/v1/frames/jasmine/jasmine-white-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('jasmine-corner', 'زاوية ياسمين', AssetType::Decoration, 'ornaments/corners/jasmine-corner.svg', 'assets/v1/ornaments/corners/jasmine-corner.png', 480, 480, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('jasmine-divider', 'فاصل الياسمين', AssetType::Decoration, 'ornaments/dividers/jasmine-divider.svg', 'assets/v1/ornaments/dividers/jasmine-divider.png', 720, 120, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('jasmine-wreath', 'إكليل الياسمين', AssetType::Icon, 'ornaments/medallions/jasmine-wreath.svg', 'assets/v1/ornaments/medallions/jasmine-wreath.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('mediterranean-arch-frame', 'إطار قوس المتوسط', AssetType::Frame, 'frames/arches/mediterranean-arch-frame.svg', 'assets/v1/frames/arches/mediterranean-arch-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('mediterranean-tile-corner', 'زاوية بلاط متوسطي', AssetType::Decoration, 'ornaments/corners/mediterranean-tile-corner.svg', 'assets/v1/ornaments/corners/mediterranean-tile-corner.png', 480, 480, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('mediterranean-wave-divider', 'فاصل الموج', AssetType::Decoration, 'ornaments/dividers/mediterranean-wave-divider.svg', 'assets/v1/ornaments/dividers/mediterranean-wave-divider.png', 720, 120, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('mediterranean-star-medallion', 'ميدالية النجمة المتوسطية', AssetType::Icon, 'ornaments/medallions/mediterranean-star-medallion.svg', 'assets/v1/ornaments/medallions/mediterranean-star-medallion.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('ghadames-wall-frame', 'إطار جدار غدامس', AssetType::Frame, 'frames/geometric/ghadames-wall-frame.svg', 'assets/v1/frames/geometric/ghadames-wall-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('ghadames-corner', 'زاوية غدامسية', AssetType::Decoration, 'ornaments/corners/ghadames-corner.svg', 'assets/v1/ornaments/corners/ghadames-corner.png', 480, 480, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('ghadames-divider', 'فاصل غدامسي', AssetType::Decoration, 'ornaments/dividers/ghadames-divider.svg', 'assets/v1/ornaments/dividers/ghadames-divider.png', 720, 120, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('ghadames-medallion', 'ميدالية غدامس', AssetType::Icon, 'ornaments/medallions/ghadames-medallion.svg', 'assets/v1/ornaments/medallions/ghadames-medallion.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('lavender-silver-frame', 'إطار لافندر وفضة', AssetType::Frame, 'frames/botanical/lavender-silver-frame.svg', 'assets/v1/frames/botanical/lavender-silver-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('lavender-corner', 'باقة لافندر', AssetType::Decoration, 'ornaments/corners/lavender-corner.svg', 'assets/v1/ornaments/corners/lavender-corner.png', 480, 480, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('lavender-divider', 'فاصل لافندر فضي', AssetType::Decoration, 'ornaments/dividers/lavender-divider.svg', 'assets/v1/ornaments/dividers/lavender-divider.png', 720, 120, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->visualAsset('lavender-wreath', 'إكليل اللافندر', AssetType::Icon, 'ornaments/medallions/lavender-wreath.svg', 'assets/v1/ornaments/medallions/lavender-wreath.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
             $this->visualAsset('noir-paper-frame', 'إطار ورقة ليلة عنابية', AssetType::Frame, 'frames/paper/noir-paper-frame.svg', 'assets/v1/frames/paper/noir-paper-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-henna-noir'),
         ];
     }
@@ -152,7 +168,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'slug' => TemplatePreset::PowderGold->value,
                 'name' => 'بودري ولمعة ذهبية',
                 'category' => EventCategory::Wedding,
-                'thumbnail_path' => 'editor/previews/templates/powder-gold.svg',
+                'thumbnail_path' => 'editor/previews/templates/powder-gold.png',
                 'preset' => TemplatePreset::PowderGold,
                 'assets' => ['powder-botanical-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic'],
             ],
@@ -160,7 +176,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'slug' => TemplatePreset::BurgundyNoir->value,
                 'name' => 'عنابي ملكي',
                 'category' => EventCategory::Henna,
-                'thumbnail_path' => 'editor/previews/templates/burgundy-noir.svg',
+                'thumbnail_path' => 'editor/previews/templates/burgundy-noir.png',
                 'preset' => TemplatePreset::BurgundyNoir,
                 'assets' => ['burgundy-arch-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic'],
             ],
@@ -168,7 +184,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'slug' => TemplatePreset::HeritageVertical->value,
                 'name' => 'ميثاق تراثي عمودي',
                 'category' => EventCategory::MarriageContract,
-                'thumbnail_path' => 'editor/previews/templates/heritage-vertical.svg',
+                'thumbnail_path' => 'editor/previews/templates/heritage-vertical.png',
                 'preset' => TemplatePreset::HeritageVertical,
                 'assets' => [
                     'heritage-geometric-frame',
@@ -187,7 +203,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'slug' => TemplatePreset::GraduationEmerald->value,
                 'name' => 'تخرج زمردي',
                 'category' => EventCategory::Graduation,
-                'thumbnail_path' => 'editor/previews/templates/graduation-emerald.svg',
+                'thumbnail_path' => 'editor/previews/templates/graduation-emerald.png',
                 'preset' => TemplatePreset::GraduationEmerald,
                 'assets' => ['graduation-rays-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic', 'font-manrope'],
             ],
@@ -199,6 +215,38 @@ final class TemplateLibrarySeeder extends Seeder
                 'preset' => TemplatePreset::HennaNoir,
                 'assets' => ['noir-paper-frame', 'font-amiri', 'font-aref-ruqaa', 'font-cormorant', 'font-noto-arabic'],
             ],
+            [
+                'slug' => TemplatePreset::JasmineWhite->value,
+                'name' => 'ياسمين أبيض',
+                'category' => EventCategory::Wedding,
+                'thumbnail_path' => 'editor/previews/templates/jasmine-white.png',
+                'preset' => TemplatePreset::JasmineWhite,
+                'assets' => ['jasmine-white-frame', 'jasmine-corner', 'jasmine-divider', 'jasmine-wreath', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::MediterraneanBlue->value,
+                'name' => 'زرقة المتوسط',
+                'category' => EventCategory::MarriageContract,
+                'thumbnail_path' => 'editor/previews/templates/mediterranean-blue.png',
+                'preset' => TemplatePreset::MediterraneanBlue,
+                'assets' => ['mediterranean-arch-frame', 'mediterranean-tile-corner', 'mediterranean-wave-divider', 'mediterranean-star-medallion', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::GhadamesTerracotta->value,
+                'name' => 'تراب غدامس',
+                'category' => EventCategory::Henna,
+                'thumbnail_path' => 'editor/previews/templates/ghadames-terracotta.png',
+                'preset' => TemplatePreset::GhadamesTerracotta,
+                'assets' => ['ghadames-wall-frame', 'ghadames-corner', 'ghadames-divider', 'ghadames-medallion', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::LavenderSilver->value,
+                'name' => 'لافندر وفضة',
+                'category' => EventCategory::Wedding,
+                'thumbnail_path' => 'editor/previews/templates/lavender-silver.png',
+                'preset' => TemplatePreset::LavenderSilver,
+                'assets' => ['lavender-silver-frame', 'lavender-corner', 'lavender-divider', 'lavender-wreath', 'font-amiri', 'font-pinyon', 'font-noto-arabic'],
+            ],
         ];
     }
 
@@ -209,7 +257,7 @@ final class TemplateLibrarySeeder extends Seeder
             [
                 'slug' => 'botanical-gold-set',
                 'name' => 'أغصان بودرية وفاصل ذهبي',
-                'thumbnail_path' => 'editor/previews/collections/v1/botanical-set.svg',
+                'thumbnail_path' => 'editor/previews/collections/v1/botanical-set.png',
                 'items' => [
                     ['asset' => 'botanical-corner-left', 'placement' => $this->placement(0, 0, 360, 525, 0.9)],
                     ['asset' => 'botanical-corner-right', 'placement' => $this->placement(720, 1395, 360, 525, 0.9)],
@@ -219,7 +267,7 @@ final class TemplateLibrarySeeder extends Seeder
             [
                 'slug' => 'heritage-seal-set',
                 'name' => 'إطار تراثي وختم',
-                'thumbnail_path' => 'editor/previews/collections/v1/heritage-set.svg',
+                'thumbnail_path' => 'editor/previews/collections/v1/heritage-set.png',
                 'items' => [
                     ['asset' => 'heritage-geometric-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
                     ['asset' => 'wax-seal', 'placement' => $this->placement(420, 1480, 240, 240, 1)],
@@ -228,7 +276,7 @@ final class TemplateLibrarySeeder extends Seeder
             [
                 'slug' => 'graduation-gold-set',
                 'name' => 'قوس التخرج والفاصل',
-                'thumbnail_path' => 'editor/previews/collections/v1/graduation-set.svg',
+                'thumbnail_path' => 'editor/previews/collections/v1/graduation-set.png',
                 'items' => [
                     ['asset' => 'graduation-rays-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
                     ['asset' => 'gold-divider', 'placement' => $this->placement(240, 1305, 600, 80, 1)],
@@ -243,6 +291,46 @@ final class TemplateLibrarySeeder extends Seeder
                     ['asset' => 'methaq-eight-star-medallion', 'placement' => $this->placement(390, 210, 300, 300, 1)],
                     ['asset' => 'methaq-diamond-divider', 'placement' => $this->placement(180, 1210, 720, 120, 1)],
                     ['asset' => 'methaq-geometric-side-border', 'placement' => $this->placement(845, 410, 120, 800, 0.84)],
+                ],
+            ],
+            [
+                'slug' => 'jasmine-white-set',
+                'name' => 'ياسمين أبيض: إطار وزوايا وإكليل',
+                'thumbnail_path' => 'editor/previews/collections/v1/jasmine-white-set.png',
+                'items' => [
+                    ['asset' => 'jasmine-white-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
+                    ['asset' => 'jasmine-wreath', 'placement' => $this->placement(430, 1640, 220, 220, 0.9)],
+                    ['asset' => 'jasmine-divider', 'placement' => $this->placement(180, 990, 720, 120, 1)],
+                ],
+            ],
+            [
+                'slug' => 'mediterranean-blue-set',
+                'name' => 'زرقة المتوسط: قوس وبلاط وموج',
+                'thumbnail_path' => 'editor/previews/collections/v1/mediterranean-blue-set.png',
+                'items' => [
+                    ['asset' => 'mediterranean-arch-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
+                    ['asset' => 'mediterranean-star-medallion', 'placement' => $this->placement(490, 1530, 100, 100, 1)],
+                    ['asset' => 'mediterranean-wave-divider', 'placement' => $this->placement(180, 1000, 720, 120, 1)],
+                ],
+            ],
+            [
+                'slug' => 'ghadames-terracotta-set',
+                'name' => 'تراب غدامس: جدار ومثلثات وميدالية',
+                'thumbnail_path' => 'editor/previews/collections/v1/ghadames-terracotta-set.png',
+                'items' => [
+                    ['asset' => 'ghadames-wall-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
+                    ['asset' => 'ghadames-corner', 'placement' => $this->placement(70, 230, 220, 220, 0.9)],
+                    ['asset' => 'ghadames-divider', 'placement' => $this->placement(180, 1060, 720, 120, 1)],
+                ],
+            ],
+            [
+                'slug' => 'lavender-silver-set',
+                'name' => 'لافندر وفضة: إطار وباقة وإكليل',
+                'thumbnail_path' => 'editor/previews/collections/v1/lavender-silver-set.png',
+                'items' => [
+                    ['asset' => 'lavender-silver-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
+                    ['asset' => 'lavender-wreath', 'placement' => $this->placement(400, 1360, 280, 280, 0.9)],
+                    ['asset' => 'lavender-divider', 'placement' => $this->placement(180, 980, 720, 120, 1)],
                 ],
             ],
         ];
@@ -340,6 +428,10 @@ final class TemplateLibrarySeeder extends Seeder
     private function assetFamily(string $original): string
     {
         return match (true) {
+            str_contains($original, 'jasmine') => 'jasmine',
+            str_contains($original, 'mediterranean') => 'mediterranean',
+            str_contains($original, 'ghadames') => 'ghadames',
+            str_contains($original, 'lavender') => 'lavender',
             str_contains($original, 'botanical') => 'botanical',
             str_contains($original, 'graduation') => 'graduation',
             str_contains($original, 'wax-seal'), str_contains($original, 'heritage') => 'heritage',
