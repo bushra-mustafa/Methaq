@@ -17,7 +17,7 @@ export default function HomeTemplateCard({
     template,
     isAuthenticated,
 }: HomeTemplateCardProps) {
-    const colors = Object.values(template.palette).slice(0, 5);
+    const colors = [...new Set(Object.values(template.palette))].slice(0, 5);
     const href = isAuthenticated
         ? `/app/events/create?template=${encodeURIComponent(template.slug)}`
         : "/register";

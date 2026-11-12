@@ -15,7 +15,7 @@ const categoryLabels: Record<LibraryTemplate['category'], string> = {
 
 export function LibraryTemplateCard({ template }: LibraryTemplateCardProps) {
     const { auth } = usePage<SharedPageProps>().props;
-    const colors = Object.values(template.palette).slice(0, 6);
+    const colors = [...new Set(Object.values(template.palette))].slice(0, 6);
     const fontNames = template.assets.filter((asset) => asset.type === 'font').map((asset) => asset.name);
     const createUrl = `/app/events/create?template=${encodeURIComponent(template.slug)}`;
 

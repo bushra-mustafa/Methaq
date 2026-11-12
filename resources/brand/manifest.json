@@ -109,7 +109,7 @@
     },
     {
       "source": "identity-v1/fonts/Manrope.ttf",
-      "path": "public/brand/fonts/Manrope.ttf",
+      "path": "public/brand/fonts/Manrope/Manrope.ttf",
       "sha256": "d0639be45d0af36e798172419d7bd173c4bd4f29e2b76cbb69db1d11bf8b0a40"
     },
     {
@@ -119,7 +119,7 @@
     },
     {
       "source": "identity-v1/fonts/Manrope-OFL.txt",
-      "path": "public/brand/fonts/Manrope-OFL.txt",
+      "path": "public/brand/fonts/Manrope/Manrope-OFL.txt",
       "sha256": "e01b637272e0cbdfb240184dd98ea5cc671556d9894dae2668d92ab2c906787c"
     },
     {
