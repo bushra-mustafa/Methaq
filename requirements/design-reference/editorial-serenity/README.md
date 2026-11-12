@@ -31,7 +31,7 @@
 | الكروت والخلفيات الفاتحة | `methaq-cream` / `methaq-surface` | `#fdfbf7` / `#ffffff` |
 | تناوب الأقسام | `methaq-sage` | `#f0f5ed` |
 
-- **الخطوط:** Amiri للعناوين، وNoto Sans Arabic (`Methaq Arabic`) للنص، وManrope للاتيني. لا تُستخدم EB Garamond ولا Plus Jakarta Sans.
+- **الخطوط (كما في mockups الصفحات بالضبط):** Amiri **بوزن 700** للعناوين (ملف `Amiri-Bold.ttf` محلي)، وNoto Sans Arabic (`Methaq Arabic`) للنص، وManrope للاتيني. لا تُستخدم EB Garamond ولا Plus Jakarta Sans الموجودتان في `DESIGN.md` فقط.
 - **الزوايا:** `rounded-methaq-button` (0.5rem) و`rounded-methaq-card` (0.75rem).
 - **الظلال:** `shadow-methaq-card` و`shadow-methaq-raised`.
 - **الحركة:** `animate-methaq-float`، مع `motion-reduce:animate-none`.

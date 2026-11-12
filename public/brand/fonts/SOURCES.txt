@@ -4,3 +4,5 @@ Downloaded 2026-09-09. Original font binaries and SIL Open Font License files in
 Cormorant Garamond: https://github.com/google/fonts/tree/main/ofl/cormorantgaramond
 Aref Ruqaa: https://github.com/google/fonts/tree/main/ofl/arefruqaa
 Downloaded 2026-11-12 for the henna-noir invitation scene. SIL Open Font License files included.
+Amiri Bold: https://github.com/google/fonts/tree/main/ofl/amiri (Amiri-Bold.ttf)
+Downloaded 2026-11-12 for public-page headings (Stitch reference uses Amiri 700). Covered by amiri-OFL.txt.

@@ -1,4 +1,5 @@
 import { Link } from "@inertiajs/react";
+import Reveal from "../Reveal";
 
 interface HomeClosingProps {
     isAuthenticated: boolean;
@@ -10,10 +11,10 @@ export default function HomeClosing({ isAuthenticated }: HomeClosingProps) {
             aria-labelledby="home-closing-title"
             className="bg-methaq-primary px-6 py-20 text-center [--methaq-focus-ring:var(--color-methaq-cream)]"
         >
-            <div className="mx-auto flex max-w-2xl flex-col items-center gap-5">
+            <Reveal className="mx-auto flex max-w-2xl flex-col items-center gap-5">
                 <h2
                     id="home-closing-title"
-                    className="m-0 font-methaq-display text-[clamp(28px,4vw,40px)] font-normal text-methaq-cream"
+                    className="m-0 font-methaq-display text-[34px] font-bold text-methaq-cream md:text-[40px]"
                 >
                     ابدئي دعوتك اليوم
                 </h2>
@@ -26,7 +27,7 @@ export default function HomeClosing({ isAuthenticated }: HomeClosingProps) {
                 >
                     {isAuthenticated ? "افتحي مناسباتك" : "صمّمي دعوتك"}
                 </Link>
-            </div>
+            </Reveal>
         </section>
     );
 }

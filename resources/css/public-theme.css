@@ -29,8 +29,10 @@
 
     --color-methaq-border: #dce5db;
 
-    --font-methaq-body: "Manrope", "Methaq Arabic", system-ui, sans-serif;
+    /* Fonts exactly as the Stitch reference: Noto Sans Arabic body, Amiri (bold) headings, Manrope Latin. */
+    --font-methaq-body: "Methaq Arabic", "Manrope", system-ui, sans-serif;
     --font-methaq-display: "Amiri", "Traditional Arabic", serif;
+    --font-methaq-latin: "Manrope", "Methaq Arabic", system-ui, sans-serif;
 
     /* Border Radius: softened cardstock corners */
     --radius-methaq-card: 0.75rem;
@@ -46,6 +48,47 @@
     /* Motion */
     --animate-methaq-float: methaq-float 6s ease-in-out infinite;
     --animate-methaq-seal-pulse: methaq-seal-pulse 3.2s ease-in-out infinite;
+    --animate-methaq-dust: methaq-dust 5s ease-in-out infinite;
+    --animate-methaq-soft-pulse: methaq-soft-pulse 2.4s ease-in-out infinite;
+    --animate-methaq-hero-in: methaq-hero-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+    @keyframes methaq-dust {
+        0% {
+            transform: translateY(0) scale(0.85);
+            opacity: 0.2;
+        }
+        50% {
+            transform: translateY(-20px) scale(1.1);
+            opacity: 0.7;
+        }
+        100% {
+            transform: translateY(-40px) scale(0.85);
+            opacity: 0.2;
+        }
+    }
+
+    @keyframes methaq-hero-in {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes methaq-soft-pulse {
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.45;
+            transform: scale(0.8);
+        }
+    }
 
     @keyframes methaq-seal-pulse {
         0%,
@@ -81,7 +124,7 @@
     font-family: "Manrope";
     src: url("/brand/fonts/Manrope/Manrope.ttf") format("truetype");
     font-style: normal;
-    font-weight: 400;
+    font-weight: 200 800;
     font-display: swap;
 }
 
@@ -90,6 +133,14 @@
     src: url("/brand/fonts/Amiri-Regular.ttf") format("truetype");
     font-style: normal;
     font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Amiri";
+    src: url("/brand/fonts/Amiri-Bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 700;
     font-display: swap;
 }
 
@@ -104,6 +155,7 @@
 
 .methaq-public :where(h1, h2, h3) {
     font-family: var(--font-methaq-display);
+    font-weight: 700;
     line-height: 1.25;
 }
 
