@@ -68,7 +68,7 @@ composer validate --strict
 
 يجمع `routes/web.php` وحدات المسارات، مع تسجيل مسارات المصادقة من Fortify:
 
-- `routes/public.php`: `GET /` (`Web/Home`)، و`GET /templates` (`Web/Templates`)، و`GET /about` (`Web/About`)، و`GET /contact` (`Web/Contact`).
+- `routes/public.php`: `GET /` (`Web/Home`)، و`GET /templates` (`Web/Templates`)، و`GET /about` (`Web/About`)، و`GET /contact` (`Web/Contact`)، و`GET /privacy` (`Web/Privacy`).
 - `routes/app.php`: مجموعة `/app` المحمية بـ`auth` و`active`، وتشمل لوحة المستخدم، إنشاء المناسبة، عرضها، محرر التصميم، العرض التقديمي، الملف الشخصي، ومسودة اقتراح Ivory.
 - `PATCH /app/events/{event}/design` لحفظ وثيقة التصميم؛ يستخدم مسار حفظ مع مراجعة للتصميم.
 - `routes/admin.php`: مجموعة الإدارة تحت `/app/admin` داخل مجموعة التطبيق، وتُحمى أيضاً بـ`admin.2fa` التي تتحقق من دور المدير وتفعيل المصادقة الثنائية.
@@ -94,9 +94,9 @@ npm run build
 
 واجهات الموقع العام موجودة في `resources/js/Pages/Web`: تستخدم Home وAbout وContact وTemplates غلاف `PublicLayout` القابل للوصول باتجاه RTL، والذي يجمع Navbar المتجاوب وmain وFooter الموحد. يعرض Navbar المسار النشط وحالة الحساب، ويحتوي Footer روابط الموقع والرسالة التعريفية وحقوق السنة الحالية.
 
-يعتمد المشروع Tailwind CSS v4 عبر `@tailwindcss/vite`، وصفحات الموقع العام مكتوبة بأصناف Tailwind فقط. يستورد `app.css` هوية الخطوط والمتغيرات الأساسية من `brand.css`، ثم ثيم Editorial Serenity العام من `public-theme.css`: الزمردي `#074b36` للأساس، والذهبي `#b69a50` وتدرجاته للتفاصيل، وخلفية الصفحة `#f6fbf2`، مع الكريم والحكيم ودرجات النص والحدود، وخطوط Manrope وAmiri المحلية وحالات تركيز موحّدة.
+يعتمد المشروع Tailwind CSS v4 عبر `@tailwindcss/vite`، وصفحات الموقع العام مكتوبة بأصناف Tailwind فقط. يستورد `app.css` هوية الخطوط والمتغيرات الأساسية من `brand.css`، ثم ثيم Editorial Serenity العام من `public-theme.css`: الزمردي `#074b36` للأساس، والذهبي `#b69a50` وتدرجاته للتفاصيل، وخلفية الصفحة `#f6fbf2`، مع الكريم والحكيم ودرجات النص والحدود، والخطوط كما في المرجع بالضبط: Noto Sans Arabic للنص، وAmiri بوزن 700 للعناوين، وManrope للاتيني، كلها محلية، مع حالات تركيز موحّدة.
 
-المرجع البصري تصدير Stitch في `requirements/design-reference/editorial-serenity/`؛ اقرأ `README.md` فيه أولاً، فهو مرجع للشكل وليس كوداً للنسخ. أقسام الصفحة الرئيسية في `resources/js/Components/Public/Home/` بنفس ترتيب المرجع: الواجهة مع عرض الظرف التلقائي، القوالب المميزة، الخطوات، تجربة الظرف اليدوية، المزايا، والخاتمة. النصوص والأسماء والمدن ليبية، والأرقام والتواريخ بالأرقام الغربية (14/8/2027).
+المرجع البصري تصدير Stitch في `requirements/design-reference/editorial-serenity/`؛ اقرأ `README.md` فيه أولاً، فهو مرجع للشكل وليس كوداً للنسخ. قسم «قوالب مختارة من ميثاق» يعرض فقط القوالب التي يختارها المدير من مكتبة الإدارة («عرض في الرئيسية»). الحركة في الصفحات العامة بمكوّن `Reveal` وبمتغيرات `--animate-methaq-*`، وتتوقف مع «تقليل الحركة». أقسام الصفحة الرئيسية في `resources/js/Components/Public/Home/` بنفس ترتيب المرجع: الواجهة مع عرض الظرف التلقائي، القوالب المميزة، الخطوات، تجربة الظرف اليدوية، المزايا، والخاتمة. النصوص والأسماء والمدن ليبية، والأرقام والتواريخ بالأرقام الغربية (14/8/2027).
 
 ## دعوة الضيف: الظرف والمشهد
 
