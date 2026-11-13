@@ -1,17 +1,11 @@
 import { Link, usePage } from '@inertiajs/react';
+import { categoryLabels } from '../../../Types/Library';
 import type { LibraryTemplate } from '../../../Types/Library';
 import type { SharedPageProps } from '../../../Types/PageProps';
 
 interface LibraryTemplateCardProps {
     template: LibraryTemplate;
 }
-
-const categoryLabels: Record<LibraryTemplate['category'], string> = {
-    wedding: 'زفاف',
-    henna: 'حنّة',
-    marriage_contract: 'عقد قران',
-    graduation: 'تخرج',
-};
 
 export function LibraryTemplateCard({ template }: LibraryTemplateCardProps) {
     const { auth } = usePage<SharedPageProps>().props;

@@ -35,9 +35,9 @@ final class TemplateLibraryTest extends TestCase
         $this->seed(TemplateLibrarySeeder::class);
         $this->seed(TemplateLibrarySeeder::class);
 
-        $this->assertDatabaseCount('templates', 10);
-        $this->assertDatabaseCount('template_assets', 45);
-        $this->assertDatabaseCount('asset_collections', 9);
+        $this->assertDatabaseCount('templates', 12);
+        $this->assertDatabaseCount('template_assets', 49);
+        $this->assertDatabaseCount('asset_collections', 11);
 
         TemplateAsset::query()->where('type', '!=', 'audio')->each(function (TemplateAsset $asset): void {
             $this->assertTrue(Storage::disk('local')->exists($asset->original_path));
@@ -103,9 +103,9 @@ final class TemplateLibraryTest extends TestCase
 
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Web/Templates', false)
-            ->has('templates', 9)
-            ->has('collections', 9)
-            ->has('categories', 4)
+            ->has('templates', 11)
+            ->has('collections', 11)
+            ->has('categories', 6)
             ->where('selectedCategory', null));
 
         $serialized = $response->getContent();

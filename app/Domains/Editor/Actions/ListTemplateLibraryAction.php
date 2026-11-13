@@ -42,12 +42,7 @@ final class ListTemplateLibraryAction
         return [
             'templates' => $templates,
             'collections' => $collections,
-            'categories' => [
-                ['value' => EventCategory::Wedding->value, 'label' => 'زفاف'],
-                ['value' => EventCategory::Henna->value, 'label' => 'حنّة'],
-                ['value' => EventCategory::MarriageContract->value, 'label' => 'عقد قران'],
-                ['value' => EventCategory::Graduation->value, 'label' => 'تخرج'],
-            ],
+            'categories' => EventCategory::options(),
         ];
     }
 }

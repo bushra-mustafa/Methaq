@@ -30,12 +30,7 @@ final class ListEventCreationOptionsAction
 
         return [
             'templates' => $templates,
-            'categories' => [
-                ['value' => EventCategory::Wedding->value, 'label' => 'زفاف'],
-                ['value' => EventCategory::Henna->value, 'label' => 'حنّة'],
-                ['value' => EventCategory::MarriageContract->value, 'label' => 'عقد قران'],
-                ['value' => EventCategory::Graduation->value, 'label' => 'تخرج'],
-            ],
+            'categories' => EventCategory::options(),
             'timezones' => [
                 ['value' => 'Africa/Tripoli', 'label' => 'طرابلس'],
                 ['value' => 'Africa/Cairo', 'label' => 'القاهرة'],

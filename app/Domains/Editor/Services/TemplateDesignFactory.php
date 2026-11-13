@@ -56,6 +56,8 @@ final class TemplateDesignFactory
             TemplatePreset::GhadamesTerracotta => $this->ghadamesTerracotta($assets),
             TemplatePreset::LavenderSilver => $this->lavenderSilver($assets),
             TemplatePreset::IvoryTale => $this->ivoryTale($assets),
+            TemplatePreset::ProjectOpening => $this->projectOpening($assets),
+            TemplatePreset::Newborn => $this->newborn($assets),
         };
     }
 
@@ -293,6 +295,49 @@ final class TemplateDesignFactory
             $layers,
             new PaletteData(1, '#f8f5ee', '#eee8dd', '#49443e', '#6d675e', '#9a8466', '#d8cfc0'),
             $this->envelopeScene('#e4dac8', 'ل آ', false, false),
+        );
+    }
+
+    /** @param array<string, TemplateAsset> $assets */
+    private function projectOpening(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'opening-ribbon-frame', 0, 0, 1080, 1920, true),
+            $this->text('kicker', $assets, 'font-amiri', 'يتشرّف بدعوتكم', Language::Arabic, TextDirection::RightToLeft, 240, 300, 600, 90, 52, 400, PaletteRole::Accent),
+            $this->text('title', $assets, 'font-amiri', 'حفل افتتاح', Language::Arabic, TextDirection::RightToLeft, 140, 450, 800, 190, 130, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-amiri', 'اسم مشروعك', Language::Arabic, TextDirection::RightToLeft, 120, 680, 840, 150, 96, 400, PaletteRole::Accent),
+            $this->image('divider', $assets, 'methaq-diamond-divider', 180, 900, 720, 120, true),
+            $this->text('message', $assets, 'font-amiri', "ندعوكم لمشاركتنا لحظة قصّ الشريط\nوبداية رحلة جديدة", Language::Arabic, TextDirection::RightToLeft, 120, 1060, 840, 150, 48, 400, PaletteRole::SecondaryText),
+            $this->text('details', $assets, 'font-noto-arabic', "السبت · السابعة مساءً\nطرابلس · شارع الجمهورية", Language::Arabic, TextDirection::RightToLeft, 140, 1270, 800, 170, 40, 500, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-amiri', 'بحضوركم يكتمل نجاحنا', Language::Arabic, TextDirection::RightToLeft, 190, 1465, 700, 80, 46, 400, PaletteRole::Accent),
+            $this->image('scissors', $assets, 'opening-scissors-icon', 500, 1525, 80, 80, false),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#12303a', '#1b4452', '#f6efe0', '#cfd8d6', '#e2c59d', '#e2c59d'),
+            $this->envelopeScene('#1f4a58', 'م', true, false),
+        );
+    }
+
+    /** @param array<string, TemplateAsset> $assets */
+    private function newborn(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'newborn-moon-frame', 0, 0, 1080, 1920, true),
+            $this->text('kicker', $assets, 'font-amiri', 'بكل الحب والفرح', Language::Arabic, TextDirection::RightToLeft, 240, 470, 600, 90, 50, 400, PaletteRole::Accent),
+            $this->text('title', $assets, 'font-amiri', 'مرحباً بالمولود', Language::Arabic, TextDirection::RightToLeft, 140, 570, 800, 170, 112, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-amiri', 'ليلى', Language::Arabic, TextDirection::RightToLeft, 240, 770, 600, 160, 120, 400, PaletteRole::Accent),
+            $this->text('message', $assets, 'font-amiri', "يسعدنا دعوتكم لمشاركتنا فرحة قدوم مولودنا\nوالدعاء له بالصحة والعافية", Language::Arabic, TextDirection::RightToLeft, 120, 980, 840, 150, 46, 400, PaletteRole::SecondaryText),
+            $this->image('footprints', $assets, 'newborn-footprints', 390, 1170, 300, 200, false),
+            $this->text('details', $assets, 'font-noto-arabic', "الجمعة · الخامسة مساءً\nمنزل العائلة · بنغازي", Language::Arabic, TextDirection::RightToLeft, 140, 1410, 800, 170, 40, 500, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-amiri', 'دمتم لنا فرحة', Language::Arabic, TextDirection::RightToLeft, 240, 1600, 600, 80, 48, 400, PaletteRole::Accent),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#fbf6ee', '#ffffff', '#3f5a5e', '#6d7f82', '#b8935a', '#cfe0e3'),
+            $this->envelopeScene('#bcd6da', 'م', true, false),
         );
     }
 

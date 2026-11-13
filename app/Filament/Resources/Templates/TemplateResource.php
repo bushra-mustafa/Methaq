@@ -195,12 +195,7 @@ final class TemplateResource extends Resource
 
     private static function categoryLabel(EventCategory $category): string
     {
-        return match ($category) {
-            EventCategory::Wedding => 'زفاف',
-            EventCategory::Henna => 'حنّة',
-            EventCategory::MarriageContract => 'عقد قران',
-            EventCategory::Graduation => 'تخرج',
-        };
+        return $category->label();
     }
 
     private static function actor(): User

@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { ArrowLeft } from "lucide-react";
+import { categoryLabels } from "../../../Types/Library";
 import type { LibraryTemplate } from "../../../Types/Library";
 
 interface HomeTemplateCardProps {
@@ -8,13 +9,6 @@ interface HomeTemplateCardProps {
     /** Alternates the tilt and the vertical offset so the row reads as laid by hand. */
     index: number;
 }
-
-const categoryLabels: Record<LibraryTemplate["category"], string> = {
-    wedding: "زفاف",
-    henna: "حنّة",
-    marriage_contract: "عقد قران",
-    graduation: "تخرج",
-};
 
 /** One featured template: the whole invitation, as a sheet of paper resting on the marble. */
 export default function HomeTemplateCard({

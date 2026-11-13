@@ -175,6 +175,10 @@ final class TemplateLibrarySeeder extends Seeder
             $this->visualAsset('ivory-clock-icon', 'أيقونة ساعة', AssetType::Icon, 'icons/ivory/ivory-clock-icon.svg', 'assets/v1/icons/ivory/ivory-clock-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-ivory-tale'),
             $this->visualAsset('ivory-envelope', 'ظرف عاجي', AssetType::Decoration, 'ornaments/ivory/ivory-envelope.svg', 'assets/v1/ornaments/ivory/ivory-envelope.png', 720, 506, $visualCapabilities, $visualLicense, 'methaq-ivory-tale'),
             $this->visualAsset('ivory-heart-frame', 'إطار قلب', AssetType::Decoration, 'ornaments/ivory/ivory-heart-frame.svg', 'assets/v1/ornaments/ivory/ivory-heart-frame.png', 520, 477, $visualCapabilities, $visualLicense, 'methaq-ivory-tale'),
+            $this->visualAsset('opening-ribbon-frame', 'إطار قصّ الشريط', AssetType::Frame, 'frames/opening/opening-ribbon-frame.svg', 'assets/v1/frames/opening/opening-ribbon-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('opening-scissors-icon', 'مقصّ الافتتاح', AssetType::Icon, 'icons/opening/opening-scissors-icon.svg', 'assets/v1/icons/opening/opening-scissors-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('newborn-moon-frame', 'إطار هلال ونجوم', AssetType::Frame, 'frames/newborn/newborn-moon-frame.svg', 'assets/v1/frames/newborn/newborn-moon-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('newborn-footprints', 'أقدام صغيرة', AssetType::Decoration, 'ornaments/newborn/newborn-footprints.svg', 'assets/v1/ornaments/newborn/newborn-footprints.png', 600, 400, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
             $this->visualAsset('noir-paper-frame', 'إطار ورقة ليلة عنابية', AssetType::Frame, 'frames/paper/noir-paper-frame.svg', 'assets/v1/frames/paper/noir-paper-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-henna-noir'),
         ];
     }
@@ -274,6 +278,22 @@ final class TemplateLibrarySeeder extends Seeder
                 'preset' => TemplatePreset::IvoryTale,
                 'assets' => ['ivory-arch-background', 'ivory-botanical-ornament', 'ivory-swans', 'ivory-chandelier-icon', 'ivory-clock-icon', 'ivory-envelope', 'ivory-heart-frame', 'font-amiri', 'font-pinyon', 'font-cormorant', 'font-noto-arabic'],
             ],
+            [
+                'slug' => TemplatePreset::ProjectOpening->value,
+                'name' => 'قصّ الشريط',
+                'category' => EventCategory::ProjectOpening,
+                'thumbnail_path' => 'editor/previews/templates/project-opening.png',
+                'preset' => TemplatePreset::ProjectOpening,
+                'assets' => ['opening-ribbon-frame', 'opening-scissors-icon', 'methaq-diamond-divider', 'font-amiri', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::Newborn->value,
+                'name' => 'هلال المولود',
+                'category' => EventCategory::Newborn,
+                'thumbnail_path' => 'editor/previews/templates/newborn.png',
+                'preset' => TemplatePreset::Newborn,
+                'assets' => ['newborn-moon-frame', 'newborn-footprints', 'font-amiri', 'font-noto-arabic'],
+            ],
         ];
     }
 
@@ -370,6 +390,25 @@ final class TemplateLibrarySeeder extends Seeder
                     ['asset' => 'ivory-swans', 'placement' => $this->placement(318, 1590, 444, 306, 1)],
                     ['asset' => 'ivory-chandelier-icon', 'placement' => $this->placement(220, 1160, 100, 118, 1)],
                     ['asset' => 'ivory-clock-icon', 'placement' => $this->placement(760, 1160, 100, 118, 1)],
+                ],
+            ],
+            [
+                'slug' => 'project-opening-set',
+                'name' => 'قصّ الشريط: إطار ومقصّ وفاصل',
+                'thumbnail_path' => 'editor/previews/collections/v1/project-opening-set.png',
+                'items' => [
+                    ['asset' => 'opening-ribbon-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
+                    ['asset' => 'opening-scissors-icon', 'placement' => $this->placement(500, 1525, 80, 80, 1)],
+                    ['asset' => 'methaq-diamond-divider', 'placement' => $this->placement(180, 900, 720, 120, 1)],
+                ],
+            ],
+            [
+                'slug' => 'newborn-moon-set',
+                'name' => 'هلال المولود: إطار وأقدام صغيرة',
+                'thumbnail_path' => 'editor/previews/collections/v1/newborn-moon-set.png',
+                'items' => [
+                    ['asset' => 'newborn-moon-frame', 'placement' => $this->placement(0, 0, 1080, 1920, 1)],
+                    ['asset' => 'newborn-footprints', 'placement' => $this->placement(390, 1170, 300, 200, 1)],
                 ],
             ],
         ];

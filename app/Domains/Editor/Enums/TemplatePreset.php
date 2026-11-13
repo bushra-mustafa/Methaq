@@ -16,4 +16,6 @@ enum TemplatePreset: string
     case GhadamesTerracotta = 'ghadames-terracotta';
     case LavenderSilver = 'lavender-silver';
     case IvoryTale = 'ivory-tale';
+    case ProjectOpening = 'project-opening';
+    case Newborn = 'newborn';
 }

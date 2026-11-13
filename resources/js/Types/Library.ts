@@ -1,4 +1,14 @@
-export type EventCategory = 'wedding' | 'henna' | 'marriage_contract' | 'graduation';
+export type EventCategory = 'wedding' | 'henna' | 'marriage_contract' | 'graduation' | 'project_opening' | 'newborn';
+
+/** Arabic names of the categories, shared by every card that shows one. */
+export const categoryLabels: Record<EventCategory, string> = {
+    wedding: 'زفاف',
+    henna: 'حنّة',
+    marriage_contract: 'عقد قران',
+    graduation: 'تخرج',
+    project_opening: 'افتتاح مشروع',
+    newborn: 'حفل مولود',
+};
 export type AssetType = 'background' | 'frame' | 'icon' | 'font' | 'decoration' | 'audio';
 export type LibraryResource = 'template' | 'asset' | 'collection';
 
