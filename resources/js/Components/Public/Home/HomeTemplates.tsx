@@ -61,11 +61,11 @@ export default function HomeTemplates({
                             tabIndex={0}
                             className="snap-x snap-mandatory overflow-x-auto overscroll-x-contain p-5 pt-8 pb-16 [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] [scrollbar-width:thin] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-methaq-primary sm:p-8 sm:pt-10 sm:pb-20 lg:p-12 lg:pb-24"
                         >
-                            <ul className="m-0 flex w-max list-none gap-6 p-0 sm:gap-8">
+                            <ul className="m-0 flex w-max list-none gap-6 p-0 sm:gap-8 lg:grid lg:w-full lg:auto-cols-fr lg:grid-flow-col lg:gap-6">
                                 {templates.map((template, index) => (
                                     <li
                                         key={template.id}
-                                        className="w-[min(62vw,17rem)] shrink-0 snap-start scroll-ms-5 sm:scroll-ms-8"
+                                        className="w-[min(62vw,17rem)] shrink-0 snap-start scroll-ms-5 sm:scroll-ms-8 lg:w-auto lg:min-w-0"
                                     >
                                         <HomeTemplateCard
                                             template={template}
