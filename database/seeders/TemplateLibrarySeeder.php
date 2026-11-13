@@ -203,7 +203,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Wedding,
                 'thumbnail_path' => 'editor/previews/templates/powder-gold.png',
                 'preset' => TemplatePreset::PowderGold,
-                'assets' => ['powder-botanical-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic'],
+                'assets' => ['powder-botanical-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::BurgundyNoir->value,
@@ -211,7 +211,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Henna,
                 'thumbnail_path' => 'editor/previews/templates/burgundy-noir.png',
                 'preset' => TemplatePreset::BurgundyNoir,
-                'assets' => ['burgundy-arch-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic'],
+                'assets' => ['burgundy-arch-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::HeritageVertical->value,
@@ -230,6 +230,7 @@ final class TemplateLibrarySeeder extends Seeder
                     'methaq-geometric-side-border',
                     'font-amiri',
                     'font-noto-arabic',
+                    'font-amiri-quran',
                 ],
             ],
             [
@@ -238,7 +239,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Graduation,
                 'thumbnail_path' => 'editor/previews/templates/graduation-emerald.png',
                 'preset' => TemplatePreset::GraduationEmerald,
-                'assets' => ['graduation-rays-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic', 'font-manrope'],
+                'assets' => ['graduation-rays-frame', 'gold-divider', 'font-amiri', 'font-pinyon', 'font-noto-arabic', 'font-manrope', 'font-amiri-quran', 'font-el-messiri'],
             ],
             [
                 'slug' => TemplatePreset::HennaNoir->value,
@@ -246,7 +247,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Henna,
                 'thumbnail_path' => 'editor/previews/templates/henna-noir.svg',
                 'preset' => TemplatePreset::HennaNoir,
-                'assets' => ['noir-paper-frame', 'font-amiri', 'font-aref-ruqaa', 'font-cormorant', 'font-noto-arabic'],
+                'assets' => ['noir-paper-frame', 'font-amiri', 'font-aref-ruqaa', 'font-cormorant', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::JasmineWhite->value,
@@ -254,7 +255,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Wedding,
                 'thumbnail_path' => 'editor/previews/templates/jasmine-white.png',
                 'preset' => TemplatePreset::JasmineWhite,
-                'assets' => ['jasmine-white-frame', 'jasmine-corner', 'jasmine-divider', 'jasmine-wreath', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
+                'assets' => ['jasmine-white-frame', 'jasmine-corner', 'jasmine-divider', 'jasmine-wreath', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::MediterraneanBlue->value,
@@ -262,7 +263,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::MarriageContract,
                 'thumbnail_path' => 'editor/previews/templates/mediterranean-blue.png',
                 'preset' => TemplatePreset::MediterraneanBlue,
-                'assets' => ['mediterranean-arch-frame', 'mediterranean-tile-corner', 'mediterranean-wave-divider', 'mediterranean-star-medallion', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
+                'assets' => ['mediterranean-arch-frame', 'mediterranean-tile-corner', 'mediterranean-wave-divider', 'mediterranean-star-medallion', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::GhadamesTerracotta->value,
@@ -270,7 +271,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Henna,
                 'thumbnail_path' => 'editor/previews/templates/ghadames-terracotta.png',
                 'preset' => TemplatePreset::GhadamesTerracotta,
-                'assets' => ['ghadames-wall-frame', 'ghadames-corner', 'ghadames-divider', 'ghadames-medallion', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
+                'assets' => ['ghadames-wall-frame', 'ghadames-corner', 'ghadames-divider', 'ghadames-medallion', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::LavenderSilver->value,
@@ -278,7 +279,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Wedding,
                 'thumbnail_path' => 'editor/previews/templates/lavender-silver.png',
                 'preset' => TemplatePreset::LavenderSilver,
-                'assets' => ['lavender-silver-frame', 'lavender-corner', 'lavender-divider', 'lavender-wreath', 'font-amiri', 'font-pinyon', 'font-noto-arabic'],
+                'assets' => ['lavender-silver-frame', 'lavender-corner', 'lavender-divider', 'lavender-wreath', 'font-amiri', 'font-pinyon', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::IvoryTale->value,
@@ -286,7 +287,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Wedding,
                 'thumbnail_path' => 'editor/previews/templates/ivory-tale.png',
                 'preset' => TemplatePreset::IvoryTale,
-                'assets' => ['ivory-arch-background', 'ivory-botanical-ornament', 'ivory-swans', 'ivory-chandelier-icon', 'ivory-clock-icon', 'ivory-envelope', 'ivory-heart-frame', 'font-amiri', 'font-pinyon', 'font-cormorant', 'font-noto-arabic'],
+                'assets' => ['ivory-arch-background', 'ivory-botanical-ornament', 'ivory-swans', 'ivory-chandelier-icon', 'ivory-clock-icon', 'ivory-envelope', 'ivory-heart-frame', 'font-amiri', 'font-pinyon', 'font-cormorant', 'font-noto-arabic', 'font-amiri-quran'],
             ],
             [
                 'slug' => TemplatePreset::ProjectOpening->value,
@@ -294,7 +295,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::ProjectOpening,
                 'thumbnail_path' => 'editor/previews/templates/project-opening.png',
                 'preset' => TemplatePreset::ProjectOpening,
-                'assets' => ['opening-ribbon-frame', 'opening-scissors-icon', 'methaq-diamond-divider', 'font-amiri', 'font-noto-arabic'],
+                'assets' => ['opening-ribbon-frame', 'opening-scissors-icon', 'methaq-diamond-divider', 'font-amiri', 'font-noto-arabic', 'font-amiri-quran', 'font-el-messiri'],
             ],
             [
                 'slug' => TemplatePreset::Newborn->value,
@@ -302,7 +303,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Newborn,
                 'thumbnail_path' => 'editor/previews/templates/newborn.png',
                 'preset' => TemplatePreset::Newborn,
-                'assets' => ['newborn-moon-frame', 'newborn-footprints', 'font-amiri', 'font-noto-arabic'],
+                'assets' => ['newborn-moon-frame', 'newborn-footprints', 'font-amiri', 'font-noto-arabic', 'font-amiri-quran', 'font-el-messiri'],
             ],
             [
                 'slug' => TemplatePreset::OpeningModern->value,
@@ -310,7 +311,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::ProjectOpening,
                 'thumbnail_path' => 'editor/previews/templates/opening-modern.png',
                 'preset' => TemplatePreset::OpeningModern,
-                'assets' => ['opening-modern-frame', 'gold-divider', 'font-amiri', 'font-noto-arabic'],
+                'assets' => ['opening-modern-frame', 'gold-divider', 'font-amiri', 'font-noto-arabic', 'font-amiri-quran', 'font-reem-kufi'],
             ],
             [
                 'slug' => TemplatePreset::NewbornBlush->value,
@@ -318,7 +319,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Newborn,
                 'thumbnail_path' => 'editor/previews/templates/newborn-blush.png',
                 'preset' => TemplatePreset::NewbornBlush,
-                'assets' => ['newborn-blush-frame', 'newborn-footprints', 'font-amiri', 'font-noto-arabic'],
+                'assets' => ['newborn-blush-frame', 'newborn-footprints', 'font-amiri', 'font-noto-arabic', 'font-amiri-quran', 'font-el-messiri'],
             ],
             [
                 'slug' => TemplatePreset::GraduationNavy->value,
@@ -326,7 +327,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Graduation,
                 'thumbnail_path' => 'editor/previews/templates/graduation-navy.png',
                 'preset' => TemplatePreset::GraduationNavy,
-                'assets' => ['graduation-navy-frame', 'gold-divider', 'font-amiri', 'font-noto-arabic'],
+                'assets' => ['graduation-navy-frame', 'gold-divider', 'font-amiri', 'font-noto-arabic', 'font-amiri-quran', 'font-reem-kufi'],
             ],
             [
                 'slug' => TemplatePreset::QiranSand->value,
@@ -334,7 +335,7 @@ final class TemplateLibrarySeeder extends Seeder
                 'category' => EventCategory::Wedding,
                 'thumbnail_path' => 'editor/previews/templates/qiran-sand.png',
                 'preset' => TemplatePreset::QiranSand,
-                'assets' => ['qiran-sand-frame', 'qiran-calendar-icon', 'qiran-pin-icon', 'qiran-clock-icon', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
+                'assets' => ['qiran-sand-frame', 'qiran-calendar-icon', 'qiran-pin-icon', 'qiran-clock-icon', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic', 'font-amiri-quran'],
             ],
         ];
     }

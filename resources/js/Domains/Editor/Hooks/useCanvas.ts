@@ -1,4 +1,4 @@
-import { TEXT_WRAP_OPTIONS } from '../Services/textWrapping';
+import { TEXT_WRAP_OPTIONS, textLineHeight } from '../Services/textWrapping';
 import type { PresentationCard } from '../../../Types/PresentationCard';
 import { capturePresentationCard } from '../Services/capturePresentationCard';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -284,7 +284,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
                             direction: descriptor.direction,
                             fill: descriptor.fill,
                             ...TEXT_WRAP_OPTIONS,
-                            lineHeight: 1.25,
+                            lineHeight: textLineHeight(asset?.slug),
                             editable: !layer.locked,
                         });
                         (object as Textbox).on('editing:exited', () => {

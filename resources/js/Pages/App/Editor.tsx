@@ -14,6 +14,7 @@ import { updateCardBackground, updateCardMaterial } from '../../Domains/Editor/S
 import { resolveColor } from '../../Domains/Editor/Services/editorDocument';
 import { EditorTextPanel } from '../../Domains/Editor/Components/EditorTextPanel';
 import { EditorSuggestionsPanel } from '../../Domains/Editor/Components/EditorSuggestionsPanel';
+import { watermarkPreview } from '../../Domains/Editor/Services/previewWatermark';
 import { suggestionContent, type TextSuggestion } from '../../Domains/Editor/Services/textSuggestions';
 import { useCanvas } from '../../Domains/Editor/Hooks/useCanvas';
 import { useAutosave } from '../../Domains/Editor/Hooks/useAutosave';
@@ -128,10 +129,12 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
     const exportPng = (): void => {
         const url = canvasState.capturePreview();
         if (!url) return;
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `methaq-card-${event.id}.png`;
-        link.click();
+        void watermarkPreview(url).then((marked) => {
+            const link = document.createElement('a');
+            link.href = marked;
+            link.download = `methaq-preview-${event.id}.png`;
+            link.click();
+        });
     };
     const addTextLayer = (font: EditorAsset): void => {
         const next = addText(history.value, font);

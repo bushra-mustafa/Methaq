@@ -14,7 +14,8 @@
         "test:consent": "node --experimental-strip-types --test tests/Frontend/consent.test.ts",
         "test:suggestions": "node --experimental-strip-types --test tests/Frontend/text-suggestions.test.ts",
         "test:wrapping": "node --experimental-strip-types --test tests/Frontend/text-wrapping.test.ts",
-        "test:frontend": "npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope && npm run test:consent && npm run test:suggestions && npm run test:wrapping"
+        "test:watermark": "node --experimental-strip-types --test tests/Frontend/preview-watermark.test.ts",
+        "test:frontend": "npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope && npm run test:consent && npm run test:suggestions && npm run test:wrapping && npm run test:watermark"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

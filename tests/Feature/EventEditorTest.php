@@ -57,7 +57,7 @@ final class EventEditorTest extends TestCase
             ->where('revision', 1)
             ->has('assets', 59)
             ->has('collections', 11)
-            ->has('recommendedAssetIds', 5));
+            ->has('recommendedAssetIds', 6));
 
         $serialized = $response->getContent();
         $this->assertStringNotContainsString('original_path', $serialized);

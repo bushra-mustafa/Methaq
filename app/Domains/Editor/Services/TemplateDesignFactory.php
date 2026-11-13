@@ -71,10 +71,12 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'powder-botanical-frame', 0, 0, 1080, 1920, true),
             $this->text('basmala', $assets, 'font-amiri', 'بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم', Language::Arabic, TextDirection::RightToLeft, 140, 335, 800, 100, 44, 400, PaletteRole::SecondaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-30-21-p'), Language::Arabic, TextDirection::RightToLeft, 190, 410, 700, 230, 42, 400, PaletteRole::SecondaryText),
             $this->text('names_en', $assets, 'font-pinyon', 'Asma & Mohamed', Language::English, TextDirection::LeftToRight, 90, 650, 900, 190, 128, 400, PaletteRole::PrimaryText),
             $this->text('invitation', $assets, 'font-amiri', 'يسرّنا دعوتكم لمشاركتنا ليلة الفرح', Language::Arabic, TextDirection::RightToLeft, 120, 910, 840, 120, 53, 400, PaletteRole::SecondaryText),
             $this->image('divider', $assets, 'gold-divider', 240, 1115, 600, 80, true),
             $this->text('details', $assets, 'font-noto-arabic', "السبت · السابعة مساءً\nقاعة ميثاق · طرابلس", Language::Arabic, TextDirection::RightToLeft, 140, 1255, 800, 190, 40, 500, PaletteRole::SecondaryText),
+            $this->text('phrase', $assets, 'font-amiri', 'فرحتنا ما تكمل إلا بدعواتكم وحضوركم، فلا تحرمونا منهم.', Language::Arabic, TextDirection::RightToLeft, 140, 1540, 640, 140, 40, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -91,9 +93,10 @@ final class TemplateDesignFactory
             $this->image('arch', $assets, 'burgundy-arch-frame', 0, 0, 1080, 1920, true),
             $this->text('occasion', $assets, 'font-amiri', 'دعوة حنّة', Language::Arabic, TextDirection::RightToLeft, 180, 385, 720, 110, 58, 400, PaletteRole::Accent),
             $this->text('name', $assets, 'font-pinyon', 'Nawara', Language::English, TextDirection::LeftToRight, 140, 680, 800, 250, 190, 400, PaletteRole::PrimaryText),
-            $this->text('message', $assets, 'font-amiri', 'بوجودكم تكتمل فرحتنا', Language::Arabic, TextDirection::RightToLeft, 140, 1010, 800, 120, 60, 400, PaletteRole::SecondaryText),
+            $this->text('message', $assets, 'font-amiri', 'نقشت الحنّاء على يدي فرحةً، وبقي أن تنقشوا حضوركم في قلبي.', Language::Arabic, TextDirection::RightToLeft, 140, 1000, 800, 150, 46, 400, PaletteRole::SecondaryText),
             $this->image('divider', $assets, 'gold-divider', 240, 1205, 600, 80, true),
             $this->text('details', $assets, 'font-noto-arabic', "الخميس · الثامنة مساءً\nدار ميثاق", Language::Arabic, TextDirection::RightToLeft, 170, 1335, 740, 180, 41, 500, PaletteRole::PrimaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-10-58'), Language::Arabic, TextDirection::RightToLeft, 160, 1540, 760, 180, 30, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -108,11 +111,12 @@ final class TemplateDesignFactory
     {
         $layers = [
             $this->image('heritage_frame', $assets, 'heritage-geometric-frame', 0, 0, 1080, 1920, true),
-            $this->text('opening', $assets, 'font-amiri', 'بسم الله وعلى بركة الله', Language::Arabic, TextDirection::RightToLeft, 140, 360, 800, 100, 46, 400, PaletteRole::PrimaryText),
+            $this->text('opening', $assets, 'font-amiri', 'بنية الستر وبركة الله، نتشرف بدعوتكم لحضور عقد قراننا.', Language::Arabic, TextDirection::RightToLeft, 160, 335, 760, 130, 40, 400, PaletteRole::PrimaryText),
             $this->text('occasion', $assets, 'font-amiri', 'عقد قِران', Language::Arabic, TextDirection::RightToLeft, 160, 635, 760, 150, 88, 400, PaletteRole::PrimaryText),
             $this->text('names', $assets, 'font-amiri', 'سالم وهنية', Language::Arabic, TextDirection::RightToLeft, 110, 905, 860, 160, 83, 400, PaletteRole::Accent),
             $this->image('divider', $assets, 'gold-divider', 240, 1150, 600, 80, true),
             $this->text('details', $assets, 'font-noto-arabic', "بحضور الأهل والأحباب\nيوم الجمعة بعد صلاة العصر", Language::Arabic, TextDirection::RightToLeft, 130, 1285, 820, 180, 43, 500, PaletteRole::SecondaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-30-21-p'), Language::Arabic, TextDirection::RightToLeft, 190, 1450, 700, 200, 38, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -128,10 +132,11 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('graduation_frame', $assets, 'graduation-rays-frame', 0, 0, 1080, 1920, true),
             $this->text('class_year', $assets, 'font-pinyon', 'Class of 2027', Language::English, TextDirection::LeftToRight, 150, 555, 780, 150, 118, 400, PaletteRole::Accent),
-            $this->text('occasion', $assets, 'font-amiri', 'حفل التخرج', Language::Arabic, TextDirection::RightToLeft, 160, 850, 760, 150, 88, 400, PaletteRole::PrimaryText),
-            $this->text('graduate', $assets, 'font-amiri', 'ريم سالم', Language::Arabic, TextDirection::RightToLeft, 150, 1100, 780, 150, 79, 400, PaletteRole::PrimaryText),
+            $this->text('occasion', $assets, 'font-el-messiri', 'حفل التخرج', Language::Arabic, TextDirection::RightToLeft, 160, 850, 760, 150, 88, 400, PaletteRole::PrimaryText),
+            $this->text('graduate', $assets, 'font-el-messiri', 'ريم سالم', Language::Arabic, TextDirection::RightToLeft, 150, 1100, 780, 150, 79, 400, PaletteRole::PrimaryText),
             $this->image('divider', $assets, 'gold-divider', 240, 1305, 600, 80, true),
-            $this->text('message', $assets, 'font-noto-arabic', 'نحتفل معاً ببداية الطريق', Language::Arabic, TextDirection::RightToLeft, 150, 1435, 780, 120, 42, 500, PaletteRole::SecondaryText),
+            $this->text('message', $assets, 'font-amiri', 'ثمرة تعب وسهر وصبر، وأحلى ما فيها أنتم، فكونوا معي في يومي.', Language::Arabic, TextDirection::RightToLeft, 270, 1430, 540, 140, 36, 500, PaletteRole::SecondaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-58-11'), Language::Arabic, TextDirection::RightToLeft, 240, 1550, 600, 230, 28, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -158,7 +163,7 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('paper_frame', $assets, 'noir-paper-frame', 0, 0, 1080, 1920, true),
             $this->text('kicker', $assets, 'font-amiri', 'لَيْلَةٌ مِنَ الفَرَح', Language::Arabic, TextDirection::RightToLeft, 190, 225, 700, 80, 40, 400, PaletteRole::Accent),
-            $this->text('message', $assets, 'font-amiri', "يسعدنا أن نجتمع بكم في ليلة\nنحتفل فيها بالحب والفرح،\nونرجو أن تكون أيامنا مليئة بالبركة.", Language::Arabic, TextDirection::RightToLeft, 120, 320, 840, 220, 35, 400, PaletteRole::SecondaryText),
+            $this->text('message', $assets, 'font-amiri-quran', TemplateScripture::content('verse-25-74'), Language::Arabic, TextDirection::RightToLeft, 140, 315, 800, 230, 30, 400, PaletteRole::SecondaryText),
             $this->text('blessing', $assets, 'font-amiri', "اللهم بارك لنا وبارك علينا\nواجمع بيننا في خير", Language::Arabic, TextDirection::RightToLeft, 120, 585, 840, 220, 56, 400, PaletteRole::PrimaryText),
             $this->text('intro', $assets, 'font-noto-arabic', 'يسعدنا دعوتكم لمشاركتنا ليلة الحنّة', Language::Arabic, TextDirection::RightToLeft, 150, 845, 780, 80, 32, 400, PaletteRole::SecondaryText),
             $this->text('names', $assets, 'font-aref-ruqaa', 'نوارة', Language::Arabic, TextDirection::RightToLeft, 120, 945, 840, 230, 150, 400, PaletteRole::PrimaryText),
@@ -199,11 +204,12 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'jasmine-white-frame', 0, 0, 1080, 1920, true),
             $this->text('basmala', $assets, 'font-amiri', 'بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم', Language::Arabic, TextDirection::RightToLeft, 160, 300, 760, 90, 42, 400, PaletteRole::SecondaryText),
-            $this->text('names', $assets, 'font-aref-ruqaa', 'يوسف وملاك', Language::Arabic, TextDirection::RightToLeft, 110, 520, 860, 230, 128, 400, PaletteRole::PrimaryText),
-            $this->text('invitation', $assets, 'font-amiri', 'يتشرفان بدعوتكم لحضور حفل زفافهما', Language::Arabic, TextDirection::RightToLeft, 120, 820, 840, 110, 50, 400, PaletteRole::SecondaryText),
-            $this->image('divider', $assets, 'jasmine-divider', 180, 990, 720, 120, true),
-            $this->text('details', $assets, 'font-noto-arabic', "الخميس 14/8/2027 · الثامنة مساءً\nقاعة الياسمين · طرابلس", Language::Arabic, TextDirection::RightToLeft, 150, 1170, 780, 190, 40, 500, PaletteRole::SecondaryText),
-            $this->text('closing', $assets, 'font-amiri', 'بحضوركم تكتمل فرحتنا', Language::Arabic, TextDirection::RightToLeft, 160, 1470, 760, 110, 48, 400, PaletteRole::PrimaryText),
+            $this->text('names', $assets, 'font-aref-ruqaa', 'يوسف وملاك', Language::Arabic, TextDirection::RightToLeft, 110, 430, 860, 230, 128, 400, PaletteRole::PrimaryText),
+            $this->text('invitation', $assets, 'font-amiri', 'يتشرفان بدعوتكم لحضور حفل زفافهما', Language::Arabic, TextDirection::RightToLeft, 120, 700, 840, 110, 50, 400, PaletteRole::SecondaryText),
+            $this->image('divider', $assets, 'jasmine-divider', 180, 860, 720, 120, true),
+            $this->text('details', $assets, 'font-noto-arabic', "الخميس 14/8/2027 · الثامنة مساءً\nقاعة الياسمين · طرابلس", Language::Arabic, TextDirection::RightToLeft, 150, 1010, 780, 130, 40, 500, PaletteRole::SecondaryText),
+            $this->text('closing', $assets, 'font-amiri', 'بداية حكايتنا حب وستر ورضا، ونتمنى تكونوا معنا فيها.', Language::Arabic, TextDirection::RightToLeft, 300, 1570, 520, 110, 36, 400, PaletteRole::PrimaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-25-74'), Language::Arabic, TextDirection::RightToLeft, 220, 1200, 640, 320, 32, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -223,7 +229,8 @@ final class TemplateDesignFactory
             $this->text('names', $assets, 'font-aref-ruqaa', 'عبدالسلام وخديجة', Language::Arabic, TextDirection::RightToLeft, 170, 760, 740, 170, 88, 400, PaletteRole::PrimaryText),
             $this->image('divider', $assets, 'mediterranean-wave-divider', 180, 1000, 720, 120, true),
             $this->text('details', $assets, 'font-noto-arabic', "الجمعة 5/9/2027 · بعد صلاة العصر\nبيت العائلة · المدينة القديمة، طرابلس", Language::Arabic, TextDirection::RightToLeft, 190, 1170, 700, 190, 38, 500, PaletteRole::SecondaryText),
-            $this->text('verse', $assets, 'font-amiri', 'وجعل بينكم مودّة ورحمة', Language::Arabic, TextDirection::RightToLeft, 200, 1440, 680, 100, 46, 400, PaletteRole::PrimaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-10-58'), Language::Arabic, TextDirection::RightToLeft, 200, 1315, 680, 230, 32, 400, PaletteRole::PrimaryText),
+            $this->text('phrase', $assets, 'font-amiri', 'عقدٌ على الخير والمودة، يزيده حضوركم بركة.', Language::Arabic, TextDirection::RightToLeft, 190, 1565, 700, 90, 36, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -243,7 +250,8 @@ final class TemplateDesignFactory
             $this->text('message', $assets, 'font-amiri', 'يسعدنا حضوركم لمشاركتنا فرحتنا', Language::Arabic, TextDirection::RightToLeft, 130, 900, 820, 110, 50, 400, PaletteRole::SecondaryText),
             $this->image('divider', $assets, 'ghadames-divider', 180, 1060, 720, 120, true),
             $this->text('details', $assets, 'font-noto-arabic', "الخميس 21/10/2027 · الثامنة مساءً\nبيت العائلة · غدامس", Language::Arabic, TextDirection::RightToLeft, 150, 1230, 780, 190, 40, 500, PaletteRole::SecondaryText),
-            $this->text('closing', $assets, 'font-amiri', 'بحضوركم تحلى الليلة', Language::Arabic, TextDirection::RightToLeft, 160, 1490, 760, 110, 48, 400, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-amiri', 'يا أهلي ويا أحبابي، ليلتي ما تحلى إلا بيكم.', Language::Arabic, TextDirection::RightToLeft, 160, 1380, 760, 120, 46, 400, PaletteRole::PrimaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-30-21-p'), Language::Arabic, TextDirection::RightToLeft, 170, 1500, 740, 190, 34, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -258,12 +266,13 @@ final class TemplateDesignFactory
     {
         $layers = [
             $this->image('frame', $assets, 'lavender-silver-frame', 0, 0, 1080, 1920, true),
-            $this->text('kicker', $assets, 'font-amiri', 'بكلّ الحب', Language::Arabic, TextDirection::RightToLeft, 290, 270, 500, 90, 44, 400, PaletteRole::SecondaryText),
-            $this->text('names_en', $assets, 'font-pinyon', 'Malak & Ali', Language::English, TextDirection::LeftToRight, 110, 430, 860, 230, 150, 400, PaletteRole::PrimaryText),
-            $this->text('names_ar', $assets, 'font-amiri', 'ملاك وعلي', Language::Arabic, TextDirection::RightToLeft, 240, 680, 600, 110, 60, 400, PaletteRole::Accent),
-            $this->text('invitation', $assets, 'font-amiri', 'يتشرفان بدعوتكم لحضور حفل زفافهما', Language::Arabic, TextDirection::RightToLeft, 120, 830, 840, 110, 48, 400, PaletteRole::SecondaryText),
-            $this->image('divider', $assets, 'lavender-divider', 180, 980, 720, 120, true),
-            $this->text('details', $assets, 'font-noto-arabic', "السبت 2/10/2027 · السابعة مساءً\nقاعة اللافندر · بنغازي", Language::Arabic, TextDirection::RightToLeft, 180, 1140, 720, 190, 40, 500, PaletteRole::SecondaryText),
+            $this->text('kicker', $assets, 'font-amiri', 'بكلّ الحب', Language::Arabic, TextDirection::RightToLeft, 290, 235, 500, 90, 44, 400, PaletteRole::SecondaryText),
+            $this->text('names_en', $assets, 'font-pinyon', 'Malak & Ali', Language::English, TextDirection::LeftToRight, 110, 305, 860, 200, 150, 400, PaletteRole::PrimaryText),
+            $this->text('names_ar', $assets, 'font-amiri', 'ملاك وعلي', Language::Arabic, TextDirection::RightToLeft, 240, 520, 600, 100, 60, 400, PaletteRole::Accent),
+            $this->text('invitation', $assets, 'font-amiri', 'فرحتنا ما تكمل إلا بدعواتكم وحضوركم، فلا تحرمونا منهم.', Language::Arabic, TextDirection::RightToLeft, 120, 640, 840, 130, 42, 400, PaletteRole::SecondaryText),
+            $this->image('divider', $assets, 'lavender-divider', 180, 1030, 720, 120, true),
+            $this->text('details', $assets, 'font-noto-arabic', "السبت 2/10/2027 · السابعة مساءً\nقاعة اللافندر · بنغازي", Language::Arabic, TextDirection::RightToLeft, 180, 1160, 720, 130, 40, 500, PaletteRole::SecondaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-10-58'), Language::Arabic, TextDirection::RightToLeft, 190, 775, 700, 260, 36, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -282,8 +291,8 @@ final class TemplateDesignFactory
             $this->image('ornament', $assets, 'ivory-botanical-ornament', 0, 450, 1080, 720, true),
             $this->text('title', $assets, 'font-pinyon', 'Wedding Invitation', Language::English, TextDirection::LeftToRight, 140, 650, 800, 110, 80, 400, PaletteRole::PrimaryText),
             $this->text('names', $assets, 'font-amiri', 'ليان وآدم', Language::Arabic, TextDirection::RightToLeft, 170, 765, 740, 130, 82, 400, PaletteRole::PrimaryText),
-            $this->text('message', $assets, 'font-amiri', "إلى من لهم في قلوبنا مكانٌ عزيز\nبكل الحب ندعوكم لمشاركتنا فرحة زفافنا", Language::Arabic, TextDirection::RightToLeft, 120, 910, 840, 130, 44, 400, PaletteRole::PrimaryText),
-            $this->text('message_en', $assets, 'font-cormorant', "With joyful hearts, we invite you to celebrate\nour wedding and the beginning of our forever.", Language::English, TextDirection::LeftToRight, 120, 1050, 840, 80, 27, 400, PaletteRole::SecondaryText),
+            $this->text('message', $assets, 'font-amiri-quran', TemplateScripture::content('verse-30-21-p'), Language::Arabic, TextDirection::RightToLeft, 120, 905, 840, 190, 36, 400, PaletteRole::PrimaryText),
+            $this->text('message_en', $assets, 'font-cormorant', 'And He placed between you affection and mercy.', Language::English, TextDirection::LeftToRight, 120, 1100, 840, 50, 27, 400, PaletteRole::SecondaryText),
             $this->image('venue_icon', $assets, 'ivory-chandelier-icon', 220, 1160, 100, 118, false),
             $this->text('venue_name', $assets, 'font-amiri', 'قاعة الياسمين', Language::Arabic, TextDirection::RightToLeft, 60, 1292, 420, 56, 36, 400, PaletteRole::PrimaryText),
             $this->text('venue_address', $assets, 'font-noto-arabic', 'طرابلس · طريق الشط', Language::Arabic, TextDirection::RightToLeft, 60, 1352, 420, 50, 26, 400, PaletteRole::SecondaryText),
@@ -291,7 +300,7 @@ final class TemplateDesignFactory
             $this->text('date', $assets, 'font-cormorant', '19 / 06 / 2027', Language::English, TextDirection::LeftToRight, 600, 1292, 420, 56, 32, 500, PaletteRole::PrimaryText),
             $this->text('day', $assets, 'font-noto-arabic', 'يوم السبت', Language::Arabic, TextDirection::RightToLeft, 600, 1352, 420, 50, 27, 400, PaletteRole::SecondaryText),
             $this->text('time', $assets, 'font-amiri', 'السابعة والنصف مساءً', Language::Arabic, TextDirection::RightToLeft, 600, 1404, 420, 56, 31, 400, PaletteRole::PrimaryText),
-            $this->text('closing', $assets, 'font-amiri', 'بحضوركم تكتمل فرحتنا', Language::Arabic, TextDirection::RightToLeft, 170, 1500, 740, 70, 46, 400, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-amiri', 'أفراحنا تزدان بحضوركم', Language::Arabic, TextDirection::RightToLeft, 170, 1500, 740, 70, 46, 400, PaletteRole::PrimaryText),
             $this->image('swans', $assets, 'ivory-swans', 318, 1590, 444, 306, false),
         ];
 
@@ -308,12 +317,12 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'opening-ribbon-frame', 0, 0, 1080, 1920, true),
             $this->text('kicker', $assets, 'font-amiri', 'يتشرّف بدعوتكم', Language::Arabic, TextDirection::RightToLeft, 240, 300, 600, 90, 52, 400, PaletteRole::Accent),
-            $this->text('title', $assets, 'font-amiri', 'حفل افتتاح', Language::Arabic, TextDirection::RightToLeft, 140, 450, 800, 190, 130, 400, PaletteRole::PrimaryText),
-            $this->text('name', $assets, 'font-amiri', 'اسم مشروعك', Language::Arabic, TextDirection::RightToLeft, 120, 680, 840, 150, 96, 400, PaletteRole::Accent),
+            $this->text('title', $assets, 'font-el-messiri', 'حفل افتتاح', Language::Arabic, TextDirection::RightToLeft, 140, 450, 800, 190, 130, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-el-messiri', 'اسم مشروعك', Language::Arabic, TextDirection::RightToLeft, 120, 680, 840, 150, 96, 400, PaletteRole::Accent),
             $this->image('divider', $assets, 'methaq-diamond-divider', 180, 900, 720, 120, true),
-            $this->text('message', $assets, 'font-amiri', "ندعوكم لمشاركتنا لحظة قصّ الشريط\nوبداية رحلة جديدة", Language::Arabic, TextDirection::RightToLeft, 120, 1060, 840, 150, 48, 400, PaletteRole::SecondaryText),
+            $this->text('message', $assets, 'font-amiri-quran', TemplateScripture::content('verse-11-88'), Language::Arabic, TextDirection::RightToLeft, 140, 1035, 800, 230, 40, 400, PaletteRole::SecondaryText),
             $this->text('details', $assets, 'font-noto-arabic', "السبت · السابعة مساءً\nطرابلس · شارع الجمهورية", Language::Arabic, TextDirection::RightToLeft, 140, 1270, 800, 170, 40, 500, PaletteRole::PrimaryText),
-            $this->text('closing', $assets, 'font-amiri', 'بحضوركم يكتمل نجاحنا', Language::Arabic, TextDirection::RightToLeft, 190, 1465, 700, 80, 46, 400, PaletteRole::Accent),
+            $this->text('closing', $assets, 'font-amiri', 'شكرًا لكل من دعمنا، فافتتاحنا لا يكتمل إلا بكم.', Language::Arabic, TextDirection::RightToLeft, 140, 1450, 800, 70, 36, 400, PaletteRole::Accent),
             $this->image('scissors', $assets, 'opening-scissors-icon', 500, 1525, 80, 80, false),
         ];
 
@@ -330,12 +339,12 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'newborn-moon-frame', 0, 0, 1080, 1920, true),
             $this->text('kicker', $assets, 'font-amiri', 'بكل الحب والفرح', Language::Arabic, TextDirection::RightToLeft, 240, 470, 600, 90, 50, 400, PaletteRole::Accent),
-            $this->text('title', $assets, 'font-amiri', 'مرحباً بالمولود', Language::Arabic, TextDirection::RightToLeft, 140, 570, 800, 170, 112, 400, PaletteRole::PrimaryText),
-            $this->text('name', $assets, 'font-amiri', 'ليلى', Language::Arabic, TextDirection::RightToLeft, 240, 770, 600, 160, 120, 400, PaletteRole::Accent),
-            $this->text('message', $assets, 'font-amiri', "يسعدنا دعوتكم لمشاركتنا فرحة قدوم مولودنا\nوالدعاء له بالصحة والعافية", Language::Arabic, TextDirection::RightToLeft, 120, 980, 840, 150, 46, 400, PaletteRole::SecondaryText),
+            $this->text('title', $assets, 'font-el-messiri', 'مرحباً بالمولود', Language::Arabic, TextDirection::RightToLeft, 140, 570, 800, 170, 112, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-el-messiri', 'ليلى', Language::Arabic, TextDirection::RightToLeft, 240, 770, 600, 160, 120, 400, PaletteRole::Accent),
+            $this->text('message', $assets, 'font-amiri', 'الحمد لله على عطيّته، رزقنا قرّة عين، وندعوكم لتفرحوا معنا.', Language::Arabic, TextDirection::RightToLeft, 120, 980, 840, 150, 46, 400, PaletteRole::SecondaryText),
             $this->image('footprints', $assets, 'newborn-footprints', 390, 1170, 300, 200, false),
             $this->text('details', $assets, 'font-noto-arabic', "الجمعة · الخامسة مساءً\nمنزل العائلة · بنغازي", Language::Arabic, TextDirection::RightToLeft, 140, 1410, 800, 170, 40, 500, PaletteRole::PrimaryText),
-            $this->text('closing', $assets, 'font-amiri', 'دمتم لنا فرحة', Language::Arabic, TextDirection::RightToLeft, 240, 1600, 600, 80, 48, 400, PaletteRole::Accent),
+            $this->text('closing', $assets, 'font-amiri-quran', TemplateScripture::content('verse-14-40'), Language::Arabic, TextDirection::RightToLeft, 160, 1550, 760, 190, 36, 400, PaletteRole::Accent),
         ];
 
         return $this->document(
@@ -351,12 +360,12 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'opening-modern-frame', 0, 0, 1080, 1920, true),
             $this->text('kicker', $assets, 'font-amiri', 'ندعوكم لحضور', Language::Arabic, TextDirection::RightToLeft, 240, 360, 600, 80, 46, 400, PaletteRole::SecondaryText),
-            $this->text('title', $assets, 'font-amiri', 'افتتاح', Language::Arabic, TextDirection::RightToLeft, 140, 470, 800, 230, 150, 400, PaletteRole::PrimaryText),
-            $this->text('name', $assets, 'font-amiri', 'اسم مشروعك', Language::Arabic, TextDirection::RightToLeft, 120, 740, 840, 150, 92, 400, PaletteRole::Accent),
+            $this->text('title', $assets, 'font-reem-kufi', 'افتتاح', Language::Arabic, TextDirection::RightToLeft, 140, 470, 800, 230, 150, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-reem-kufi', 'اسم مشروعك', Language::Arabic, TextDirection::RightToLeft, 120, 740, 840, 150, 92, 400, PaletteRole::Accent),
             $this->image('divider', $assets, 'gold-divider', 240, 930, 600, 80, true),
-            $this->text('message', $assets, 'font-amiri', "بداية جديدة نحتفي بها معكم\nوبحضوركم يكتمل الافتتاح", Language::Arabic, TextDirection::RightToLeft, 120, 1060, 840, 150, 48, 400, PaletteRole::SecondaryText),
+            $this->text('message', $assets, 'font-amiri', 'حلمٌ كبر معنا خطوة بخطوة، واليوم نفتح بابه، ونتشرف بحضوركم.', Language::Arabic, TextDirection::RightToLeft, 120, 1060, 840, 150, 46, 400, PaletteRole::SecondaryText),
             $this->text('details', $assets, 'font-noto-arabic', "السبت · السابعة مساءً\nطرابلس · شارع الجمهورية", Language::Arabic, TextDirection::RightToLeft, 140, 1290, 800, 170, 40, 500, PaletteRole::PrimaryText),
-            $this->text('closing', $assets, 'font-amiri', 'في انتظاركم', Language::Arabic, TextDirection::RightToLeft, 240, 1500, 600, 80, 46, 400, PaletteRole::Accent),
+            $this->text('closing', $assets, 'font-amiri-quran', TemplateScripture::content('verse-17-80'), Language::Arabic, TextDirection::RightToLeft, 140, 1450, 700, 220, 32, 400, PaletteRole::Accent),
         ];
 
         return $this->document(
@@ -372,11 +381,12 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'newborn-blush-frame', 0, 0, 1080, 1920, true),
             $this->text('kicker', $assets, 'font-amiri', 'وصلت الفرحة', Language::Arabic, TextDirection::RightToLeft, 240, 520, 600, 90, 50, 400, PaletteRole::Accent),
-            $this->text('title', $assets, 'font-amiri', 'أهلاً بالمولود', Language::Arabic, TextDirection::RightToLeft, 140, 620, 800, 170, 108, 400, PaletteRole::PrimaryText),
-            $this->text('name', $assets, 'font-amiri', 'محمد', Language::Arabic, TextDirection::RightToLeft, 240, 820, 600, 160, 120, 400, PaletteRole::Accent),
-            $this->text('message', $assets, 'font-amiri', "ندعوكم لمشاركتنا فرحة استقباله\nوالدعاء له بطول العمر والصحة", Language::Arabic, TextDirection::RightToLeft, 120, 1030, 840, 150, 46, 400, PaletteRole::SecondaryText),
-            $this->image('footprints', $assets, 'newborn-footprints', 390, 1210, 300, 200, false),
-            $this->text('details', $assets, 'font-noto-arabic', "الخميس · السادسة مساءً\nمنزل العائلة · طرابلس", Language::Arabic, TextDirection::RightToLeft, 140, 1440, 800, 170, 40, 500, PaletteRole::PrimaryText),
+            $this->text('title', $assets, 'font-el-messiri', 'أهلاً بالمولود', Language::Arabic, TextDirection::RightToLeft, 140, 620, 800, 170, 108, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-el-messiri', 'محمد', Language::Arabic, TextDirection::RightToLeft, 240, 820, 600, 160, 120, 400, PaletteRole::Accent),
+            $this->text('message', $assets, 'font-amiri', 'وصلنا ضيفنا الصغير، فتعالوا نستقبله بالدعاء والفرحة.', Language::Arabic, TextDirection::RightToLeft, 120, 1000, 840, 140, 46, 400, PaletteRole::SecondaryText),
+            $this->image('footprints', $assets, 'newborn-footprints', 390, 1150, 300, 200, false),
+            $this->text('details', $assets, 'font-noto-arabic', "الخميس · السادسة مساءً\nمنزل العائلة · طرابلس", Language::Arabic, TextDirection::RightToLeft, 140, 1370, 800, 130, 40, 500, PaletteRole::PrimaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-18-46'), Language::Arabic, TextDirection::RightToLeft, 140, 1510, 800, 230, 30, 400, PaletteRole::SecondaryText),
         ];
 
         return $this->document(
@@ -392,12 +402,12 @@ final class TemplateDesignFactory
         $layers = [
             $this->image('frame', $assets, 'graduation-navy-frame', 0, 0, 1080, 1920, true),
             $this->text('kicker', $assets, 'font-amiri', 'بكل فخر ندعوكم لحضور', Language::Arabic, TextDirection::RightToLeft, 190, 500, 700, 90, 48, 400, PaletteRole::SecondaryText),
-            $this->text('title', $assets, 'font-amiri', 'حفل التخرج', Language::Arabic, TextDirection::RightToLeft, 140, 590, 800, 190, 124, 400, PaletteRole::PrimaryText),
-            $this->text('name', $assets, 'font-amiri', 'اسم الخريج', Language::Arabic, TextDirection::RightToLeft, 140, 810, 800, 160, 108, 400, PaletteRole::Accent),
+            $this->text('title', $assets, 'font-reem-kufi', 'حفل التخرج', Language::Arabic, TextDirection::RightToLeft, 140, 590, 800, 190, 124, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-reem-kufi', 'اسم الخريج', Language::Arabic, TextDirection::RightToLeft, 140, 810, 800, 160, 108, 400, PaletteRole::Accent),
             $this->image('divider', $assets, 'gold-divider', 240, 1020, 600, 80, true),
-            $this->text('message', $assets, 'font-amiri', "لنشارككم فرحة هذا الإنجاز\nوالدعاء بدوام التوفيق", Language::Arabic, TextDirection::RightToLeft, 120, 1160, 840, 150, 48, 400, PaletteRole::SecondaryText),
+            $this->text('message', $assets, 'font-amiri-quran', TemplateScripture::content('verse-39-9'), Language::Arabic, TextDirection::RightToLeft, 140, 1130, 800, 230, 40, 400, PaletteRole::SecondaryText),
             $this->text('details', $assets, 'font-noto-arabic', "الأحد · السابعة مساءً\nقاعة الجامعة · طرابلس", Language::Arabic, TextDirection::RightToLeft, 140, 1380, 800, 170, 40, 500, PaletteRole::PrimaryText),
-            $this->text('closing', $assets, 'font-amiri', 'مبارك للجميع', Language::Arabic, TextDirection::RightToLeft, 240, 1610, 600, 80, 50, 400, PaletteRole::Accent),
+            $this->text('closing', $assets, 'font-amiri', 'بفضل الله ثم دعم أهلي وأحبابي وصلت، فشاركوني فرحتي.', Language::Arabic, TextDirection::RightToLeft, 160, 1590, 760, 130, 42, 400, PaletteRole::Accent),
         ];
 
         return $this->document(
@@ -414,7 +424,7 @@ final class TemplateDesignFactory
             $this->image('frame', $assets, 'qiran-sand-frame', 0, 0, 1080, 1920, true),
             $this->text('family', $assets, 'font-amiri', "أفراح\nآل العائلة", Language::Arabic, TextDirection::RightToLeft, 432, 36, 216, 150, 48, 400, PaletteRole::PrimaryText),
             $this->text('basmala', $assets, 'font-aref-ruqaa', 'بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم', Language::Arabic, TextDirection::RightToLeft, 140, 290, 800, 130, 74, 400, PaletteRole::PrimaryText),
-            $this->text('verse', $assets, 'font-amiri', 'قال تعالى: ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ ﴾', Language::Arabic, TextDirection::RightToLeft, 220, 450, 640, 190, 36, 400, PaletteRole::SecondaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-30-21-p'), Language::Arabic, TextDirection::RightToLeft, 220, 440, 640, 210, 40, 400, PaletteRole::SecondaryText),
             $this->text('host_intro', $assets, 'font-amiri', 'يتشرف السيد /', Language::Arabic, TextDirection::RightToLeft, 240, 680, 600, 60, 38, 400, PaletteRole::SecondaryText),
             $this->text('host', $assets, 'font-amiri', 'اسم والد العريس', Language::Arabic, TextDirection::RightToLeft, 140, 735, 800, 90, 64, 400, PaletteRole::PrimaryText),
             $this->text('invite', $assets, 'font-amiri', 'بدعوتكم لحضور عقد قِران ابنه', Language::Arabic, TextDirection::RightToLeft, 140, 830, 800, 70, 40, 400, PaletteRole::SecondaryText),
