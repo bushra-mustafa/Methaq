@@ -35,9 +35,9 @@ final class TemplateLibraryTest extends TestCase
         $this->seed(TemplateLibrarySeeder::class);
         $this->seed(TemplateLibrarySeeder::class);
 
-        $this->assertDatabaseCount('templates', 9);
-        $this->assertDatabaseCount('template_assets', 38);
-        $this->assertDatabaseCount('asset_collections', 8);
+        $this->assertDatabaseCount('templates', 10);
+        $this->assertDatabaseCount('template_assets', 45);
+        $this->assertDatabaseCount('asset_collections', 9);
 
         TemplateAsset::query()->where('type', '!=', 'audio')->each(function (TemplateAsset $asset): void {
             $this->assertTrue(Storage::disk('local')->exists($asset->original_path));
@@ -52,7 +52,7 @@ final class TemplateLibraryTest extends TestCase
                     ['sourceProject', 'neutralExample', 'family', 'category', 'placement', 'orientation', 'style', 'colorMode'],
                     array_keys($asset->metadata),
                 );
-                $this->assertSame('tintable', $asset->metadata['colorMode']);
+                $this->assertSame($asset->mime_type === 'image/svg+xml' ? 'tintable' : 'fixed', $asset->metadata['colorMode']);
                 $this->assertStringStartsWith('editor/previews/assets/v1/', $asset->preview_path);
             }
         });
@@ -80,6 +80,10 @@ final class TemplateLibraryTest extends TestCase
             $this->assertSame(1920, $template->default_design_json['height']);
 
             foreach ($template->default_design_json['layers'] as $layer) {
+                if ($layer['type'] === 'shape') {
+                    continue;
+                }
+
                 $reference = $layer['type'] === 'text' ? $layer['font'] : $layer['asset'];
                 $asset = $assets->get($reference['assetId']);
 
@@ -99,8 +103,8 @@ final class TemplateLibraryTest extends TestCase
 
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Web/Templates', false)
-            ->has('templates', 8)
-            ->has('collections', 8)
+            ->has('templates', 9)
+            ->has('collections', 9)
             ->has('categories', 4)
             ->where('selectedCategory', null));
 

@@ -20,6 +20,7 @@ use App\Domains\Editor\DTOs\OpeningData;
 use App\Domains\Editor\DTOs\PaletteData;
 use App\Domains\Editor\DTOs\SceneBackdropData;
 use App\Domains\Editor\DTOs\SceneConfigData;
+use App\Domains\Editor\DTOs\ShapeLayerData;
 use App\Domains\Editor\DTOs\TextLayerData;
 use App\Domains\Editor\Enums\EffectId;
 use App\Domains\Editor\Enums\EnvelopePresetId;
@@ -29,6 +30,7 @@ use App\Domains\Editor\Enums\LayerType;
 use App\Domains\Editor\Enums\MotionPolicy;
 use App\Domains\Editor\Enums\OpeningType;
 use App\Domains\Editor\Enums\PaletteRole;
+use App\Domains\Editor\Enums\ShapeKind;
 use App\Domains\Editor\Enums\TemplatePreset;
 use App\Domains\Editor\Enums\TextAlignment;
 use App\Domains\Editor\Enums\TextDirection;
@@ -53,6 +55,7 @@ final class TemplateDesignFactory
             TemplatePreset::MediterraneanBlue => $this->mediterraneanBlue($assets),
             TemplatePreset::GhadamesTerracotta => $this->ghadamesTerracotta($assets),
             TemplatePreset::LavenderSilver => $this->lavenderSilver($assets),
+            TemplatePreset::IvoryTale => $this->ivoryTale($assets),
         };
     }
 
@@ -264,6 +267,35 @@ final class TemplateDesignFactory
         );
     }
 
+    /** @param array<string, TemplateAsset> $assets */
+    private function ivoryTale(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('arch', $assets, 'ivory-arch-background', 0, 0, 1080, 720, true),
+            $this->shape('paper', 0, 450, 1080, 1470, PaletteRole::Surface),
+            $this->image('ornament', $assets, 'ivory-botanical-ornament', 0, 450, 1080, 720, true),
+            $this->text('title', $assets, 'font-pinyon', 'Wedding Invitation', Language::English, TextDirection::LeftToRight, 140, 650, 800, 110, 80, 400, PaletteRole::PrimaryText),
+            $this->text('names', $assets, 'font-amiri', 'ليان وآدم', Language::Arabic, TextDirection::RightToLeft, 170, 765, 740, 130, 82, 400, PaletteRole::PrimaryText),
+            $this->text('message', $assets, 'font-amiri', "إلى من لهم في قلوبنا مكانٌ عزيز\nبكل الحب ندعوكم لمشاركتنا فرحة زفافنا", Language::Arabic, TextDirection::RightToLeft, 120, 910, 840, 130, 44, 400, PaletteRole::PrimaryText),
+            $this->text('message_en', $assets, 'font-cormorant', "With joyful hearts, we invite you to celebrate\nour wedding and the beginning of our forever.", Language::English, TextDirection::LeftToRight, 120, 1050, 840, 80, 27, 400, PaletteRole::SecondaryText),
+            $this->image('venue_icon', $assets, 'ivory-chandelier-icon', 220, 1160, 100, 118, false),
+            $this->text('venue_name', $assets, 'font-amiri', 'قاعة الياسمين', Language::Arabic, TextDirection::RightToLeft, 60, 1292, 420, 56, 36, 400, PaletteRole::PrimaryText),
+            $this->text('venue_address', $assets, 'font-noto-arabic', 'طرابلس · طريق الشط', Language::Arabic, TextDirection::RightToLeft, 60, 1352, 420, 50, 26, 400, PaletteRole::SecondaryText),
+            $this->image('schedule_icon', $assets, 'ivory-clock-icon', 760, 1160, 100, 118, false),
+            $this->text('date', $assets, 'font-cormorant', '19 / 06 / 2027', Language::English, TextDirection::LeftToRight, 600, 1292, 420, 56, 32, 500, PaletteRole::PrimaryText),
+            $this->text('day', $assets, 'font-noto-arabic', 'يوم السبت', Language::Arabic, TextDirection::RightToLeft, 600, 1352, 420, 50, 27, 400, PaletteRole::SecondaryText),
+            $this->text('time', $assets, 'font-amiri', 'السابعة والنصف مساءً', Language::Arabic, TextDirection::RightToLeft, 600, 1404, 420, 56, 31, 400, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-amiri', 'بحضوركم تكتمل فرحتنا', Language::Arabic, TextDirection::RightToLeft, 170, 1500, 740, 70, 46, 400, PaletteRole::PrimaryText),
+            $this->image('swans', $assets, 'ivory-swans', 318, 1590, 444, 306, false),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#f8f5ee', '#eee8dd', '#49443e', '#6d675e', '#9a8466', '#d8cfc0'),
+            $this->envelopeScene('#e4dac8', 'ل آ', false, false),
+        );
+    }
+
     /** @param list<LayerData> $layers */
     private function document(array $layers, PaletteData $palette, SceneConfigData $scene): DesignDocumentData
     {
@@ -308,6 +340,18 @@ final class TemplateDesignFactory
             [],
             new AudioData(false, null, 0.6),
             MotionPolicy::System,
+        );
+    }
+
+    private function shape(string $id, float $x, float $y, float $width, float $height, PaletteRole $fill): LayerData
+    {
+        return new LayerData(
+            $id,
+            LayerType::Shape,
+            new LayerFrameData($x, $y, $width, $height, 1, 1, 0, 1),
+            true,
+            true,
+            new ShapeLayerData(ShapeKind::Rectangle, ColorValueData::palette($fill), null, 0),
         );
     }
 

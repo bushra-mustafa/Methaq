@@ -15,4 +15,5 @@ enum TemplatePreset: string
     case MediterraneanBlue = 'mediterranean-blue';
     case GhadamesTerracotta = 'ghadames-terracotta';
     case LavenderSilver = 'lavender-silver';
+    case IvoryTale = 'ivory-tale';
 }

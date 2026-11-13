@@ -121,6 +121,17 @@ final class TemplateLibrarySeeder extends Seeder
             'allowedPlacements' => ['canvas', 'collection'],
         ];
 
+        $rasterCapabilities = [
+            'supportsTint' => false,
+            'supportsOpacity' => true,
+            'allowedPlacements' => ['canvas', 'collection'],
+        ];
+        $ivoryLicense = [
+            'license' => 'Methaq proprietary',
+            'source' => 'Generated for Methaq with imagegen (see public/editor/proposals/ivory-wedding/v1/sources.json)',
+            'commercialUse' => true,
+        ];
+
         return [
             $this->visualAsset('powder-botanical-frame', 'إطار نباتي بودري', AssetType::Frame, 'frames/botanical/powder-botanical-frame.svg', 'assets/v1/frames/botanical/powder-botanical-frame.png', 1080, 1920, $visualCapabilities, $visualLicense),
             $this->visualAsset('burgundy-arch-frame', 'إطار قوس عنابي', AssetType::Frame, 'frames/arches/burgundy-arch-frame.svg', 'assets/v1/frames/arches/burgundy-arch-frame.png', 1080, 1920, $visualCapabilities, $visualLicense),
@@ -157,6 +168,13 @@ final class TemplateLibrarySeeder extends Seeder
             $this->visualAsset('lavender-corner', 'باقة لافندر', AssetType::Decoration, 'ornaments/corners/lavender-corner.svg', 'assets/v1/ornaments/corners/lavender-corner.png', 480, 480, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
             $this->visualAsset('lavender-divider', 'فاصل لافندر فضي', AssetType::Decoration, 'ornaments/dividers/lavender-divider.svg', 'assets/v1/ornaments/dividers/lavender-divider.png', 720, 120, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
             $this->visualAsset('lavender-wreath', 'إكليل اللافندر', AssetType::Icon, 'ornaments/medallions/lavender-wreath.svg', 'assets/v1/ornaments/medallions/lavender-wreath.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-template-packages'),
+            $this->rasterAsset('ivory-arch-background', 'قوس عاجي معماري', AssetType::Background, 'backgrounds/ivory/ivory-arch-background.png', 'backgrounds/ivory/ivory-arch-background.png', 1080, 720, $rasterCapabilities, $ivoryLicense),
+            $this->rasterAsset('ivory-botanical-ornament', 'زخرفة عاجية نباتية', AssetType::Decoration, 'ornaments/ivory/ivory-botanical-ornament.png', 'ornaments/ivory/ivory-botanical-ornament.png', 1080, 720, $rasterCapabilities, $ivoryLicense),
+            $this->rasterAsset('ivory-swans', 'بجعتان عاجيتان', AssetType::Decoration, 'ornaments/ivory/ivory-swans.png', 'ornaments/ivory/ivory-swans.png', 1080, 720, $rasterCapabilities, $ivoryLicense),
+            $this->visualAsset('ivory-chandelier-icon', 'أيقونة ثريّا', AssetType::Icon, 'icons/ivory/ivory-chandelier-icon.svg', 'assets/v1/icons/ivory/ivory-chandelier-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-ivory-tale'),
+            $this->visualAsset('ivory-clock-icon', 'أيقونة ساعة', AssetType::Icon, 'icons/ivory/ivory-clock-icon.svg', 'assets/v1/icons/ivory/ivory-clock-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-ivory-tale'),
+            $this->visualAsset('ivory-envelope', 'ظرف عاجي', AssetType::Decoration, 'ornaments/ivory/ivory-envelope.svg', 'assets/v1/ornaments/ivory/ivory-envelope.png', 720, 506, $visualCapabilities, $visualLicense, 'methaq-ivory-tale'),
+            $this->visualAsset('ivory-heart-frame', 'إطار قلب', AssetType::Decoration, 'ornaments/ivory/ivory-heart-frame.svg', 'assets/v1/ornaments/ivory/ivory-heart-frame.png', 520, 477, $visualCapabilities, $visualLicense, 'methaq-ivory-tale'),
             $this->visualAsset('noir-paper-frame', 'إطار ورقة ليلة عنابية', AssetType::Frame, 'frames/paper/noir-paper-frame.svg', 'assets/v1/frames/paper/noir-paper-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-henna-noir'),
         ];
     }
@@ -248,6 +266,14 @@ final class TemplateLibrarySeeder extends Seeder
                 'preset' => TemplatePreset::LavenderSilver,
                 'assets' => ['lavender-silver-frame', 'lavender-corner', 'lavender-divider', 'lavender-wreath', 'font-amiri', 'font-pinyon', 'font-noto-arabic'],
             ],
+            [
+                'slug' => TemplatePreset::IvoryTale->value,
+                'name' => 'حكاية بالعاجي',
+                'category' => EventCategory::Wedding,
+                'thumbnail_path' => 'editor/previews/templates/ivory-tale.png',
+                'preset' => TemplatePreset::IvoryTale,
+                'assets' => ['ivory-arch-background', 'ivory-botanical-ornament', 'ivory-swans', 'ivory-chandelier-icon', 'ivory-clock-icon', 'ivory-envelope', 'ivory-heart-frame', 'font-amiri', 'font-pinyon', 'font-cormorant', 'font-noto-arabic'],
+            ],
         ];
     }
 
@@ -334,6 +360,18 @@ final class TemplateLibrarySeeder extends Seeder
                     ['asset' => 'lavender-divider', 'placement' => $this->placement(180, 980, 720, 120, 1)],
                 ],
             ],
+            [
+                'slug' => 'ivory-tale-set',
+                'name' => 'حكاية بالعاجي: قوس وزخرفة وبجعتان',
+                'thumbnail_path' => 'editor/previews/collections/v1/ivory-tale-set.png',
+                'items' => [
+                    ['asset' => 'ivory-arch-background', 'placement' => $this->placement(0, 0, 1080, 720, 1)],
+                    ['asset' => 'ivory-botanical-ornament', 'placement' => $this->placement(0, 450, 1080, 720, 1)],
+                    ['asset' => 'ivory-swans', 'placement' => $this->placement(318, 1590, 444, 306, 1)],
+                    ['asset' => 'ivory-chandelier-icon', 'placement' => $this->placement(220, 1160, 100, 118, 1)],
+                    ['asset' => 'ivory-clock-icon', 'placement' => $this->placement(760, 1160, 100, 118, 1)],
+                ],
+            ],
         ];
     }
 
@@ -360,6 +398,34 @@ final class TemplateLibrarySeeder extends Seeder
             'width' => $width,
             'height' => $height,
             'metadata' => $this->visualMetadata($original, $type, $sourceProject),
+            'capabilities' => $capabilities,
+            'license_metadata' => $license,
+            'asset_version' => 1,
+        ];
+    }
+
+    /** @param array<string, mixed> $capabilities @param array<string, mixed> $license */
+    private function rasterAsset(
+        string $slug,
+        string $name,
+        AssetType $type,
+        string $original,
+        string $preview,
+        int $width,
+        int $height,
+        array $capabilities,
+        array $license,
+    ): array {
+        return [
+            'slug' => $slug,
+            'name' => $name,
+            'type' => $type,
+            'original_path' => 'editor/assets/v1/'.$original,
+            'preview_path' => 'editor/previews/assets/v1/'.$preview,
+            'mime_type' => 'image/png',
+            'width' => $width,
+            'height' => $height,
+            'metadata' => ['sourceProject' => 'methaq-ivory-tale', 'neutralExample' => true, 'family' => 'ivory', 'category' => 'ornament', 'placement' => 'canvas', 'orientation' => 'full', 'style' => 'embossed', 'colorMode' => 'fixed'],
             'capabilities' => $capabilities,
             'license_metadata' => $license,
             'asset_version' => 1,
