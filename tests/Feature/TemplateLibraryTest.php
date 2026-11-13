@@ -123,8 +123,9 @@ final class TemplateLibraryTest extends TestCase
         $this->withoutVite()->get('/templates?category=graduation')
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->has('templates', 1)
+                ->has('templates', 2)
                 ->where('templates.0.slug', 'graduation-emerald')
+                ->where('templates.1.slug', 'graduation-navy')
                 ->where('selectedCategory', 'graduation'));
 
         $this->withoutVite()->get('/templates?category=unknown')->assertSessionHasErrors('category');
