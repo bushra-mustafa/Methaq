@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
+import { KeyRound, ShieldCheck } from 'lucide-react';
 import AuthField from '../../Components/Auth/AuthField';
 import AuthLayout from '../../Components/Auth/AuthLayout';
 import AuthSubmit from '../../Components/Auth/AuthSubmit';
@@ -14,9 +15,9 @@ export default function TwoFactorChallenge() {
         <Head title="التحقق بخطوتين" />
         <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
             {recoveryMode
-                ? <AuthField key="recovery" label="رمز الاسترداد" autoComplete="one-time-code" autoFocus required dir="ltr" {...bind('recovery_code')} />
-                : <AuthField key="code" label="رمز التحقق" inputMode="numeric" autoComplete="one-time-code" autoFocus required dir="ltr" className="text-center text-[22px] tracking-[0.5em]" {...code} onChange={(event) => form.setData('code', event.target.value.replace(/\D/g, '').slice(0, 6))} />}
-            <AuthSubmit processing={processing}>تحقق</AuthSubmit>
+                ? <AuthField key="recovery" icon={KeyRound} label="رمز الاسترداد" autoComplete="one-time-code" autoFocus required dir="ltr" {...bind('recovery_code')} />
+                : <AuthField key="code" icon={ShieldCheck} label="رمز التحقق" inputMode="numeric" autoComplete="one-time-code" autoFocus required dir="ltr" className="text-center text-[22px] tracking-[0.5em]" {...code} onChange={(event) => form.setData('code', event.target.value.replace(/\D/g, '').slice(0, 6))} />}
+            <AuthSubmit processing={processing} pendingLabel="جاري التحقق…">تحقق ودخول</AuthSubmit>
             <button type="button" onClick={() => setRecoveryMode(!recoveryMode)} className="inline-flex min-h-11 items-center justify-center text-[15px] font-semibold text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 hover:decoration-methaq-gold">{recoveryMode ? 'استخدام رمز تطبيق المصادقة' : 'استخدام رمز استرداد'}</button>
         </form>
     </AuthLayout>;

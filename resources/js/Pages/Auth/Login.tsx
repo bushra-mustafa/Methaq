@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import { Mail } from 'lucide-react';
 import AuthField from '../../Components/Auth/AuthField';
 import AuthLayout from '../../Components/Auth/AuthLayout';
 import AuthStatus from '../../Components/Auth/AuthStatus';
@@ -15,7 +16,7 @@ export default function Login({ status }: LoginProps) {
         <Head title="تسجيل الدخول" />
         {status && <AuthStatus>{status}</AuthStatus>}
         <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
-            <AuthField label="البريد الإلكتروني" type="email" autoComplete="email" autoFocus required {...bind('email')} />
+            <AuthField icon={Mail} label="البريد الإلكتروني" type="email" autoComplete="email" autoFocus required {...bind('email')} />
             <PasswordField label="كلمة المرور" autoComplete="current-password" required {...bind('password')} />
             <div className="flex flex-wrap items-center justify-between gap-x-6">
                 <label className="inline-flex min-h-11 cursor-pointer items-center gap-3 text-[15px]">
@@ -24,7 +25,7 @@ export default function Login({ status }: LoginProps) {
                 </label>
                 <Link href="/forgot-password" className="inline-flex min-h-11 items-center text-[15px] font-medium text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 hover:decoration-methaq-gold">نسيت كلمة المرور</Link>
             </div>
-            <AuthSubmit processing={processing}>دخول</AuthSubmit>
+            <AuthSubmit processing={processing} pendingLabel="جاري الدخول…">دخول</AuthSubmit>
         </form>
     </AuthLayout>;
 }

@@ -1,4 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
+import { Mail } from 'lucide-react';
 import AuthField from '../../Components/Auth/AuthField';
 import AuthLayout from '../../Components/Auth/AuthLayout';
 import AuthSubmit from '../../Components/Auth/AuthSubmit';
@@ -13,10 +14,10 @@ export default function ResetPassword({ email, token }: ResetPasswordProps) {
     return <AuthLayout title="كلمة مرور جديدة" description="اختاري كلمة قوية لا تستخدمينها في حساب آخر." footer={<Link href="/login">العودة إلى الدخول</Link>}>
         <Head title="تعيين كلمة مرور جديدة" />
         <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
-            <AuthField label="البريد الإلكتروني" type="email" autoComplete="email" required {...bind('email')} />
+            <AuthField icon={Mail} label="البريد الإلكتروني" type="email" autoComplete="email" required {...bind('email')} />
             <PasswordField label="كلمة المرور الجديدة" autoComplete="new-password" autoFocus required {...bind('password')} />
             <PasswordField label="تأكيد كلمة المرور" autoComplete="new-password" required {...bind('password_confirmation')} />
-            <AuthSubmit processing={processing}>احفظي</AuthSubmit>
+            <AuthSubmit processing={processing} pendingLabel="جاري الحفظ…">حفظ كلمة المرور</AuthSubmit>
         </form>
     </AuthLayout>;
 }

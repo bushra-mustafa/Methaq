@@ -67,7 +67,6 @@
     --animate-methaq-dust: methaq-dust 5s ease-in-out infinite;
     --animate-methaq-soft-pulse: methaq-soft-pulse 2.4s ease-in-out infinite;
     --animate-methaq-hero-in: methaq-hero-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-    --animate-methaq-stamp: methaq-stamp 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
 
     @keyframes methaq-dust {
         0% {
@@ -88,18 +87,6 @@
         from {
             opacity: 0;
             transform: translateY(18px);
-        }
-        to {
-            opacity: 1;
-            transform: none;
-        }
-    }
-
-    /* A seal pressed onto the page: it lands from above, a little oversized, then settles. */
-    @keyframes methaq-stamp {
-        from {
-            opacity: 0;
-            transform: scale(1.7) rotate(-14deg);
         }
         to {
             opacity: 1;

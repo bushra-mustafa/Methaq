@@ -1,21 +1,25 @@
+import { ArrowLeft } from "lucide-react";
 import type { PropsWithChildren } from "react";
-import WaxSeal from "./WaxSeal";
 
-/** The one action of an auth page: a wax seal you press, one short word on it. */
+interface AuthSubmitProps {
+    processing: boolean;
+    pendingLabel: string;
+}
+
+/** The one filled action of an auth page; keeps its width while it reports progress. */
 export default function AuthSubmit({
     processing,
+    pendingLabel,
     children,
-}: PropsWithChildren<{ processing: boolean }>) {
+}: PropsWithChildren<AuthSubmitProps>) {
     return (
         <button
             type="submit"
             disabled={processing}
-            aria-busy={processing}
-            className="mx-auto mt-2 block size-28 touch-manipulation rounded-full transition-[scale,rotate,filter] duration-200 enabled:hover:-rotate-6 enabled:hover:brightness-105 enabled:active:scale-[0.92] disabled:animate-methaq-seal-pulse disabled:brightness-90 motion-safe:animate-methaq-stamp motion-reduce:enabled:active:scale-100 motion-reduce:enabled:hover:rotate-0"
-            style={{ animationDelay: "550ms" }}
+            className="inline-flex min-h-13 w-full touch-manipulation items-center justify-center gap-3 rounded-methaq-button bg-methaq-primary px-8 text-[16px] font-semibold text-white shadow-methaq-soft transition-[background-color,scale] duration-200 hover:bg-methaq-primary-hover enabled:active:scale-[0.98] disabled:opacity-70 motion-reduce:enabled:active:scale-100"
         >
-            <WaxSeal>{children}</WaxSeal>
-            {processing && <span className="sr-only">جاري المعالجة…</span>}
+            {processing ? pendingLabel : children}
+            {!processing && <ArrowLeft size={18} aria-hidden="true" />}
         </button>
     );
 }

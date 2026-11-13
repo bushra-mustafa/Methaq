@@ -13,7 +13,7 @@ export default function VerifyEmail({ status }: VerifyEmailProps) {
         <Head title="التحقق من البريد" />
         {status === 'verification-link-sent' && <AuthStatus>أرسلنا رابطاً جديداً إلى بريدك.</AuthStatus>}
         <form onSubmit={submit}>
-            <AuthSubmit processing={processing}>أعيدي</AuthSubmit>
+            <AuthSubmit processing={processing} pendingLabel="جاري الإرسال…">إعادة إرسال رابط التحقق</AuthSubmit>
         </form>
     </AuthLayout>;
 }

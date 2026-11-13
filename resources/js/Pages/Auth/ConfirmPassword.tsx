@@ -11,7 +11,7 @@ export default function ConfirmPassword() {
         <Head title="تأكيد كلمة المرور" />
         <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
             <PasswordField label="كلمة المرور" autoComplete="current-password" autoFocus required {...bind('password')} />
-            <AuthSubmit processing={processing}>تأكيد</AuthSubmit>
+            <AuthSubmit processing={processing} pendingLabel="جاري التأكيد…">تأكيد ومتابعة</AuthSubmit>
         </form>
     </AuthLayout>;
 }
