@@ -182,6 +182,10 @@ final class TemplateLibrarySeeder extends Seeder
             $this->visualAsset('opening-modern-frame', 'إطار افتتاح عصري', AssetType::Frame, 'frames/opening/opening-modern-frame.svg', 'assets/v1/frames/opening/opening-modern-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
             $this->visualAsset('newborn-blush-frame', 'إطار بالونات', AssetType::Frame, 'frames/newborn/newborn-blush-frame.svg', 'assets/v1/frames/newborn/newborn-blush-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
             $this->visualAsset('graduation-navy-frame', 'إطار تخرج كحلي', AssetType::Frame, 'frames/graduation/graduation-navy-frame.svg', 'assets/v1/frames/graduation/graduation-navy-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('qiran-sand-frame', 'إطار زخرفة نجمية وتبويب علوي', AssetType::Frame, 'frames/wedding/qiran-sand-frame.svg', 'assets/v1/frames/wedding/qiran-sand-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('qiran-calendar-icon', 'أيقونة تقويم', AssetType::Icon, 'icons/qiran/qiran-calendar-icon.svg', 'assets/v1/icons/qiran/qiran-calendar-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('qiran-pin-icon', 'أيقونة موقع', AssetType::Icon, 'icons/qiran/qiran-pin-icon.svg', 'assets/v1/icons/qiran/qiran-pin-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('qiran-clock-icon', 'أيقونة ساعة', AssetType::Icon, 'icons/qiran/qiran-clock-icon.svg', 'assets/v1/icons/qiran/qiran-clock-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
             $this->visualAsset('noir-paper-frame', 'إطار ورقة ليلة عنابية', AssetType::Frame, 'frames/paper/noir-paper-frame.svg', 'assets/v1/frames/paper/noir-paper-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-henna-noir'),
         ];
     }
@@ -320,6 +324,14 @@ final class TemplateLibrarySeeder extends Seeder
                 'thumbnail_path' => 'editor/previews/templates/graduation-navy.png',
                 'preset' => TemplatePreset::GraduationNavy,
                 'assets' => ['graduation-navy-frame', 'gold-divider', 'font-amiri', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::QiranSand->value,
+                'name' => 'عقد قران رملي',
+                'category' => EventCategory::Wedding,
+                'thumbnail_path' => 'editor/previews/templates/qiran-sand.png',
+                'preset' => TemplatePreset::QiranSand,
+                'assets' => ['qiran-sand-frame', 'qiran-calendar-icon', 'qiran-pin-icon', 'qiran-clock-icon', 'font-amiri', 'font-aref-ruqaa', 'font-noto-arabic'],
             ],
         ];
     }

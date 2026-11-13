@@ -39,8 +39,8 @@ final class TemplateLibraryTest extends TestCase
         $this->seed(TemplateLibrarySeeder::class);
         Template::query()->update(['price_minor' => 25_000]);
 
-        $this->assertDatabaseCount('templates', 15);
-        $this->assertDatabaseCount('template_assets', 52);
+        $this->assertDatabaseCount('templates', 16);
+        $this->assertDatabaseCount('template_assets', 56);
         $this->assertDatabaseCount('asset_collections', 11);
 
         TemplateAsset::query()->where('type', '!=', 'audio')->each(function (TemplateAsset $asset): void {
@@ -109,7 +109,7 @@ final class TemplateLibraryTest extends TestCase
 
         $response->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Web/Templates', false)
-            ->has('templates', 14)
+            ->has('templates', 15)
             ->has('collections', 11)
             ->has('categories', 6)
             ->where('selectedCategory', null));
@@ -235,7 +235,7 @@ final class TemplateLibraryTest extends TestCase
         $hidden->forceFill(['price_minor' => 0])->save();
 
         $this->withoutVite()->get('/templates')->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
-            ->has('templates', 14)
+            ->has('templates', 15)
             ->where('templates', fn ($templates): bool => ! collect($templates)->contains(fn (array $template): bool => $template['slug'] === 'powder-gold')));
 
         $this->assertNotContains('powder-gold', array_column(app(ListFeaturedTemplatesAction::class)->execute(), 'slug'));

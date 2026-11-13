@@ -61,6 +61,7 @@ final class TemplateDesignFactory
             TemplatePreset::OpeningModern => $this->openingModern($assets),
             TemplatePreset::NewbornBlush => $this->newbornBlush($assets),
             TemplatePreset::GraduationNavy => $this->graduationNavy($assets),
+            TemplatePreset::QiranSand => $this->qiranSand($assets),
         };
     }
 
@@ -403,6 +404,37 @@ final class TemplateDesignFactory
             $layers,
             new PaletteData(1, '#101c3a', '#1c2b52', '#f4ecd8', '#c9cfdc', '#d8b66a', '#e9d29b'),
             $this->envelopeScene('#1c2b52', 'م', true, false),
+        );
+    }
+
+    /** @param array<string, TemplateAsset> $assets */
+    private function qiranSand(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'qiran-sand-frame', 0, 0, 1080, 1920, true),
+            $this->text('family', $assets, 'font-amiri', "أفراح\nآل العائلة", Language::Arabic, TextDirection::RightToLeft, 432, 36, 216, 150, 48, 400, PaletteRole::PrimaryText),
+            $this->text('basmala', $assets, 'font-aref-ruqaa', 'بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم', Language::Arabic, TextDirection::RightToLeft, 140, 290, 800, 130, 74, 400, PaletteRole::PrimaryText),
+            $this->text('verse', $assets, 'font-amiri', 'قال تعالى: ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ ﴾', Language::Arabic, TextDirection::RightToLeft, 220, 450, 640, 190, 36, 400, PaletteRole::SecondaryText),
+            $this->text('host_intro', $assets, 'font-amiri', 'يتشرف السيد /', Language::Arabic, TextDirection::RightToLeft, 240, 680, 600, 60, 38, 400, PaletteRole::SecondaryText),
+            $this->text('host', $assets, 'font-amiri', 'اسم والد العريس', Language::Arabic, TextDirection::RightToLeft, 140, 735, 800, 90, 64, 400, PaletteRole::PrimaryText),
+            $this->text('invite', $assets, 'font-amiri', 'بدعوتكم لحضور عقد قِران ابنه', Language::Arabic, TextDirection::RightToLeft, 140, 830, 800, 70, 40, 400, PaletteRole::SecondaryText),
+            $this->text('title', $assets, 'font-amiri', 'المهندس', Language::Arabic, TextDirection::RightToLeft, 240, 925, 600, 90, 60, 400, PaletteRole::PrimaryText),
+            $this->text('groom', $assets, 'font-aref-ruqaa', 'اسم العريس', Language::Arabic, TextDirection::RightToLeft, 90, 1005, 900, 250, 170, 400, PaletteRole::PrimaryText),
+            $this->text('groom_family', $assets, 'font-amiri', 'اسم العائلة', Language::Arabic, TextDirection::RightToLeft, 240, 1265, 600, 100, 70, 400, PaletteRole::PrimaryText),
+            $this->text('blessing', $assets, 'font-amiri', 'وذلك بمشيئة الله تعالى', Language::Arabic, TextDirection::RightToLeft, 240, 1385, 600, 60, 38, 400, PaletteRole::SecondaryText),
+            $this->image('date_icon', $assets, 'qiran-calendar-icon', 782, 1480, 80, 80, false),
+            $this->image('venue_icon', $assets, 'qiran-pin-icon', 500, 1480, 80, 80, false),
+            $this->image('time_icon', $assets, 'qiran-clock-icon', 218, 1480, 80, 80, false),
+            $this->text('date', $assets, 'font-noto-arabic', "يوم السبت\n31 / 10 / 2027", Language::Arabic, TextDirection::RightToLeft, 682, 1580, 280, 130, 38, 500, PaletteRole::PrimaryText),
+            $this->text('venue', $assets, 'font-noto-arabic', "قاعة الأميرة\nطرابلس", Language::Arabic, TextDirection::RightToLeft, 400, 1580, 280, 130, 38, 500, PaletteRole::PrimaryText),
+            $this->text('schedule', $assets, 'font-noto-arabic', "غداء وقراءة\nالفاتحة", Language::Arabic, TextDirection::RightToLeft, 118, 1580, 280, 130, 38, 500, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-aref-ruqaa', 'أفراحنا تزدان بحضوركم', Language::Arabic, TextDirection::RightToLeft, 140, 1775, 800, 110, 66, 400, PaletteRole::Accent),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#eadcc0', '#f4ead5', '#3d3d22', '#5a5838', '#7a6a3e', '#c9b88c'),
+            $this->envelopeScene('#d9c9a3', 'ق', false, false),
         );
     }
 
