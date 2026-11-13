@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { DashboardEventCard } from '../../Domains/Events/Components/DashboardEventCard';
+import SilkBackdrop from '../../Components/Auth/SilkBackdrop';
 import { AppShell } from '../../Domains/Users/Components/AppShell';
 import type { EventDTO, EventPresentationState } from '../../Types/EventDTO';
 import '../../../css/events.css';
@@ -13,9 +14,9 @@ export default function Dashboard({ user, events }: DashboardProps) {
     const stateCounts = events.reduce<Record<EventPresentationState, number>>((counts, event) => ({ ...counts, [event.presentationState]: counts[event.presentationState] + 1 }), { draft: 0, preparing: 0, ready: 0, expired: 0 });
     return <AppShell eyebrow="مساحتك في ميثاق" title={`أهلاً، ${user.name}`}>
         <Head title="مناسباتي" />
-        <aside className="account-banner"><div><strong>حكاية بالعاجي</strong><p>اقتراح دعوة زفاف كلاسيكية بعناصر مستقلة قابلة للتعديل.</p></div><Link href="/app/proposals/ivory-wedding">افتحي المسودة ←</Link></aside>
         {!user.emailVerified && <aside className="account-banner"><div><strong>بريدك يحتاج تأكيداً</strong><p>يمكنك تجهيز المسودة، وسيطلب التأكيد قبل نشر الدعوة.</p></div><Link href="/email/verify">تأكيد البريد</Link></aside>}
         <section className="dashboard-hero">
+            <SilkBackdrop />
             <div><span>دعواتك، على طريقتك</span><h2>{events.length === 0 ? 'ابدئي أول حكاية' : 'كل التفاصيل في مكان واحد'}</h2><p>{events.length === 0 ? 'اختاري قالباً، اكتبي تفاصيلك، ثم اصنعي لحظة فتح لا تُنسى.' : 'واصلي من حيث توقفتِ، وعدّلي بطاقاتك ومشهد افتتاح الدعوة.'}</p></div>
             <Link className="account-primary" href="/app/events/create">+ إنشاء مناسبة</Link>
         </section>

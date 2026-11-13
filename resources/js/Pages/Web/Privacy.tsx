@@ -1,5 +1,6 @@
 import { Head, Link } from "@inertiajs/react";
 import PublicLayout from "../../Layouts/PublicLayout";
+import PageIntro from "../../Components/Public/PageIntro";
 import Reveal from "../../Components/Public/Reveal";
 
 interface PolicySection {
@@ -53,26 +54,17 @@ export default function Privacy() {
     return (
         <PublicLayout>
             <Head title="سياسة الخصوصية" />
-            <article className="mx-auto flex max-w-3xl flex-col gap-12 px-6 py-20 text-right">
-                <Reveal as="header" className="flex flex-col gap-3">
-                    <span className="text-[13px] font-semibold tracking-wider text-methaq-gold-dark">
-                        آخر تحديث {LAST_UPDATED}
-                    </span>
-                    <h1 className="m-0 font-methaq-display text-[40px] font-bold text-methaq-primary md:text-[48px]">
-                        سياسة الخصوصية
-                    </h1>
-                    <p className="m-0 text-[17px] leading-[1.9] text-methaq-muted">
-                        نوضّح هنا ما نجمعه عند استخدامك لميثاق، ولماذا، ومن
-                        يراه.
-                    </p>
-                </Reveal>
-
+            <PageIntro
+                title="سياسة الخصوصية"
+                lead={`نوضّح هنا ما نجمعه عند استخدامك لميثاق، ولماذا، ومن يراه. آخر تحديث ${LAST_UPDATED}.`}
+            />
+            <article className="mx-auto flex max-w-7xl flex-col gap-12 px-6 pb-methaq-section lg:px-12">
                 {sections.map((section, index) => (
                     <Reveal
                         as="section"
                         key={section.title}
                         delay={index * 60}
-                        className="flex flex-col gap-4 border-t border-methaq-gold/25 pt-8"
+                        className="flex max-w-3xl flex-col gap-4 border-t border-methaq-gold/30 pt-8"
                     >
                         <h2 className="m-0 font-methaq-display text-[26px] font-bold text-methaq-primary">
                             {section.title}
@@ -85,7 +77,7 @@ export default function Privacy() {
                     </Reveal>
                 ))}
 
-                <Reveal as="p" className="m-0 text-[16px] leading-[1.9] text-methaq-muted">
+                <Reveal as="p" className="m-0 max-w-3xl text-[16px] leading-[1.9] text-methaq-muted">
                     لأي سؤال عن خصوصيتك،{" "}
                     <Link
                         href="/contact"
