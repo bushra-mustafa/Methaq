@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\RSVP;
 
+use App\Domains\Editor\Enums\TemplateFeature;
+use App\Domains\Events\Models\Event;
+use App\Domains\Payments\Services\EventEntitlements;
 use App\Domains\RSVP\DTOs\CreateRsvpData;
 use App\Domains\RSVP\Enums\AttendingStatus;
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,7 +16,9 @@ final class StoreRsvpRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->attributes->has('publicEvent');
+        $event = $this->attributes->get('publicEvent');
+
+        return $event instanceof Event && app(EventEntitlements::class)->allows($event, TemplateFeature::Rsvp);
     }
 
     /** @return array<string, array<int, mixed>> */

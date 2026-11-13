@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App;
 
 use App\Domains\Editor\Actions\GetEventEditorAction;
+use App\Domains\Events\Actions\GetEventPublishStateAction;
 use App\Domains\Events\Models\Event;
 use App\Domains\Users\Models\User;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,14 @@ use Inertia\Response;
 
 final class EventPresentationController extends Controller
 {
-    public function __invoke(Request $request, Event $event, GetEventEditorAction $getEditor): Response
+    public function __invoke(Request $request, Event $event, GetEventEditorAction $getEditor, GetEventPublishStateAction $getPublishState): Response
     {
         $owner = $request->user();
         abort_unless($owner instanceof User, 401);
 
-        return Inertia::render('App/Presentation', $getEditor->execute($owner, $event));
+        return Inertia::render('App/Presentation', [
+            ...$getEditor->execute($owner, $event),
+            'publish' => $getPublishState->execute($owner, $event),
+        ]);
     }
 }

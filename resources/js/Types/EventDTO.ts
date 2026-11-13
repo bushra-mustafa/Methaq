@@ -24,6 +24,7 @@ export interface EventDTO {
     presentationState: EventPresentationState;
     template: EventTemplateDTO | null;
     designRevision: number;
+    invitationUrl: string;
 }
 
 export interface EventTemplateOption {

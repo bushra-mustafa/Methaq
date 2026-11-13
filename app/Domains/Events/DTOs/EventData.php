@@ -8,6 +8,7 @@ use App\Domains\Events\Enums\EventCategory;
 use App\Domains\Events\Enums\EventPresentationState;
 use App\Domains\Events\Enums\EventStatus;
 use App\Domains\Events\Models\Event;
+use App\Domains\Events\Services\InvitationAddress;
 
 final readonly class EventData
 {
@@ -28,6 +29,7 @@ final readonly class EventData
         public string $presentationState,
         public ?array $template,
         public int $designRevision,
+        public string $invitationUrl,
     ) {}
 
     public static function fromModel(Event $event): self
@@ -54,6 +56,7 @@ final readonly class EventData
                 'thumbnailUrl' => '/'.ltrim($template->thumbnail_path, '/'),
             ],
             designRevision: $design?->revision ?? 1,
+            invitationUrl: InvitationAddress::url($event->subdomain),
         );
     }
 
@@ -74,6 +77,7 @@ final readonly class EventData
             'presentationState' => $this->presentationState,
             'template' => $this->template,
             'designRevision' => $this->designRevision,
+            'invitationUrl' => $this->invitationUrl,
         ];
     }
 

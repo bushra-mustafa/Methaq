@@ -11,4 +11,5 @@ enum AuditSubjectType: string
     case TemplateAsset = 'template_asset';
     case AssetCollection = 'asset_collection';
     case Order = 'order';
+    case Event = 'event';
 }

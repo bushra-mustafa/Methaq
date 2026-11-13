@@ -33,7 +33,7 @@ export function DashboardEventCard({ event }: { event: EventDTO }) {
             <span>{event.categoryLabel}</span>
             <h2>{event.title}</h2>
             <time dateTime={event.eventDate}>{formatEventDate(event)}</time>
-            <p dir="ltr">{event.subdomain}.methaq.link</p>
+            <p dir="ltr">{event.invitationUrl.replace(/^https?:\/\//, '')}</p>
             <div className="dashboard-event-actions"><Link href={action.href}>{action.label} ←</Link><Link href={`/app/events/${event.id}`} aria-label={`تفاصيل ${event.title}`}>التفاصيل</Link></div>
         </div>
     </article>;

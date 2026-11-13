@@ -13,15 +13,16 @@ interface Props {
     palette: Palette;
     scene: SceneConfig;
     assets: EditorAsset[];
+    rsvpEnabled: boolean;
 }
 
-export default function Show({ event, cardUrl, palette, scene, assets }: Props) {
+export default function Show({ event, cardUrl, palette, scene, assets, rsvpEnabled }: Props) {
     return <main className="guest-invitation-page" dir="rtl">
         <Head title={event.title} />
         <InvitationPlayer assets={assets} scene={scene} palette={palette} cardUrl={cardUrl} title={event.title} viewport="desktop" />
         <div className="guest-invitation-details">
             <p className="guest-invitation-date">{event.eventDate}</p>
-            <RsvpForm />
+            {rsvpEnabled && <RsvpForm />}
         </div>
     </main>;
 }

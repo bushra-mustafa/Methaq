@@ -10,6 +10,7 @@ use App\Http\Controllers\App\EventPresentationController;
 use App\Http\Controllers\App\IvoryProposalController;
 use App\Http\Controllers\App\LogoutOtherSessionsController;
 use App\Http\Controllers\App\ProfileController;
+use App\Http\Controllers\App\PublishEventController;
 use App\Http\Controllers\App\SaveEventDesignController;
 use App\Http\Controllers\App\SaveProposalDraftController;
 use App\Http\Controllers\App\ShowEventController;
@@ -52,6 +53,11 @@ Route::post('/events/{event}/payment', SubmitPaymentReceiptController::class)
     ->whereNumber('event')
     ->middleware('throttle:6,1')
     ->name('events.payment.store');
+
+Route::post('/events/{event}/publish', PublishEventController::class)
+    ->whereNumber('event')
+    ->middleware('throttle:6,1')
+    ->name('events.publish');
 
 Route::patch('/events/{event}/design', SaveEventDesignController::class)
     ->whereNumber('event')

@@ -24,6 +24,11 @@ final class EventPolicy
         return $this->view($user, $event);
     }
 
+    public function publish(User $user, Event $event): bool
+    {
+        return $this->update($user, $event);
+    }
+
     public function delete(User $user, Event $event): bool
     {
         return $this->view($user, $event);

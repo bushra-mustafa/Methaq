@@ -54,7 +54,7 @@ export default function EventPayment({ event, payment }: PaymentPageProps) {
             </div>
 
             <div className="payment-action">
-                {payment.state === 'paid' && <div className="event-next-step"><strong>تم اعتماد الدفع</strong><p>يمكنك متابعة تجهيز الدعوة. زر النشر يصل قريباً.</p></div>}
+                {payment.state === 'paid' && <div className="event-next-step"><strong>تم اعتماد الدفع</strong><p>جهّزي دعوتك وانشريها من صفحة الظرف والفتح.</p><Link className="account-primary" href={`/app/events/${event.id}/presentation`}>الانتقال إلى النشر</Link></div>}
                 {payment.state === 'pending_review' && <div className="event-next-step"><strong>القسيمة قيد المراجعة</strong><p>نتحقق من وصول المبلغ إلى الحساب، ثم يظهر القرار هنا. لا حاجة لإرسالها مرة أخرى.</p></div>}
                 {payment.state === 'rejected' && payment.canSubmit && <p className="account-error" role="alert">{payment.rejectionMessage}</p>}
                 {payment.blocker && payment.state !== 'paid' && payment.state !== 'pending_review' && <p className="account-error" role="alert">{payment.blocker}</p>}

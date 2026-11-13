@@ -198,7 +198,7 @@ jobs:
 
           # Versioned library originals (fonts, SVG artwork) live in git under storage/app/private/editor.
           # Copy them into the shared storage (add/overwrite only, never delete), then link storage.
-          mkdir -p "$shared/storage/app/private"
+          mkdir -p "$shared/storage/app/private" "$shared/storage/app/public"
           if [ -d "$release/storage/app/private/editor" ]; then
             cp -R "$release/storage/app/private/editor" "$shared/storage/app/private/"
           fi
@@ -206,6 +206,8 @@ jobs:
 
           ln -s "$shared/.env" "$release/.env"
           ln -s "$shared/storage" "$release/storage"
+          # Published invitation renders live in the shared public disk; public/storage is not versioned.
+          ln -sfn ../storage/app/public "$release/public/storage"
 
           cd "$release"
           composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress

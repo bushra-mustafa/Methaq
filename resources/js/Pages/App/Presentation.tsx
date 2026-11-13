@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import { PublishPanel } from '../../Domains/Events/Components/PublishPanel';
 import { InvitationPlayer } from '../../Domains/Editor/Components/InvitationPlayer';
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
 import { ScenePanel } from '../../Domains/Editor/Components/ScenePanel';
@@ -10,12 +11,13 @@ import { parseDesignDocument } from '../../Domains/Editor/Services/DesignDocumen
 import type { DesignDocument } from '../../Types/DesignDocument';
 import type { EditorAsset } from '../../Types/Editor';
 import type { EventDTO } from '../../Types/EventDTO';
+import type { PublishStateDTO } from '../../Types/PublishDTO';
 import '../../../css/editor.css';
 import '../../../css/presentation.css';
 
-interface Props { event: EventDTO; document: unknown; revision: number; assets: EditorAsset[] }
+interface Props { event: EventDTO; document: unknown; revision: number; assets: EditorAsset[]; publish: PublishStateDTO }
 
-function PresentationWorkspace({ event, document, revision, assets }: Omit<Props, 'document'> & { document: DesignDocument }) {
+function PresentationWorkspace({ event, document, revision, assets, publish }: Omit<Props, 'document'> & { document: DesignDocument }) {
     const history = useHistory(document);
     const autosave = useAutosave(`/app/events/${event.id}/design`, history.value, revision);
     const card = usePresentationCard(history.value, assets);
@@ -44,6 +46,7 @@ function PresentationWorkspace({ event, document, revision, assets }: Omit<Props
                     {canPreview && card.cardUrl ? <InvitationPlayer audioAllowed={!fullPreview} assets={assets} cardParts={card.parts} manageFocus={false} key={sceneKey} scene={history.value.scene} palette={history.value.palette} cardUrl={card.cardUrl} title={event.title} viewport="phone" /> : <div className="presentation-loading" role={card.error ? 'alert' : 'status'}>{card.error || 'نجهّز معاينة بطاقتك…'}</div>}
                 </aside>
             </div>
+            <PublishPanel eventId={event.id} publish={publish} cardUrl={card.cardUrl} revision={autosave.revision} saved={autosave.status === 'saved' && !autosave.hasUnsavedChanges} />
             <div className={`presentation-save-status is-${autosave.status}`} aria-live="polite">
                 <strong>{autosave.message}</strong>
                 {autosave.hasUnsavedChanges && <p>انتظري اكتمال الحفظ قبل الرجوع إلى محرر البطاقة.</p>}

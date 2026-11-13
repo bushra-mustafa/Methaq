@@ -48,6 +48,17 @@
 .presentation-save-status button { border: 1px solid #b69a50; padding: 8px 16px; margin: 4px; color: #074b36; background: #fffdf7; }
 .presentation-render-source { position: fixed; left: -10000px; top: 0; width: 560px; pointer-events: none; }
 .presentation-page a[aria-disabled=true], .editor-presentation-link[aria-disabled=true] { opacity: .5; cursor: wait; }
+/* Publishing panel (owner, after payment approval) */
+.presentation-publish { display: grid; gap: 10px; margin-top: 28px; border: 1px solid #dddfd5; border-radius: 8px; padding: 22px 26px; background: #fffdf7; }
+.presentation-publish h2 { margin: 0; font-size: 20px; font-weight: 600; }
+.presentation-publish p { margin: 0; color: #536962; font-size: 13px; line-height: 1.8; }
+.presentation-publish button { justify-self: start; border: 1px solid #074b36; border-radius: 4px; padding: 10px 22px; background: #074b36; color: #fff; }
+.presentation-publish-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.presentation-publish-confirm button:last-child { background: transparent; color: #074b36; }
+.presentation-publish-warning { border-inline-start: 3px solid #b69a50; padding-inline-start: 12px; color: #6f5a22; }
+.presentation-publish-error { color: #8c333c; }
+.presentation-publish.is-published { border-color: #074b36; background: #f2f7f3; }
+.presentation-publish.is-published a { justify-self: start; color: #074b36; font-weight: 600; overflow-wrap: anywhere; }
 @media (max-width: 950px) {
     .presentation-content { padding: 24px 18px 50px; }
     .presentation-layout { grid-template-columns: minmax(0, 1fr) minmax(280px, 330px); gap: 16px; }
