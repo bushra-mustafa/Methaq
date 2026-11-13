@@ -1,1 +1,0 @@
-import{j as s}from"./app-ztkgzkZ-.js";function x({src:t,avif:e,webp:r,alt:i,width:c,height:a,loading:m="lazy",decoding:n="async",...o}){return s.jsxs("picture",{children:[e&&s.jsx("source",{srcSet:e,type:"image/avif"}),r&&s.jsx("source",{srcSet:r,type:"image/webp"}),s.jsx("img",{src:t,alt:i,width:c,height:a,loading:m,decoding:n,...o})]})}export{x as T};
