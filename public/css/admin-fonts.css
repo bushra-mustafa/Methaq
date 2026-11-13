@@ -1,0 +1,23 @@
+@font-face {
+    font-family: "Methaq Arabic";
+    src: url("/brand/fonts/NotoSansArabic.ttf") format("truetype");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 100 900;
+}
+
+@font-face {
+    font-family: "Amiri";
+    src: url("/brand/fonts/Amiri-Regular.ttf") format("truetype");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Amiri";
+    src: url("/brand/fonts/Amiri-Bold.ttf") format("truetype");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+}

@@ -1,8 +1,122 @@
-.guest-invitation-page { min-height: 100vh; background: #f6f2e9; color: #163f32; }
+/* What surrounds the invitation on a guest's page: the date and the reply form. The envelope and card are untouched. */
+.guest-invitation-page {
+    min-height: 100vh;
+    background: var(--color-methaq-ivory);
+    color: var(--color-methaq-primary);
+    font-family: var(--font-methaq-body);
+}
+
 .guest-invitation-page > .invitation-player { min-height: min(100vh, 900px); }
-.guest-invitation-details { width: min(100% - 32px, 560px); margin: 0 auto; padding: 52px 0 80px; }
-.guest-invitation-date { margin: 0 0 24px; color: #8b6b39; text-align: center; font-size: .9rem; }
-.rsvp-form, .rsvp-confirmation { border: 1px solid #e2d5ba; border-radius: 20px; background: #fffdf8; padding: clamp(24px, 5vw, 40px); box-shadow: 0 16px 50px rgba(22, 63, 50, .09); }
-.rsvp-form header { text-align: center; margin-bottom: 28px; }.rsvp-form header span { color: #aa8240; font-size: .8rem; font-weight: 800; }.rsvp-form h2, .rsvp-confirmation h2 { margin: 8px 0; font-size: clamp(1.5rem, 5vw, 2rem); }.rsvp-form header p, .rsvp-confirmation p { color: #6e746e; margin: 0; }
-.rsvp-form form { display: grid; gap: 16px; }.rsvp-form label, .rsvp-form fieldset { display: grid; gap: 7px; color: #245644; font-size: .9rem; font-weight: 700; }.rsvp-form small { color: #898477; font-weight: 500; }.rsvp-form input, .rsvp-form select, .rsvp-form textarea { box-sizing: border-box; width: 100%; border: 1px solid #ded7c8; border-radius: 10px; padding: 12px; background: #fff; color: #173f32; font: inherit; }.rsvp-form textarea { resize: vertical; }.rsvp-form fieldset { border: 0; padding: 0; margin: 0; }.rsvp-form legend { margin-bottom: 8px; }.rsvp-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }.rsvp-options label { display: flex; align-items: center; justify-content: center; border: 1px solid #ded7c8; border-radius: 10px; padding: 10px 6px; text-align: center; font-size: .8rem; cursor: pointer; }.rsvp-options input { width: auto; margin: 0 0 0 5px; accent-color: #0e5a43; }.rsvp-form button { border: 0; border-radius: 10px; padding: 14px; background: #203322; color: #fffdf8; font: inherit; font-weight: 800; cursor: pointer; }.rsvp-form button:disabled { opacity: .65; cursor: wait; }.rsvp-error { margin: -9px 0 0; color: #a63d3d; font-size: .8rem; }.rsvp-confirmation { text-align: center; }.rsvp-confirmation > span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; margin: 0 auto 8px; background: #e5f2eb; color: #203322; font-weight: 900; }
+
+.guest-invitation-details { width: min(100% - 32px, 560px); margin: 0 auto; padding: 56px 0 88px; }
+
+.guest-invitation-date {
+    margin: 0 0 28px;
+    color: var(--color-methaq-gold-dark);
+    text-align: center;
+    font-family: var(--font-methaq-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+}
+
+.rsvp-form,
+.rsvp-confirmation {
+    border: 1px solid var(--color-methaq-border);
+    border-radius: 1rem;
+    background: #fff;
+    padding: clamp(24px, 5vw, 40px);
+}
+
+.rsvp-form header { margin-bottom: 28px; text-align: center; }
+.rsvp-form header span { display: none; }
+.rsvp-form h2,
+.rsvp-confirmation h2 {
+    margin: 0 0 8px;
+    font-family: var(--font-methaq-display);
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    line-height: 1.3;
+}
+.rsvp-form header p,
+.rsvp-confirmation p { margin: 0; color: var(--color-methaq-muted); }
+
+.rsvp-form form { display: grid; gap: 18px; }
+.rsvp-form label,
+.rsvp-form fieldset { display: grid; gap: 8px; color: var(--color-methaq-primary); font-size: 15px; font-weight: 600; }
+.rsvp-form small { color: var(--color-methaq-muted); font-weight: 400; }
+
+.rsvp-form input,
+.rsvp-form select,
+.rsvp-form textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid rgb(67 72 66 / 60%);
+    border-radius: var(--radius-methaq-button);
+    padding: 12px;
+    background: #fff;
+    color: var(--color-methaq-ink);
+    font: inherit;
+    font-weight: 400;
+}
+
+.rsvp-form input:focus-visible,
+.rsvp-form select:focus-visible,
+.rsvp-form textarea:focus-visible,
+.rsvp-form button:focus-visible {
+    outline: 2px solid var(--color-methaq-primary);
+    outline-offset: 2px;
+}
+
+.rsvp-form textarea { resize: vertical; }
+.rsvp-form fieldset { border: 0; padding: 0; margin: 0; }
+.rsvp-form legend { margin-bottom: 8px; }
+
+.rsvp-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.rsvp-options label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    border: 1px solid rgb(67 72 66 / 60%);
+    border-radius: var(--radius-methaq-button);
+    padding: 10px 6px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+.rsvp-options label:has(input:checked) {
+    border-color: var(--color-methaq-primary);
+    background: rgb(32 51 34 / 6%);
+}
+.rsvp-options input { width: auto; min-height: 0; margin: 0 0 0 6px; accent-color: var(--color-methaq-primary); }
+
+.rsvp-form button {
+    min-height: 52px;
+    border: 0;
+    border-radius: var(--radius-methaq-button);
+    background: var(--color-methaq-primary);
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 160ms ease;
+}
+.rsvp-form button:hover:not(:disabled) { background: var(--color-methaq-primary-hover); }
+.rsvp-form button:disabled { opacity: 0.65; cursor: wait; }
+
+.rsvp-error { margin: -10px 0 0; color: #991b1b; font-size: 14px; font-weight: 500; }
+
+.rsvp-confirmation { text-align: center; }
+.rsvp-confirmation > span {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    background: rgb(32 51 34 / 8%);
+    color: var(--color-methaq-primary);
+    font-weight: 700;
+}
+
 @media (max-width: 440px) { .rsvp-options { grid-template-columns: 1fr; } }

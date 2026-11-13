@@ -6,6 +6,7 @@ namespace App\Providers\Filament;
 
 use App\Http\Controllers\Admin\ShowPaymentReceiptController;
 use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
+use Filament\FontProviders\LocalFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -14,12 +15,14 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 /**
@@ -35,12 +38,20 @@ final class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->darkMode(false)
             ->id('admin')
             ->path('admin')
             ->brandName('ميثاق · الإدارة')
+            ->brandLogo(asset('brand/logos/methaq-horizontal-compact-flat.svg'))
+            ->brandLogoHeight('2.25rem')
+            ->favicon(asset('brand/logos/methaq-symbol-small-flat.svg'))
+            ->font('Methaq Arabic', url: asset('css/admin-fonts.css'), provider: LocalFontProvider::class)
             ->colors([
-                'primary' => Color::Emerald,
+                'primary' => Color::generateV3Palette('#3b5a3f'),
+                'warning' => Color::generateV3Palette('#9a7b46'),
+                'gray' => Color::Stone,
             ])
+            ->renderHook(PanelsRenderHook::HEAD_END, fn (): HtmlString => new HtmlString('<link rel="stylesheet" href="'.e(asset('css/admin-methaq.css')).'">'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
