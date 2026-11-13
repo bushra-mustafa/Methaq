@@ -58,6 +58,9 @@ final class TemplateDesignFactory
             TemplatePreset::IvoryTale => $this->ivoryTale($assets),
             TemplatePreset::ProjectOpening => $this->projectOpening($assets),
             TemplatePreset::Newborn => $this->newborn($assets),
+            TemplatePreset::OpeningModern => $this->openingModern($assets),
+            TemplatePreset::NewbornBlush => $this->newbornBlush($assets),
+            TemplatePreset::GraduationNavy => $this->graduationNavy($assets),
         };
     }
 
@@ -338,6 +341,68 @@ final class TemplateDesignFactory
             $layers,
             new PaletteData(1, '#fbf6ee', '#ffffff', '#3f5a5e', '#6d7f82', '#b8935a', '#cfe0e3'),
             $this->envelopeScene('#bcd6da', 'م', true, false),
+        );
+    }
+
+    /** @param array<string, TemplateAsset> $assets */
+    private function openingModern(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'opening-modern-frame', 0, 0, 1080, 1920, true),
+            $this->text('kicker', $assets, 'font-amiri', 'ندعوكم لحضور', Language::Arabic, TextDirection::RightToLeft, 240, 360, 600, 80, 46, 400, PaletteRole::SecondaryText),
+            $this->text('title', $assets, 'font-amiri', 'افتتاح', Language::Arabic, TextDirection::RightToLeft, 140, 470, 800, 230, 150, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-amiri', 'اسم مشروعك', Language::Arabic, TextDirection::RightToLeft, 120, 740, 840, 150, 92, 400, PaletteRole::Accent),
+            $this->image('divider', $assets, 'gold-divider', 240, 930, 600, 80, true),
+            $this->text('message', $assets, 'font-amiri', "بداية جديدة نحتفي بها معكم\nوبحضوركم يكتمل الافتتاح", Language::Arabic, TextDirection::RightToLeft, 120, 1060, 840, 150, 48, 400, PaletteRole::SecondaryText),
+            $this->text('details', $assets, 'font-noto-arabic', "السبت · السابعة مساءً\nطرابلس · شارع الجمهورية", Language::Arabic, TextDirection::RightToLeft, 140, 1290, 800, 170, 40, 500, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-amiri', 'في انتظاركم', Language::Arabic, TextDirection::RightToLeft, 240, 1500, 600, 80, 46, 400, PaletteRole::Accent),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#f6f2e8', '#ffffff', '#203322', '#4b5a4c', '#7a613b', '#c9b48a'),
+            $this->envelopeScene('#e4dcc8', 'م', false, false),
+        );
+    }
+
+    /** @param array<string, TemplateAsset> $assets */
+    private function newbornBlush(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'newborn-blush-frame', 0, 0, 1080, 1920, true),
+            $this->text('kicker', $assets, 'font-amiri', 'وصلت الفرحة', Language::Arabic, TextDirection::RightToLeft, 240, 520, 600, 90, 50, 400, PaletteRole::Accent),
+            $this->text('title', $assets, 'font-amiri', 'أهلاً بالمولود', Language::Arabic, TextDirection::RightToLeft, 140, 620, 800, 170, 108, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-amiri', 'محمد', Language::Arabic, TextDirection::RightToLeft, 240, 820, 600, 160, 120, 400, PaletteRole::Accent),
+            $this->text('message', $assets, 'font-amiri', "ندعوكم لمشاركتنا فرحة استقباله\nوالدعاء له بطول العمر والصحة", Language::Arabic, TextDirection::RightToLeft, 120, 1030, 840, 150, 46, 400, PaletteRole::SecondaryText),
+            $this->image('footprints', $assets, 'newborn-footprints', 390, 1210, 300, 200, false),
+            $this->text('details', $assets, 'font-noto-arabic', "الخميس · السادسة مساءً\nمنزل العائلة · طرابلس", Language::Arabic, TextDirection::RightToLeft, 140, 1440, 800, 170, 40, 500, PaletteRole::PrimaryText),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#fdf2f1', '#ffffff', '#7a4a52', '#9a7078', '#b9806e', '#f2c9c0'),
+            $this->envelopeScene('#f3cfc8', 'م', true, false),
+        );
+    }
+
+    /** @param array<string, TemplateAsset> $assets */
+    private function graduationNavy(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'graduation-navy-frame', 0, 0, 1080, 1920, true),
+            $this->text('kicker', $assets, 'font-amiri', 'بكل فخر ندعوكم لحضور', Language::Arabic, TextDirection::RightToLeft, 190, 500, 700, 90, 48, 400, PaletteRole::SecondaryText),
+            $this->text('title', $assets, 'font-amiri', 'حفل التخرج', Language::Arabic, TextDirection::RightToLeft, 140, 590, 800, 190, 124, 400, PaletteRole::PrimaryText),
+            $this->text('name', $assets, 'font-amiri', 'اسم الخريج', Language::Arabic, TextDirection::RightToLeft, 140, 810, 800, 160, 108, 400, PaletteRole::Accent),
+            $this->image('divider', $assets, 'gold-divider', 240, 1020, 600, 80, true),
+            $this->text('message', $assets, 'font-amiri', "لنشارككم فرحة هذا الإنجاز\nوالدعاء بدوام التوفيق", Language::Arabic, TextDirection::RightToLeft, 120, 1160, 840, 150, 48, 400, PaletteRole::SecondaryText),
+            $this->text('details', $assets, 'font-noto-arabic', "الأحد · السابعة مساءً\nقاعة الجامعة · طرابلس", Language::Arabic, TextDirection::RightToLeft, 140, 1380, 800, 170, 40, 500, PaletteRole::PrimaryText),
+            $this->text('closing', $assets, 'font-amiri', 'مبارك للجميع', Language::Arabic, TextDirection::RightToLeft, 240, 1610, 600, 80, 50, 400, PaletteRole::Accent),
+        ];
+
+        return $this->document(
+            $layers,
+            new PaletteData(1, '#101c3a', '#1c2b52', '#f4ecd8', '#c9cfdc', '#d8b66a', '#e9d29b'),
+            $this->envelopeScene('#1c2b52', 'م', true, false),
         );
     }
 

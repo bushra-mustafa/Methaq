@@ -179,6 +179,9 @@ final class TemplateLibrarySeeder extends Seeder
             $this->visualAsset('opening-scissors-icon', 'مقصّ الافتتاح', AssetType::Icon, 'icons/opening/opening-scissors-icon.svg', 'assets/v1/icons/opening/opening-scissors-icon.png', 520, 520, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
             $this->visualAsset('newborn-moon-frame', 'إطار هلال ونجوم', AssetType::Frame, 'frames/newborn/newborn-moon-frame.svg', 'assets/v1/frames/newborn/newborn-moon-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
             $this->visualAsset('newborn-footprints', 'أقدام صغيرة', AssetType::Decoration, 'ornaments/newborn/newborn-footprints.svg', 'assets/v1/ornaments/newborn/newborn-footprints.png', 600, 400, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('opening-modern-frame', 'إطار افتتاح عصري', AssetType::Frame, 'frames/opening/opening-modern-frame.svg', 'assets/v1/frames/opening/opening-modern-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('newborn-blush-frame', 'إطار بالونات', AssetType::Frame, 'frames/newborn/newborn-blush-frame.svg', 'assets/v1/frames/newborn/newborn-blush-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
+            $this->visualAsset('graduation-navy-frame', 'إطار تخرج كحلي', AssetType::Frame, 'frames/graduation/graduation-navy-frame.svg', 'assets/v1/frames/graduation/graduation-navy-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-occasion-packages'),
             $this->visualAsset('noir-paper-frame', 'إطار ورقة ليلة عنابية', AssetType::Frame, 'frames/paper/noir-paper-frame.svg', 'assets/v1/frames/paper/noir-paper-frame.png', 1080, 1920, $visualCapabilities, $visualLicense, 'methaq-henna-noir'),
         ];
     }
@@ -293,6 +296,30 @@ final class TemplateLibrarySeeder extends Seeder
                 'thumbnail_path' => 'editor/previews/templates/newborn.png',
                 'preset' => TemplatePreset::Newborn,
                 'assets' => ['newborn-moon-frame', 'newborn-footprints', 'font-amiri', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::OpeningModern->value,
+                'name' => 'افتتاح عصري',
+                'category' => EventCategory::ProjectOpening,
+                'thumbnail_path' => 'editor/previews/templates/opening-modern.png',
+                'preset' => TemplatePreset::OpeningModern,
+                'assets' => ['opening-modern-frame', 'gold-divider', 'font-amiri', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::NewbornBlush->value,
+                'name' => 'بالونات المولود',
+                'category' => EventCategory::Newborn,
+                'thumbnail_path' => 'editor/previews/templates/newborn-blush.png',
+                'preset' => TemplatePreset::NewbornBlush,
+                'assets' => ['newborn-blush-frame', 'newborn-footprints', 'font-amiri', 'font-noto-arabic'],
+            ],
+            [
+                'slug' => TemplatePreset::GraduationNavy->value,
+                'name' => 'تخرج كحلي',
+                'category' => EventCategory::Graduation,
+                'thumbnail_path' => 'editor/previews/templates/graduation-navy.png',
+                'preset' => TemplatePreset::GraduationNavy,
+                'assets' => ['graduation-navy-frame', 'gold-divider', 'font-amiri', 'font-noto-arabic'],
             ],
         ];
     }

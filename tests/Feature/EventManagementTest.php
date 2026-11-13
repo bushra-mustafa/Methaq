@@ -49,7 +49,7 @@ final class EventManagementTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('App/Events/Create', false)
-                ->has('templates', 12)
+                ->has('templates', 15)
                 ->has('categories', 6)
                 ->where('selectedTemplateSlug', 'powder-gold'));
     }

@@ -15,6 +15,7 @@ use App\Domains\Users\Models\AuditLog;
 use App\Domains\Users\Models\User;
 use App\Filament\Resources\AuditLogs\Pages\ManageAuditLogs;
 use App\Filament\Resources\Events\Pages\ManageEvents;
+use App\Filament\Resources\Orders\Pages\ManageOrders;
 use App\Filament\Resources\Users\Pages\ManageUsers;
 use App\Filament\Widgets\RevenueOverview;
 use App\Filament\Widgets\SetupChecklist;
@@ -128,6 +129,26 @@ final class FilamentAdminConsoleTest extends TestCase
         $this->get('/admin/audit-logs')->assertForbidden();
         $this->get('/admin/users')->assertForbidden();
         $this->get('/admin/events')->assertForbidden();
+    }
+
+    public function test_receipts_export_to_a_utf8_csv_that_respects_the_filter_and_neutralises_formulas(): void
+    {
+        $this->actingAs($this->administrator());
+        $event = Event::factory()->create(['title' => '=HYPERLINK("x")']);
+        $pending = Order::factory()->manualTransfer()->create(['event_id' => $event->getKey(), 'user_id' => $event->user_id, 'amount' => 25_500]);
+        $this->order(['status' => OrderStatus::Failed, 'failure_code' => 'not_received']);
+
+        $component = Livewire::test(ManageOrders::class)->callAction('export');
+        $component->assertFileDownloaded('methaq-receipts-'.now()->format('Y-m-d').'.csv');
+        $csv = $component->effects['download']['content'] ?? '';
+        $csv = base64_decode((string) $csv);
+
+        $this->assertStringStartsWith("\xEF\xBB\xBF", $csv);
+        $this->assertStringContainsString('25.500', $csv);
+        $this->assertStringContainsString("'=HYPERLINK", $csv);
+        $this->assertStringNotContainsString('not_received', $csv);
+        $this->assertSame(2, substr_count($csv, "\n"));
+        $this->assertNotNull($pending->getKey());
     }
 
     public function test_a_banner_warns_while_an_active_template_is_hidden_for_lacking_a_price(): void

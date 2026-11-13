@@ -18,4 +18,7 @@ enum TemplatePreset: string
     case IvoryTale = 'ivory-tale';
     case ProjectOpening = 'project-opening';
     case Newborn = 'newborn';
+    case OpeningModern = 'opening-modern';
+    case NewbornBlush = 'newborn-blush';
+    case GraduationNavy = 'graduation-navy';
 }
