@@ -14,7 +14,12 @@ interface AuthForm<T extends AuthFormData> {
     processing: boolean;
     setData<K extends keyof T & string>(key: K, value: T[K]): void;
     reset(...fields: (keyof T & string)[]): void;
-    post(url: string, options?: { onFinish?: () => void }): void;
+    post(url: string, options?: { onFinish?: () => void; onError?: () => void }): void;
+}
+
+/** After a failed submit, move focus to the first field the server rejected so the error is read at once. */
+function focusFirstInvalidField(): void {
+    window.setTimeout(() => document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(), 60);
 }
 
 /**
@@ -31,7 +36,10 @@ export default function useAuthForm<T extends AuthFormData>(
 
     const submit = (event: FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        form.post(url, { onFinish: () => form.reset(...clearOnFinish) });
+        form.post(url, {
+            onFinish: () => form.reset(...clearOnFinish),
+            onError: focusFirstInvalidField,
+        });
     };
 
     const bind = (name: TextKeys<T>) => ({

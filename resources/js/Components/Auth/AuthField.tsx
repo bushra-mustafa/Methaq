@@ -44,7 +44,7 @@ export default function AuthField({
                     id={id}
                     aria-invalid={Boolean(error)}
                     aria-describedby={describedBy}
-                    className={`block min-h-13 w-full rounded-methaq-button border bg-white ps-12 text-[16px] text-methaq-ink transition-[border-color,box-shadow] duration-200 placeholder:text-methaq-muted/70 focus:border-methaq-primary focus:shadow-[0_0_0_3px_rgba(32,51,34,0.14)] focus:outline-none ${
+                    className={`block min-h-13 w-full rounded-methaq-button border bg-white ps-12 text-[16px] text-methaq-ink transition-[border-color,box-shadow] duration-200 placeholder:text-methaq-muted/70 focus:border-methaq-primary ${
                         error ? "border-red-700" : "border-methaq-muted/60"
                     } ${trailing ? "pe-14" : "pe-4"} ${className}`}
                     {...inputProps}
