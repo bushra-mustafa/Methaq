@@ -1,1 +1,0 @@
-import{j as s,H as t}from"./app-B9OLWL-1.js";import{P as e}from"./PublicLayout-CqDLHdgP.js";import"./createLucideIcon-CD6PhFec.js";function o(){return s.jsxs(e,{children:[s.jsx(t,{title:"من نحن"}),s.jsxs("section",{className:"mx-auto max-w-4xl px-6 py-16",children:[s.jsx("h1",{children:"من نحن"}),s.jsx("p",{children:"مرحبًا بكم في ميثاق"})]})]})}export{o as default};
