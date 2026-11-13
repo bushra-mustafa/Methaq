@@ -7,6 +7,10 @@ namespace App\Domains\Users\Enums;
 enum AuditAction: string
 {
     case UserPromotedToAdmin = 'user.promoted_to_admin';
+    case UserSuspended = 'user.suspended';
+    case UserReinstated = 'user.reinstated';
+    case EventSuspended = 'event.suspended';
+    case EventReinstated = 'event.reinstated';
     case TemplateActivated = 'template.activated';
     case TemplateDeactivated = 'template.deactivated';
     case TemplateFeatured = 'template.featured';

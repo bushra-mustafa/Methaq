@@ -45,6 +45,8 @@ final class OrderResource extends Resource
 
     protected static ?string $navigationLabel = 'قسائم التحويل';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'التشغيل';
+
     protected static ?int $navigationSort = 2;
 
     public static function canCreate(): bool

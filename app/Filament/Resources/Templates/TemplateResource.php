@@ -48,6 +48,8 @@ final class TemplateResource extends Resource
 
     protected static ?string $navigationLabel = 'القوالب';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'المحتوى';
+
     public static function canCreate(): bool
     {
         return false;

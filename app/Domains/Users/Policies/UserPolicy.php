@@ -9,6 +9,11 @@ use App\Domains\Users\Models\User;
 
 final class UserPolicy
 {
+    public function viewAny(User $actor): bool
+    {
+        return $actor->isActive() && $actor->role === UserRole::Admin;
+    }
+
     public function view(User $actor, User $subject): bool
     {
         return $actor->isActive() && ($actor->is($subject) || $actor->role === UserRole::Admin);

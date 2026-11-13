@@ -14,7 +14,9 @@ use App\Domains\Events\Models\Event;
 use App\Domains\Events\Policies\EventPolicy;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Policies\OrderPolicy;
+use App\Domains\Users\Models\AuditLog;
 use App\Domains\Users\Models\User;
+use App\Domains\Users\Policies\AuditLogPolicy;
 use App\Domains\Users\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -40,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(AssetCollection::class, AssetCollectionPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Order::class, OrderPolicy::class);
+        Gate::policy(AuditLog::class, AuditLogPolicy::class);
     }
 }
