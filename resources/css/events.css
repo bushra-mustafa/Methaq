@@ -928,3 +928,14 @@
         text-align: right;
     }
 }
+
+/* Standalone links are real controls: give them a comfortable target (WCAG 2.5.8). */
+.dashboard-event-actions a,
+.dashboard-events-section header > a,
+.event-presentation-callout > a,
+.event-payment-callout > a,
+.presentation-topbar > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+}

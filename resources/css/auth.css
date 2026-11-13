@@ -40,9 +40,9 @@ textarea {
     transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
-.account-field input:focus-visible,
-.account-field select:focus-visible,
-.account-field textarea:focus-visible {
+.account-field input:focus,
+.account-field select:focus,
+.account-field textarea:focus {
     border-color: var(--color-methaq-primary);
     outline: 2px solid var(--color-methaq-primary);
     outline-offset: 2px;
