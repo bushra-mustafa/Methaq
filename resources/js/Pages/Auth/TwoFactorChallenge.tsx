@@ -1,25 +1,23 @@
-import { Head, useForm } from '@inertiajs/react';
-import type { FormEvent } from 'react';
+import { Head } from '@inertiajs/react';
 import { useState } from 'react';
-import { AuthShell } from '../../Domains/Users/Components/AuthShell';
-import { FormField } from '../../Domains/Users/Components/FormField';
+import AuthField from '../../Components/Auth/AuthField';
+import AuthLayout from '../../Components/Auth/AuthLayout';
+import AuthSubmit from '../../Components/Auth/AuthSubmit';
+import useAuthForm from '../../Components/Auth/useAuthForm';
 
 export default function TwoFactorChallenge() {
     const [recoveryMode, setRecoveryMode] = useState(false);
-    const form = useForm({ code: '', recovery_code: '' });
-    function submit(event: FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-        form.post('/two-factor-challenge', { onFinish: () => form.reset('code', 'recovery_code') });
-    }
+    const { form, submit, bind, processing } = useAuthForm('/two-factor-challenge', { code: '', recovery_code: '' }, ['code', 'recovery_code']);
+    const code = bind('code');
 
-    return <AuthShell title="التحقق بخطوتين" description={recoveryMode ? 'أدخلي أحد رموز الاسترداد المحفوظة.' : 'أدخلي الرمز المكون من 6 أرقام من تطبيق المصادقة.'}>
+    return <AuthLayout title="التحقق بخطوتين" description={recoveryMode ? 'أدخلي أحد رموز الاسترداد المحفوظة.' : 'أدخلي الرمز المكون من 6 أرقام من تطبيق المصادقة.'}>
         <Head title="التحقق بخطوتين" />
-        <form className="account-form" onSubmit={submit} noValidate>
+        <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
             {recoveryMode
-                ? <FormField label="رمز الاسترداد" name="recovery_code" value={form.data.recovery_code} onChange={(event) => form.setData('recovery_code', event.target.value)} autoComplete="one-time-code" autoFocus required error={form.errors.recovery_code} />
-                : <FormField label="رمز التحقق" name="code" inputMode="numeric" value={form.data.code} onChange={(event) => form.setData('code', event.target.value.replace(/\D/g, '').slice(0, 6))} autoComplete="one-time-code" autoFocus required error={form.errors.code} />}
-            <button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري التحقق…' : 'تحقق ودخول'}</button>
-            <button className="account-text-button" type="button" onClick={() => setRecoveryMode(!recoveryMode)}>{recoveryMode ? 'استخدام رمز تطبيق المصادقة' : 'استخدام رمز استرداد'}</button>
+                ? <AuthField key="recovery" label="رمز الاسترداد" autoComplete="one-time-code" autoFocus required dir="ltr" {...bind('recovery_code')} />
+                : <AuthField key="code" label="رمز التحقق" inputMode="numeric" autoComplete="one-time-code" autoFocus required dir="ltr" className="text-center text-[22px] tracking-[0.5em]" {...code} onChange={(event) => form.setData('code', event.target.value.replace(/\D/g, '').slice(0, 6))} />}
+            <AuthSubmit processing={processing} pendingLabel="جاري التحقق…">تحقق ودخول</AuthSubmit>
+            <button type="button" onClick={() => setRecoveryMode(!recoveryMode)} className="inline-flex min-h-11 items-center justify-center text-[15px] font-semibold text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 hover:decoration-methaq-gold">{recoveryMode ? 'استخدام رمز تطبيق المصادقة' : 'استخدام رمز استرداد'}</button>
         </form>
-    </AuthShell>;
+    </AuthLayout>;
 }

@@ -1,25 +1,22 @@
-import { Head, Link, useForm } from '@inertiajs/react';
-import type { FormEvent } from 'react';
-import { AuthShell } from '../../Domains/Users/Components/AuthShell';
-import { FormField } from '../../Domains/Users/Components/FormField';
+import { Head, Link } from '@inertiajs/react';
+import AuthField from '../../Components/Auth/AuthField';
+import AuthLayout from '../../Components/Auth/AuthLayout';
+import AuthSubmit from '../../Components/Auth/AuthSubmit';
+import PasswordField from '../../Components/Auth/PasswordField';
+import useAuthForm from '../../Components/Auth/useAuthForm';
 
 export default function Register() {
-    const form = useForm({ name: '', email: '', phone: '', password: '', password_confirmation: '' });
-    function submit(event: FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-        form.post('/register', { onFinish: () => form.reset('password', 'password_confirmation') });
-    }
+    const { submit, bind, processing } = useAuthForm('/register', { name: '', email: '', phone: '', password: '', password_confirmation: '' }, ['password', 'password_confirmation']);
 
-    return <AuthShell title="ابدئي دعوتك" description="حساب واحد يجمع تصاميمك وروابط مناسباتك." footer={<p>عندك حساب؟ <Link href="/login">سجلي الدخول</Link></p>}>
+    return <AuthLayout promo="register" title="ابدئي دعوتك" description="حساب واحد يجمع تصاميمك وروابط مناسباتك، وتجرّبين قبل أن تدفعي." footer={<p className="m-0">عندك حساب؟ <Link href="/login">سجلي الدخول</Link></p>}>
         <Head title="إنشاء حساب" />
-        <form className="account-form" onSubmit={submit} noValidate>
-            <FormField label="الاسم" name="name" value={form.data.name} onChange={(event) => form.setData('name', event.target.value)} autoComplete="name" autoFocus required error={form.errors.name} />
-            <FormField label="البريد الإلكتروني" name="email" type="email" value={form.data.email} onChange={(event) => form.setData('email', event.target.value)} autoComplete="email" required error={form.errors.email} />
-            <FormField label="رقم الهاتف · اختياري" name="phone" type="tel" value={form.data.phone} onChange={(event) => form.setData('phone', event.target.value)} autoComplete="tel" error={form.errors.phone} />
-            <FormField label="كلمة المرور" name="password" type="password" value={form.data.password} onChange={(event) => form.setData('password', event.target.value)} autoComplete="new-password" required error={form.errors.password} />
-            <p className="account-hint">12 حرفاً على الأقل، مع حرف كبير ورقم ورمز.</p>
-            <FormField label="تأكيد كلمة المرور" name="password_confirmation" type="password" value={form.data.password_confirmation} onChange={(event) => form.setData('password_confirmation', event.target.value)} autoComplete="new-password" required error={form.errors.password_confirmation} />
-            <button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري إنشاء الحساب…' : 'إنشاء الحساب'}</button>
+        <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
+            <AuthField label="الاسم" autoComplete="name" autoFocus required {...bind('name')} />
+            <AuthField label="البريد الإلكتروني" type="email" autoComplete="email" required {...bind('email')} />
+            <AuthField label="رقم الهاتف (اختياري)" type="tel" autoComplete="tel" {...bind('phone')} />
+            <PasswordField label="كلمة المرور" autoComplete="new-password" required hint="12 حرفاً على الأقل، مع حرف كبير ورقم ورمز." {...bind('password')} />
+            <PasswordField label="تأكيد كلمة المرور" autoComplete="new-password" required {...bind('password_confirmation')} />
+            <AuthSubmit processing={processing} pendingLabel="جاري إنشاء الحساب…">إنشاء الحساب</AuthSubmit>
         </form>
-    </AuthShell>;
+    </AuthLayout>;
 }

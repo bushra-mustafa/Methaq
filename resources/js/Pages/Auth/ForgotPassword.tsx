@@ -1,23 +1,21 @@
-import { Head, Link, useForm } from '@inertiajs/react';
-import type { FormEvent } from 'react';
-import { AuthShell } from '../../Domains/Users/Components/AuthShell';
-import { FormField } from '../../Domains/Users/Components/FormField';
+import { Head, Link } from '@inertiajs/react';
+import AuthField from '../../Components/Auth/AuthField';
+import AuthLayout from '../../Components/Auth/AuthLayout';
+import AuthStatus from '../../Components/Auth/AuthStatus';
+import AuthSubmit from '../../Components/Auth/AuthSubmit';
+import useAuthForm from '../../Components/Auth/useAuthForm';
 
 interface ForgotPasswordProps { status?: string | null }
 
 export default function ForgotPassword({ status }: ForgotPasswordProps) {
-    const form = useForm({ email: '' });
-    function submit(event: FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-        form.post('/forgot-password');
-    }
+    const { submit, bind, processing } = useAuthForm('/forgot-password', { email: '' });
 
-    return <AuthShell title="استعادة كلمة المرور" description="أدخلي بريدك وسنرسل لك رابطاً آمناً لإعادة التعيين." footer={<Link href="/login">العودة إلى تسجيل الدخول</Link>}>
+    return <AuthLayout title="استعادة كلمة المرور" description="أدخلي بريدك وسنرسل لك رابطاً آمناً لإعادة التعيين." footer={<Link href="/login">العودة إلى تسجيل الدخول</Link>}>
         <Head title="استعادة كلمة المرور" />
-        {status && <p className="account-status" role="status">إذا كان البريد مسجلاً، سيصلك رابط الاستعادة.</p>}
-        <form className="account-form" onSubmit={submit} noValidate>
-            <FormField label="البريد الإلكتروني" name="email" type="email" value={form.data.email} onChange={(event) => form.setData('email', event.target.value)} autoComplete="email" autoFocus required error={form.errors.email} />
-            <button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري الإرسال…' : 'إرسال رابط الاستعادة'}</button>
+        {status && <AuthStatus>إذا كان البريد مسجلاً، سيصلك رابط الاستعادة.</AuthStatus>}
+        <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
+            <AuthField label="البريد الإلكتروني" type="email" autoComplete="email" autoFocus required {...bind('email')} />
+            <AuthSubmit processing={processing} pendingLabel="جاري الإرسال…">إرسال رابط الاستعادة</AuthSubmit>
         </form>
-    </AuthShell>;
+    </AuthLayout>;
 }

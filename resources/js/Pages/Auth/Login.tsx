@@ -1,25 +1,30 @@
-import { Head, Link, useForm } from '@inertiajs/react';
-import type { FormEvent } from 'react';
-import { AuthShell } from '../../Domains/Users/Components/AuthShell';
-import { FormField } from '../../Domains/Users/Components/FormField';
+import { Head, Link } from '@inertiajs/react';
+import AuthField from '../../Components/Auth/AuthField';
+import AuthLayout from '../../Components/Auth/AuthLayout';
+import AuthStatus from '../../Components/Auth/AuthStatus';
+import AuthSubmit from '../../Components/Auth/AuthSubmit';
+import PasswordField from '../../Components/Auth/PasswordField';
+import useAuthForm from '../../Components/Auth/useAuthForm';
 
 interface LoginProps { status?: string | null }
 
 export default function Login({ status }: LoginProps) {
-    const form = useForm({ email: '', password: '', remember: false });
-    function submit(event: FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-        form.post('/login', { onFinish: () => form.reset('password') });
-    }
+    const { form, submit, bind, processing } = useAuthForm('/login', { email: '', password: '', remember: false as boolean }, ['password']);
 
-    return <AuthShell title="أهلاً برجوعك" description="ادخلي لحفظ تصاميمك ومتابعة مناسباتك." footer={<p>أول مرة هنا؟ <Link href="/register">أنشئي حسابك</Link></p>}>
+    return <AuthLayout promo="login" title="أهلاً برجوعك" description="ادخلي لحفظ تصاميمك ومتابعة مناسباتك." footer={<p className="m-0">أول مرة هنا؟ <Link href="/register">أنشئي حسابك</Link></p>}>
         <Head title="تسجيل الدخول" />
-        {status && <p className="account-status" role="status">{status}</p>}
-        <form className="account-form" onSubmit={submit} noValidate>
-            <FormField label="البريد الإلكتروني" name="email" type="email" value={form.data.email} onChange={(event) => form.setData('email', event.target.value)} autoComplete="email" autoFocus required error={form.errors.email} />
-            <FormField label="كلمة المرور" name="password" type="password" value={form.data.password} onChange={(event) => form.setData('password', event.target.value)} autoComplete="current-password" required error={form.errors.password} />
-            <div className="account-form-row"><label className="account-check"><input type="checkbox" checked={form.data.remember} onChange={(event) => form.setData('remember', event.target.checked)} />تذكريني</label><Link href="/forgot-password">نسيت كلمة المرور</Link></div>
-            <button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري الدخول…' : 'دخول'}</button>
+        {status && <AuthStatus>{status}</AuthStatus>}
+        <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
+            <AuthField label="البريد الإلكتروني" type="email" autoComplete="email" autoFocus required {...bind('email')} />
+            <PasswordField label="كلمة المرور" autoComplete="current-password" required {...bind('password')} />
+            <div className="flex flex-wrap items-center justify-between gap-x-6">
+                <label className="inline-flex min-h-11 cursor-pointer items-center gap-3 text-[15px]">
+                    <input type="checkbox" className="size-5 accent-methaq-primary" checked={form.data.remember} onChange={(event) => form.setData('remember', event.target.checked)} />
+                    تذكريني
+                </label>
+                <Link href="/forgot-password" className="inline-flex min-h-11 items-center text-[15px] font-medium text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 hover:decoration-methaq-gold">نسيت كلمة المرور</Link>
+            </div>
+            <AuthSubmit processing={processing} pendingLabel="جاري الدخول…">دخول</AuthSubmit>
         </form>
-    </AuthShell>;
+    </AuthLayout>;
 }

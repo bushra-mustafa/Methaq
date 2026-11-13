@@ -1,20 +1,17 @@
-import { Head, useForm } from '@inertiajs/react';
-import type { FormEvent } from 'react';
-import { AuthShell } from '../../Domains/Users/Components/AuthShell';
-import { FormField } from '../../Domains/Users/Components/FormField';
+import { Head } from '@inertiajs/react';
+import AuthLayout from '../../Components/Auth/AuthLayout';
+import AuthSubmit from '../../Components/Auth/AuthSubmit';
+import PasswordField from '../../Components/Auth/PasswordField';
+import useAuthForm from '../../Components/Auth/useAuthForm';
 
 export default function ConfirmPassword() {
-    const form = useForm({ password: '' });
-    function submit(event: FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-        form.post('/user/confirm-password', { onFinish: () => form.reset('password') });
-    }
+    const { submit, bind, processing } = useAuthForm('/user/confirm-password', { password: '' }, ['password']);
 
-    return <AuthShell title="أكدي كلمة المرور" description="هذه الخطوة تحمي إعدادات الأمان الحساسة في حسابك.">
+    return <AuthLayout title="أكدي كلمة المرور" description="هذه الخطوة تحمي إعدادات الأمان الحساسة في حسابك.">
         <Head title="تأكيد كلمة المرور" />
-        <form className="account-form" onSubmit={submit} noValidate>
-            <FormField label="كلمة المرور" name="password" type="password" value={form.data.password} onChange={(event) => form.setData('password', event.target.value)} autoComplete="current-password" autoFocus required error={form.errors.password} />
-            <button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري التأكيد…' : 'تأكيد ومتابعة'}</button>
+        <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
+            <PasswordField label="كلمة المرور" autoComplete="current-password" autoFocus required {...bind('password')} />
+            <AuthSubmit processing={processing} pendingLabel="جاري التأكيد…">تأكيد ومتابعة</AuthSubmit>
         </form>
-    </AuthShell>;
+    </AuthLayout>;
 }
