@@ -11,6 +11,7 @@ use App\Http\Middleware\GuardPublicForms;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireAdminWithTwoFactor;
 use App\Http\Middleware\RestrictPrototypeRoutes;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
 use App\Http\Support\BrandedErrorResponse;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
@@ -33,6 +34,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prepend(RestrictPrototypeRoutes::class);
         // After TrustProxies, so the forwarded scheme is known before deciding whether to redirect.
         $middleware->append(EnforceHttps::class);
+        $middleware->append(SecurityHeaders::class);
+        // Only the app domain and its invitation subdomains may be served; a forged Host header (reset-link poisoning) gets a 400.
+        $middleware->trustHosts(
+            at: static fn (): array => array_values(array_filter([
+                parse_url((string) config('app.url'), PHP_URL_HOST) ?: null,
+                config('methaq.invitation_domain'),
+                ...array_map('trim', explode(',', (string) env('METHAQ_TRUSTED_HOSTS', ''))),
+            ])),
+            subdomains: true,
+        );
         $middleware->web(append: [GuardPublicForms::class, HandleInertiaRequests::class]);
         // A changed password ends every session that still holds the old one.
         $middleware->authenticateSessions();

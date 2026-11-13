@@ -191,3 +191,10 @@ mv -Tf current.rollback current
 | فشل إنشاء `current` | الاستضافة لا تسمح بالروابط الرمزية أو `mv -T`؛ أوقفي النشر واطلبي مساراً مدعوماً من الدعم. |
 | فشل `/up` | سيحاول Workflow الرجوع تلقائياً. افحصي `.env` و`storage/logs/laravel.log` وdocument root. |
 | خطأ صلاحيات `storage` | تأكدي أن حساب SSH نفسه يملك `shared/storage`، ولا تستخدمي `chmod 777`. |
+
+## الترويسات الأمنية وقائمة المضيفين المسموحة
+
+- كل رد يحمل `X-Content-Type-Options` و`X-Frame-Options` و`Referrer-Policy` و`Permissions-Policy` و`Cross-Origin-Opener-Policy`. الصفحات العامة وصفحات التطبيق تحمل أيضاً `Content-Security-Policy` صارمة (سكربتات من الموقع نفسه فقط، وأصل Plausible فقط إذا فُعِّلت التحليلات). لوحة `/admin` تحمل الترويسات الأساسية فقط لأن Filament يستعمل سكربتات مضمّنة. لا تُرسل السياسة في البيئة `local`.
+- في الإنتاج يقبل التطبيق المضيفين `APP_URL` و`METHAQ_INVITATION_DOMAIN` ونطاقاتهما الفرعية فقط، وأي `Host` آخر يحصل على 400 (يمنع تسميم روابط إعادة كلمة المرور). إن احتجتِ مضيفاً إضافياً ضعيه في `METHAQ_TRUSTED_HOSTS` (قائمة مفصولة بفواصل).
+- **تحقق قبل النشر:** `APP_URL` هو نطاق الموقع الحقيقي، وليس `localhost`، وإلا يرفض التطبيق كل الطلبات.
+

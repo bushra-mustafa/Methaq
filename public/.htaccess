@@ -42,3 +42,8 @@
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 </IfModule>
+
+# Do not advertise the PHP version.
+<IfModule mod_headers.c>
+    Header always unset X-Powered-By
+</IfModule>
