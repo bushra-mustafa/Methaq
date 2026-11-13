@@ -31,7 +31,8 @@ function loadImage(url: string): Promise<HTMLImageElement> {
 }
 
 /** Burns the tiled brand watermark into a PNG data URL. Used for every downloadable preview. */
-export async function watermarkPreview(dataUrl: string): Promise<string> {
+/** `targetWidth` shrinks the marked image (keeping its ratio), e.g. for the 540px library preview. */
+export async function watermarkPreview(dataUrl: string, targetWidth?: number): Promise<string> {
     const image = await loadImage(dataUrl);
     const canvas = document.createElement('canvas');
     canvas.width = image.naturalWidth;
@@ -54,5 +55,15 @@ export async function watermarkPreview(dataUrl: string): Promise<string> {
     const stepY = Math.round(128 * unit);
     for (const tile of watermarkTiles(canvas.width, canvas.height, stepX, stepY)) context.fillText(WATERMARK_TEXT, tile.x, tile.y);
 
-    return canvas.toDataURL('image/png');
+    if (targetWidth === undefined || targetWidth >= canvas.width) return canvas.toDataURL('image/png');
+
+    const small = document.createElement('canvas');
+    small.width = targetWidth;
+    small.height = Math.round((canvas.height * targetWidth) / canvas.width);
+    const smallContext = small.getContext('2d');
+    if (!smallContext) throw new Error('Canvas is not available.');
+    smallContext.imageSmoothingQuality = 'high';
+    smallContext.drawImage(canvas, 0, 0, small.width, small.height);
+
+    return small.toDataURL('image/png');
 }

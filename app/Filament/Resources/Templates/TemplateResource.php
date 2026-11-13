@@ -102,6 +102,7 @@ final class TemplateResource extends Resource
                     ->placeholder('لا شيء'),
             ])
             ->recordActions([
+                self::designAction(),
                 self::commerceAction(),
                 self::visibilityAction(),
                 self::featuredAction(),
@@ -123,6 +124,15 @@ final class TemplateResource extends Resource
         }
 
         return LydAmount::format($priceMinor);
+    }
+
+    private static function designAction(): Action
+    {
+        return Action::make('design')
+            ->label('تصميم')
+            ->icon(Heroicon::OutlinedPencilSquare)
+            ->color('primary')
+            ->url(fn (Template $record): string => route('app.studio.templates.show', $record));
     }
 
     private static function commerceAction(): Action

@@ -15,7 +15,7 @@ use Illuminate\Validation\Validator;
 use InvalidArgumentException;
 use JsonException;
 
-final class SaveDesignRequest extends FormRequest
+class SaveDesignRequest extends FormRequest
 {
     public function authorize(): bool
     {

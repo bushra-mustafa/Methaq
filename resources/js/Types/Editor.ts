@@ -1,5 +1,14 @@
 import type { LayerFrame } from './Layer';
-import type { AssetType } from './Library';
+import type { AssetType, EventCategory } from './Library';
+
+export interface EditorTemplate {
+    id: number;
+    name: string;
+    category: EventCategory;
+    categoryLabel: string;
+    isActive: boolean;
+    priceMinor: number;
+}
 
 export interface EditorAsset {
     id: string;

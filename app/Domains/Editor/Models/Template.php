@@ -25,6 +25,7 @@ class Template extends Model
     /** @var array<string, int|bool> */
     protected $attributes = [
         'schema_version' => 1,
+        'design_revision' => 1,
         'is_active' => true,
         'is_featured' => false,
         'price_minor' => 0,
@@ -48,6 +49,7 @@ class Template extends Model
             'default_scene_json' => 'array',
             'default_palette_json' => 'array',
             'schema_version' => 'integer',
+            'design_revision' => 'integer',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'price_minor' => 'integer',

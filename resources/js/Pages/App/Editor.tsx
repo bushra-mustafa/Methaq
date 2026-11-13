@@ -14,6 +14,7 @@ import { updateCardBackground, updateCardMaterial } from '../../Domains/Editor/S
 import { resolveColor } from '../../Domains/Editor/Services/editorDocument';
 import { EditorTextPanel } from '../../Domains/Editor/Components/EditorTextPanel';
 import { EditorSuggestionsPanel } from '../../Domains/Editor/Components/EditorSuggestionsPanel';
+import { uploadTemplateThumbnail } from '../../Domains/Editor/Services/templateThumbnailClient';
 import { watermarkPreview } from '../../Domains/Editor/Services/previewWatermark';
 import { suggestionContent, type TextSuggestion } from '../../Domains/Editor/Services/textSuggestions';
 import { useCanvas } from '../../Domains/Editor/Hooks/useCanvas';
@@ -22,14 +23,18 @@ import { useDesignHistory } from '../../Domains/Editor/Hooks/useDesignHistory';
 import { parseDesignDocument } from '../../Domains/Editor/Services/DesignDocumentSerializer';
 import { addAsset, addCollection, addText, layerWarnings, moveLayer, removeLayer, replaceImageAsset, updateLayer, updatePaletteColor } from '../../Domains/Editor/Services/editorDocument';
 import type { DesignDocument } from '../../Types/DesignDocument';
-import type { EditorAsset, EditorCollection, EditorPanel } from '../../Types/Editor';
+import type { EditorAsset, EditorCollection, EditorPanel, EditorTemplate } from '../../Types/Editor';
 import type { EventDTO } from '../../Types/EventDTO';
 import type { Layer, TextLayer } from '../../Types/Layer';
 import type { HexColor, PaletteRole } from '../../Types/Palette';
 import '../../../css/editor.css';
 
 interface EditorProps {
-    event: EventDTO;
+    /** Present when an owner designs an event's card. */
+    event?: EventDTO;
+    /** Present, with mode 'template', when an administrator designs a library template. */
+    template?: EditorTemplate;
+    mode?: 'template';
     document: unknown;
     revision: number;
     assets: EditorAsset[];
@@ -41,9 +46,36 @@ function acceptsShortcut(target: EventTarget | null): boolean {
     return !(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable));
 }
 
-function EditorWorkspace({ event, document: initialDocument, revision, assets, collections, recommendedAssetIds }: Omit<EditorProps, 'document'> & { document: DesignDocument }) {
+/** What the editor is working on: an owner's event card, or a library template in the studio. */
+interface EditorSubject {
+    kind: 'event' | 'template';
+    id: string;
+    title: string;
+    category: EventDTO['category'];
+    categoryLabel: string;
+    saveUrl: string;
+    backHref: string;
+    backLabel: string;
+    exportName: string;
+    event: EventDTO | null;
+}
+
+function buildSubject(props: EditorProps): EditorSubject | null {
+    if (props.mode === 'template' && props.template) {
+        const template = props.template;
+        return { kind: 'template', id: String(template.id), title: template.name, category: template.category, categoryLabel: template.categoryLabel, saveUrl: `/app/studio/templates/${template.id}/design`, backHref: '/admin/templates', backLabel: 'الرجوع إلى القوالب', exportName: `template-${template.id}`, event: null };
+    }
+    if (props.event) {
+        const event = props.event;
+        return { kind: 'event', id: event.id, title: event.title, category: event.category, categoryLabel: event.categoryLabel, saveUrl: `/app/events/${event.id}/design`, backHref: `/app/events/${event.id}`, backLabel: 'الرجوع إلى المناسبة', exportName: `preview-${event.id}`, event };
+    }
+    return null;
+}
+
+function EditorWorkspace({ subject, document: initialDocument, revision, assets, collections, recommendedAssetIds }: Omit<EditorProps, 'document' | 'event' | 'template' | 'mode'> & { subject: EditorSubject; document: DesignDocument }) {
     const history = useDesignHistory(initialDocument);
-    const autosave = useAutosave(`/app/events/${event.id}/design`, history.value, revision);
+    const autosave = useAutosave(subject.saveUrl, history.value, revision);
+    const [thumbnailStatus, setThumbnailStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
     const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
     const [preview, setPreview] = useState<{ cardUrl: string; parts: PresentationCard | null; document: DesignDocument } | null>(null);
     const [panel, setPanel] = useState<EditorPanel>('layers');
@@ -132,9 +164,18 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
         void watermarkPreview(url).then((marked) => {
             const link = document.createElement('a');
             link.href = marked;
-            link.download = `methaq-preview-${event.id}.png`;
+            link.download = `methaq-${subject.exportName}.png`;
             link.click();
         });
+    };
+    const saveThumbnail = (): void => {
+        const url = canvasState.capturePreview();
+        if (!url || subject.kind !== 'template') return;
+        setThumbnailStatus('saving');
+        void watermarkPreview(url, 540)
+            .then((marked) => uploadTemplateThumbnail(subject.id, marked))
+            .then(() => setThumbnailStatus('saved'))
+            .catch(() => setThumbnailStatus('error'));
     };
     const addTextLayer = (font: EditorAsset): void => {
         const next = addText(history.value, font);
@@ -159,7 +200,7 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
             {panel === 'layers' && <EditorLayersPanel layers={history.value.canvas.layers} assets={assets} selectedId={selectedLayerId} onSelect={selectLayer} onToggleVisibility={(id) => history.commit((document) => updateLayer(document, id, (layer) => ({ ...layer, visible: !layer.visible })))} />}
             {panel === 'elements' && <EditorLibraryPanel assets={assets} collections={collections} recommendedAssetIds={recommendedAssetIds} placedAssetIds={placedAssetIds} onAddAsset={addVisualAsset} onAddCollection={addAssetCollection} />}
             {panel === 'text' && <EditorTextPanel mode="add" fonts={fonts} selected={null} onAdd={addTextLayer} onChange={changeText} />}
-            {panel === 'phrases' && <EditorSuggestionsPanel category={event.category} fonts={fonts} onInsert={insertSuggestion} />}
+            {panel === 'phrases' && <EditorSuggestionsPanel category={subject.category} fonts={fonts} onInsert={insertSuggestion} />}
             {panel === 'colors' && <EditorPalettePanel palette={history.value.palette} onChange={(role: PaletteRole, color: HexColor) => history.commit((document) => updatePaletteColor(document, role, color))} />}
             {panel === 'material' && <EditorMaterialPanel material={history.value.canvas.material} background={resolveColor(history.value.canvas.background, history.value)} onChange={(material) => history.commit((document) => updateCardMaterial(document, material))} onColorChange={(color) => history.commit((document) => updateCardBackground(document, color))} />}
         </> : selectedLayer ? <div className="editor-details">
@@ -175,9 +216,9 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
     </EditorControlPanel>;
 
     return <main className="editor-page" dir="rtl">
-        <Head title={`تصميم ${event.title}`} />
+        <Head title={subject.kind === 'template' ? `استوديو القالب ${subject.title}` : `تصميم ${subject.title}`} />
         <header className="editor-topbar">
-            <div className="editor-brand"><Link href={`/app/events/${event.id}`} onBefore={goBack} aria-label="الرجوع إلى المناسبة" title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل المغادرة' : 'الرجوع إلى المناسبة'} aria-disabled={autosave.hasUnsavedChanges}>→</Link><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><span>تصميم البطاقة</span></div>
+            <div className="editor-brand"><Link href={subject.backHref} onBefore={goBack} aria-label={subject.backLabel} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل المغادرة' : subject.backLabel} aria-disabled={autosave.hasUnsavedChanges}>→</Link><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><span>{subject.kind === 'template' ? 'استوديو القوالب' : 'تصميم البطاقة'}</span></div>
             <div className="editor-history-actions">
                 <span className={`editor-save-status is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} role="status">{autosave.message}</span>
                 <button type="button" disabled={!autosave.hasUnsavedChanges || autosave.status === 'saving' || autosave.status === 'conflict'} onClick={autosave.retry}>حفظ التعديلات</button>
@@ -186,13 +227,14 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
                 <button className="editor-preview-button" type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={showPreview}>معاينة الدعوة</button>
             </div>
         </header>
-        <EventJourney event={event} current="card" canLeave={!autosave.hasUnsavedChanges} />
+        {subject.event && <EventJourney event={subject.event} current="card" canLeave={!autosave.hasUnsavedChanges} />}
+        {subject.kind === 'template' && <aside className="editor-notice editor-studio-note" role="note">أنتِ تعدّلين قالباً في المكتبة. تظهر التعديلات في المناسبات الجديدة فقط، والمناسبات القائمة تحتفظ بنسختها. احفظي صورة المعاينة بعد الانتهاء.</aside>}
         <section className="editor-heading">
-            <div><p>ميثاق · {event.categoryLabel}</p><h1>{event.title}</h1><span>بطاقتك، بتفاصيل تشبهك.</span></div>
+            <div><p>ميثاق · {subject.categoryLabel}</p><h1>{subject.title}</h1><span>{subject.kind === 'template' ? 'قالب في مكتبة ميثاق.' : 'بطاقتك، بتفاصيل تشبهك.'}</span></div>
             <div className="editor-heading-tools">
                 <button className="editor-mobile-open" type="button" aria-haspopup="dialog" onClick={() => setMobileOpen(true)}>العناصر والتفاصيل ☷</button>
                 <button type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={exportPng}>تنزيل المعاينة PNG ↓</button>
-                <Link className="editor-next" href={`/app/events/${event.id}/presentation`} onBefore={goBack} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>التالي: اختيار الظرف ←</Link>
+                {subject.kind === 'template' ? <button className="editor-next" type="button" disabled={!canvasState.ready || Boolean(canvasState.error) || autosave.hasUnsavedChanges || thumbnailStatus === 'saving'} onClick={saveThumbnail}>{thumbnailStatus === 'saving' ? 'جارٍ حفظ المعاينة…' : thumbnailStatus === 'saved' ? 'حُفظت المعاينة ✓' : thumbnailStatus === 'error' ? 'تعذّر الحفظ، حاولي مجدداً' : 'حفظ صورة المعاينة'}</button> : <Link className="editor-next" href={`/app/events/${subject.id}/presentation`} onBefore={goBack} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>التالي: اختيار الظرف ←</Link>}
             </div>
         </section>
         {history.error && <aside className="editor-notice" role="alert">{history.error}<button type="button" onClick={history.dismissError}>إغلاق التنبيه</button></aside>}
@@ -217,14 +259,16 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
             <aside className="editor-sidebar" aria-label="لوحة تحرير البطاقة">{!mobileOpen && controls}</aside>
         </div>
         <EditorMobilePanel open={mobileOpen} onClose={closeMobile}>{controls}</EditorMobilePanel>
-        {preview && <InvitationPreview assets={assets} cardParts={preview.parts} scene={preview.document.scene} palette={preview.document.palette} cardUrl={preview.cardUrl} title={event.title} onClose={() => setPreview(null)} />}
+        {preview && <InvitationPreview assets={assets} cardParts={preview.parts} scene={preview.document.scene} palette={preview.document.palette} cardUrl={preview.cardUrl} title={subject.title} onClose={() => setPreview(null)} />}
     </main>;
 }
 
 export default function Editor(props: EditorProps) {
+    const subject = buildSubject(props);
     try {
-        return <EditorWorkspace {...props} document={parseDesignDocument(props.document)} />;
+        if (!subject) throw new Error('Missing editor subject');
+        return <EditorWorkspace subject={subject} document={parseDesignDocument(props.document)} revision={props.revision} assets={props.assets} collections={props.collections} recommendedAssetIds={props.recommendedAssetIds} />;
     } catch {
-        return <main className="editor-contract-error" dir="rtl"><Head title="تعذّر فتح التصميم" /><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><h1>تعذّر فتح التصميم</h1><p>بيانات البطاقة تحتاج مراجعة قبل بدء التعديل.</p><Link href={`/app/events/${props.event.id}`}>الرجوع إلى المناسبة</Link></main>;
+        return <main className="editor-contract-error" dir="rtl"><Head title="تعذّر فتح التصميم" /><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><h1>تعذّر فتح التصميم</h1><p>بيانات البطاقة تحتاج مراجعة قبل بدء التعديل.</p><Link href={subject?.backHref ?? '/app'}>{subject?.backLabel ?? 'الرجوع'}</Link></main>;
     }
 }

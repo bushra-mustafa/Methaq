@@ -40,7 +40,7 @@ final class FilamentTemplateResourceTest extends TestCase
         Filament::setCurrentPanel('admin');
     }
 
-    public function test_administrator_sees_every_template_without_create_or_delete(): void
+    public function test_administrator_sees_every_template_and_can_start_a_new_one_but_not_edit_or_delete_rows(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
         Template::query()->update(['price_minor' => 25_000]);
@@ -51,7 +51,8 @@ final class FilamentTemplateResourceTest extends TestCase
             ->assertSee('ياسمين أبيض');
 
         Livewire::test(ManageTemplates::class)
-            ->assertActionDoesNotExist('create')
+            ->assertActionExists('create')
+            ->assertTableActionDoesNotExist('delete')
             ->assertCanSeeTableRecords(Template::query()->get());
     }
 

@@ -30,6 +30,12 @@ final class TemplatePolicy
         return $this->create($user);
     }
 
+    /** Designing a template needs the same two-factor guarantee as the admin panel itself. */
+    public function design(User $user, Template $template): bool
+    {
+        return $this->update($user, $template) && $user->hasEnabledTwoFactorAuthentication();
+    }
+
     public function delete(User $user, Template $template): bool
     {
         return $this->create($user);

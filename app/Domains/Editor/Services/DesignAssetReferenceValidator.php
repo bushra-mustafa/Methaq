@@ -16,6 +16,12 @@ final class DesignAssetReferenceValidator
 {
     public function assertValid(DesignDocumentData $document, EventDesign $currentDesign): void
     {
+        $this->assertValidAgainst($document, $this->storedReferenceIds($currentDesign));
+    }
+
+    /** @param list<int> $previouslyReferencedIds Assets the stored design already uses, which stay allowed even if later deactivated. */
+    public function assertValidAgainst(DesignDocumentData $document, array $previouslyReferencedIds): void
+    {
         $requirements = $this->requirements($document);
         if ($requirements === []) {
             return;
@@ -25,7 +31,7 @@ final class DesignAssetReferenceValidator
             ->whereIn('id', array_keys($requirements))
             ->get()
             ->keyBy(static fn (TemplateAsset $asset): int => (int) $asset->getKey());
-        $previouslyReferenced = array_flip($this->storedReferenceIds($currentDesign));
+        $previouslyReferenced = array_flip($previouslyReferencedIds);
 
         foreach ($requirements as $id => $requirement) {
             $asset = $assets->get($id);
@@ -87,8 +93,20 @@ final class DesignAssetReferenceValidator
     /** @return list<int> */
     private function storedReferenceIds(EventDesign $design): array
     {
+        return $this->idsFromJson($design->design_json, $design->scene_json);
+    }
+
+    /**
+     * Asset ids a stored design and scene already use.
+     *
+     * @param  array<string, mixed>  $design
+     * @param  array<string, mixed>  $scene
+     * @return list<int>
+     */
+    public function idsFromJson(array $design, array $scene): array
+    {
         $ids = [];
-        $layers = $design->design_json['layers'] ?? [];
+        $layers = $design['layers'] ?? [];
         if (is_array($layers)) {
             foreach ($layers as $layer) {
                 if (! is_array($layer)) {
@@ -101,7 +119,7 @@ final class DesignAssetReferenceValidator
             }
         }
 
-        $audioId = $design->scene_json['audio']['asset']['assetId'] ?? null;
+        $audioId = $scene['audio']['asset']['assetId'] ?? null;
         if (is_string($audioId) && ctype_digit($audioId)) {
             $ids[] = (int) $audioId;
         }

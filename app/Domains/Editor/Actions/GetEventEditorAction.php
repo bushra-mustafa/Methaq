@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domains\Editor\Actions;
 
-use App\Domains\Editor\DTOs\EditorAssetData;
-use App\Domains\Editor\Models\AssetCollection;
-use App\Domains\Editor\Models\AssetCollectionItem;
 use App\Domains\Editor\Models\EventDesign;
-use App\Domains\Editor\Models\TemplateAsset;
+use App\Domains\Editor\Services\EditorLibrary;
 use App\Domains\Events\DTOs\EventData;
 use App\Domains\Events\Models\Event;
 use App\Domains\Users\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use RuntimeException;
 
@@ -28,35 +24,8 @@ final class GetEventEditorAction
             throw new RuntimeException('The event design is unavailable.');
         }
 
+        $library = new EditorLibrary;
         $referencedIds = $this->referencedAssetIds($design);
-        $assets = TemplateAsset::query()
-            ->where(static fn (Builder $query): Builder => $query
-                ->where('is_active', true)
-                ->when($referencedIds !== [], static fn (Builder $assetQuery): Builder => $assetQuery->orWhereIn('id', $referencedIds)))
-            ->orderBy('type')
-            ->orderBy('id')
-            ->get();
-
-        $collections = AssetCollection::query()
-            ->where('is_active', true)
-            ->with(['items' => static fn ($query) => $query
-                ->whereHas('asset', static fn ($assetQuery) => $assetQuery->where('is_active', true))
-                ->with('asset')
-                ->orderBy('sort_order')])
-            ->orderBy('id')
-            ->get()
-            ->filter(static fn (AssetCollection $collection): bool => $collection->items->isNotEmpty())
-            ->map(static fn (AssetCollection $collection): array => [
-                'id' => (string) $collection->getKey(),
-                'slug' => $collection->slug,
-                'name' => $collection->name,
-                'thumbnailUrl' => $collection->thumbnail_path === null ? null : '/'.ltrim($collection->thumbnail_path, '/'),
-                'items' => $collection->items->map(static fn (AssetCollectionItem $item): array => [
-                    'assetId' => (string) $item->template_asset_id,
-                    'placement' => $item->placement_json,
-                    'sortOrder' => $item->sort_order,
-                ])->values()->all(),
-            ])->values()->all();
 
         return [
             'event' => EventData::fromModel($event)->toArray(),
@@ -67,8 +36,8 @@ final class GetEventEditorAction
                 'scene' => $design->scene_json,
             ],
             'revision' => $design->revision,
-            'assets' => $assets->map(static fn (TemplateAsset $asset): array => EditorAssetData::fromModel($asset)->toArray())->values()->all(),
-            'collections' => $collections,
+            'assets' => $library->assets($referencedIds),
+            'collections' => $library->collections(),
             'recommendedAssetIds' => $event->template?->assets->pluck('id')->map(static fn (int $id): string => (string) $id)->values()->all() ?? [],
         ];
     }

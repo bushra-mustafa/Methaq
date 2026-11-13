@@ -60,24 +60,31 @@ final class TemplateLibrarySeeder extends Seeder
             $columns = $document->toStorageColumns();
             $template = Template::query()->where('slug', $definition['slug'])->first() ?? new Template;
             $isNew = ! $template->exists;
+            // A template an administrator redesigned in the studio (design_revision > 1) keeps its design and preview.
+            $designedByAdmin = ! $isNew && $template->design_revision > 1;
             $template->forceFill([
                 'slug' => $definition['slug'],
                 'name' => $definition['name'],
                 'category' => $definition['category'],
-                'thumbnail_path' => $definition['thumbnail_path'],
-                'default_design_json' => $columns['design_json'],
-                'default_scene_json' => $columns['scene_json'],
-                'default_palette_json' => $columns['palette_json'],
-                'schema_version' => $columns['schema_version'],
+                // A preview uploaded in the studio lives on the public disk (storage/...) and is never replaced.
+                ...(! $isNew && str_starts_with((string) $template->thumbnail_path, 'storage/') ? [] : ['thumbnail_path' => $definition['thumbnail_path']]),
+                ...($designedByAdmin ? [] : [
+                    'default_design_json' => $columns['design_json'],
+                    'default_scene_json' => $columns['scene_json'],
+                    'default_palette_json' => $columns['palette_json'],
+                    'schema_version' => $columns['schema_version'],
+                ]),
                 // Visibility, order, price and locked features belong to the administrator after the first seed.
                 ...($isNew ? ['is_active' => true, 'is_featured' => true, 'sort_order' => $position + 1] : []),
             ])->save();
 
-            $links = [];
-            foreach ($definition['assets'] as $sortOrder => $slug) {
-                $links[$assets[$slug]->getKey()] = ['sort_order' => $sortOrder];
+            if (! $designedByAdmin) {
+                $links = [];
+                foreach ($definition['assets'] as $sortOrder => $slug) {
+                    $links[$assets[$slug]->getKey()] = ['sort_order' => $sortOrder];
+                }
+                $template->assets()->sync($links);
             }
-            $template->assets()->sync($links);
         }
     }
 

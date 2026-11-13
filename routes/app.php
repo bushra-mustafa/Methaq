@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\SaveTemplateDesignController;
+use App\Http\Controllers\Admin\ShowTemplateStudioController;
+use App\Http\Controllers\Admin\StoreTemplateThumbnailController;
 use App\Http\Controllers\App\CreateEventController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\EventEditorController;
@@ -68,3 +71,11 @@ Route::get('/profile', ProfileController::class)
 
 Route::delete('/sessions/others', LogoutOtherSessionsController::class)
     ->name('sessions.destroy-others');
+
+// Template studio: administrators design library templates in the same editor. The policy also
+// requires confirmed two-factor authentication, exactly like the admin panel.
+Route::prefix('studio/templates/{template}')->whereNumber('template')->group(function (): void {
+    Route::get('/', ShowTemplateStudioController::class)->name('studio.templates.show');
+    Route::patch('/design', SaveTemplateDesignController::class)->name('studio.templates.design');
+    Route::post('/thumbnail', StoreTemplateThumbnailController::class)->middleware('throttle:20,1')->name('studio.templates.thumbnail');
+});
