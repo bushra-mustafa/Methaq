@@ -7,6 +7,7 @@ namespace App\Domains\Payments\DTOs;
 use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
+use App\Domains\Payments\Enums\PaymentRejectionReason;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Services\LydAmount;
 use App\Domains\Payments\Services\ManualPaymentEligibility;
@@ -33,6 +34,7 @@ final readonly class EventPaymentData
         public bool $canSubmit,
         public ?string $blocker,
         public ?array $latestOrder,
+        public ?string $rejectionMessage = null,
     ) {}
 
     public static function fromEvent(Event $event, ManualPaymentEligibility $eligibility): self
@@ -67,6 +69,7 @@ final readonly class EventPaymentData
                 'submittedAt' => $latestOrder->created_at->setTimezone($event->timezone)->toIso8601String(),
                 'reviewedAt' => $latestOrder->reviewed_at?->setTimezone($event->timezone)->toIso8601String(),
             ],
+            rejectionMessage: $state === 'rejected' ? self::rejectionMessage($latestOrder) : null,
         );
     }
 
@@ -82,6 +85,14 @@ final readonly class EventPaymentData
             'canSubmit' => $this->canSubmit,
             'blocker' => $this->blocker,
             'latestOrder' => $this->latestOrder,
+            'rejectionMessage' => $this->rejectionMessage,
         ];
+    }
+
+    private static function rejectionMessage(?Order $order): string
+    {
+        $reason = $order?->failure_code === null ? null : PaymentRejectionReason::tryFrom($order->failure_code);
+
+        return $reason?->ownerMessage() ?? 'لم نتمكن من اعتماد القسيمة السابقة. تأكدي من التحويل وارفعي قسيمة جديدة واضحة.';
     }
 }

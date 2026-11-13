@@ -24,4 +24,17 @@ class OrderFactory extends Factory
             'idempotency_key' => fake()->unique()->uuid(),
         ];
     }
+
+    /** A pending bank-transfer order with its receipt, as CreateManualPaymentAction records it. */
+    public function manualTransfer(): static
+    {
+        return $this->state(fn (): array => [
+            'amount' => 25_000,
+            'currency' => 'LYD',
+            'gateway' => 'manual_transfer',
+            'receipt_path' => 'payments/receipts/'.fake()->unique()->numberBetween(1, 999_999).'/'.fake()->uuid().'.jpg',
+            'receipt_sha256' => hash('sha256', fake()->unique()->uuid()),
+            'entitlements' => [],
+        ]);
+    }
 }

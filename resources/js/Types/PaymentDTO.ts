@@ -24,4 +24,5 @@ export interface EventPaymentDTO {
     canSubmit: boolean;
     blocker: string | null;
     latestOrder: LatestOrderDTO | null;
+    rejectionMessage: string | null;
 }

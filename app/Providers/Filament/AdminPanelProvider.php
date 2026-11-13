@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Http\Controllers\Admin\ShowPaymentReceiptController;
 use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -18,6 +19,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 /**
@@ -56,6 +58,12 @@ final class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->authenticatedRoutes(function (): void {
+                // Private receipts stream through the panel, never through a signed or public URL.
+                Route::get('/receipts/{order}', ShowPaymentReceiptController::class)
+                    ->whereNumber('order')
+                    ->name('receipts.show');
+            })
             ->authMiddleware([
                 SendAdministratorsToTwoFactorSetup::class,
                 Authenticate::class,

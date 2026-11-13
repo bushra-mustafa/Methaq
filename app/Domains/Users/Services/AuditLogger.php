@@ -12,7 +12,7 @@ use App\Domains\Users\Models\User;
 
 final class AuditLogger
 {
-    /** @param array{active?: bool, previousActive?: bool} $metadata */
+    /** @param array<string, mixed> $metadata */
     public function record(
         ?User $actor,
         AuditAction $action,
