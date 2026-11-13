@@ -923,3 +923,24 @@
     align-items: center;
     min-height: 44px;
 }
+
+/* Replies to an event (owner only) */
+.rsvp-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.rsvp-heading h2 { margin: 0 0 6px; font-size: 24px; }
+.rsvp-heading p { margin: 0; max-width: 60ch; color: #434842; }
+.rsvp-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.rsvp-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin: 0 0 28px; }
+.rsvp-summary > div { border: 1px solid #6b7068; border-radius: 12px; padding: 16px 18px; background: #fff; }
+.rsvp-summary dt { font-size: 14px; color: #434842; }
+.rsvp-summary dd { margin: 6px 0 2px; font-size: 34px; font-weight: 600; color: #203322; }
+.rsvp-summary small { color: #434842; font-size: 13px; }
+.rsvp-empty { border: 1px dashed #6b7068; border-radius: 12px; padding: 22px; color: #434842; }
+.rsvp-table-wrap { overflow-x: auto; border: 1px solid #6b7068; border-radius: 12px; background: #fff; }
+.rsvp-table { width: 100%; min-width: 640px; border-collapse: collapse; }
+.rsvp-table th, .rsvp-table td { padding: 12px 14px; text-align: start; border-bottom: 1px solid #e4e0d5; vertical-align: top; }
+.rsvp-table thead th { font-size: 13px; color: #434842; background: #f6fbf2; }
+.rsvp-table tbody th { font-weight: 600; }
+.rsvp-status { font-weight: 600; white-space: nowrap; }
+.rsvp-status.is-attending { color: #1d5a2a; }
+.rsvp-status.is-declined { color: #8a2b2b; }
+.rsvp-status.is-maybe { color: #6a5321; }

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\App;
 use App\Domains\Events\Actions\GetEventAction;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Actions\GetEventPaymentAction;
+use App\Domains\RSVP\Actions\ListEventRsvpsAction;
 use App\Domains\Users\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ use Inertia\Response;
 
 final class ShowEventController extends Controller
 {
-    public function __invoke(Request $request, Event $event, GetEventAction $getEvent, GetEventPaymentAction $getPayment): Response
+    public function __invoke(Request $request, Event $event, GetEventAction $getEvent, GetEventPaymentAction $getPayment, ListEventRsvpsAction $rsvps): Response
     {
         $owner = $request->user();
         abort_unless($owner instanceof User, 401);
@@ -23,6 +24,7 @@ final class ShowEventController extends Controller
         return Inertia::render('App/Events/Show', [
             'event' => $getEvent->execute($owner, $event)->toArray(),
             'payment' => $getPayment->execute($owner, $event)->toArray(),
+            'rsvpSummary' => $rsvps->summary($event),
         ]);
     }
 }

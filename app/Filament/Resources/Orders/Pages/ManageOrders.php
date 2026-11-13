@@ -51,7 +51,7 @@ final class ManageOrders extends ManageRecords
             fputcsv($out, ['رقم الطلب', 'الاسم', 'البريد', 'المناسبة', 'القالب', 'المبلغ (د.ل)', 'الحالة', 'تاريخ الرفع', 'تاريخ القرار', 'سبب الرفض']);
 
             $query->lazyById(200)->each(function (Order $order) use ($out, $timezone, $labels): void {
-                fputcsv($out, array_map(self::safeCell(...), [
+                fputcsv($out, array_map(CsvCell::safe(...), [
                     (string) $order->getKey(),
                     (string) $order->user?->name,
                     (string) $order->user?->email,
@@ -67,11 +67,5 @@ final class ManageOrders extends ManageRecords
 
             fclose($out);
         }, 'methaq-receipts-'.now()->format('Y-m-d').'.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
-    }
-
-    /** A cell that starts like a formula would run in Excel; a leading apostrophe turns it back into text. */
-    private static function safeCell(string $value): string
-    {
-        return $value !== '' && str_contains('=+-@', $value[0]) ? "'".$value : $value;
     }
 }

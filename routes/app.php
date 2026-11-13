@@ -10,6 +10,7 @@ use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\EventEditorController;
 use App\Http\Controllers\App\EventPaymentController;
 use App\Http\Controllers\App\EventPresentationController;
+use App\Http\Controllers\App\ExportEventRsvpsController;
 use App\Http\Controllers\App\IvoryProposalController;
 use App\Http\Controllers\App\LogoutOtherSessionsController;
 use App\Http\Controllers\App\ProfileController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\App\PublishEventController;
 use App\Http\Controllers\App\SaveEventDesignController;
 use App\Http\Controllers\App\SaveProposalDraftController;
 use App\Http\Controllers\App\ShowEventController;
+use App\Http\Controllers\App\ShowEventRsvpsController;
 use App\Http\Controllers\App\StoreEventController;
 use App\Http\Controllers\App\SubmitPaymentReceiptController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +41,15 @@ Route::post('/events', StoreEventController::class)
 Route::get('/events/{event}', ShowEventController::class)
     ->whereNumber('event')
     ->name('events.show');
+
+Route::get('/events/{event}/rsvps', ShowEventRsvpsController::class)
+    ->whereNumber('event')
+    ->name('events.rsvps');
+
+Route::get('/events/{event}/rsvps/export', ExportEventRsvpsController::class)
+    ->whereNumber('event')
+    ->middleware('throttle:20,1')
+    ->name('events.rsvps.export');
 
 Route::get('/events/{event}/editor', EventEditorController::class)
     ->whereNumber('event')

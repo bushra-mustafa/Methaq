@@ -41,3 +41,24 @@ export interface SelectOption<TValue extends string> {
     value: TValue;
     label: string;
 }
+
+export interface RsvpSummary {
+    responses: number;
+    attending: number;
+    companions: number;
+    headcount: number;
+    declined: number;
+    maybe: number;
+}
+
+export type RsvpStatus = 'attending' | 'declined' | 'maybe';
+
+export interface RsvpRow {
+    id: string;
+    guestName: string;
+    guestPhone: string | null;
+    status: RsvpStatus;
+    companions: number;
+    notes: string | null;
+    submittedAt: string | null;
+}
