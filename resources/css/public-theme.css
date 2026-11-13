@@ -67,6 +67,7 @@
     --animate-methaq-dust: methaq-dust 5s ease-in-out infinite;
     --animate-methaq-soft-pulse: methaq-soft-pulse 2.4s ease-in-out infinite;
     --animate-methaq-hero-in: methaq-hero-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    --animate-methaq-fan: methaq-fan 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
 
     @keyframes methaq-dust {
         0% {
@@ -91,6 +92,18 @@
         to {
             opacity: 1;
             transform: none;
+        }
+    }
+
+    /* Cards slide out of a single stack into their fanned pose (--fan-x/y/r). */
+    @keyframes methaq-fan {
+        from {
+            opacity: 0;
+            transform: translate(0, 1.5rem) rotate(0deg) scale(0.94);
+        }
+        to {
+            opacity: 1;
+            transform: translate(var(--fan-x), var(--fan-y)) rotate(var(--fan-r));
         }
     }
 

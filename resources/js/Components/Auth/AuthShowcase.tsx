@@ -1,11 +1,11 @@
 import { Check } from "lucide-react";
-import HomeEnvelopeShowcase from "../Public/Home/HomeEnvelopeShowcase";
+import AuthCardFan from "./AuthCardFan";
 import { EightPointStar } from "../Public/Home/Ornament";
 import { authPromises, authPromos } from "./authPromos";
 import type { AuthPromoKey } from "./authPromos";
 
 /**
- * The product on show beside the form: the real envelope opening on the dark ink band
+ * The product on show beside the form: three sample invitations fanned out on the dark ink band
  * (on large screens), the headline, and the reasons to try it.
  */
 export default function AuthShowcase({ promo }: { promo: AuthPromoKey }) {
@@ -42,7 +42,7 @@ export default function AuthShowcase({ promo }: { promo: AuthPromoKey }) {
                     className="hidden lg:block motion-safe:animate-methaq-hero-in"
                     style={{ animationDelay: "400ms" }}
                 >
-                    <HomeEnvelopeShowcase mode="auto" />
+                    <AuthCardFan />
                 </div>
 
                 <ul className="m-0 flex list-none flex-col gap-4 border-t border-methaq-gold-light/25 p-0 pt-7">

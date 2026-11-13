@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import type { PropsWithChildren, ReactNode } from "react";
-import { CornerFlourish, EightPointStar } from "../Public/Home/Ornament";
+import { CornerFlourish } from "../Public/Home/Ornament";
 import AuthShowcase from "./AuthShowcase";
 import type { AuthPromoKey } from "./authPromos";
 
@@ -74,8 +74,7 @@ export default function AuthLayout({
                             />
                         ))}
 
-                        <header className="flex flex-col items-center gap-3 pb-8 text-center">
-                            <EightPointStar className="size-9 text-methaq-gold" />
+                        <header className="flex flex-col items-center gap-3 pb-8 pt-2 text-center">
                             <h1 className="m-0 font-methaq-display text-[clamp(2rem,1.6rem+1.4vw,2.6rem)] leading-[1.3] font-bold tracking-[-0.01em] text-balance text-methaq-primary">
                                 {title}
                             </h1>
