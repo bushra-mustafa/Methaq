@@ -69,7 +69,7 @@ final class EventManagementTest extends TestCase
         ]);
 
         $event = Event::query()->with('design')->sole();
-        $response->assertRedirect(route('app.events.show', $event));
+        $response->assertRedirect(route('app.events.editor', $event));
         $this->assertSame($user->getKey(), $event->user_id);
         $this->assertSame(EventCategory::Wedding, $event->category);
         $this->assertSame(EventStatus::Draft, $event->status);
@@ -117,7 +117,7 @@ final class EventManagementTest extends TestCase
         ]));
 
         $event = Event::query()->with('design')->sole();
-        $response->assertRedirect(route('app.events.show', $event));
+        $response->assertRedirect(route('app.events.editor', $event));
         $this->assertNull($event->template_id);
         $this->assertSame(EventCategory::Graduation, $event->category);
         $this->assertSame([], $event->design->design_json['layers']);

@@ -1,3 +1,4 @@
+import { EventJourney } from '../../Domains/Events/Components/EventJourney';
 import type { PresentationCard } from '../../Types/PresentationCard';
 import { Head, Link } from '@inertiajs/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -167,12 +168,13 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
                 <button className="editor-preview-button" type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={showPreview}>معاينة الدعوة</button>
             </div>
         </header>
+        <EventJourney event={event} current="card" canLeave={!autosave.hasUnsavedChanges} />
         <section className="editor-heading">
             <div><p>ميثاق · {event.categoryLabel}</p><h1>{event.title}</h1><span>بطاقتك، بتفاصيل تشبهك.</span></div>
             <div className="editor-heading-tools">
                 <button className="editor-mobile-open" type="button" aria-haspopup="dialog" onClick={() => setMobileOpen(true)}>العناصر والتفاصيل ☷</button>
                 <button type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={exportPng}>تنزيل المعاينة PNG ↓</button>
-                <Link href={`/app/events/${event.id}/presentation`} onBefore={goBack} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>الظرف وتجربة الفتح ←</Link>
+                <Link className="editor-next" href={`/app/events/${event.id}/presentation`} onBefore={goBack} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>التالي: اختيار الظرف ←</Link>
             </div>
         </section>
         {history.error && <aside className="editor-notice" role="alert">{history.error}<button type="button" onClick={history.dismissError}>إغلاق التنبيه</button></aside>}

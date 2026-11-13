@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import { EventJourney } from '../../Domains/Events/Components/EventJourney';
 import { PublishPanel } from '../../Domains/Events/Components/PublishPanel';
 import { InvitationPlayer } from '../../Domains/Editor/Components/InvitationPlayer';
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
@@ -35,6 +36,7 @@ function PresentationWorkspace({ event, document, revision, assets, publish }: O
             <img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" />
             <div className="presentation-topbar-actions"><span className={`is-${autosave.status}`} role="status">{autosave.message}</span><button type="button" onClick={history.undo} disabled={!history.canUndo}>تراجع</button><button type="button" onClick={history.redo} disabled={!history.canRedo}>إعادة</button></div>
         </header>
+        <EventJourney event={event} current="envelope" canLeave={!autosave.hasUnsavedChanges} />
         <div className="presentation-content">
             <header className="presentation-heading"><div><p>{event.title}</p><h1>قبل أن تبدأ الحكاية</h1><p>اختاري الظرف، ضعي ختمك، وجرّبي اللحظة الأولى لفتح الدعوة.</p></div><div className="presentation-preview-actions"><button type="button" disabled={!canPreview} onClick={() => setFullPreview(true)}>معاينة كاملة ↗</button></div></header>
             <div className="presentation-layout">

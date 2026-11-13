@@ -1,3 +1,4 @@
+import { EventJourney } from '../../../Domains/Events/Components/EventJourney';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { paymentStateLabels } from '../../../Domains/Payments/Services/paymentState';
@@ -38,6 +39,7 @@ export default function EventPayment({ event, payment }: PaymentPageProps) {
 
     return <AppShell eyebrow={event.title} title="الدفع بالتحويل البنكي">
         <Head title={`الدفع · ${event.title}`} />
+        <EventJourney event={event} current="payment" />
         {flash.status === 'receipt-submitted' && <aside className="event-success" role="status"><strong>وصلتنا القسيمة</strong><span>سنراجعها بعد التأكد من وصول المبلغ، ويظهر القرار في هذه الصفحة.</span></aside>}
 
         <section className="payment-layout">

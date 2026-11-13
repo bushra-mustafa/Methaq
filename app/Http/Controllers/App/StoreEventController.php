@@ -19,6 +19,6 @@ final class StoreEventController extends Controller
 
         $event = $createEvent->execute($owner, $request->toData());
 
-        return redirect()->route('app.events.show', $event)->with('status', 'event-created');
+        return redirect()->route('app.events.editor', $event)->with('status', 'event-created');
     }
 }
