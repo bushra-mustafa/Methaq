@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    # Weekly, so a newly published advisory shows up even when nobody pushes.
+    - cron: '0 5 * * 1'
 
 jobs:
   verify:
@@ -43,6 +46,14 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm ci
+
+      - name: Audit PHP dependencies
+        run: composer audit --no-interaction
+
+      - name: Audit production frontend dependencies
+        # Reported but not blocking until fabric is upgraded to 7 (its advisory concerns SVG export, which the app does not use).
+        continue-on-error: true
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Prepare application
         run: |

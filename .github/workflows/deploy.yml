@@ -51,6 +51,13 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
+      - name: Report dependency advisories
+        # Informational here so an unrelated advisory cannot block a deploy; the Quality workflow enforces composer audit.
+        continue-on-error: true
+        run: |
+          composer audit --no-interaction
+          npm audit --omit=dev --audit-level=high
+
       - name: Prepare test environment
         run: |
           cp .env.example .env
