@@ -66,6 +66,13 @@ final class CreateEventRequest extends FormRequest
 
             if ($eventDate->format('Y-m-d\TH:i') !== $this->input('event_date') || $eventDate->lessThanOrEqualTo(CarbonImmutable::now($eventDate->getTimezone()))) {
                 $validator->errors()->add('event_date', 'اختاري موعداً مستقبلياً صالحاً للمناسبة.');
+
+                return;
+            }
+
+            $years = (int) config('methaq.limits.max_event_years_ahead');
+            if ($eventDate->greaterThan(CarbonImmutable::now($eventDate->getTimezone())->addYears($years))) {
+                $validator->errors()->add('event_date', "اختاري موعداً خلال {$years} سنوات من اليوم.");
             }
         }];
     }

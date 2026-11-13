@@ -181,6 +181,32 @@ final class EventManagementTest extends TestCase
         $this->assertDatabaseCount('events', 0);
     }
 
+    public function test_an_event_date_beyond_the_allowed_horizon_is_rejected(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post('/app/events', $this->validPayload(['event_date' => '9999-12-31T10:00']))
+            ->assertSessionHasErrors('event_date');
+        $this->actingAs($user)->post('/app/events', $this->validPayload(['event_date' => now()->addYears(5)->format('Y-m-d\TH:i')]))
+            ->assertSessionHasErrors('event_date');
+
+        $this->assertDatabaseCount('events', 0);
+    }
+
+    public function test_an_account_cannot_exceed_its_open_event_limit_and_expired_events_do_not_count(): void
+    {
+        config(['methaq.limits.max_open_events' => 2]);
+        $user = User::factory()->create();
+        Event::factory()->count(2)->create(['user_id' => $user->getKey()])->each(fn (Event $event) => EventDesign::factory()->create(['event_id' => $event->getKey()]));
+
+        $this->actingAs($user)->post('/app/events', $this->validPayload())->assertSessionHasErrors('title');
+        $this->assertSame(2, Event::query()->where('user_id', $user->getKey())->count());
+
+        Event::query()->where('user_id', $user->getKey())->first()?->forceFill(['status' => EventStatus::Expired])->save();
+        $this->actingAs($user)->post('/app/events', $this->validPayload())->assertSessionHasNoErrors();
+        $this->assertSame(3, Event::query()->where('user_id', $user->getKey())->count());
+    }
+
     public function test_event_view_and_dashboard_are_owner_only_even_for_admin(): void
     {
         $owner = User::factory()->create();

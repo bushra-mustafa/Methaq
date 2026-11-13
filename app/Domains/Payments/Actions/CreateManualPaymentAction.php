@@ -60,6 +60,11 @@ final class CreateManualPaymentAction
                     throw ValidationException::withMessages(['receipt' => $blocker]);
                 }
 
+                $pending = Order::query()->where('user_id', $owner->getKey())->where('status', OrderStatus::Pending->value)->count();
+                if ($pending >= (int) config('methaq.limits.max_pending_receipts')) {
+                    throw ValidationException::withMessages(['receipt' => 'لديك عدة قسائم قيد المراجعة. انتظري قرار الإدارة عليها قبل رفع قسيمة أخرى.']);
+                }
+
                 $order = new Order;
                 $order->forceFill([
                     'user_id' => $owner->getKey(),

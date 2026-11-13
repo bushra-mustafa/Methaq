@@ -186,6 +186,19 @@ final class ManualPaymentTest extends TestCase
         Order::factory()->create(['event_id' => $event->getKey(), 'gateway' => PaymentGateway::ManualTransfer->value, 'currency' => 'LYD']);
     }
 
+    public function test_an_account_cannot_queue_more_receipts_than_the_pending_limit(): void
+    {
+        config(['methaq.limits.max_pending_receipts' => 1]);
+        $first = $this->draftEvent(priceMinor: 25_000);
+        $second = Event::factory()->create(['user_id' => $first->user_id, 'template_id' => $first->template_id])->load(['user', 'template']);
+
+        $this->actingAs($first->user)->post("/app/events/{$first->getKey()}/payment", ['receipt' => UploadedFile::fake()->image('a.jpg', 600, 900)])->assertSessionHasNoErrors();
+        $this->actingAs($first->user)->post("/app/events/{$second->getKey()}/payment", ['receipt' => UploadedFile::fake()->image('b.jpg', 600, 900)])
+            ->assertSessionHasErrors('receipt');
+
+        $this->assertSame(1, Order::query()->count());
+    }
+
     /** @param list<TemplateFeature> $locked */
     private function draftEvent(int $priceMinor, array $locked = []): Event
     {

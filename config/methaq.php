@@ -12,6 +12,16 @@ return [
      */
     'invitation_grace_days' => (int) env('METHAQ_INVITATION_GRACE_DAYS', 2),
 
+    /**
+     * Abuse limits per account. They stop one account from filling the database or the review queue.
+     * max_event_years_ahead bounds the event date (a far-future date also breaks the expiry maths).
+     */
+    'limits' => [
+        'max_open_events' => (int) env('METHAQ_MAX_OPEN_EVENTS', 25),
+        'max_pending_receipts' => (int) env('METHAQ_MAX_PENDING_RECEIPTS', 3),
+        'max_event_years_ahead' => (int) env('METHAQ_MAX_EVENT_YEARS_AHEAD', 3),
+    ],
+
     'invitation_timezone' => env('METHAQ_INVITATION_TIMEZONE', 'Africa/Tripoli'),
 
     /*

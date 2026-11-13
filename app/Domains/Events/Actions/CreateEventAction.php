@@ -36,6 +36,7 @@ final class CreateEventAction
         for ($attempt = 0; $attempt < self::MAXIMUM_SLUG_ATTEMPTS; $attempt++) {
             try {
                 return DB::transaction(function () use ($owner, $data, $attempt): Event {
+                    $this->assertUnderOpenEventLimit($owner);
                     $template = $this->activeTemplate($data->templateId);
                     $document = $template === null
                         ? $this->blankDesignFactory->make()->toStorageColumns()
@@ -80,6 +81,21 @@ final class CreateEventAction
         }
 
         throw new RuntimeException('Unable to reserve a unique event subdomain.');
+    }
+
+    /** One account cannot pile up unlimited unfinished events; expired events no longer count. */
+    private function assertUnderOpenEventLimit(User $owner): void
+    {
+        // The owner row serialises concurrent creations so the count below cannot be raced past.
+        User::query()->whereKey($owner->getKey())->lockForUpdate()->first();
+        $open = Event::query()->where('user_id', $owner->getKey())->where('status', '!=', EventStatus::Expired->value)->count();
+        $limit = (int) config('methaq.limits.max_open_events');
+
+        if ($open >= $limit) {
+            throw ValidationException::withMessages([
+                'title' => "وصلتِ إلى الحد الأقصى من المناسبات المفتوحة ({$limit}). احذفي مناسبة لا تحتاجينها أو انتظري انتهاء إحداها.",
+            ]);
+        }
     }
 
     private function activeTemplate(?int $templateId): ?Template
