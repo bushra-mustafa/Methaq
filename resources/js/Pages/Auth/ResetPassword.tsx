@@ -16,7 +16,7 @@ export default function ResetPassword({ email, token }: ResetPasswordProps) {
             <AuthField label="البريد الإلكتروني" type="email" autoComplete="email" required {...bind('email')} />
             <PasswordField label="كلمة المرور الجديدة" autoComplete="new-password" autoFocus required {...bind('password')} />
             <PasswordField label="تأكيد كلمة المرور" autoComplete="new-password" required {...bind('password_confirmation')} />
-            <AuthSubmit processing={processing} pendingLabel="جاري الحفظ…">حفظ كلمة المرور</AuthSubmit>
+            <AuthSubmit processing={processing}>احفظي</AuthSubmit>
         </form>
     </AuthLayout>;
 }

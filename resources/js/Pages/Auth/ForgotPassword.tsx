@@ -15,7 +15,7 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
         {status && <AuthStatus>إذا كان البريد مسجلاً، سيصلك رابط الاستعادة.</AuthStatus>}
         <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
             <AuthField label="البريد الإلكتروني" type="email" autoComplete="email" autoFocus required {...bind('email')} />
-            <AuthSubmit processing={processing} pendingLabel="جاري الإرسال…">إرسال رابط الاستعادة</AuthSubmit>
+            <AuthSubmit processing={processing}>أرسلي</AuthSubmit>
         </form>
     </AuthLayout>;
 }

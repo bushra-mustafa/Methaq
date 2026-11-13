@@ -24,7 +24,7 @@ export default function Login({ status }: LoginProps) {
                 </label>
                 <Link href="/forgot-password" className="inline-flex min-h-11 items-center text-[15px] font-medium text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 hover:decoration-methaq-gold">نسيت كلمة المرور</Link>
             </div>
-            <AuthSubmit processing={processing} pendingLabel="جاري الدخول…">دخول</AuthSubmit>
+            <AuthSubmit processing={processing}>دخول</AuthSubmit>
         </form>
     </AuthLayout>;
 }

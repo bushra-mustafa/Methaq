@@ -16,7 +16,7 @@ export default function Register() {
             <AuthField label="رقم الهاتف (اختياري)" type="tel" autoComplete="tel" {...bind('phone')} />
             <PasswordField label="كلمة المرور" autoComplete="new-password" required hint="12 حرفاً على الأقل، مع حرف كبير ورقم ورمز." {...bind('password')} />
             <PasswordField label="تأكيد كلمة المرور" autoComplete="new-password" required {...bind('password_confirmation')} />
-            <AuthSubmit processing={processing} pendingLabel="جاري إنشاء الحساب…">إنشاء الحساب</AuthSubmit>
+            <AuthSubmit processing={processing}>سجّلي</AuthSubmit>
         </form>
     </AuthLayout>;
 }
