@@ -62,6 +62,12 @@ class Template extends Model
      * @param  Builder<Template>  $query
      * @return Builder<Template>
      */
+    /** Templates people may see and start from: switched on by an administrator and priced. Unpriced ones stay hidden. */
+    public function scopeOnSale(Builder $query): Builder
+    {
+        return $query->where('is_active', true)->where('price_minor', '>', 0);
+    }
+
     public function scopeLibraryOrder(Builder $query): Builder
     {
         return $query->orderBy('sort_order')->orderBy('id');

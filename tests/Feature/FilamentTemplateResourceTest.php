@@ -43,6 +43,7 @@ final class FilamentTemplateResourceTest extends TestCase
     public function test_administrator_sees_every_template_without_create_or_delete(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
 
         $this->actingAs($this->administrator())->get('/admin/templates')
             ->assertOk()
@@ -121,6 +122,7 @@ final class FilamentTemplateResourceTest extends TestCase
     public function test_reseeding_keeps_the_administrators_price_order_and_locks(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $template = Template::query()->where('slug', 'jasmine-white')->sole();
         $template->forceFill(['price_minor' => 40_000, 'sort_order' => 1, 'locked_features' => [TemplateFeature::HdDownload]])->save();
 

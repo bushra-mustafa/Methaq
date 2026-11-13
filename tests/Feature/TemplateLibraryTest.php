@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Domains\Editor\Actions\ListFeaturedTemplatesAction;
 use App\Domains\Editor\Models\AssetCollection;
 use App\Domains\Editor\Models\Template;
 use App\Domains\Editor\Models\TemplateAsset;
+use App\Domains\Users\Models\User;
 use Database\Seeders\TemplateLibrarySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +35,9 @@ final class TemplateLibraryTest extends TestCase
     public function test_library_seed_is_idempotent_and_keeps_originals_private(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
 
         $this->assertDatabaseCount('templates', 12);
         $this->assertDatabaseCount('template_assets', 49);
@@ -72,6 +76,7 @@ final class TemplateLibraryTest extends TestCase
     public function test_template_documents_reference_versioned_library_assets(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $assets = TemplateAsset::query()->get()->keyBy(static fn (TemplateAsset $asset): string => (string) $asset->getKey());
 
         Template::query()->each(function (Template $template) use ($assets): void {
@@ -96,6 +101,7 @@ final class TemplateLibraryTest extends TestCase
     public function test_public_library_exposes_only_active_previews_and_supports_category_filtering(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         Template::query()->where('slug', 'burgundy-noir')->update(['is_active' => false]);
         TemplateAsset::query()->where('slug', 'wax-seal')->update(['is_active' => false]);
 
@@ -127,6 +133,7 @@ final class TemplateLibraryTest extends TestCase
     public function test_henna_noir_template_opens_in_the_animated_scene_with_its_music(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $template = Template::query()->where('slug', 'henna-noir')->firstOrFail();
         $audio = TemplateAsset::query()->where('slug', 'audio-henna-celebration')->firstOrFail();
 
@@ -158,6 +165,7 @@ final class TemplateLibraryTest extends TestCase
     public function test_each_theme_template_recommends_its_whole_package_and_has_a_ready_set(string $templateSlug, string $family): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
 
         $template = Template::query()->where('slug', $templateSlug)->with('assets')->sole();
         $packageAssets = $template->assets->filter(fn (TemplateAsset $asset): bool => ($asset->metadata['family'] ?? null) === $family);
@@ -172,6 +180,7 @@ final class TemplateLibraryTest extends TestCase
     public function test_collections_keep_typed_placement_for_each_item(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
 
         AssetCollection::query()->with('items')->each(function (AssetCollection $collection): void {
             $this->assertNotEmpty($collection->items);
@@ -187,6 +196,7 @@ final class TemplateLibraryTest extends TestCase
     public function test_original_islamic_ornaments_are_owned_and_available_as_a_ready_collection(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
 
         $ornaments = TemplateAsset::query()
             ->whereJsonContains('metadata->sourceProject', 'methaq-original-islamic-ornaments')
@@ -214,5 +224,29 @@ final class TemplateLibraryTest extends TestCase
             ],
             $collection->items->pluck('asset.slug')->all(),
         );
+    }
+
+    public function test_templates_without_a_price_are_hidden_everywhere_and_cannot_start_an_event(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
+        $hidden = Template::query()->where('slug', 'powder-gold')->sole();
+        $hidden->forceFill(['price_minor' => 0])->save();
+
+        $this->withoutVite()->get('/templates')->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
+            ->has('templates', 11)
+            ->where('templates', fn ($templates): bool => ! collect($templates)->contains(fn (array $template): bool => $template['slug'] === 'powder-gold')));
+
+        $this->assertNotContains('powder-gold', array_column(app(ListFeaturedTemplatesAction::class)->execute(), 'slug'));
+
+        $this->actingAs(User::factory()->create())
+            ->post('/app/events', [
+                'title' => 'حفل',
+                'category' => 'wedding',
+                'template_id' => $hidden->getKey(),
+                'event_date' => '2027-03-26T12:00',
+                'timezone' => 'Africa/Tripoli',
+            ])
+            ->assertSessionHasErrors('template_id');
     }
 }

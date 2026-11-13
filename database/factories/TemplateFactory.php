@@ -23,6 +23,7 @@ class TemplateFactory extends Factory
             'default_design_json' => ['schemaVersion' => 1, 'width' => 1080, 'height' => 1920, 'layers' => []],
             'default_scene_json' => ['opening' => ['type' => 'direct']],
             'default_palette_json' => ['background' => '#F5F2E3'],
+            'price_minor' => 25_000,
         ];
     }
 }

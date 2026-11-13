@@ -16,7 +16,7 @@ final class ListFeaturedTemplatesAction
     public function execute(): array
     {
         return Template::query()
-            ->where('is_active', true)
+            ->onSale()
             ->where('is_featured', true)
             ->with(['assets' => static fn ($query) => $query->where('template_assets.is_active', true)->orderByPivot('sort_order')])
             ->libraryOrder()

@@ -83,7 +83,17 @@ final class TemplateResource extends Resource
                 TextColumn::make('price_minor')
                     ->label('السعر')
                     ->formatStateUsing(fn (int $state): string => self::formatPrice($state)),
-                IconColumn::make('is_active')->label('ظاهر في المكتبة')->boolean(),
+                TextColumn::make('visibility')
+                    ->label('العرض للعميلات')
+                    ->badge()
+                    ->state(fn (Template $record): string => ! $record->is_active ? 'موقوف' : ($record->price_minor === 0 ? 'مخفي: بلا سعر' : 'معروض'))
+                    ->color(fn (string $state): string => match ($state) {
+                        'معروض' => 'success',
+                        'موقوف' => 'gray',
+                        default => 'warning',
+                    })
+                    ->icon(fn (string $state): Heroicon => $state === 'معروض' ? Heroicon::OutlinedEye : Heroicon::OutlinedEyeSlash),
+                IconColumn::make('is_active')->label('مفعّل')->boolean(),
                 IconColumn::make('is_featured')->label('في الرئيسية')->boolean(),
                 TextColumn::make('locked_features')
                     ->label('مميزات مقفلة')

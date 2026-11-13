@@ -42,6 +42,7 @@ final class EventManagementTest extends TestCase
     public function test_creation_page_selects_an_active_template_from_its_slug(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $user = User::factory()->create();
 
         $this->actingAs($user)->withoutVite()->get('/app/events/create?template=powder-gold')
@@ -57,6 +58,7 @@ final class EventManagementTest extends TestCase
     {
         $this->travelTo(CarbonImmutable::parse('2026-10-01 00:00:00 UTC'));
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $user = User::factory()->create();
         $template = Template::query()->where('slug', 'powder-gold')->sole();
 
@@ -89,6 +91,7 @@ final class EventManagementTest extends TestCase
     {
         $this->travelTo(CarbonImmutable::parse('2026-10-01 00:00:00 UTC'));
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $user = User::factory()->create();
         $template = Template::query()->where('slug', 'henna-noir')->sole();
         $audioId = $template->default_scene_json['audio']['asset']['assetId'];
@@ -165,6 +168,7 @@ final class EventManagementTest extends TestCase
     public function test_past_date_and_inactive_template_are_rejected(): void
     {
         $this->seed(TemplateLibrarySeeder::class);
+        Template::query()->update(['price_minor' => 25_000]);
         $user = User::factory()->create();
         $template = Template::query()->where('slug', 'powder-gold')->sole();
         $template->forceFill(['is_active' => false])->save();

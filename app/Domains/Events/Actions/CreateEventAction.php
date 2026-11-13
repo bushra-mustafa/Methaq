@@ -90,7 +90,7 @@ final class CreateEventAction
 
         $template = Template::query()
             ->whereKey($templateId)
-            ->where('is_active', true)
+            ->onSale()
             ->sharedLock()
             ->first();
 

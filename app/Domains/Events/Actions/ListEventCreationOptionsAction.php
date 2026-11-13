@@ -16,7 +16,7 @@ final class ListEventCreationOptionsAction
     public function execute(?string $selectedTemplateSlug): array
     {
         $templates = Template::query()
-            ->where('is_active', true)
+            ->onSale()
             ->libraryOrder()
             ->get()
             ->map(static fn (Template $template): array => [

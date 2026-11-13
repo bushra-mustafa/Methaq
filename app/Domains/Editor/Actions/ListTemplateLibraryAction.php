@@ -17,7 +17,7 @@ final class ListTemplateLibraryAction
     public function execute(?EventCategory $category = null): array
     {
         $templates = Template::query()
-            ->where('is_active', true)
+            ->onSale()
             ->when($category, static fn (Builder $query, EventCategory $selected): Builder => $query->where('category', $selected->value))
             ->with(['assets' => static fn ($query) => $query->where('template_assets.is_active', true)->orderByPivot('sort_order')])
             ->libraryOrder()

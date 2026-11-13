@@ -34,7 +34,7 @@ final class CreateEventRequest extends FormRequest
             'template_id' => [
                 'nullable',
                 'integer',
-                Rule::exists('templates', 'id')->where('is_active', true),
+                Rule::exists('templates', 'id')->where(static fn ($query) => $query->where('is_active', true)->where('price_minor', '>', 0)),
             ],
             'event_date' => ['required', 'string', 'date_format:Y-m-d\TH:i'],
             'timezone' => ['required', 'string', 'timezone:all'],

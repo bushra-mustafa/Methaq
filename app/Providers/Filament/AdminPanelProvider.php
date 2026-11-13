@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Domains\Editor\Models\Template;
+use App\Filament\Resources\Templates\TemplateResource;
 use App\Http\Controllers\Admin\ShowPaymentReceiptController;
 use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
 use Filament\FontProviders\LocalFontProvider;
@@ -34,6 +36,26 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
  */
 final class AdminPanelProvider extends PanelProvider
 {
+    /** A banner on every admin page while an active template is hidden from customers for lacking a price. */
+    private static function unpricedTemplatesNotice(): HtmlString
+    {
+        $hidden = Template::query()->where('is_active', true)->where('price_minor', 0)->count();
+
+        if ($hidden === 0) {
+            return new HtmlString('');
+        }
+
+        $link = e(TemplateResource::getUrl('index'));
+
+        return new HtmlString(
+            '<div role="status" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-bottom:16px;border:1px solid #d9b779;border-radius:12px;padding:12px 16px;background:#fff7e6;color:#5c4a1f;font-size:14px;">'
+            .'<strong>'.$hidden.' قالب مخفي عن العميلات لأنه بلا سعر.</strong>'
+            .'<span>لا يظهر في المكتبة ولا في الرئيسية ولا عند إنشاء مناسبة حتى تحدّدي سعره.</span>'
+            .'<a href="'.$link.'" style="margin-inline-start:auto;font-weight:700;text-decoration:underline;">تحديد الأسعار</a>'
+            .'</div>',
+        );
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -51,6 +73,7 @@ final class AdminPanelProvider extends PanelProvider
                 'warning' => Color::generateV3Palette('#9a7b46'),
                 'gray' => Color::Stone,
             ])
+            ->renderHook(PanelsRenderHook::CONTENT_BEFORE, fn (): HtmlString => self::unpricedTemplatesNotice())
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): HtmlString => new HtmlString('<link rel="stylesheet" href="'.e(asset('css/admin-methaq.css')).'">'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

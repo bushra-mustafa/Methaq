@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Domains\Editor\Models\Template;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
 use App\Domains\Payments\Models\Order;
@@ -127,6 +128,17 @@ final class FilamentAdminConsoleTest extends TestCase
         $this->get('/admin/audit-logs')->assertForbidden();
         $this->get('/admin/users')->assertForbidden();
         $this->get('/admin/events')->assertForbidden();
+    }
+
+    public function test_a_banner_warns_while_an_active_template_is_hidden_for_lacking_a_price(): void
+    {
+        $this->actingAs($this->administrator());
+        Template::factory()->create(['is_active' => true, 'price_minor' => 0]);
+
+        $this->get('/admin/templates')->assertOk()->assertSee('قالب مخفي عن العميلات لأنه بلا سعر');
+
+        Template::query()->update(['price_minor' => 25_000]);
+        $this->get('/admin/templates')->assertOk()->assertDontSee('قالب مخفي عن العميلات لأنه بلا سعر');
     }
 
     /** @param array<string, mixed> $attributes */
