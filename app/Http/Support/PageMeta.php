@@ -13,14 +13,14 @@ final class PageMeta
 {
     public const DEFAULT_DESCRIPTION = 'ميثاق منصة عربية لصناعة الدعوات الإلكترونية: صمّمي بطاقتك، وشاركيها برابط واحد يفتحه ضيوفك كظرف حقيقي.';
 
-    /** @return array{title: string, description: string, url: string, image: string|null, noindex: bool} */
+    /** @return array{title: string, description: string, url: string, image: string, noindex: bool} */
     public static function make(string $title, string $description = self::DEFAULT_DESCRIPTION, ?string $path = null, ?string $image = null, bool $noindex = false): array
     {
         return [
             'title' => $title === '' ? 'ميثاق' : $title.' — ميثاق',
             'description' => $description,
             'url' => $path === null ? url()->current() : url($path),
-            'image' => $image,
+            'image' => $image ?? url('/brand/images/og-default.png'),
             'noindex' => $noindex,
         ];
     }

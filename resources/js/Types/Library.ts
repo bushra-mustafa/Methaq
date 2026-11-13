@@ -29,6 +29,8 @@ export interface LibraryTemplate {
     name: string;
     category: EventCategory;
     thumbnailUrl: string;
+    thumbnailWebpUrl: string | null;
+    thumbnailAvifUrl: string | null;
     palette: Record<string, string>;
     isActive: boolean;
     /** Chosen by the admin for the home page's featured section. */
@@ -47,6 +49,8 @@ export interface LibraryCollection {
     slug: string;
     name: string;
     thumbnailUrl: string | null;
+    thumbnailWebpUrl: string | null;
+    thumbnailAvifUrl: string | null;
     isActive: boolean;
     items: LibraryCollectionItem[];
 }

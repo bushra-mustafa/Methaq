@@ -5,11 +5,14 @@ declare(strict_types=1);
 use App\Domains\Editor\Exceptions\DesignRevisionConflict;
 use App\Domains\Editor\Exceptions\InvalidDesignAssetReference;
 use App\Domains\Editor\Exceptions\ProposalRevisionConflict;
+use App\Http\Middleware\EnforceHttps;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Middleware\GuardPublicForms;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireAdminWithTwoFactor;
 use App\Http\Middleware\RestrictPrototypeRoutes;
 use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
+use App\Http\Support\BrandedErrorResponse;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -28,7 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->convertEmptyStringsToNull(except: [$designPayload]);
         $middleware->trimStrings(except: [$designPayload]);
         $middleware->prepend(RestrictPrototypeRoutes::class);
-        $middleware->web(append: [HandleInertiaRequests::class]);
+        // After TrustProxies, so the forwarded scheme is known before deciding whether to redirect.
+        $middleware->append(EnforceHttps::class);
+        $middleware->web(append: [GuardPublicForms::class, HandleInertiaRequests::class]);
         $middleware->alias([
             'active' => EnsureUserIsActive::class,
             'admin.2fa' => RequireAdminWithTwoFactor::class,
@@ -38,6 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToPriorityList(AuthenticatesRequests::class, SendAdministratorsToTwoFactorSetup::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->respond(BrandedErrorResponse::make(...));
         $exceptions->render(function (ProposalRevisionConflict $exception, Request $request): ?JsonResponse {
             return $request->expectsJson() ? response()->json(['message' => $exception->getMessage(), 'snapshot' => $exception->snapshot], 409) : null;
         });

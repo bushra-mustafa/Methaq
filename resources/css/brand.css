@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Methaq Arabic";
-    src: url("/brand/fonts/NotoSansArabic.ttf") format("truetype");
+    src: url("/brand/fonts/NotoSansArabic.woff2") format("woff2"), url("/brand/fonts/NotoSansArabic.ttf") format("truetype");
     font-display: swap;
     font-style: normal;
     font-weight: 100 900;
@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: "Methaq Latin";
-    src: url("/brand/fonts/Manrope/Manrope.ttf") format("truetype");
+    src: url("/brand/fonts/Manrope/Manrope.woff2") format("woff2"), url("/brand/fonts/Manrope/Manrope.ttf") format("truetype");
     font-display: swap;
     font-style: normal;
     font-weight: 200 800;

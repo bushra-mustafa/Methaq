@@ -1,4 +1,5 @@
 import { useId } from "react";
+import Thumbnail from "../Thumbnail";
 import SealDisc from "./SealDisc";
 
 /**
@@ -11,17 +12,23 @@ export default function AtelierScene({ className = "" }: { className?: string })
 
     return (
         <div aria-hidden="true" className={`relative aspect-[6/5] w-full ${className}`}>
-            <img
+            <Thumbnail
                 src="/editor/previews/templates/burgundy-noir.png"
+                avif="/editor/previews/templates/burgundy-noir.avif"
+                webp="/editor/previews/templates/burgundy-noir.webp"
                 alt=""
+                loading="eager"
                 width={540}
                 height={960}
                 className="absolute start-[40%] top-[1%] w-[34%] rotate-[9deg] bg-methaq-primary shadow-[0_22px_34px_-14px_rgba(0,0,0,0.6)] outline-1 -outline-offset-1 outline-white/10 motion-safe:animate-methaq-hero-in"
                 style={{ animationDelay: "420ms" }}
             />
-            <img
+            <Thumbnail
                 src="/editor/previews/templates/ivory-tale.png"
+                avif="/editor/previews/templates/ivory-tale.avif"
+                webp="/editor/previews/templates/ivory-tale.webp"
                 alt=""
+                loading="eager"
                 width={540}
                 height={960}
                 className="absolute start-[12%] top-0 w-[38%] -rotate-[7deg] bg-methaq-cream shadow-[0_22px_34px_-14px_rgba(0,0,0,0.6)] outline-1 -outline-offset-1 outline-white/10 motion-safe:animate-methaq-hero-in"

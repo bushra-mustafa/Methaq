@@ -21,8 +21,6 @@ final class OccasionController extends Controller
 
         $pitch = $category->pitch();
         $templates = $listLibrary->execute($category)['templates'];
-        $firstPreview = $templates[0]['thumbnailUrl'] ?? null;
-        $image = is_string($firstPreview) ? url($firstPreview) : null;
 
         return Inertia::render('Web/Occasion', [
             'occasion' => ['slug' => $category->slug(), 'label' => $category->label(), ...$pitch],
@@ -31,7 +29,7 @@ final class OccasionController extends Controller
                 static fn (EventCategory $other): array => ['slug' => $other->slug(), 'label' => $other->label()],
                 EventCategory::cases(),
             ),
-            'meta' => PageMeta::make('دعوات '.$category->label().' إلكترونية', $pitch['description'], route('occasions.show', $category->slug(), false), $image),
+            'meta' => PageMeta::make('دعوات '.$category->label().' إلكترونية', $pitch['description'], route('occasions.show', $category->slug(), false)),
         ]);
     }
 }

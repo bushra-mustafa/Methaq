@@ -1,4 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
+import { OPEN_CONSENT_EVENT } from "./ConsentBanner";
+import type { AnalyticsConfig } from "../../Domains/Privacy/analytics";
 import { categoryLabels } from "../../Types/Library";
 import type { SharedPageProps } from "../../Types/PageProps";
 
@@ -8,6 +10,7 @@ const footerLinks = [
     { label: "من نحن", href: "/about" },
     { label: "تواصل معنا", href: "/contact" },
     { label: "سياسة الخصوصية", href: "/privacy" },
+    { label: "شروط الاستخدام", href: "/terms" },
 ];
 
 const occasionLinks = Object.entries(categoryLabels).map(([value, label]) => ({
@@ -17,7 +20,7 @@ const occasionLinks = Object.entries(categoryLabels).map(([value, label]) => ({
 
 export default function Footer() {
     const year = new Date().getFullYear();
-    const { auth } = usePage<SharedPageProps>().props;
+    const { auth, analytics } = usePage<SharedPageProps & { analytics: AnalyticsConfig }>().props;
 
     return (
         <footer className="border-t border-methaq-border bg-methaq-sage">
@@ -27,7 +30,10 @@ export default function Footer() {
                         <img
                             src="/brand/logos/methaq-horizontal-compact-flat.svg"
                             alt="ميثاق"
-                            className="w-40"
+                            width={688}
+                            height={150}
+                            loading="lazy"
+                            className="h-auto w-40"
                         />
 
                         <p className="mt-5 max-w-sm text-[15px] leading-8 text-methaq-muted">
@@ -97,6 +103,18 @@ export default function Footer() {
 
                     <p className="m-0 text-[13px] text-methaq-muted">
                         © {year} ميثاق، جميع الحقوق محفوظة
+                        {analytics.enabled && (
+                            <>
+                                {" · "}
+                                <button
+                                    type="button"
+                                    onClick={() => window.dispatchEvent(new Event(OPEN_CONSENT_EVENT))}
+                                    className="inline-flex min-h-11 items-center text-[13px] text-methaq-muted underline underline-offset-4 hover:text-methaq-primary"
+                                >
+                                    إعدادات الخصوصية
+                                </button>
+                            </>
+                        )}
                     </p>
                 </div>
             </div>

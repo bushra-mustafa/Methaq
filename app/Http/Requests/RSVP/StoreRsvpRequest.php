@@ -26,8 +26,8 @@ final class StoreRsvpRequest extends FormRequest
     {
         return [
             'submission_token' => ['required', 'uuid'],
-            'guest_name' => ['required', 'string', 'max:120'],
-            'guest_phone' => ['nullable', 'string', 'max:32'],
+            'guest_name' => ['required', 'string', 'max:120', 'regex:/^[^\p{Cc}]+$/u'],
+            'guest_phone' => ['nullable', 'string', 'max:32', 'regex:/^\+?[0-9 ()-]{7,32}$/'],
             'attending_status' => ['required', Rule::enum(AttendingStatus::class)],
             'companions_count' => ['required', 'integer', 'min:0', 'max:20'],
             'notes' => ['nullable', 'string', 'max:1000'],

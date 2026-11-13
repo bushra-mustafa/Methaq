@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from "react";
 import Navbar from "../Components/Public/Navbar";
+import ConsentBanner from "../Components/Public/ConsentBanner";
 import Footer from "../Components/Public/Footer";
 
 type PublicLayoutProps = PropsWithChildren;
@@ -24,6 +25,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
                 {children}
             </main>
             <Footer />
+            <ConsentBanner />
         </div>
     );
 }

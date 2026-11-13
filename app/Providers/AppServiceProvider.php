@@ -18,7 +18,9 @@ use App\Domains\Users\Models\AuditLog;
 use App\Domains\Users\Models\User;
 use App\Domains\Users\Policies\AuditLogPolicy;
 use App\Domains\Users\Policies\UserPolicy;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,6 +38,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Read from config (not env() in bootstrap) so a value in the .env file is honoured on shared hosting.
+        $proxies = config('methaq.trusted_proxies');
+        if (is_string($proxies) && $proxies !== '') {
+            TrustProxies::at($proxies === '*' ? '*' : array_map('trim', explode(',', $proxies)));
+        }
+
+        if (config('methaq.force_https')) {
+            URL::forceScheme('https');
+        }
+
         Gate::policy(Event::class, EventPolicy::class);
         Gate::policy(Template::class, TemplatePolicy::class);
         Gate::policy(TemplateAsset::class, TemplateAssetPolicy::class);

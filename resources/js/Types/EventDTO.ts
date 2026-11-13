@@ -8,6 +8,8 @@ export interface EventTemplateDTO {
     slug: string;
     name: string;
     thumbnailUrl: string;
+    thumbnailWebpUrl: string | null;
+    thumbnailAvifUrl: string | null;
 }
 
 export interface EventDTO {

@@ -11,7 +11,8 @@
         "test:editor": "node --experimental-strip-types --test tests/Frontend/editor-document.test.ts",
         "test:proposals": "node --experimental-strip-types --test tests/Frontend/ivory-proposal.test.ts",
         "test:envelope": "node --experimental-strip-types --test tests/Frontend/envelope.test.ts",
-        "test:frontend": "npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope"
+        "test:consent": "node --experimental-strip-types --test tests/Frontend/consent.test.ts",
+        "test:frontend": "npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope && npm run test:consent"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

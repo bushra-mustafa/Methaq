@@ -226,7 +226,7 @@
 }
 
 .dashboard-event-actions a:last-child {
-    color: #62736d;
+    color: #434842;
     font-size: 11px;
     text-underline-offset: 4px;
 }
@@ -359,6 +359,7 @@
 
 .event-create-form {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 24px;
 }
 
@@ -399,25 +400,8 @@
     gap: 20px;
 }
 
-.account-field select {
-    width: 100%;
-    min-height: 50px;
-    border: 1px solid #b9c5be;
-    border-radius: 3px;
-    outline: none;
-    padding: 10px 14px;
-    background: rgb(255 255 255 / 72%);
-    color: #122f27;
-    font: inherit;
-}
-
-.account-field select:focus {
-    border-color: var(--color-methaq-gold);
-    box-shadow: 0 0 0 3px rgb(122 97 59 / 16%);
-}
-
 .account-field select:disabled {
-    color: #6e7b76;
+    color: #434842;
     background: #eef0ea;
 }
 
@@ -439,7 +423,7 @@
     align-items: stretch;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid rgb(32 51 34 / 15%);
+    border: 1px solid rgb(67 72 66 / 60%);
     padding: 0;
     background: #fff;
     color: var(--color-methaq-primary);
@@ -513,7 +497,7 @@
 }
 
 .event-form-actions > a {
-    color: #5d706a;
+    color: #434842;
 }
 
 .event-form-actions > div {
@@ -539,7 +523,7 @@
 }
 
 .event-success span {
-    color: #596861;
+    color: #434842;
 }
 
 .event-overview {
@@ -584,7 +568,7 @@
 }
 
 .event-overview dt {
-    color: #75837e;
+    color: #434842;
     font-size: 13px;
 }
 
@@ -729,7 +713,7 @@
 
 .payment-summary dt,
 .payment-account dt {
-    color: #75837e;
+    color: #434842;
     font-size: 13px;
 }
 
@@ -752,7 +736,7 @@
 
 .payment-state.is-pending_review {
     border-color: rgb(122 97 59 / 45%);
-    color: #8a6d24;
+    color: #7a613b;
 }
 
 .payment-state.is-rejected {
@@ -783,7 +767,7 @@
 }
 
 .payment-features.is-locked li {
-    color: #8a8f8b;
+    color: #434842;
     text-decoration: line-through;
 }
 
@@ -873,7 +857,7 @@
     .events-grid,
     .event-fields-grid,
     .payment-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .event-payment-callout {

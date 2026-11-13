@@ -5,9 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#203322">
-    <link rel="icon" type="image/svg+xml" href="{{ asset('brand/icons/favicon.svg') }}">
-    <link rel="icon" href="{{ asset('brand/icons/favicon.ico') }}" sizes="any">
-    <link rel="apple-touch-icon" href="{{ asset('brand/icons/apple-touch-icon.png') }}">
+    @php($iconVersion = '?v='.filemtime(public_path('brand/icons/favicon.svg')))
+    <link rel="icon" type="image/svg+xml" href="{{ asset('brand/icons/favicon.svg').$iconVersion }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('brand/icons/favicon-32.png').$iconVersion }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('brand/icons/favicon-16.png').$iconVersion }}">
+    <link rel="icon" href="{{ asset('brand/icons/favicon.ico').$iconVersion }}" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('brand/icons/apple-touch-icon.png').$iconVersion }}">
     @php($meta = $page['props']['meta'] ?? null)
     <title inertia>{{ $meta['title'] ?? 'ميثاق' }}</title>
     @if ($meta)
@@ -30,6 +33,9 @@
             <meta name="twitter:card" content="summary">
         @endif
     @endif
+
+    <link rel="preload" href="/brand/fonts/NotoSansArabic.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/brand/fonts/Amiri-Bold.woff2" as="font" type="font/woff2" crossorigin>
 
     @viteReactRefresh
     @vite('resources/js/app.tsx')

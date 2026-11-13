@@ -52,7 +52,7 @@ final class PublicSeoTest extends TestCase
         $response = $this->get('/sitemap.xml')->assertOk();
         $response->assertHeader('Content-Type', 'application/xml; charset=UTF-8');
 
-        foreach (['/templates', '/about', '/occasions/project-opening', '/occasions/marriage-contract'] as $path) {
+        foreach (['/templates', '/about', '/privacy', '/terms', '/occasions/project-opening', '/occasions/marriage-contract'] as $path) {
             $response->assertSee(url($path), false);
         }
 
@@ -64,5 +64,49 @@ final class PublicSeoTest extends TestCase
         $this->withoutVite()->get('/templates')
             ->assertSee('<title inertia>مكتبة القوالب — ميثاق</title>', false)
             ->assertSee('property="og:site_name"', false);
+    }
+
+    public function test_robots_closes_private_areas_and_the_whole_of_every_invitation_address(): void
+    {
+        $this->get('/robots.txt')->assertOk()
+            ->assertSee('Disallow: /app', false)
+            ->assertSee('Disallow: /admin', false)
+            ->assertSee('Sitemap: '.url('/sitemap.xml'), false);
+
+        $this->get('http://sara-and-omar.'.config('methaq.invitation_domain').'/robots.txt')
+            ->assertOk()
+            ->assertSee('Disallow: /', false)
+            ->assertDontSee('Sitemap:', false);
+    }
+
+    public function test_only_public_pages_are_indexable_and_all_others_say_noindex(): void
+    {
+        $this->withoutVite()->get('/login')->assertSee('<meta name="robots" content="noindex, nofollow">', false);
+        $this->withoutVite()->get('/register')->assertSee('<meta name="robots" content="noindex, nofollow">', false);
+        $this->withoutVite()->get('/app')->assertRedirect('/login');
+
+        foreach (['/', '/about', '/contact', '/privacy', '/terms', '/templates', '/occasions/wedding'] as $path) {
+            $this->withoutVite()->get($path)->assertOk()->assertDontSee('<meta name="robots"', false);
+        }
+    }
+
+    public function test_every_page_shares_an_absolute_official_brand_image_unless_it_has_its_own(): void
+    {
+        $this->withoutVite()->get('/about')
+            ->assertSee('<meta property="og:image" content="'.url('/brand/images/og-default.png').'">', false)
+            ->assertSee('<meta name="twitter:card" content="summary_large_image">', false);
+
+        [$width, $height] = getimagesize(public_path('brand/images/og-default.png'));
+        $this->assertSame([1200, 630], [$width, $height]);
+    }
+
+    public function test_favicons_are_linked_in_every_size_the_files_exist_for(): void
+    {
+        $html = $this->withoutVite()->get('/about')->getContent();
+
+        foreach (['favicon.svg', 'favicon-32.png', 'favicon-16.png', 'favicon.ico', 'apple-touch-icon.png'] as $icon) {
+            $this->assertStringContainsString('brand/icons/'.$icon, $html);
+            $this->assertFileExists(public_path('brand/icons/'.$icon));
+        }
     }
 }

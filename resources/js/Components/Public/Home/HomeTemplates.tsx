@@ -1,4 +1,5 @@
 import { Link } from "@inertiajs/react";
+import { trackEvent } from "../../../Domains/Privacy/analytics";
 import type { LibraryTemplate } from "../../../Types/Library";
 import Reveal from "../Reveal";
 import HomeTemplateCard from "./HomeTemplateCard";
@@ -36,6 +37,7 @@ export default function HomeTemplates({
                     </div>
                     <Link
                         href="/templates"
+                        onClick={() => trackEvent("browse_templates")}
                         className="inline-flex min-h-11 items-center text-[16px] font-medium text-methaq-primary underline decoration-methaq-gold/60 decoration-1 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
                     >
                         عرض كل القوالب

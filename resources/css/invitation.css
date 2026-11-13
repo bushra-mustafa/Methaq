@@ -1,16 +1,16 @@
 @font-face { font-family: 'Invitation Tajawal'; src: url('/brand/fonts/Tajawal-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
 .scene-choice-group { margin: 0; padding: 0; border: 0; }
 .scene-choice-group legend { margin-bottom: 10px; font-size: 13px; }
-.scene-choice-group > label { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; border: 1px solid #d5d9ce; border-radius: 6px; padding: 12px; cursor: pointer; }
+.scene-choice-group > label { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; border: 1px solid #6b7068; border-radius: 6px; padding: 12px; cursor: pointer; }
 .scene-choice-group > label.is-selected { border-color: #b69a50; background: #f5f0df; }
 .scene-choice-group input { accent-color: #074b36; }
 .scene-choice-group span { display: grid; gap: 3px; }
-.scene-choice-group small { color: #617369; font-size: 11px; }
+.scene-choice-group small { color: #434842; font-size: 12px; }
 .scene-panel .scene-color-control { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.scene-color-control input { width: 52px; height: 38px; border: 1px solid #d5d9ce; background: white; cursor: pointer; }
+.scene-color-control input { width: 52px; height: 38px; border: 1px solid #6b7068; background: white; cursor: pointer; }
 .scene-panel h3 { margin: 14px 0 2px; border-top: 1px solid #e5e4d8; padding-top: 20px; font-size: 16px; }
 .scene-panel input[type=range] { padding-inline: 0; accent-color: #074b36; }
-.scene-preview-button, .scene-secondary-button { min-height: 44px; border: 1px solid #b69a50; padding: 9px 15px; background: #074b36; color: #fff; font: inherit; cursor: pointer; }
+.scene-preview-button, .scene-secondary-button { min-height: 44px; border: 1px solid #6f5a22; padding: 9px 15px; background: #074b36; color: #fff; font: inherit; cursor: pointer; }
 .scene-secondary-button { background: transparent; color: #074b36; }
 .scene-preview-button:disabled { opacity: .5; cursor: wait; }
 .scene-panel-note { font-size: 12px; line-height: 1.8; color: #617369; }
@@ -21,7 +21,7 @@
 .invitation-preview-toolbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 24px; border-bottom: 1px solid #cbd2cc; background: #fffdf7; }
 .invitation-preview-toolbar > div:first-child { display: grid; gap: 3px; }
 .invitation-preview-toolbar small { font-size: 11px; color: #617369; }
-.invitation-preview-toolbar button { border: 1px solid #cbd2cc; padding: 7px 14px; color: #074b36; background: transparent; border-radius: 4px; }
+.invitation-preview-toolbar button { border: 1px solid #6b7068; padding: 7px 14px; color: #074b36; background: transparent; border-radius: 4px; }
 .invitation-preview-devices { display: flex; gap: 5px; }
 .invitation-preview-devices button[aria-pressed=true] { background: #074b36; color: white; }
 .invitation-preview-surround { padding: 26px; }
@@ -83,7 +83,7 @@
 .envelope-selected-preview .invitation-envelope { width: 100%; margin: 0 auto 18px; filter: drop-shadow(0 7px 5px #1c0d1d26); }
 .envelope-selected-preview > span { font-size: 11px; color: #536962; }
 .envelope-style-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.envelope-style-grid .envelope-style-option { position: relative; display: block; min-width: 0; overflow: hidden; padding: 7px; border: 1px solid #d9dcd4; border-radius: 5px; background: #fff; cursor: pointer; }
+.envelope-style-grid .envelope-style-option { position: relative; display: block; min-width: 0; overflow: hidden; padding: 7px; border: 1px solid #6b7068; border-radius: 5px; background: #fff; cursor: pointer; }
 .envelope-style-option.is-selected { border-color: #074b36; box-shadow: 0 0 0 1px #074b36; }
 .envelope-style-option:focus-within { outline: 3px solid #b69a50; outline-offset: 3px; }
 .envelope-style-option > input { position: absolute; width: 1px; height: 1px; opacity: 0; }
@@ -133,14 +133,14 @@
 .scene-backdrop-picker legend { padding-top: 16px; font-weight: 600; }
 .scene-backdrop-picker > p { margin: 6px 0 12px; color: #617369; font-size: 11px; line-height: 1.7; }
 .scene-backdrop-picker > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.scene-backdrop-picker label { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 8px; min-width: 0; padding: 7px; border: 1px solid #d9dcd4; border-radius: 5px; background: #fff; cursor: pointer; }
+.scene-backdrop-picker label { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 8px; min-width: 0; padding: 7px; border: 1px solid #6b7068; border-radius: 5px; background: #fff; cursor: pointer; }
 .scene-backdrop-picker label.is-selected { border-color: #074b36; box-shadow: 0 0 0 1px #074b36; }
 .scene-backdrop-picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .scene-backdrop-picker label:focus-within { outline: 3px solid #b69a50; outline-offset: 2px; }
 .scene-backdrop-picker strong, .scene-backdrop-picker small { display: block; overflow-wrap: anywhere; }
 .scene-backdrop-picker strong { font-size: 11px; color: #173e31; }
 .scene-backdrop-picker small { margin-top: 2px; color: #617369; font-size: 9px; line-height: 1.45; }
-.scene-backdrop-swatch { display: block; aspect-ratio: 1; border: 1px solid #d1d2cd; border-radius: 50%; background: var(--invitation-background); }
+.scene-backdrop-swatch { display: block; aspect-ratio: 1; border: 1px solid #6b7068; border-radius: 50%; background: var(--invitation-background); }
 .scene-backdrop-swatch.is-burgundy-nebula { background: radial-gradient(circle at 80% 20%, #df718b, #6e1d35 48%, #240f1c); }
 .scene-backdrop-swatch.is-blush-cloud { background: radial-gradient(circle at 80% 20%, #ffe3e8, #d78c9d 48%, #754054); }
 .scene-backdrop-swatch.is-midnight-gold { background: radial-gradient(circle at 80% 20%, #c59a4e, #1d2736 48%, #0d1725); }

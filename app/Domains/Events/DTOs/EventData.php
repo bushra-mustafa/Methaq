@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Events\DTOs;
 
+use App\Domains\Editor\Services\ThumbnailVariants;
 use App\Domains\Events\Enums\EventCategory;
 use App\Domains\Events\Enums\EventPresentationState;
 use App\Domains\Events\Enums\EventStatus;
@@ -13,7 +14,7 @@ use App\Domains\Events\Services\InvitationAddress;
 final readonly class EventData
 {
     /**
-     * @param  array{id: string, slug: string, name: string, thumbnailUrl: string}|null  $template
+     * @param  array{id: string, slug: string, name: string, thumbnailUrl: string, thumbnailWebpUrl: string|null, thumbnailAvifUrl: string|null}|null  $template
      */
     public function __construct(
         public string $id,
@@ -54,6 +55,8 @@ final readonly class EventData
                 'slug' => $template->slug,
                 'name' => $template->name,
                 'thumbnailUrl' => '/'.ltrim($template->thumbnail_path, '/'),
+                'thumbnailWebpUrl' => ThumbnailVariants::webpUrl($template->thumbnail_path),
+                'thumbnailAvifUrl' => ThumbnailVariants::avifUrl($template->thumbnail_path),
             ],
             designRevision: $design?->revision ?? 1,
             invitationUrl: InvitationAddress::url($event->subdomain),

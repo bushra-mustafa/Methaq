@@ -178,7 +178,8 @@ final class ManualPaymentTest extends TestCase
         $this->actingAs($event->user)->post("/app/events/{$event->getKey()}/payment", ['receipt' => UploadedFile::fake()->image('receipt.jpg')]);
         $path = Order::query()->sole()->receipt_path;
 
-        $this->get('/storage/'.$path)->assertForbidden();
+        // The private disk is no longer served at all (config/filesystems.php: serve => false).
+        $this->get('/storage/'.$path)->assertNotFound();
         $this->assertFileDoesNotExist(public_path('storage/'.$path));
 
         $this->expectException(QueryException::class);

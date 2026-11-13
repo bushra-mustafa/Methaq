@@ -13,7 +13,7 @@ final class SitemapController extends Controller
 {
     public function __invoke(): Response
     {
-        $paths = ['/', '/templates', '/about', '/contact', '/privacy'];
+        $paths = ['/', '/templates', '/about', '/contact', '/privacy', '/terms'];
         foreach (EventCategory::cases() as $category) {
             $paths[] = route('occasions.show', $category->slug(), false);
         }

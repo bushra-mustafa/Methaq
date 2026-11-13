@@ -1,4 +1,4 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { Check } from "lucide-react";
 import { LibraryTemplateCard } from "../../Domains/Editor/Components/LibraryTemplateCard";
 import PaperSurface from "../../Components/Public/Home/PaperSurface";
@@ -6,6 +6,7 @@ import PageIntro from "../../Components/Public/PageIntro";
 import Reveal from "../../Components/Public/Reveal";
 import PublicLayout from "../../Layouts/PublicLayout";
 import type { LibraryTemplate } from "../../Types/Library";
+import type { SharedPageProps } from "../../Types/PageProps";
 import "../../../css/library.css";
 
 interface OccasionProps {
@@ -16,10 +17,24 @@ interface OccasionProps {
 
 /** One landing page per occasion: what Methaq gives it, the priced templates for it, and the other occasions. */
 export default function Occasion({ occasion, templates, occasions }: OccasionProps) {
+    const { auth } = usePage<SharedPageProps>().props;
+
     return (
         <PublicLayout>
             <Head title={`دعوات ${occasion.label} إلكترونية`} />
-            <PageIntro title={occasion.headline} lead={occasion.description} />
+            <PageIntro title={occasion.headline} lead={occasion.description}>
+                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+                    <Link
+                        href={auth.user ? "/app/events/create" : "/register"}
+                        className="inline-flex min-h-13 items-center justify-center rounded-methaq-button bg-methaq-primary px-8 text-[16px] font-semibold text-white shadow-methaq-soft transition-colors hover:bg-methaq-primary-hover"
+                    >
+                        {auth.user ? "أنشئي مناسبة" : "صمّمي دعوتك"}
+                    </Link>
+                    <a href="#occasion-templates" className="inline-flex min-h-11 items-center text-[16px] font-medium text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 hover:decoration-methaq-gold">
+                        شاهدي القوالب
+                    </a>
+                </div>
+            </PageIntro>
 
             <section aria-label="ما تحصلين عليه" className="px-6 pb-14 lg:px-12">
                 <ul className="mx-auto m-0 flex max-w-7xl list-none flex-col gap-4 border-t border-methaq-gold/30 p-0 pt-8 md:flex-row md:gap-12">

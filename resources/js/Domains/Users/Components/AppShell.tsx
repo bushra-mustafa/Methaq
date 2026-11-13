@@ -15,7 +15,8 @@ export function AppShell({ title, children }: AppShellProps) {
     const { auth } = page.props;
     const isCurrentPage = (path: string): boolean => page.url === path || (path !== '/app' && page.url.startsWith(`${path}/`));
 
-    return <main className="account-page">
+    return <div className="account-page">
+        <a href="#account-main" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-methaq-primary focus:px-5 focus:py-3 focus:text-[15px] focus:font-semibold focus:text-white">الانتقال إلى المحتوى</a>
         <header className="account-nav">
             <Link href="/app" aria-label="لوحة ميثاق"><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="" width="176" height="39" /></Link>
             <nav aria-label="حسابي">
@@ -25,9 +26,9 @@ export function AppShell({ title, children }: AppShellProps) {
                 <Link href="/logout" method="post" as="button">خروج</Link>
             </nav>
         </header>
-        <div className="account-content">
+        <main id="account-main" tabIndex={-1} className="account-content">
             <header className="account-title"><h1>{title}</h1></header>
             {children}
-        </div>
-    </main>;
+        </main>
+    </div>;
 }

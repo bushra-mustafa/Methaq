@@ -1,4 +1,5 @@
 import { Link } from "@inertiajs/react";
+import { trackEvent } from "../../../Domains/Privacy/analytics";
 import HomeEnvelopeShowcase from "./HomeEnvelopeShowcase";
 import { EightPointStar } from "./Ornament";
 
@@ -60,6 +61,7 @@ export default function HomeHero({
                     >
                         <Link
                             href={isAuthenticated ? "/app" : "/register"}
+                            onClick={() => trackEvent("cta_register")}
                             className="inline-flex min-h-13 touch-manipulation items-center justify-center rounded-methaq-button bg-methaq-primary px-8 text-[16px] font-semibold text-white shadow-methaq-soft transition-[background-color,scale] duration-200 hover:bg-methaq-primary-hover active:scale-[0.96] motion-reduce:active:scale-100"
                         >
                             {isAuthenticated ? "افتحي مناسباتك" : "صمّمي دعوتك"}

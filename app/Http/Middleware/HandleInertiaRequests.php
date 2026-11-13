@@ -29,7 +29,13 @@ class HandleInertiaRequests extends Middleware
                     'emailVerified' => $user->hasVerifiedEmail(),
                 ] : null,
             ],
-            'meta' => PageMeta::make('', PageMeta::DEFAULT_DESCRIPTION, null, null, false),
+            'analytics' => [
+                'enabled' => (bool) config('methaq.analytics.enabled') && filled(config('methaq.analytics.domain')),
+                'domain' => config('methaq.analytics.domain'),
+                'script' => config('methaq.analytics.script'),
+                'exclude' => config('methaq.analytics.exclude'),
+            ],
+            'meta' => PageMeta::make('', PageMeta::DEFAULT_DESCRIPTION, null, null, true),
             'flash' => [
                 'status' => fn (): ?string => $request->session()->get('status'),
             ],

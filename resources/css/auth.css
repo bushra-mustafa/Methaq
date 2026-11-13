@@ -19,6 +19,7 @@ textarea {
 
 .account-field {
     display: grid;
+    min-width: 0;
     gap: 8px;
     color: var(--color-methaq-primary);
     font-size: 15px;
@@ -29,6 +30,7 @@ textarea {
 .account-field select,
 .account-field textarea {
     width: 100%;
+    min-width: 0;
     min-height: 52px;
     border: 1px solid rgb(67 72 66 / 60%);
     border-radius: var(--radius-methaq-button);
@@ -128,7 +130,7 @@ textarea {
 }
 
 .account-secondary {
-    border-color: rgb(32 51 34 / 35%);
+    border-color: rgb(32 51 34 / 60%);
     background: transparent;
     color: var(--color-methaq-primary);
 }

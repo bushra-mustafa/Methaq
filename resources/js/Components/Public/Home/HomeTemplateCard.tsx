@@ -1,5 +1,7 @@
 import { Link } from "@inertiajs/react";
 import { ArrowLeft } from "lucide-react";
+import { trackEvent } from "../../../Domains/Privacy/analytics";
+import Thumbnail from "../../Thumbnail";
 import { categoryLabels } from "../../../Types/Library";
 import type { LibraryTemplate } from "../../../Types/Library";
 
@@ -17,9 +19,7 @@ export default function HomeTemplateCard({
     index,
 }: HomeTemplateCardProps) {
     const colors = [...new Set(Object.values(template.palette))].slice(0, 5);
-    const useHref = isAuthenticated
-        ? `/app/events/create?template=${encodeURIComponent(template.slug)}`
-        : "/register";
+    const useHref = `/start/${encodeURIComponent(template.slug)}`;
     const tilt = ["-rotate-[1.5deg]", "rotate-1", "-rotate-[0.75deg]", "rotate-[1.25deg]"][index % 4];
     const drop = index % 2 === 1 ? "lg:translate-y-10" : "";
 
@@ -28,12 +28,13 @@ export default function HomeTemplateCard({
             <div
                 className={`${tilt} bg-white p-2 shadow-[0_1px_2px_rgba(32,51,34,0.14),0_14px_28px_-10px_rgba(32,51,34,0.32),0_30px_44px_-18px_rgba(122,97,59,0.28)] outline-1 -outline-offset-1 outline-black/10 transition-[rotate] duration-500 ease-[cubic-bezier(0.2,0,0,1)] hover:rotate-0 motion-reduce:transition-none`}
             >
-                <img
+                <Thumbnail
                     src={template.thumbnailUrl}
+                    avif={template.thumbnailAvifUrl}
+                    webp={template.thumbnailWebpUrl}
                     alt={`معاينة قالب ${template.name}`}
                     width={540}
                     height={960}
-                    loading="lazy"
                     className="block aspect-[9/16] w-full bg-methaq-sage object-cover"
                 />
             </div>
@@ -59,6 +60,7 @@ export default function HomeTemplateCard({
                 )}
                 <Link
                     href={useHref}
+                    onClick={() => trackEvent("template_start")}
                     className="inline-flex min-h-11 items-center gap-2 self-start text-[15px] font-semibold text-methaq-primary underline decoration-methaq-gold/60 decoration-1 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
                 >
                     {isAuthenticated ? "استخدمي هذا القالب" : "أنشئي حساباً لاستخدامه"}

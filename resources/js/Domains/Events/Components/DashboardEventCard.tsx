@@ -1,3 +1,4 @@
+import Thumbnail from '../../../Components/Thumbnail';
 import { Link } from '@inertiajs/react';
 import type { EventDTO, EventPresentationState } from '../../../Types/EventDTO';
 
@@ -26,7 +27,7 @@ export function DashboardEventCard({ event }: { event: EventDTO }) {
     const action = nextStep(event);
     return <article className="dashboard-event-card">
         <div className="dashboard-event-art">
-            {event.template ? <img src={event.template.thumbnailUrl} alt={`معاينة ${event.template.name}`} /> : <div className="event-card-blank" aria-hidden="true">م</div>}
+            {event.template ? <Thumbnail src={event.template.thumbnailUrl} avif={event.template.thumbnailAvifUrl} webp={event.template.thumbnailWebpUrl} alt={`معاينة قالب ${event.template.name}`} width={540} height={960} /> : <div className="event-card-blank" aria-hidden="true">م</div>}
             <span className={`event-state is-${event.presentationState}`}>{stateLabels[event.presentationState]}</span>
         </div>
         <div className="dashboard-event-copy">

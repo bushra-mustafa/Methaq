@@ -9,8 +9,9 @@ final class InvitationAddress
 {
     public static function url(string $subdomain): string
     {
-        $scheme = parse_url((string) config('app.url'), PHP_URL_SCHEME);
+        $configured = parse_url((string) config('app.url'), PHP_URL_SCHEME);
+        $scheme = config('methaq.force_https') ? 'https' : (is_string($configured) ? $configured : 'https');
 
-        return (is_string($scheme) ? $scheme : 'https').'://'.$subdomain.'.'.config('methaq.invitation_domain');
+        return $scheme.'://'.$subdomain.'.'.config('methaq.invitation_domain');
     }
 }

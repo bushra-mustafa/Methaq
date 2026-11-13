@@ -171,7 +171,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE', env('METHAQ_FORCE_HTTPS', env('APP_ENV') === 'production')),
 
     /*
     |--------------------------------------------------------------------------

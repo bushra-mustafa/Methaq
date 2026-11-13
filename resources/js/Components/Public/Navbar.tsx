@@ -16,7 +16,8 @@ const navigation: NavigationItem[] = [
     { label: "معرض القوالب", href: "/templates" },
     { label: "كيف يعمل ميثاق", href: "/#home-steps", section: true },
     { label: "تجربة فتح الظرف", href: "/#home-envelope", section: true },
-    { label: "عن ميثاق", href: "/#home-features", section: true },
+    { label: "المزايا", href: "/#home-features", section: true },
+    { label: "من نحن", href: "/about" },
 ];
 
 function NavigationLink({
@@ -78,6 +79,8 @@ export default function Navbar() {
                     <img
                         src="/brand/logos/methaq-horizontal-compact-flat.svg"
                         alt="ميثاق"
+                        width={688}
+                        height={150}
                         className="h-auto w-36 md:w-44"
                     />
                 </Link>

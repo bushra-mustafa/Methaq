@@ -6,6 +6,7 @@ namespace App\Domains\Editor\DTOs;
 
 use App\Domains\Editor\Models\AssetCollection;
 use App\Domains\Editor\Models\AssetCollectionItem;
+use App\Domains\Editor\Services\ThumbnailVariants;
 
 final readonly class LibraryCollectionData
 {
@@ -15,6 +16,8 @@ final readonly class LibraryCollectionData
         public string $slug,
         public string $name,
         public ?string $thumbnailUrl,
+        public ?string $thumbnailWebpUrl,
+        public ?string $thumbnailAvifUrl,
         public bool $isActive,
         public array $items,
     ) {}
@@ -26,6 +29,8 @@ final readonly class LibraryCollectionData
             slug: $collection->slug,
             name: $collection->name,
             thumbnailUrl: $collection->thumbnail_path === null ? null : '/'.ltrim($collection->thumbnail_path, '/'),
+            thumbnailWebpUrl: ThumbnailVariants::webpUrl($collection->thumbnail_path),
+            thumbnailAvifUrl: ThumbnailVariants::avifUrl($collection->thumbnail_path),
             isActive: $collection->is_active,
             items: $collection->items->map(static fn (AssetCollectionItem $item): array => [
                 'asset' => LibraryAssetData::fromModel($item->asset),
@@ -35,7 +40,7 @@ final readonly class LibraryCollectionData
         );
     }
 
-    /** @return array{id: string, slug: string, name: string, thumbnailUrl: string|null, isActive: bool, items: list<array<string, mixed>>} */
+    /** @return array{id: string, slug: string, name: string, thumbnailUrl: string|null, thumbnailWebpUrl: string|null, thumbnailAvifUrl: string|null, isActive: bool, items: list<array<string, mixed>>} */
     public function toArray(): array
     {
         return [
@@ -43,6 +48,8 @@ final readonly class LibraryCollectionData
             'slug' => $this->slug,
             'name' => $this->name,
             'thumbnailUrl' => $this->thumbnailUrl,
+            'thumbnailWebpUrl' => $this->thumbnailWebpUrl,
+            'thumbnailAvifUrl' => $this->thumbnailAvifUrl,
             'isActive' => $this->isActive,
             'items' => array_map(static fn (array $item): array => [
                 'asset' => $item['asset']->toArray(),
