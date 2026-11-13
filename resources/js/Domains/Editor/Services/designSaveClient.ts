@@ -1,4 +1,4 @@
-import { parseDesignSnapshot, parseSaveDesignPayload } from './DesignDocumentSerializer';
+import { parseDesignSnapshot, parseSaveDesignPayload } from './DesignDocumentSerializer.ts';
 import type { DesignSnapshot, SaveDesignPayload } from '../../../Types/DesignDocument';
 
 interface JsonResponse {
@@ -8,16 +8,22 @@ interface JsonResponse {
 }
 
 export class DesignSaveConflictError extends Error {
-    public constructor(public readonly snapshot: DesignSnapshot) {
+    public readonly snapshot: DesignSnapshot;
+
+    public constructor(snapshot: DesignSnapshot) {
         super('حُفظ تعديل أحدث من جلسة أخرى.');
         this.name = 'DesignSaveConflictError';
+        this.snapshot = snapshot;
     }
 }
 
 export class DesignSaveError extends Error {
-    public constructor(message: string, public readonly status: number | null = null) {
+    public readonly status: number | null;
+
+    public constructor(message: string, status: number | null = null) {
         super(message);
         this.name = 'DesignSaveError';
+        this.status = status;
     }
 }
 
