@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /app
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://methq.ly/sitemap.xml

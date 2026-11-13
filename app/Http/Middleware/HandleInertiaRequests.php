@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Domains\Users\Models\User;
+use App\Http\Support\PageMeta;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -28,6 +29,7 @@ class HandleInertiaRequests extends Middleware
                     'emailVerified' => $user->hasVerifiedEmail(),
                 ] : null,
             ],
+            'meta' => PageMeta::make('', PageMeta::DEFAULT_DESCRIPTION, null, null, false),
             'flash' => [
                 'status' => fn (): ?string => $request->session()->get('status'),
             ],

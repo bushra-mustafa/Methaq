@@ -1,4 +1,5 @@
 import { Link, usePage } from "@inertiajs/react";
+import { categoryLabels } from "../../Types/Library";
 import type { SharedPageProps } from "../../Types/PageProps";
 
 const footerLinks = [
@@ -9,6 +10,11 @@ const footerLinks = [
     { label: "سياسة الخصوصية", href: "/privacy" },
 ];
 
+const occasionLinks = Object.entries(categoryLabels).map(([value, label]) => ({
+    label,
+    href: `/occasions/${value.replaceAll("_", "-")}`,
+}));
+
 export default function Footer() {
     const year = new Date().getFullYear();
     const { auth } = usePage<SharedPageProps>().props;
@@ -17,7 +23,7 @@ export default function Footer() {
         <footer className="border-t border-methaq-border bg-methaq-sage">
             <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
                 <div className="grid gap-12 md:grid-cols-12">
-                    <div className="md:col-span-5">
+                    <div className="md:col-span-4">
                         <img
                             src="/brand/logos/methaq-horizontal-compact-flat.svg"
                             alt="ميثاق"
@@ -30,7 +36,7 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    <nav aria-label="روابط التذييل" className="md:col-span-3">
+                    <nav aria-label="روابط التذييل" className="md:col-span-2">
                         <p className="mb-5 font-methaq-display text-[20px] font-bold text-methaq-primary">
                             روابط مهمة
                         </p>
@@ -49,7 +55,26 @@ export default function Footer() {
                         </ul>
                     </nav>
 
-                    <div className="flex flex-col items-start gap-4 md:col-span-4">
+                    <nav aria-label="المناسبات" className="md:col-span-3">
+                        <p className="mb-5 font-methaq-display text-[20px] font-bold text-methaq-primary">
+                            المناسبات
+                        </p>
+
+                        <ul className="m-0 flex list-none flex-col items-start gap-1 p-0">
+                            {occasionLinks.map((item) => (
+                                <li key={item.href}>
+                                    <Link
+                                        href={item.href}
+                                        className="inline-flex min-h-11 items-center text-[15px] text-methaq-muted transition-colors hover:text-methaq-primary"
+                                    >
+                                        دعوات {item.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+
+                    <div className="flex flex-col items-start gap-4 md:col-span-3">
                         <p className="m-0 font-methaq-display text-[20px] font-bold text-methaq-primary">
                             ابدئي دعوتك اليوم
                         </p>

@@ -35,6 +35,8 @@ final class PublicInvitationTest extends TestCase
         $this->withoutVite()
             ->get('http://'.$event->subdomain.'.'.config('methaq.invitation_domain').'/')
             ->assertOk()
+            ->assertSee('<meta property="og:image" content="http://'.$event->subdomain.'.'.config('methaq.invitation_domain').'/renders/invitations/'.$event->getKey().'.png">', false)
+            ->assertSee('<meta name="robots" content="noindex, nofollow">', false)
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Guest/Show', false)
                 ->where('event.title', $event->title)
