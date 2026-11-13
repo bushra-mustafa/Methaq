@@ -135,7 +135,7 @@ final class TemplateLibrarySeeder extends Seeder
         ];
         $ivoryLicense = [
             'license' => 'Methaq proprietary',
-            'source' => 'Generated for Methaq with imagegen (see public/editor/proposals/ivory-wedding/v1/sources.json)',
+            'source' => 'Generated for Methaq with imagegen (see storage/app/private/editor/provenance/ivory-wedding-assets.json)',
             'commercialUse' => true,
         ];
 
