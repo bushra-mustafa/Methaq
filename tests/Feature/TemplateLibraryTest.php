@@ -40,7 +40,7 @@ final class TemplateLibraryTest extends TestCase
         Template::query()->update(['price_minor' => 25_000]);
 
         $this->assertDatabaseCount('templates', 16);
-        $this->assertDatabaseCount('template_assets', 56);
+        $this->assertDatabaseCount('template_assets', 59);
         $this->assertDatabaseCount('asset_collections', 11);
 
         TemplateAsset::query()->where('type', '!=', 'audio')->each(function (TemplateAsset $asset): void {

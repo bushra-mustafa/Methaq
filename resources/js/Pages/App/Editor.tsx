@@ -13,6 +13,8 @@ import { EditorMaterialPanel } from '../../Domains/Editor/Components/EditorMater
 import { updateCardBackground, updateCardMaterial } from '../../Domains/Editor/Services/cardMaterials';
 import { resolveColor } from '../../Domains/Editor/Services/editorDocument';
 import { EditorTextPanel } from '../../Domains/Editor/Components/EditorTextPanel';
+import { EditorSuggestionsPanel } from '../../Domains/Editor/Components/EditorSuggestionsPanel';
+import { suggestionContent, type TextSuggestion } from '../../Domains/Editor/Services/textSuggestions';
 import { useCanvas } from '../../Domains/Editor/Hooks/useCanvas';
 import { useAutosave } from '../../Domains/Editor/Hooks/useAutosave';
 import { useDesignHistory } from '../../Domains/Editor/Hooks/useDesignHistory';
@@ -137,11 +139,24 @@ function EditorWorkspace({ event, document: initialDocument, revision, assets, c
         const added = next.canvas.layers.at(-1);
         if (added) selectLayer(added.id);
     };
+    const insertSuggestion = (suggestion: TextSuggestion, font: EditorAsset): void => {
+        const content = suggestionContent(suggestion);
+        const length = Array.from(content).length;
+        const verse = suggestion.kind === 'verse';
+        const fontSize = verse ? (length > 200 ? 40 : length > 120 ? 46 : 52) : (length > 40 ? 46 : 54);
+        const charactersPerLine = Math.max(8, Math.floor(840 / (fontSize * 0.45)));
+        const lines = Math.ceil(length / charactersPerLine) + (verse ? 1 : 0);
+        const next = addText(history.value, font, { content, fontSize, frame: { x: 120, y: 700, width: 840, height: Math.round(lines * fontSize * 1.7) } });
+        history.commit(() => next);
+        const added = next.canvas.layers.at(-1);
+        if (added) selectLayer(added.id);
+    };
     const controls = <EditorControlPanel tab={tab} tool={panel} hasSelection={Boolean(selectedLayer)} onTab={setTab} onTool={setPanel}>
         {tab === 'elements' ? <>
             {panel === 'layers' && <EditorLayersPanel layers={history.value.canvas.layers} assets={assets} selectedId={selectedLayerId} onSelect={selectLayer} onToggleVisibility={(id) => history.commit((document) => updateLayer(document, id, (layer) => ({ ...layer, visible: !layer.visible })))} />}
             {panel === 'elements' && <EditorLibraryPanel assets={assets} collections={collections} recommendedAssetIds={recommendedAssetIds} placedAssetIds={placedAssetIds} onAddAsset={addVisualAsset} onAddCollection={addAssetCollection} />}
             {panel === 'text' && <EditorTextPanel mode="add" fonts={fonts} selected={null} onAdd={addTextLayer} onChange={changeText} />}
+            {panel === 'phrases' && <EditorSuggestionsPanel category={event.category} fonts={fonts} onInsert={insertSuggestion} />}
             {panel === 'colors' && <EditorPalettePanel palette={history.value.palette} onChange={(role: PaletteRole, color: HexColor) => history.commit((document) => updatePaletteColor(document, role, color))} />}
             {panel === 'material' && <EditorMaterialPanel material={history.value.canvas.material} background={resolveColor(history.value.canvas.background, history.value)} onChange={(material) => history.commit((document) => updateCardMaterial(document, material))} onColorChange={(color) => history.commit((document) => updateCardBackground(document, color))} />}
         </> : selectedLayer ? <div className="editor-details">

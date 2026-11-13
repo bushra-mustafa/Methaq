@@ -169,3 +169,16 @@
 .editor-heading-tools .editor-next:hover { background: var(--color-methaq-primary-hover); }
 .editor-heading-tools .editor-next[aria-disabled='true'] { opacity: .55; cursor: not-allowed; }
 .editor-brand span { color: #434842; font-size: 12px; }
+
+/* Ready-made verses and phrases */
+.editor-suggestion-category { display: grid; gap: 6px; margin-bottom: 12px; }
+.editor-suggestion-category span { font-size: 13px; color: #434842; }
+.editor-suggestion-kinds { display: flex; gap: 6px; margin-bottom: 14px; }
+.editor-suggestion-kinds button { flex: 1; min-height: 44px; font-size: 14px; border: 1px solid #6b7068; border-radius: 8px; background: #fff; color: #203322; }
+.editor-suggestion-kinds button[aria-pressed=true] { border-color: #203322; background: #e9efe7; font-weight: 600; }
+.editor-suggestion-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.editor-suggestion-list button { display: grid; gap: 8px; width: 100%; min-height: 44px; border: 1px solid #6b7068; border-radius: 10px; padding: 12px 14px; background: #fff; color: #203322; text-align: start; cursor: pointer; }
+.editor-suggestion-list button:hover:not(:disabled) { border-color: #203322; background: #f6fbf2; }
+.editor-suggestion-text { white-space: pre-line; font-size: 19px; line-height: 2; }
+.editor-suggestion-list small { font-size: 12px; color: #434842; }
+.editor-suggestion-credit { margin: 14px 0 0; font-size: 12px; color: #434842; }

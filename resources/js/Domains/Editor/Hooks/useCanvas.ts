@@ -1,3 +1,4 @@
+import { TEXT_WRAP_OPTIONS } from '../Services/textWrapping';
 import type { PresentationCard } from '../../../Types/PresentationCard';
 import { capturePresentationCard } from '../Services/capturePresentationCard';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -46,12 +47,27 @@ function fontFamily(asset: EditorAsset | undefined): string {
     return asset?.fontFamily ?? 'Methaq Arabic';
 }
 
+/** Variable fonts need their weight range declared, or the browser fakes bold instead of using the axis. */
+const variableFontSlugs = new Set(['font-reem-kufi', 'font-el-messiri']);
+
+/**
+ * `document.fonts.check` is true for a family nobody declared, so it cannot tell "loaded" from "missing";
+ * look for a declared face of that family instead.
+ */
+function hasFontFace(family: string): boolean {
+    for (const face of document.fonts) {
+        if (face.family.replace(/^["']|["']$/g, '') === family) return true;
+    }
+
+    return false;
+}
+
 async function loadEditorFonts(assets: EditorAsset[], signal: AbortSignal): Promise<void> {
     const fontAssets = assets.filter((asset) => asset.type === 'font' && asset.fontFamily && asset.fontUrl);
     await Promise.all(fontAssets.map(async (asset) => {
         if (signal.aborted || !asset.fontFamily || !asset.fontUrl) return;
-        if (document.fonts.check(`16px "${asset.fontFamily}"`)) return;
-        const face = new FontFace(asset.fontFamily, `url("${asset.fontUrl}")`);
+        if (hasFontFace(asset.fontFamily)) return;
+        const face = new FontFace(asset.fontFamily, `url("${asset.fontUrl}")`, variableFontSlugs.has(asset.slug) ? { weight: '100 900' } : {});
         const loaded = await face.load();
         if (!signal.aborted) document.fonts.add(loaded);
     }));
@@ -267,7 +283,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
                             textAlign: descriptor.textAlign,
                             direction: descriptor.direction,
                             fill: descriptor.fill,
-                            splitByGrapheme: true,
+                            ...TEXT_WRAP_OPTIONS,
                             lineHeight: 1.25,
                             editable: !layer.locked,
                         });

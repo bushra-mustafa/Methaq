@@ -14,6 +14,7 @@ const tools: Array<{ value: EditorPanel; label: string }> = [
     { value: 'layers', label: 'عناصر البطاقة' },
     { value: 'elements', label: 'إضافة زخارف' },
     { value: 'text', label: 'إضافة نص' },
+    { value: 'phrases', label: 'آيات وعبارات' },
     { value: 'colors', label: 'الألوان' },
     { value: 'material', label: 'الخامة' },
 ];

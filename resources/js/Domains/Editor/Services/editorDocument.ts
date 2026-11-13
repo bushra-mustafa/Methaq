@@ -72,19 +72,25 @@ export function addCollection(document: DesignDocument, collection: EditorCollec
     return { ...document, canvas: { ...document.canvas, layers: [...document.canvas.layers, ...additions] } };
 }
 
-export function addText(document: DesignDocument, font: EditorAsset): DesignDocument {
+export interface AddTextOptions {
+    content?: string;
+    fontSize?: number;
+    frame?: Partial<Pick<TextLayer['frame'], 'x' | 'y' | 'width' | 'height'>>;
+}
+
+export function addText(document: DesignDocument, font: EditorAsset, options: AddTextOptions = {}): DesignDocument {
     const layer: TextLayer = {
         id: layerId('text'),
         type: 'text',
-        frame: { x: 140, y: 780, width: 800, height: 180, scaleX: 1, scaleY: 1, rotation: 0, opacity: 1 },
+        frame: { x: 140, y: 780, width: 800, height: 180, ...options.frame, scaleX: 1, scaleY: 1, rotation: 0, opacity: 1 },
         locked: false,
         visible: true,
-        content: 'اكتبي النص هنا',
+        content: options.content ?? 'اكتبي النص هنا',
         language: 'ar',
         direction: 'rtl',
         alignment: 'center',
         font: { assetId: font.id, version: font.version },
-        fontSize: 64,
+        fontSize: options.fontSize ?? 64,
         fontWeight: 400,
         fill: { source: 'palette', role: 'primaryText' },
     };

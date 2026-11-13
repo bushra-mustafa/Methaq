@@ -6,3 +6,7 @@ Aref Ruqaa: https://github.com/google/fonts/tree/main/ofl/arefruqaa
 Downloaded 2026-11-12 for the henna-noir invitation scene. SIL Open Font License files included.
 Amiri Bold: https://github.com/google/fonts/tree/main/ofl/amiri (Amiri-Bold.ttf)
 Downloaded 2026-11-12 for public-page headings (Stitch reference uses Amiri 700). Covered by amiri-OFL.txt.
+Amiri Quran: https://github.com/google/fonts/tree/main/ofl/amiriquran
+Reem Kufi: https://github.com/google/fonts/tree/main/ofl/reemkufi
+El Messiri: https://github.com/google/fonts/tree/main/ofl/elmessiri
+Downloaded 2026-11-13 for the editor's verse and phrase library. SIL Open Font License files included (amiriquran-OFL.txt, reemkufi-OFL.txt, elmessiri-OFL.txt).

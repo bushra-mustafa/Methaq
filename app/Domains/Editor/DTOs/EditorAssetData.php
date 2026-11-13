@@ -76,6 +76,9 @@ final readonly class EditorAssetData
             'font-manrope' => '/brand/fonts/Manrope/Manrope.ttf',
             'font-cormorant' => '/brand/fonts/CormorantGaramond.ttf',
             'font-aref-ruqaa' => '/brand/fonts/ArefRuqaa-Regular.ttf',
+            'font-amiri-quran' => '/brand/fonts/AmiriQuran-Regular.ttf',
+            'font-reem-kufi' => '/brand/fonts/ReemKufi.ttf',
+            'font-el-messiri' => '/brand/fonts/ElMessiri.ttf',
             default => null,
         };
     }
