@@ -14,7 +14,7 @@ interface ProfileProps {
 }
 
 export default function Profile({ user, sessions, twoFactor, status }: ProfileProps) {
-    const profile = useForm({ name: user.name, email: user.email, phone: user.phone ?? '' });
+    const profile = useForm({ name: user.name, email: user.email, phone: user.phone ?? '', current_password: '' });
     const password = useForm({ current_password: '', password: '', password_confirmation: '' });
     const sessionsForm = useForm({ password: '' });
 
@@ -40,6 +40,7 @@ export default function Profile({ user, sessions, twoFactor, status }: ProfilePr
                 <form className="account-form" onSubmit={updateProfile} noValidate>
                     <FormField label="الاسم" name="name" value={profile.data.name} onChange={(event) => profile.setData('name', event.target.value)} autoComplete="name" error={profile.errors.name} required />
                     <FormField label="البريد الإلكتروني" name="email" type="email" value={profile.data.email} onChange={(event) => profile.setData('email', event.target.value)} autoComplete="email" error={profile.errors.email} required />
+                    {profile.data.email.trim().toLowerCase() !== user.email.toLowerCase() && <FormField label="كلمة المرور الحالية · لتأكيد تغيير البريد" name="profile_current_password" type="password" value={profile.data.current_password} onChange={(event) => profile.setData('current_password', event.target.value)} autoComplete="current-password" error={profile.errors.current_password} required />}
                     <FormField label="رقم الهاتف · اختياري" name="phone" type="tel" value={profile.data.phone} onChange={(event) => profile.setData('phone', event.target.value)} autoComplete="tel" error={profile.errors.phone} />
                     <button className="account-primary" type="submit" disabled={profile.processing || !profile.isDirty}>حفظ البيانات</button>
                 </form>

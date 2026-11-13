@@ -6,6 +6,7 @@ namespace App\Domains\Users\Actions;
 
 use App\Domains\Users\Actions\Concerns\PasswordRules;
 use App\Domains\Users\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
@@ -27,5 +28,8 @@ final class UpdateUserPasswordAction implements UpdatesUserPasswords
         ])->validateWithBag('updatePassword');
 
         $user->forceFill(['password' => (string) $input['password']])->save();
+
+        // Every other device signed in with the old password is signed out; this one stays.
+        Auth::guard('web')->logoutOtherDevices((string) $input['password']);
     }
 }

@@ -34,6 +34,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // After TrustProxies, so the forwarded scheme is known before deciding whether to redirect.
         $middleware->append(EnforceHttps::class);
         $middleware->web(append: [GuardPublicForms::class, HandleInertiaRequests::class]);
+        // A changed password ends every session that still holds the old one.
+        $middleware->authenticateSessions();
         $middleware->alias([
             'active' => EnsureUserIsActive::class,
             'admin.2fa' => RequireAdminWithTwoFactor::class,

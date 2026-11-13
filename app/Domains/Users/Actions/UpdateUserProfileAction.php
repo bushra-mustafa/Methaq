@@ -20,20 +20,24 @@ final class UpdateUserProfileAction implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
+        $email = Str::lower(trim((string) ($input['email'] ?? '')));
+        $changesEmail = $email !== Str::lower((string) $user->email);
+
         Validator::make($input, [
+            // A stolen session must not be able to take over the account by swapping its email.
+            'current_password' => $changesEmail ? ['required', 'string', 'current_password:web'] : ['nullable'],
             'name' => ['required', 'string', 'max:120'],
             'email' => ['required', 'string', 'email:rfc', 'max:254', Rule::unique(User::class)->ignore($user->getKey())],
             'phone' => ['nullable', 'string', 'max:32', 'regex:/^\+?[0-9 ()-]{7,32}$/'],
         ])->validateWithBag('updateProfileInformation');
 
-        $email = Str::lower(trim((string) $input['email']));
         $phone = is_string($input['phone'] ?? null) && trim($input['phone']) !== '' ? trim($input['phone']) : null;
 
         $user->forceFill([
             'name' => trim((string) $input['name']),
             'email' => $email,
             'phone' => $phone,
-            'email_verified_at' => now(),
+            ...($changesEmail ? ['email_verified_at' => null] : []),
         ])->save();
     }
 }
