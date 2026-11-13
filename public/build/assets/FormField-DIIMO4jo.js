@@ -1,1 +1,0 @@
-import{j as s}from"./app-BWZerJSD.js";function r({label:l,error:i,name:n,...e}){const d=`field-${n??l}`,a=`${d}-error`;return s.jsxs("label",{className:"account-field",htmlFor:d,children:[s.jsx("span",{children:l}),s.jsx("input",{id:d,name:n,"aria-invalid":!!i,"aria-describedby":i?a:void 0,...e}),i&&s.jsx("small",{id:a,role:"alert",children:i})]})}export{r as F};
