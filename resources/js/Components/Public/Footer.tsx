@@ -1,4 +1,5 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import type { SharedPageProps } from "../../Types/PageProps";
 
 const footerLinks = [
     { label: "الرئيسية", href: "/" },
@@ -10,50 +11,67 @@ const footerLinks = [
 
 export default function Footer() {
     const year = new Date().getFullYear();
+    const { auth } = usePage<SharedPageProps>().props;
 
     return (
         <footer className="border-t border-methaq-border bg-methaq-sage">
-            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-                <div className="grid gap-10 md:grid-cols-2">
-                    <div>
+            <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
+                <div className="grid gap-12 md:grid-cols-12">
+                    <div className="md:col-span-5">
                         <img
                             src="/brand/logos/methaq-horizontal-compact-flat.svg"
                             alt="ميثاق"
-                            className="w-36"
+                            className="w-40"
                         />
 
-                        <p className="mt-5 max-w-sm text-sm leading-8 text-methaq-muted">
+                        <p className="mt-5 max-w-sm text-[15px] leading-8 text-methaq-muted">
                             ميثاق، مساحة لتصميم دعوات إلكترونية أنيقة تعبّر عن
                             أجمل مناسباتكم.
                         </p>
                     </div>
 
-                    <nav aria-label="روابط التذييل">
-                        <h2 className="mb-5 text-lg font-semibold text-methaq-primary">
+                    <nav aria-label="روابط التذييل" className="md:col-span-3">
+                        <p className="mb-5 font-methaq-display text-[20px] font-bold text-methaq-primary">
                             روابط مهمة
-                        </h2>
+                        </p>
 
-                        <div className="flex flex-col items-start gap-3">
+                        <ul className="m-0 flex list-none flex-col items-start gap-1 p-0">
                             {footerLinks.map((item) => (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className="text-sm text-methaq-muted transition-colors hover:text-methaq-primary"
-                                >
-                                    {item.label}
-                                </Link>
+                                <li key={item.href}>
+                                    <Link
+                                        href={item.href}
+                                        className="inline-flex min-h-11 items-center text-[15px] text-methaq-muted transition-colors hover:text-methaq-primary"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                </li>
                             ))}
-                        </div>
+                        </ul>
                     </nav>
+
+                    <div className="flex flex-col items-start gap-4 md:col-span-4">
+                        <p className="m-0 font-methaq-display text-[20px] font-bold text-methaq-primary">
+                            ابدئي دعوتك اليوم
+                        </p>
+                        <p className="m-0 max-w-[30ch] text-[15px] leading-8 text-methaq-muted">
+                            اختاري قالباً وغيّري فيه ما تشائين، ثم شاركي الرابط.
+                        </p>
+                        <Link
+                            href={auth.user ? "/app" : "/register"}
+                            className="inline-flex min-h-12 items-center rounded-methaq-button bg-methaq-primary px-6 text-[15px] font-semibold text-methaq-cream transition-colors hover:bg-methaq-primary-hover"
+                        >
+                            {auth.user ? "مناسباتي" : "صمّمي دعوتك"}
+                        </Link>
+                    </div>
                 </div>
 
-                <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-methaq-border pt-6 text-center sm:flex-row">
-                    <p className="font-methaq-display text-lg text-methaq-primary">
+                <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-methaq-border pt-6 text-center sm:flex-row">
+                    <p className="m-0 font-methaq-display text-[18px] text-methaq-primary">
                         «لكل حكاية جميلة... ميثاقٌ يليق بها»
                     </p>
 
-                    <p className="text-xs text-methaq-muted">
-                        © {year} ميثاق — جميع الحقوق محفوظة
+                    <p className="m-0 text-[13px] text-methaq-muted">
+                        © {year} ميثاق، جميع الحقوق محفوظة
                     </p>
                 </div>
             </div>

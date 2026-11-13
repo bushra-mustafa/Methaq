@@ -20,7 +20,12 @@ export default function Home({ showPrototype, featuredTemplates }: HomeProps) {
 
     return (
         <PublicLayout>
-            <Head title="عهد الفرح" />
+            <Head title="دعوات إلكترونية بظرف يُفتح">
+                <meta
+                    name="description"
+                    content="صمّمي دعوة مناسبتك في ميثاق، وشاركيها برابط واحد يفتحه ضيوفك كظرف حقيقي تنكشف منه بطاقتك."
+                />
+            </Head>
             <HomeHero
                 isAuthenticated={isAuthenticated}
                 showPrototype={showPrototype}

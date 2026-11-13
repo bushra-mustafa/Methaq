@@ -1,8 +1,8 @@
 import { Link } from "@inertiajs/react";
-import { Sparkles } from "lucide-react";
 import type { LibraryTemplate } from "../../../Types/Library";
 import Reveal from "../Reveal";
 import HomeTemplateCard from "./HomeTemplateCard";
+import PaperSurface from "./PaperSurface";
 
 interface HomeTemplatesProps {
     templates: LibraryTemplate[];
@@ -18,34 +18,26 @@ export default function HomeTemplates({
         <section
             id="home-templates"
             aria-labelledby="home-templates-title"
-            className="scroll-mt-24 bg-methaq-paper px-6 py-20 lg:px-12"
+            className="scroll-mt-24 px-6 pb-methaq-section lg:px-12"
         >
             <div className="mx-auto flex max-w-7xl flex-col gap-12">
                 <Reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-                    <div className="flex flex-col gap-2">
-                        <span className="text-[13px] font-semibold tracking-widest text-methaq-gold-dark">
-                            اختيارات ميثاق
-                        </span>
+                    <div className="flex max-w-2xl flex-col gap-4">
                         <h2
                             id="home-templates-title"
-                            className="m-0 font-methaq-display text-[32px] leading-tight font-bold text-methaq-primary md:text-[38px]"
+                            className="m-0 font-methaq-display text-methaq-h2 font-bold tracking-[-0.01em] text-balance text-methaq-primary"
                         >
                             قوالب مختارة من ميثاق
                         </h2>
-                        <p className="m-0 max-w-2xl text-[16px] leading-relaxed text-methaq-muted">
+                        <p className="m-0 text-methaq-lead text-pretty text-methaq-muted">
                             نقطة بداية لكل مناسبة؛ غيّري فيها النصوص والألوان
                             والخطوط والظرف كما تحبين.
                         </p>
                     </div>
                     <Link
                         href="/templates"
-                        className="inline-flex items-center gap-2 text-[15px] font-medium text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
+                        className="inline-flex min-h-11 items-center text-[16px] font-medium text-methaq-primary underline decoration-methaq-gold/60 decoration-1 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
                     >
-                        <Sparkles
-                            size={18}
-                            aria-hidden="true"
-                            className="text-methaq-gold"
-                        />
                         عرض كل القوالب
                     </Link>
                 </Reveal>
@@ -62,20 +54,29 @@ export default function HomeTemplates({
                         الآن.
                     </p>
                 ) : (
-                    <ul className="m-0 grid list-none grid-cols-1 gap-8 p-0 md:grid-cols-2 lg:grid-cols-3">
-                        {templates.map((template, index) => (
-                            <Reveal
-                                as="li"
-                                key={template.id}
-                                delay={(index % 3) * 120}
-                            >
-                                <HomeTemplateCard
-                                    template={template}
-                                    isAuthenticated={isAuthenticated}
-                                />
-                            </Reveal>
-                        ))}
-                    </ul>
+                    <PaperSurface>
+                        <div
+                            role="region"
+                            aria-label="قوالب مختارة، مرّري للمزيد"
+                            tabIndex={0}
+                            className="snap-x snap-mandatory overflow-x-auto overscroll-x-contain p-5 pt-8 pb-16 [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] [scrollbar-width:thin] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-methaq-primary sm:p-8 sm:pt-10 sm:pb-20 lg:p-12 lg:pb-24"
+                        >
+                            <ul className="m-0 flex w-max list-none gap-6 p-0 sm:gap-8">
+                                {templates.map((template, index) => (
+                                    <li
+                                        key={template.id}
+                                        className="w-[min(62vw,17rem)] shrink-0 snap-start scroll-ms-5 sm:scroll-ms-8"
+                                    >
+                                        <HomeTemplateCard
+                                            template={template}
+                                            isAuthenticated={isAuthenticated}
+                                            index={index}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </PaperSurface>
                 )}
             </div>
         </section>

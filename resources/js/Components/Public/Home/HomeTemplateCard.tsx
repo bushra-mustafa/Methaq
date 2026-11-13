@@ -1,98 +1,76 @@
 import { Link } from "@inertiajs/react";
-import { ArrowLeft, Eye } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import type { LibraryTemplate } from "../../../Types/Library";
 
 interface HomeTemplateCardProps {
     template: LibraryTemplate;
     isAuthenticated: boolean;
+    /** Alternates the tilt and the vertical offset so the row reads as laid by hand. */
+    index: number;
 }
 
-const categories: Record<
-    LibraryTemplate["category"],
-    { label: string; description: string }
-> = {
-    wedding: {
-        label: "زفاف",
-        description: "بطاقة عرس بظرفها وختمها، تغيّرين فيها النصوص والألوان كما تحبين.",
-    },
-    henna: {
-        label: "حنّة",
-        description: "ليلة الحنّة بألوانها وموسيقاها، وكل نص فيها قابل للتعديل.",
-    },
-    marriage_contract: {
-        label: "عقد قران",
-        description: "دعوة هادئة لعقد القران، بخطوط عربية وظرف يليق باللحظة.",
-    },
-    graduation: {
-        label: "تخرج",
-        description: "احتفلي بتخرجك بدعوة أنيقة تشاركينها مع أهلك وأصدقائك.",
-    },
+const categoryLabels: Record<LibraryTemplate["category"], string> = {
+    wedding: "زفاف",
+    henna: "حنّة",
+    marriage_contract: "عقد قران",
+    graduation: "تخرج",
 };
 
-/** A featured template card, following the Stitch «قوالب مختارة» card. */
+/** One featured template: the whole invitation, as a sheet of paper resting on the marble. */
 export default function HomeTemplateCard({
     template,
     isAuthenticated,
+    index,
 }: HomeTemplateCardProps) {
-    const category = categories[template.category];
     const colors = [...new Set(Object.values(template.palette))].slice(0, 5);
     const useHref = isAuthenticated
         ? `/app/events/create?template=${encodeURIComponent(template.slug)}`
         : "/register";
+    const tilt = ["-rotate-[1.5deg]", "rotate-1", "-rotate-[0.75deg]", "rotate-[1.25deg]"][index % 4];
+    const drop = index % 2 === 1 ? "lg:translate-y-10" : "";
 
     return (
-        <article className="group flex h-full flex-col overflow-hidden rounded-methaq-card border border-methaq-border bg-methaq-ivory shadow-methaq-card transition-[translate,box-shadow] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_18px_30px_-10px_rgba(139,106,44,0.18),0_6px_14px_-4px_rgba(7,75,54,0.08)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-            <div className="relative aspect-[4/5] overflow-hidden bg-methaq-sage">
+        <figure className={`group m-0 flex flex-col gap-5 ${drop}`}>
+            <div
+                className={`${tilt} bg-white p-2 shadow-[0_1px_2px_rgba(32,51,34,0.14),0_14px_28px_-10px_rgba(32,51,34,0.32),0_30px_44px_-18px_rgba(122,97,59,0.28)] outline-1 -outline-offset-1 outline-black/10 transition-[rotate] duration-500 ease-[cubic-bezier(0.2,0,0,1)] hover:rotate-0 motion-reduce:transition-none`}
+            >
                 <img
                     src={template.thumbnailUrl}
                     alt={`معاينة قالب ${template.name}`}
                     width={540}
                     height={960}
                     loading="lazy"
-                    className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    className="block aspect-[9/16] w-full bg-methaq-sage object-cover"
                 />
-                <span className="absolute end-3 top-3 rounded-full bg-methaq-surface/90 px-3 py-1 text-[12px] font-bold text-methaq-gold-dark shadow-sm backdrop-blur-sm">
-                    {category.label}
-                </span>
             </div>
-            <div className="flex flex-1 flex-col justify-between gap-3 p-6">
-                <div>
-                    <h3 className="m-0 font-methaq-display text-[22px] font-bold text-methaq-primary">
+            <figcaption className="flex flex-col gap-3 px-1">
+                <div className="flex items-baseline justify-between gap-3">
+                    <h3 className="m-0 font-methaq-display text-[24px] leading-[1.35] font-bold text-methaq-primary">
                         {template.name}
                     </h3>
-                    <p className="m-0 mt-1.5 text-[14px] leading-relaxed text-methaq-muted">
-                        {category.description}
-                    </p>
-                    {colors.length > 0 && (
-                        <div className="mt-3 flex gap-1.5" aria-label="ألوان القالب">
-                            {colors.map((color) => (
-                                <span
-                                    key={color}
-                                    title={color}
-                                    className="size-4 rounded-full border border-black/10"
-                                    style={{ backgroundColor: color }}
-                                />
-                            ))}
-                        </div>
-                    )}
+                    <span className="shrink-0 text-[14px] text-methaq-muted">
+                        {categoryLabels[template.category]}
+                    </span>
                 </div>
-                <div className="flex items-center justify-between border-t border-methaq-border/60 pt-4">
-                    <Link
-                        href="/templates"
-                        className="inline-flex items-center gap-1 text-[14px] font-semibold text-methaq-gold-dark transition-colors hover:text-methaq-primary"
-                    >
-                        <Eye size={16} aria-hidden="true" />
-                        كل القوالب
-                    </Link>
-                    <Link
-                        href={useHref}
-                        className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-methaq-sage px-4 text-[13px] font-medium text-methaq-primary transition-colors hover:bg-methaq-primary hover:text-white"
-                    >
-                        {isAuthenticated ? "تخصيص القالب" : "أنشئي حساباً"}
-                        <ArrowLeft size={14} aria-hidden="true" />
-                    </Link>
-                </div>
-            </div>
-        </article>
+                {colors.length > 0 && (
+                    <div className="flex gap-1.5" role="img" aria-label="ألوان القالب">
+                        {colors.map((color) => (
+                            <span
+                                key={color}
+                                className="size-4 rounded-full outline-1 -outline-offset-1 outline-black/10"
+                                style={{ backgroundColor: color }}
+                            />
+                        ))}
+                    </div>
+                )}
+                <Link
+                    href={useHref}
+                    className="inline-flex min-h-11 items-center gap-2 self-start text-[15px] font-semibold text-methaq-primary underline decoration-methaq-gold/60 decoration-1 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
+                >
+                    {isAuthenticated ? "استخدمي هذا القالب" : "أنشئي حساباً لاستخدامه"}
+                    <ArrowLeft size={16} aria-hidden="true" />
+                </Link>
+            </figcaption>
+        </figure>
     );
 }

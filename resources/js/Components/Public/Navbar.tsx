@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import { Menu, PenLine, X } from "lucide-react";
 import type { SharedPageProps } from "../../Types/PageProps";
@@ -46,11 +46,27 @@ function NavigationLink({
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const toggle = useRef<HTMLButtonElement>(null);
     const page = usePage<SharedPageProps>();
     const { auth } = page.props;
     const currentPath = page.url.split("?")[0];
     const ctaHref = auth.user ? "/app" : "/register";
     const ctaLabel = auth.user ? "مناسباتي" : "صمّمي دعوتك";
+
+    useEffect(() => {
+        if (!menuOpen) {
+            return;
+        }
+        const closeOnEscape = (event: KeyboardEvent): void => {
+            if (event.key === "Escape") {
+                setMenuOpen(false);
+                toggle.current?.focus();
+            }
+        };
+        document.addEventListener("keydown", closeOnEscape);
+
+        return () => document.removeEventListener("keydown", closeOnEscape);
+    }, [menuOpen]);
 
     return (
         <header className="sticky top-0 z-50 border-b border-methaq-border bg-methaq-ivory/90 backdrop-blur-md">
@@ -108,14 +124,15 @@ export default function Navbar() {
                 </div>
 
                 <button
+                    ref={toggle}
                     type="button"
-                    className="rounded-lg p-2 text-methaq-primary lg:hidden"
+                    className="grid size-11 place-items-center rounded-lg text-methaq-primary lg:hidden"
                     onClick={() => setMenuOpen((current) => !current)}
                     aria-label={menuOpen ? "إغلاق القائمة" : "فتح القائمة"}
                     aria-expanded={menuOpen}
                     aria-controls="methaq-mobile-menu"
                 >
-                    {menuOpen ? <X size={24} /> : <Menu size={24} />}
+                    {menuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
                 </button>
             </nav>
 

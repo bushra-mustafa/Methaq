@@ -37,6 +37,19 @@
     --font-methaq-display: "Amiri", "Traditional Arabic", serif;
     --font-methaq-latin: "Manrope", "Methaq Arabic", system-ui, sans-serif;
 
+    /* Type scale: Amiri display for headings, Noto Sans Arabic for reading text. */
+    --text-methaq-display: clamp(2.75rem, 1.5rem + 5vw, 5.75rem);
+    --text-methaq-display--line-height: 1.18;
+    --text-methaq-h2: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+    --text-methaq-h2--line-height: 1.25;
+    --text-methaq-h3: 1.625rem;
+    --text-methaq-h3--line-height: 1.35;
+    --text-methaq-lead: 1.1875rem;
+    --text-methaq-lead--line-height: 1.95;
+
+    /* Vertical rhythm between home sections */
+    --spacing-methaq-section: clamp(4.5rem, 3rem + 6vw, 8rem);
+
     /* Border Radius: softened cardstock corners */
     --radius-methaq-card: 0.75rem;
     --radius-methaq-button: 0.5rem;

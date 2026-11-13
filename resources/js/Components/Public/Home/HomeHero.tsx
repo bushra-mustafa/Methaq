@@ -1,19 +1,17 @@
 import { Link } from "@inertiajs/react";
 import HomeEnvelopeShowcase from "./HomeEnvelopeShowcase";
-
-/** Gold dust from the Stitch hero: position, size and delay of each speck. */
-const dust = [
-    { className: "top-20 right-1/3 size-2.5", delay: "0s" },
-    { className: "top-1/2 right-1/5 size-2", delay: "2s" },
-    { className: "bottom-24 right-1/2 size-3", delay: "3.5s" },
-    { className: "top-28 left-1/4 size-2", delay: "1.2s" },
-];
+import { EightPointStar } from "./Ornament";
 
 interface HomeHeroProps {
     isAuthenticated: boolean;
     showPrototype: boolean;
 }
 
+/**
+ * Opening: the headline sets the tone in large Amiri, and the envelope the guests
+ * will open sits beside it on a faint geometric rosette. The only motion is one
+ * staggered entrance of the headline lines.
+ */
 export default function HomeHero({
     isAuthenticated,
     showPrototype,
@@ -21,55 +19,61 @@ export default function HomeHero({
     return (
         <section
             aria-labelledby="home-hero-title"
-            className="relative overflow-hidden px-6 py-16 lg:px-12 lg:py-24"
+            className="relative isolate overflow-hidden px-6 py-methaq-section lg:px-12"
         >
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-32 right-1/4 size-96 rounded-full bg-methaq-gold-soft/20 blur-3xl"
+            <EightPointStar
+                className="pointer-events-none absolute -z-10 hidden size-[40rem] max-w-none -translate-y-1/2 text-methaq-gold/30 lg:block"
+                style={{ insetInlineEnd: "-5rem", top: "50%" }}
             />
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 -left-20 size-80 rounded-full bg-methaq-sage blur-3xl"
-            />
-            {dust.map((speck) => (
-                <span
-                    key={speck.className}
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute rounded-full bg-[radial-gradient(circle,rgba(254,222,178,0.95)_0%,rgba(226,197,157,0.35)_60%,transparent_100%)] opacity-40 motion-safe:animate-methaq-dust ${speck.className}`}
-                    style={{ animationDelay: speck.delay }}
-                />
-            ))}
-            <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-10">
-                <div className="flex min-w-0 flex-col items-start gap-6 text-right motion-safe:animate-methaq-hero-in">
+
+            <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-12 lg:gap-8">
+                <div className="flex min-w-0 flex-col items-start gap-8 lg:col-span-7">
                     <h1
                         id="home-hero-title"
-                        className="m-0 max-w-[14ch] font-methaq-display text-[40px] leading-[1.25] font-bold tracking-tight text-balance text-methaq-primary md:text-[50px] lg:text-[56px]"
+                        className="m-0 font-methaq-display text-methaq-display font-bold tracking-[-0.01em] text-balance text-methaq-primary"
                     >
-                        لكل حكاية جميلة… دعوةٌ تليق بها
+                        <span
+                            className="block motion-safe:animate-methaq-hero-in"
+                            style={{ animationDelay: "0ms" }}
+                        >
+                            لكل حكاية جميلة…
+                        </span>
+                        <span
+                            className="block motion-safe:animate-methaq-hero-in"
+                            style={{ animationDelay: "140ms" }}
+                        >
+                            دعوةٌ تليق بها
+                        </span>
                     </h1>
 
-                    <p className="m-0 max-w-[44ch] text-[17px] leading-[1.9] text-pretty text-methaq-muted">
+                    <p
+                        className="m-0 max-w-[38ch] text-methaq-lead text-pretty text-methaq-muted motion-safe:animate-methaq-hero-in"
+                        style={{ animationDelay: "280ms" }}
+                    >
                         صمّمي دعوتك، وشاركيها برابط واحد يفتحه ضيوفك كظرف
                         حقيقي، فتنكشف بطاقتك على موسيقاك.
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1">
+                    <div
+                        className="flex flex-wrap items-center gap-x-8 gap-y-4 motion-safe:animate-methaq-hero-in"
+                        style={{ animationDelay: "400ms" }}
+                    >
                         <Link
                             href={isAuthenticated ? "/app" : "/register"}
-                            className="inline-flex min-h-12 touch-manipulation items-center justify-center rounded-methaq-button bg-methaq-primary px-7 text-[15px] font-semibold text-white shadow-methaq-soft transition-[background-color,translate] duration-200 hover:-translate-y-0.5 hover:bg-methaq-primary-hover motion-reduce:hover:translate-y-0"
+                            className="inline-flex min-h-13 touch-manipulation items-center justify-center rounded-methaq-button bg-methaq-primary px-8 text-[16px] font-semibold text-white shadow-methaq-soft transition-[background-color,scale] duration-200 hover:bg-methaq-primary-hover active:scale-[0.96] motion-reduce:active:scale-100"
                         >
                             {isAuthenticated ? "افتحي مناسباتك" : "صمّمي دعوتك"}
                         </Link>
                         <a
                             href="#home-envelope-title"
-                            className="text-[15px] font-medium text-methaq-primary underline decoration-methaq-gold/60 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
+                            className="inline-flex min-h-11 items-center text-[16px] font-medium text-methaq-primary underline decoration-methaq-gold/60 decoration-1 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
                         >
                             جرّبي فتح الظرف
                         </a>
                         {showPrototype && (
                             <a
                                 href="/dev/design-lab"
-                                className="text-[14px] text-methaq-muted underline underline-offset-8"
+                                className="inline-flex min-h-11 items-center text-[14px] text-methaq-muted underline underline-offset-8"
                             >
                                 البطاقة التجريبية
                             </a>
@@ -77,7 +81,7 @@ export default function HomeHero({
                     </div>
                 </div>
 
-                <div className="min-w-0">
+                <div className="min-w-0 lg:col-span-5">
                     <HomeEnvelopeShowcase mode="auto" />
                 </div>
             </div>

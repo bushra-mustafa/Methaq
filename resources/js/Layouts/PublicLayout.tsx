@@ -11,13 +11,16 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
             dir="rtl"
             lang="ar"
         >
-            <a href="#main-content" className="sr-only focus:not-sr-only">
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:rounded-methaq-button focus:bg-methaq-primary focus:px-5 focus:py-3 focus:text-[15px] focus:font-semibold focus:text-methaq-cream"
+            >
                 الانتقال إلى المحتوى
             </a>
 
             <Navbar />
 
-            <main id="main-content" className="min-h-dvh">
+            <main id="main-content" tabIndex={-1} className="min-h-dvh outline-none">
                 {children}
             </main>
             <Footer />

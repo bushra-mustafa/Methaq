@@ -1,57 +1,57 @@
 import { Link } from "@inertiajs/react";
-import { ArrowLeft, PenLine, Sparkles } from "lucide-react";
 import Reveal from "../Reveal";
+import { CornerFlourish } from "./Ornament";
 
 interface HomeClosingProps {
     isAuthenticated: boolean;
 }
 
-/** Final call to action, following the Stitch closing section. */
+const corners = [
+    "top-4 start-4",
+    "top-4 end-4 -scale-x-100",
+    "bottom-4 start-4 -scale-y-100",
+    "bottom-4 end-4 -scale-100",
+];
+
+/** Final call to action: one dark panel inside a gilded double frame. */
 export default function HomeClosing({ isAuthenticated }: HomeClosingProps) {
     return (
         <section
             aria-labelledby="home-closing-title"
-            className="relative overflow-hidden border-t border-methaq-gold-light/20 bg-methaq-primary px-6 py-20 text-center [--methaq-focus-ring:var(--color-methaq-cream)] lg:px-12"
+            className="px-6 py-methaq-section lg:px-12"
         >
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-methaq-gold-soft/10 blur-3xl"
-            />
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-24 -left-24 size-80 rounded-full bg-methaq-mist/10 blur-3xl"
-            />
-            <Reveal className="relative mx-auto flex max-w-4xl flex-col items-center gap-7">
-                <span className="grid size-14 place-items-center rounded-full border border-methaq-gold-light/40 bg-methaq-ivory/10 text-methaq-gold-light shadow-inner">
-                    <Sparkles size={28} aria-hidden="true" />
-                </span>
-                <div className="flex flex-col gap-3">
+            <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.25rem] bg-methaq-primary px-8 py-20 text-center text-methaq-cream [--methaq-focus-ring:var(--color-methaq-cream)] md:py-28">
+                {corners.map((position) => (
+                    <CornerFlourish
+                        key={position}
+                        className={`pointer-events-none absolute size-12 text-methaq-gold-light/60 md:size-16 ${position}`}
+                    />
+                ))}
+                <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-8">
                     <h2
                         id="home-closing-title"
-                        className="m-0 font-methaq-display text-[36px] leading-tight font-bold text-methaq-cream md:text-[46px]"
+                        className="m-0 font-methaq-display text-methaq-display font-bold tracking-[-0.01em] text-balance text-methaq-cream"
                     >
                         حكايتك تستحق دعوة مميزة
                     </h2>
-                    <p className="mx-auto m-0 max-w-xl text-[16px] leading-relaxed text-methaq-mist md:text-[18px]">
+                    <p className="m-0 max-w-[40ch] text-methaq-lead text-pretty text-methaq-mist">
                         سجّلي حساباً، واختاري قالباً، وشاهدي دعوتك كما سيراها
                         ضيوفك.
                     </p>
-                </div>
-                <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row">
-                    <Link
-                        href={isAuthenticated ? "/app" : "/register"}
-                        className="inline-flex min-h-12 touch-manipulation items-center gap-3 rounded-methaq-button border border-methaq-gold-light/50 bg-methaq-gold px-8 text-[15px] font-semibold text-white shadow-lg transition-[background-color,translate] duration-300 hover:-translate-y-0.5 hover:bg-methaq-gold-hover motion-reduce:hover:translate-y-0"
-                    >
-                        <PenLine size={20} aria-hidden="true" />
-                        {isAuthenticated ? "افتحي مناسباتك" : "ابدئي تصميم دعوتك"}
-                    </Link>
-                    <a
-                        href="#home-envelope"
-                        className="inline-flex min-h-12 items-center gap-2 rounded-methaq-button bg-methaq-ivory/10 px-6 text-[15px] font-medium text-methaq-cream transition-colors hover:bg-methaq-ivory/20"
-                    >
-                        جرّبي فتح الظرف
-                        <ArrowLeft size={18} aria-hidden="true" />
-                    </a>
+                    <div className="flex flex-col items-center gap-x-8 gap-y-4 sm:flex-row">
+                        <Link
+                            href={isAuthenticated ? "/app" : "/register"}
+                            className="inline-flex min-h-13 touch-manipulation items-center justify-center rounded-methaq-button bg-methaq-cream px-9 text-[16px] font-semibold text-methaq-primary transition-[background-color,scale] duration-200 hover:bg-methaq-gold-soft active:scale-[0.96] motion-reduce:active:scale-100"
+                        >
+                            {isAuthenticated ? "افتحي مناسباتك" : "ابدئي تصميم دعوتك"}
+                        </Link>
+                        <a
+                            href="#home-envelope-title"
+                            className="inline-flex min-h-11 items-center text-[16px] font-medium text-methaq-cream underline decoration-methaq-gold-light/70 decoration-1 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold-light"
+                        >
+                            جرّبي فتح الظرف
+                        </a>
+                    </div>
                 </div>
             </Reveal>
         </section>

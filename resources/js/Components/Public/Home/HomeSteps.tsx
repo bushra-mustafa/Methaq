@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, Palette, PenLine, Send } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Reveal from "../Reveal";
+import usePrefersReducedMotion from "../usePrefersReducedMotion";
 
 interface Step {
     numeral: string;
@@ -41,23 +42,11 @@ const steps: Step[] = [
 const STEP_MS = 1600;
 const FINAL_HOLD_MS = 2200;
 
-function usePrefersReducedMotion(): boolean {
-    const [reduced, setReduced] = useState(
-        () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    );
-
-    useEffect(() => {
-        const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-        const update = (): void => setReduced(media.matches);
-        media.addEventListener("change", update);
-
-        return () => media.removeEventListener("change", update);
-    }, []);
-
-    return reduced;
-}
-
-/** Walks the visitor through the three steps: the gold line travels 1 → 2 → 3, then starts again. */
+/**
+ * A single gold thread runs through the three steps and fills as the visitor reads:
+ * 1 → 2 → 3, then it starts again. The steps are a real sequence, so they stay
+ * numbered; there are no boxes, only the thread, a node and the text.
+ */
 export default function HomeSteps() {
     const list = useRef<HTMLDivElement>(null);
     const reducedMotion = usePrefersReducedMotion();
@@ -65,6 +54,7 @@ export default function HomeSteps() {
     const [active, setActive] = useState(0);
     const lastStep = steps.length - 1;
     const current = reducedMotion ? lastStep : active;
+    const progress = `${(current / lastStep) * 100}%`;
 
     useEffect(() => {
         const target = list.current;
@@ -96,81 +86,83 @@ export default function HomeSteps() {
         <section
             id="home-steps"
             aria-labelledby="home-steps-title"
-            className="scroll-mt-24 px-6 py-24 lg:px-12"
+            className="scroll-mt-24 px-6 pb-methaq-section lg:px-12"
         >
-            <div className="mx-auto flex max-w-7xl flex-col gap-16">
-                <Reveal className="mx-auto flex max-w-2xl flex-col gap-3 text-center">
-                    <span className="text-[13px] font-semibold tracking-wider text-methaq-gold-dark">
-                        ثلاث خطوات فقط
-                    </span>
+            <div className="mx-auto flex max-w-7xl flex-col gap-16 lg:gap-20">
+                <Reveal className="flex max-w-xl flex-col gap-4">
                     <h2
                         id="home-steps-title"
-                        className="m-0 font-methaq-display text-[34px] font-bold text-methaq-primary md:text-[40px]"
+                        className="m-0 font-methaq-display text-methaq-h2 font-bold tracking-[-0.01em] text-balance text-methaq-primary"
                     >
                         كيف تصل دعوتك
                     </h2>
-                    <p className="m-0 text-[16px] leading-relaxed text-methaq-muted">
+                    <p className="m-0 text-methaq-lead text-pretty text-methaq-muted">
                         من اختيار القالب إلى رابط يفتحه ضيوفك، بدون تعقيد.
                     </p>
                 </Reveal>
 
-                <div ref={list} className="flex flex-col gap-10">
-                <div aria-hidden="true" className="relative hidden h-4 md:block">
-                    <span className="absolute inset-x-[16.66%] top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-methaq-gold/20">
+                <div ref={list} className="relative">
+                    <span
+                        aria-hidden="true"
+                        className="absolute inset-y-6 start-6 w-px bg-methaq-gold/25 md:hidden"
+                    >
                         <span
-                            className="absolute inset-y-0 start-0 rounded-full bg-methaq-gold transition-[width] duration-[1200ms] ease-in-out motion-reduce:transition-none"
-                            style={{ width: `${(current / lastStep) * 100}%` }}
+                            className="absolute inset-x-0 top-0 bg-methaq-gold transition-[height] duration-[1200ms] ease-in-out motion-reduce:transition-none"
+                            style={{ height: progress }}
                         />
                     </span>
-                    {steps.map((step, index) => (
+                    <span
+                        aria-hidden="true"
+                        className="absolute inset-x-[16.66%] top-6 hidden h-px bg-methaq-gold/25 md:block"
+                    >
                         <span
-                            key={step.numeral}
-                            data-reached={index <= current}
-                            className="absolute top-0 -ms-2 size-4 rounded-full border-2 border-methaq-gold/40 bg-methaq-ivory transition-[background-color,border-color,scale] duration-500 data-[reached=true]:scale-110 data-[reached=true]:border-methaq-gold data-[reached=true]:bg-methaq-gold motion-reduce:transition-none"
-                            style={{ insetInlineStart: `${16.66 + index * 33.33}%` }}
+                            className="absolute inset-y-0 start-0 bg-methaq-gold transition-[width] duration-[1200ms] ease-in-out motion-reduce:transition-none"
+                            style={{ width: progress }}
                         />
-                    ))}
-                </div>
+                    </span>
 
-                <ol className="relative m-0 grid list-none grid-cols-1 gap-8 p-0 md:grid-cols-3">
-                    {steps.map((step, index) => {
-                        const Icon = step.icon;
-                        const reached = index <= current;
-                        const isCurrent = index === current;
+                    <ol className="relative m-0 grid list-none gap-12 p-0 md:grid-cols-3 md:gap-10">
+                        {steps.map((step, index) => {
+                            const Icon = step.icon;
+                            const reached = index <= current;
 
-                        return (
-                            <li
-                                key={step.numeral}
-                                data-reached={reached}
-                                aria-current={isCurrent ? "step" : undefined}
-                                className="group/step relative flex flex-col gap-5 rounded-2xl border border-methaq-border bg-methaq-paper p-8 transition-[border-color,box-shadow,translate] duration-500 data-[reached=true]:border-methaq-gold/50 aria-[current=step]:-translate-y-1.5 aria-[current=step]:shadow-methaq-raised motion-reduce:transition-none motion-reduce:aria-[current=step]:translate-y-0"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <span className="font-methaq-display text-[36px] leading-none font-bold text-methaq-gold/40 tabular-nums transition-colors duration-500 group-data-[reached=true]/step:text-methaq-gold">
+                            return (
+                                <li
+                                    key={step.numeral}
+                                    data-reached={reached}
+                                    aria-current={index === current ? "step" : undefined}
+                                    className="group/step relative flex flex-col gap-4 ps-20 md:items-center md:ps-0 md:text-center"
+                                >
+                                    <span
+                                        aria-hidden="true"
+                                        className="absolute start-0 top-0 grid size-12 place-items-center rounded-full border border-methaq-gold/40 bg-methaq-ivory text-methaq-gold-dark transition-[background-color,border-color,color] duration-500 group-data-[reached=true]/step:border-methaq-primary group-data-[reached=true]/step:bg-methaq-primary group-data-[reached=true]/step:text-methaq-cream motion-reduce:transition-none md:static"
+                                    >
+                                        <Icon size={22} />
+                                    </span>
+                                    <span
+                                        aria-hidden="true"
+                                        className="font-methaq-display text-[56px] leading-none font-bold text-methaq-gold/30 tabular-nums transition-colors duration-500 group-data-[reached=true]/step:text-methaq-gold motion-reduce:transition-none"
+                                    >
                                         {step.numeral}
                                     </span>
-                                    <span className="grid size-13 place-items-center rounded-full bg-methaq-sage text-methaq-gold-dark transition-colors duration-500 group-data-[reached=true]/step:bg-methaq-primary group-data-[reached=true]/step:text-white">
-                                        <Icon size={24} aria-hidden="true" />
-                                    </span>
-                                </div>
-                                <h3 className="m-0 font-methaq-display text-[24px] font-bold text-methaq-primary">
-                                    {step.title}
-                                </h3>
-                                <p className="m-0 text-[15px] leading-relaxed text-methaq-muted">
-                                    {step.description}
-                                </p>
-                                <p className="m-0 flex items-center gap-2 pt-1 text-[13px] font-medium text-methaq-primary">
-                                    <Check
-                                        size={16}
-                                        aria-hidden="true"
-                                        className="text-methaq-gold transition-transform duration-500 group-data-[reached=true]/step:scale-125"
-                                    />
-                                    {step.detail}
-                                </p>
-                            </li>
-                        );
-                    })}
-                </ol>
+                                    <h3 className="m-0 font-methaq-display text-methaq-h3 font-bold text-methaq-primary">
+                                        {step.title}
+                                    </h3>
+                                    <p className="m-0 max-w-[34ch] text-[16px] leading-[1.9] text-methaq-muted">
+                                        {step.description}
+                                    </p>
+                                    <p className="m-0 flex items-center gap-2 text-[14px] font-medium text-methaq-primary">
+                                        <Check
+                                            size={16}
+                                            aria-hidden="true"
+                                            className="text-methaq-gold-dark"
+                                        />
+                                        {step.detail}
+                                    </p>
+                                </li>
+                            );
+                        })}
+                    </ol>
                 </div>
             </div>
         </section>
