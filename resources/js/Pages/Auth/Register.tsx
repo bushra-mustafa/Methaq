@@ -8,7 +8,7 @@ import useAuthForm from '../../Components/Auth/useAuthForm';
 export default function Register() {
     const { submit, bind, processing } = useAuthForm('/register', { name: '', email: '', phone: '', password: '', password_confirmation: '' }, ['password', 'password_confirmation']);
 
-    return <AuthLayout promo="register" title="ابدئي دعوتك" description="حساب واحد يجمع تصاميمك وروابط مناسباتك، وتجرّبين قبل أن تدفعي." footer={<p className="m-0">عندك حساب؟ <Link href="/login">سجلي الدخول</Link></p>}>
+    return <AuthLayout title="ابدئي دعوتك" description="حساب واحد يجمع تصاميمك وروابط مناسباتك، وتجرّبين قبل أن تدفعي." footer={<p className="m-0">عندك حساب؟ <Link href="/login">سجلي الدخول</Link></p>}>
         <Head title="إنشاء حساب" />
         <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
             <AuthField label="الاسم" autoComplete="name" autoFocus required {...bind('name')} />

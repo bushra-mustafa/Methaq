@@ -1,37 +1,30 @@
 import { Link } from "@inertiajs/react";
+import { Eye, PenLine, Send } from "lucide-react";
 import type { PropsWithChildren, ReactNode } from "react";
-import { CornerFlourish } from "../Public/Home/Ornament";
-import AuthShowcase from "./AuthShowcase";
-import type { AuthPromoKey } from "./authPromos";
 
 interface AuthLayoutProps {
     title: string;
     description: string;
     footer?: ReactNode;
-    promo?: AuthPromoKey;
 }
 
-const corners = [
-    "start-3 top-3",
-    "end-3 top-3 -scale-x-100",
-    "start-3 bottom-3 -scale-y-100",
-    "end-3 bottom-3 -scale-100",
+/** Why a visitor who only came to sign in might want to try Methaq. */
+const steps = [
+    { icon: PenLine, title: "صمّمي", text: "اختاري قالباً وعدّلي نصوصه وألوانه." },
+    { icon: Eye, title: "شاهدي", text: "جرّبي فتح الظرف قبل أن تنشري." },
+    { icon: Send, title: "انشري", text: "ادفعي بالتحويل البنكي عند النشر فقط." },
 ];
 
-/**
- * Every account page: the form on a gilded sheet of paper beside a promotion of the
- * product itself, so a visitor who only came to sign in still sees what Methaq makes.
- */
+/** Every account page: a clean form card, and under it the three steps that make Methaq worth trying. */
 export default function AuthLayout({
     title,
     description,
     footer,
-    promo = "account",
     children,
 }: PropsWithChildren<AuthLayoutProps>) {
     return (
         <div
-            className="methaq-public min-h-dvh bg-methaq-ivory font-methaq-body text-methaq-ink lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]"
+            className="methaq-public flex min-h-dvh flex-col items-center gap-10 bg-methaq-ivory px-5 py-8 font-methaq-body text-methaq-ink sm:py-12"
             dir="rtl"
             lang="ar"
         >
@@ -42,59 +35,56 @@ export default function AuthLayout({
                 الانتقال إلى النموذج
             </a>
 
+            <Link href="/" aria-label="ميثاق، العودة إلى الرئيسية">
+                <img
+                    src="/brand/logos/methaq-horizontal-compact-flat.svg"
+                    alt=""
+                    width={196}
+                    height={43}
+                    className="block h-10 w-auto"
+                />
+            </Link>
+
             <main
                 id="main-content"
                 tabIndex={-1}
-                className="flex flex-col gap-8 px-5 py-6 outline-none sm:px-10 lg:min-h-dvh lg:px-14"
+                className="w-full max-w-[28rem] rounded-[1rem] border border-methaq-border bg-white px-6 py-9 shadow-methaq-raised outline-none motion-safe:animate-methaq-hero-in sm:px-10"
             >
-                <header className="flex items-center justify-between gap-4">
-                    <Link href="/" aria-label="ميثاق، العودة إلى الرئيسية">
-                        <img
-                            src="/brand/logos/methaq-horizontal-compact-flat.svg"
-                            alt=""
-                            width={196}
-                            height={43}
-                            className="block h-9 w-auto"
-                        />
-                    </Link>
-                    <Link
-                        href="/templates"
-                        className="inline-flex min-h-11 items-center text-[15px] font-medium text-methaq-primary underline decoration-methaq-gold/60 decoration-1 underline-offset-8 transition-[text-decoration-color] hover:decoration-methaq-gold"
-                    >
-                        تصفّحي القوالب
-                    </Link>
+                <header className="flex flex-col items-center gap-3 pb-8 text-center">
+                    <h1 className="m-0 font-methaq-display text-[clamp(2rem,1.6rem+1.4vw,2.6rem)] leading-[1.3] font-bold tracking-[-0.01em] text-balance text-methaq-primary">
+                        {title}
+                    </h1>
+                    <p className="m-0 max-w-[34ch] text-[16px] leading-[1.8] text-pretty text-methaq-muted">
+                        {description}
+                    </p>
                 </header>
 
-                <div className="flex flex-1 items-start justify-center pb-6 lg:items-center">
-                    <div className="relative w-full max-w-[29rem] bg-white px-7 py-10 shadow-[0_1px_2px_rgba(32,51,34,0.12),0_18px_36px_-14px_rgba(32,51,34,0.28),0_34px_50px_-22px_rgba(122,97,59,0.26)] outline-1 -outline-offset-1 outline-black/10 motion-safe:animate-methaq-hero-in sm:px-11">
-                        {corners.map((position) => (
-                            <CornerFlourish
-                                key={position}
-                                className={`pointer-events-none absolute size-9 text-methaq-gold/55 ${position}`}
-                            />
-                        ))}
+                {children}
 
-                        <header className="flex flex-col items-center gap-3 pb-8 pt-2 text-center">
-                            <h1 className="m-0 font-methaq-display text-[clamp(2rem,1.6rem+1.4vw,2.6rem)] leading-[1.3] font-bold tracking-[-0.01em] text-balance text-methaq-primary">
-                                {title}
-                            </h1>
-                            <p className="m-0 max-w-[34ch] text-[16px] leading-[1.8] text-pretty text-methaq-muted">
-                                {description}
-                            </p>
-                        </header>
-
-                        {children}
-
-                        {footer && (
-                            <footer className="mt-8 border-t border-methaq-border pt-6 text-center text-[15px] text-methaq-muted [&_a]:font-semibold [&_a]:text-methaq-primary [&_a]:underline [&_a]:decoration-methaq-gold/60 [&_a]:underline-offset-8 [&_a]:transition-[text-decoration-color] [&_a:hover]:decoration-methaq-gold [&_button]:font-semibold [&_button]:text-methaq-primary [&_button]:underline [&_button]:decoration-methaq-gold/60 [&_button]:underline-offset-8">
-                                {footer}
-                            </footer>
-                        )}
-                    </div>
-                </div>
+                {footer && (
+                    <footer className="mt-8 border-t border-methaq-border pt-6 text-center text-[15px] text-methaq-muted [&_a]:font-semibold [&_a]:text-methaq-primary [&_a]:underline [&_a]:decoration-methaq-gold/60 [&_a]:underline-offset-8 [&_a]:transition-[text-decoration-color] [&_a:hover]:decoration-methaq-gold [&_button]:font-semibold [&_button]:text-methaq-primary [&_button]:underline [&_button]:decoration-methaq-gold/60 [&_button]:underline-offset-8">
+                        {footer}
+                    </footer>
+                )}
             </main>
 
-            <AuthShowcase promo={promo} />
+            <ul className="m-0 grid w-full max-w-3xl list-none gap-6 p-0 sm:grid-cols-3">
+                {steps.map(({ icon: Icon, title: stepTitle, text }) => (
+                    <li key={stepTitle} className="flex items-start gap-4">
+                        <span className="grid size-11 shrink-0 place-items-center rounded-full bg-methaq-gold-soft/60 text-methaq-gold-dark">
+                            <Icon size={20} aria-hidden="true" />
+                        </span>
+                        <span className="flex flex-col gap-1">
+                            <strong className="text-[16px] font-bold text-methaq-primary">
+                                {stepTitle}
+                            </strong>
+                            <span className="text-[15px] leading-[1.8] text-methaq-muted">
+                                {text}
+                            </span>
+                        </span>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }

@@ -11,7 +11,7 @@ interface LoginProps { status?: string | null }
 export default function Login({ status }: LoginProps) {
     const { form, submit, bind, processing } = useAuthForm('/login', { email: '', password: '', remember: false as boolean }, ['password']);
 
-    return <AuthLayout promo="login" title="أهلاً برجوعك" description="ادخلي لحفظ تصاميمك ومتابعة مناسباتك." footer={<p className="m-0">أول مرة هنا؟ <Link href="/register">أنشئي حسابك</Link></p>}>
+    return <AuthLayout title="أهلاً برجوعك" description="ادخلي لحفظ تصاميمك ومتابعة مناسباتك." footer={<p className="m-0">أول مرة هنا؟ <Link href="/register">أنشئي حسابك</Link></p>}>
         <Head title="تسجيل الدخول" />
         {status && <AuthStatus>{status}</AuthStatus>}
         <form className="flex flex-col gap-5" onSubmit={submit} noValidate>
