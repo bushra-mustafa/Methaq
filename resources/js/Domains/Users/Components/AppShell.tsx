@@ -21,7 +21,7 @@ export function AppShell({ title, children }: AppShellProps) {
             <nav aria-label="حسابي">
                 <Link href="/app" className={isCurrentPage('/app') ? 'is-active' : undefined}>مناسباتي</Link>
                 <Link href="/app/profile" className={isCurrentPage('/app/profile') ? 'is-active' : undefined}>الحساب والأمان</Link>
-                {auth.user?.role === 'admin' && <><Link href="/app/admin" className={isCurrentPage('/app/admin') ? 'is-active' : undefined}>الإدارة</Link><Link href="/app/admin/library" className={isCurrentPage('/app/admin/library') ? 'is-active' : undefined}>المكتبة</Link></>}
+                {auth.user?.role === 'admin' && <a href="/admin">لوحة الإدارة</a>}
                 <Link href="/logout" method="post" as="button">خروج</Link>
             </nav>
         </header>

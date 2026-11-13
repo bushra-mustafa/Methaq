@@ -11,7 +11,6 @@ use App\Domains\Users\Enums\UserStatus;
 use App\Domains\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Laravel\Fortify\Actions\EnableTwoFactorAuthentication;
 use Tests\TestCase;
 
 final class AuthorizationFoundationTest extends TestCase
@@ -55,20 +54,6 @@ final class AuthorizationFoundationTest extends TestCase
         $this->assertTrue($activeAdmin->can('view', $template));
         $this->assertFalse($suspendedAdmin->can('view', $template));
         $this->assertFalse($suspendedAdmin->can('update', $template));
-    }
-
-    public function test_admin_area_requires_role_and_confirmed_two_factor_authentication(): void
-    {
-        $customer = User::factory()->create();
-        $this->actingAs($customer)->get('/app/admin')->assertForbidden();
-
-        $admin = User::factory()->create(['role' => UserRole::Admin]);
-        $this->actingAs($admin)->get('/app/admin')->assertRedirect(route('app.profile'));
-
-        app(EnableTwoFactorAuthentication::class)($admin);
-        $admin->forceFill(['two_factor_confirmed_at' => now()])->save();
-
-        $this->actingAs($admin->fresh())->get('/app/admin')->assertOk();
     }
 
     public function test_trusted_command_promotes_an_active_user_and_audits_it(): void
