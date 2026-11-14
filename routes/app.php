@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Admin\SaveTemplateDesignController;
+use App\Http\Controllers\Admin\ShowEventDraftReviewController;
 use App\Http\Controllers\Admin\ShowTemplateStudioController;
 use App\Http\Controllers\Admin\StoreTemplateThumbnailController;
 use App\Http\Controllers\App\CreateEventController;
@@ -99,3 +100,6 @@ Route::prefix('studio/templates/{template}')->whereNumber('template')->group(fun
     Route::patch('/design', SaveTemplateDesignController::class)->name('studio.templates.design');
     Route::post('/thumbnail', StoreTemplateThumbnailController::class)->middleware('throttle:20,1')->name('studio.templates.thumbnail');
 });
+
+// Administrators read a customer's draft here, read-only. The policy needs an active admin with confirmed two-factor; every view is audited.
+Route::get('/review/events/{event}', ShowEventDraftReviewController::class)->whereNumber('event')->name('review.events.show');

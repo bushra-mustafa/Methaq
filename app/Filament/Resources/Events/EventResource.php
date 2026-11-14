@@ -116,6 +116,13 @@ final class EventResource extends Resource
                     ->visible(fn (Event $record): bool => $record->status === EventStatus::Published)
                     ->url(fn (Event $record): string => InvitationAddress::url($record->subdomain))
                     ->openUrlInNewTab(),
+                Action::make('draft')
+                    ->label('عرض المسودة')
+                    ->icon(Heroicon::OutlinedEye)
+                    ->color('gray')
+                    ->authorize('reviewDraft')
+                    ->url(fn (Event $record): string => route('app.review.events.show', $record))
+                    ->openUrlInNewTab(),
                 self::suspendAction(),
                 self::reinstateAction(),
             ]);

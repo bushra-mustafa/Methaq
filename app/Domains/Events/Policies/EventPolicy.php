@@ -40,6 +40,15 @@ final class EventPolicy
         return $this->view($user, $event);
     }
 
+    /**
+     * Reading an owner's unpublished draft is a deliberate, narrow administrator power: read-only, audited on every view,
+     * and it needs the same confirmed two-factor guarantee as the admin panel. It never allows editing.
+     */
+    public function reviewDraft(User $user, Event $event): bool
+    {
+        return $user->isActive() && $user->role === UserRole::Admin && $user->hasEnabledTwoFactorAuthentication();
+    }
+
     /** Suspending or reinstating an invitation is an administrator's call, not an owner-policy override. */
     public function moderate(User $user, Event $event): bool
     {
