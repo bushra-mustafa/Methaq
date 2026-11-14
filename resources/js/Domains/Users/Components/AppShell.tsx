@@ -21,6 +21,7 @@ export function AppShell({ title, children }: AppShellProps) {
             <Link href="/app" aria-label="لوحة ميثاق"><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="" width="176" height="39" /></Link>
             <nav aria-label="حسابي">
                 <Link href="/app" className={isCurrentPage('/app') ? 'is-active' : undefined}>مناسباتي</Link>
+                <Link href="/app/support" className={isCurrentPage('/app/support') ? 'is-active' : undefined}>رسائلي{(page.props.support?.unread ?? 0) > 0 && <span className="account-badge" aria-label={`${page.props.support?.unread} رسالة جديدة`}>{page.props.support?.unread}</span>}</Link>
                 <Link href="/app/profile" className={isCurrentPage('/app/profile') ? 'is-active' : undefined}>الحساب والأمان</Link>
                 {auth.user?.role === 'admin' && <a href="/admin">لوحة الإدارة</a>}
                 <Link href="/logout" method="post" as="button">خروج</Link>

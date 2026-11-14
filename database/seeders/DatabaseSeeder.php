@@ -12,5 +12,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(TemplateLibrarySeeder::class);
         $this->call(InvitationAudioSeeder::class);
+        $this->call(ContactChannelSeeder::class);
     }
 }

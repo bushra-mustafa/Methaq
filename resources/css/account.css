@@ -365,3 +365,93 @@
         flex-direction: column;
     }
 }
+
+.account-badge {
+    display: inline-block;
+    min-width: 1.4em;
+    margin-inline-start: 6px;
+    border-radius: 999px;
+    padding: 1px 7px;
+    background: var(--color-methaq-primary);
+    color: #fff;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    align-items: start;
+}
+
+.support-threads,
+.support-messages {
+    display: grid;
+    gap: 12px;
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+}
+
+.support-threads a {
+    display: grid;
+    gap: 4px;
+    border: 1px solid var(--color-methaq-border);
+    border-radius: 0.75rem;
+    padding: 14px 16px;
+    color: var(--color-methaq-primary);
+    text-decoration: none;
+}
+
+.support-threads a:hover {
+    border-color: var(--color-methaq-primary);
+}
+
+.support-threads span,
+.support-threads time {
+    color: #434842;
+    font-size: 14px;
+}
+
+.support-messages li {
+    border-radius: 0.75rem;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid var(--color-methaq-border);
+    max-width: 46rem;
+}
+
+.support-messages li.is-team {
+    background: rgb(32 51 34 / 6%);
+    margin-inline-end: auto;
+}
+
+.support-messages li.is-mine {
+    margin-inline-start: auto;
+}
+
+.support-messages li > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #434842;
+}
+
+.support-messages p {
+    margin: 0;
+    line-height: 1.9;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+    .support-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

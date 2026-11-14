@@ -19,7 +19,16 @@ return [
     'limits' => [
         'max_open_events' => (int) env('METHAQ_MAX_OPEN_EVENTS', 25),
         'max_pending_receipts' => (int) env('METHAQ_MAX_PENDING_RECEIPTS', 3),
+        'max_open_support_threads' => (int) env('METHAQ_MAX_OPEN_SUPPORT_THREADS', 5),
         'max_event_years_ahead' => (int) env('METHAQ_MAX_EVENT_YEARS_AHEAD', 3),
+    ],
+
+    /*
+     * Where a notice goes when a customer writes to the team. Only the message subject is sent, never its text.
+     * Leave it empty to switch the notices off (the customer's automatic acknowledgement stays on).
+     */
+    'support' => [
+        'inbox' => env('METHAQ_SUPPORT_INBOX', 'methq98@gmail.com'),
     ],
 
     'invitation_timezone' => env('METHAQ_INVITATION_TIMEZONE', 'Africa/Tripoli'),

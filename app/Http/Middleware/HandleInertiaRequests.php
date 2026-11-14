@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Domains\Users\Models\SupportThread;
 use App\Domains\Users\Models\User;
+use App\Domains\Users\Services\ContactChannels;
 use App\Http\Support\PageMeta;
 use App\Http\Support\TurnstileVerifier;
 use Illuminate\Http\Request;
@@ -38,6 +40,10 @@ class HandleInertiaRequests extends Middleware
                 'exclude' => config('methaq.analytics.exclude'),
             ],
             'meta' => PageMeta::make('', PageMeta::DEFAULT_DESCRIPTION, null, null, true),
+            'contactChannels' => fn (): array => app(ContactChannels::class)->active(),
+            'support' => fn (): ?array => $user instanceof User && $user->isActive() && $request->is('app', 'app/*')
+                ? ['unread' => SupportThread::query()->where('user_id', $user->getKey())->where('customer_unread', true)->count()]
+                : null,
             'flash' => [
                 'status' => fn (): ?string => $request->session()->get('status'),
             ],

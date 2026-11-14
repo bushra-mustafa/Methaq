@@ -209,3 +209,7 @@ mv -Tf current.rollback current
 4. سياسة `Content-Security-Policy` تسمح بـ `challenges.cloudflare.com` (سكربت وإطار واتصال) تلقائياً عند التفعيل فقط.
 5. للتجربة المحلية تقدّم Cloudflare مفاتيح اختبار علنية: الموقع `1x00000000000000000000AA` (ينجح دائماً) والسري `1x0000000000000000000000000000000AA`. لا تستعمليها في الإنتاج.
 6. تسجيل الدخول وردود الضيوف لا يطلبان التحقق عمداً، ويبقى لهما تحديد المعدل والحقل المخفي.
+
+## الرسائل ووسائل التواصل
+
+بعد `php artisan migrate --force` (ثلاثة جداول جديدة: `contact_channels` و`support_threads` و`support_messages`) نفّذي مرة واحدة `php artisan db:seed --class=ContactChannelSeeder --force` لإضافة البريد `info@methq.ly`. يمكن إعادة تشغيله دون تكرار. بعدها تُدار وسائل التواصل من `/admin/contact-channels` والرسائل من `/admin/support-threads`. متغيرات اختيارية: `METHAQ_MAX_OPEN_SUPPORT_THREADS` (الافتراضي 5) و`METHAQ_SUPPORT_INBOX` (البريد الذي تصله إشعارات الرسائل بعنوان الرسالة فقط؛ الافتراضي methq98@gmail.com، وتركه فارغاً يوقف الإشعار). الرد التلقائي للعميلة والإشعار يحتاجان إعدادات `MAIL_*` حقيقية في `shared/.env` (الافتراضي `MAIL_MAILER=log` لا يرسل شيئاً).

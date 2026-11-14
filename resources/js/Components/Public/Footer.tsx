@@ -1,4 +1,5 @@
 import { Link, usePage } from "@inertiajs/react";
+import ContactChannelList from "./ContactChannelList";
 import { OPEN_CONSENT_EVENT } from "./ConsentBanner";
 import type { AnalyticsConfig } from "../../Domains/Privacy/analytics";
 import { categoryLabels } from "../../Types/Library";
@@ -20,7 +21,7 @@ const occasionLinks = Object.entries(categoryLabels).map(([value, label]) => ({
 
 export default function Footer() {
     const year = new Date().getFullYear();
-    const { auth, analytics } = usePage<SharedPageProps & { analytics: AnalyticsConfig }>().props;
+    const { auth, analytics, contactChannels } = usePage<SharedPageProps & { analytics: AnalyticsConfig }>().props;
 
     return (
         <footer className="border-t border-methaq-border bg-methaq-sage">
@@ -40,6 +41,12 @@ export default function Footer() {
                             ميثاق، مساحة لتصميم دعوات إلكترونية أنيقة تعبّر عن
                             أجمل مناسباتكم.
                         </p>
+
+                        {contactChannels && contactChannels.length > 0 && (
+                            <div className="mt-4">
+                                <ContactChannelList channels={contactChannels} compact />
+                            </div>
+                        )}
                     </div>
 
                     <nav aria-label="روابط التذييل" className="md:col-span-2">

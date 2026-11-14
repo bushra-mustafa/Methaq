@@ -26,4 +26,8 @@ enum AuditAction: string
     case TemplateAssetDeactivated = 'template_asset.deactivated';
     case AssetCollectionActivated = 'asset_collection.activated';
     case AssetCollectionDeactivated = 'asset_collection.deactivated';
+    case SupportThreadClosed = 'support_thread.closed';
+    case SupportThreadReopened = 'support_thread.reopened';
+    case ContactChannelSaved = 'contact_channel.saved';
+    case ContactChannelDeleted = 'contact_channel.deleted';
 }

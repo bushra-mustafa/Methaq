@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Domains\Users\Services\ContactChannels;
 use App\Http\Controllers\Controller;
 use App\Http\Support\PageMeta;
 use Inertia\Inertia;
@@ -9,12 +10,11 @@ use Inertia\Response;
 
 class ContactController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(): Response
+    public function __invoke(ContactChannels $channels): Response
     {
-        return Inertia::render('Web/Contact', ['meta' => PageMeta::make('تواصل معنا', 'قنوات التواصل الرسمية مع ميثاق ستُضاف عند اعتمادها.', '/contact')]);
-
+        return Inertia::render('Web/Contact', [
+            'channels' => $channels->active(),
+            'meta' => PageMeta::make('تواصل معنا', 'راسلي فريق ميثاق أو تواصلي معنا عبر البريد وقنواتنا الرسمية.', '/contact'),
+        ]);
     }
 }

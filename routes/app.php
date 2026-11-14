@@ -12,14 +12,18 @@ use App\Http\Controllers\App\EventPaymentController;
 use App\Http\Controllers\App\EventPresentationController;
 use App\Http\Controllers\App\ExportEventRsvpsController;
 use App\Http\Controllers\App\IvoryProposalController;
+use App\Http\Controllers\App\ListSupportThreadsController;
 use App\Http\Controllers\App\LogoutOtherSessionsController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\PublishEventController;
+use App\Http\Controllers\App\ReplySupportThreadController;
 use App\Http\Controllers\App\SaveEventDesignController;
 use App\Http\Controllers\App\SaveProposalDraftController;
 use App\Http\Controllers\App\ShowEventController;
 use App\Http\Controllers\App\ShowEventRsvpsController;
+use App\Http\Controllers\App\ShowSupportThreadController;
 use App\Http\Controllers\App\StoreEventController;
+use App\Http\Controllers\App\StoreSupportThreadController;
 use App\Http\Controllers\App\SubmitPaymentReceiptController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +80,11 @@ Route::post('/events/{event}/publish', PublishEventController::class)
 Route::patch('/events/{event}/design', SaveEventDesignController::class)
     ->whereNumber('event')
     ->name('events.design.update');
+
+Route::get('/support', ListSupportThreadsController::class)->name('support.index');
+Route::post('/support', StoreSupportThreadController::class)->middleware('throttle:6,1')->name('support.store');
+Route::get('/support/{thread}', ShowSupportThreadController::class)->whereNumber('thread')->name('support.show');
+Route::post('/support/{thread}/reply', ReplySupportThreadController::class)->whereNumber('thread')->middleware('throttle:20,1')->name('support.reply');
 
 Route::get('/profile', ProfileController::class)
     ->name('profile');

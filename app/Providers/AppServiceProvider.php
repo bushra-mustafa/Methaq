@@ -15,8 +15,12 @@ use App\Domains\Events\Policies\EventPolicy;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Policies\OrderPolicy;
 use App\Domains\Users\Models\AuditLog;
+use App\Domains\Users\Models\ContactChannel;
+use App\Domains\Users\Models\SupportThread;
 use App\Domains\Users\Models\User;
 use App\Domains\Users\Policies\AuditLogPolicy;
+use App\Domains\Users\Policies\ContactChannelPolicy;
+use App\Domains\Users\Policies\SupportThreadPolicy;
 use App\Domains\Users\Policies\UserPolicy;
 use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Gate;
@@ -55,5 +59,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Order::class, OrderPolicy::class);
         Gate::policy(AuditLog::class, AuditLogPolicy::class);
+        Gate::policy(SupportThread::class, SupportThreadPolicy::class);
+        Gate::policy(ContactChannel::class, ContactChannelPolicy::class);
     }
 }

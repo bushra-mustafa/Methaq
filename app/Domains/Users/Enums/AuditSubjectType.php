@@ -12,4 +12,6 @@ enum AuditSubjectType: string
     case AssetCollection = 'asset_collection';
     case Order = 'order';
     case Event = 'event';
+    case SupportThread = 'support_thread';
+    case ContactChannel = 'contact_channel';
 }

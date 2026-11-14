@@ -44,7 +44,7 @@ class DatabaseSchemaTest extends TestCase
 
     public function test_all_business_tables_exist_and_no_demo_account_is_seeded(): void
     {
-        foreach (['users', 'templates', 'template_assets', 'template_asset_links', 'asset_collections', 'asset_collection_items', 'events', 'event_designs', 'orders', 'payment_webhooks', 'design_renders', 'rsvps', 'audit_logs'] as $table) {
+        foreach (['users', 'templates', 'template_assets', 'template_asset_links', 'asset_collections', 'asset_collection_items', 'events', 'event_designs', 'orders', 'payment_webhooks', 'design_renders', 'rsvps', 'audit_logs', 'contact_channels', 'support_threads', 'support_messages'] as $table) {
             $this->assertTrue(Schema::hasTable($table), $table);
         }
         $this->seed();
