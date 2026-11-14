@@ -14,24 +14,34 @@ interface PublishPanelProps {
     saved: boolean;
 }
 
+/** Decodes a PNG data URL directly: `fetch(data:)` is blocked by the page's connect-src policy. */
+function pngFileFromDataUrl(dataUrl: string): File {
+    const [header = '', body = ''] = dataUrl.split(',');
+    if (!header.startsWith('data:image/png') || !header.endsWith(';base64')) throw new Error('Unexpected card image');
+    const binary = atob(body);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+    return new File([bytes], 'card.png', { type: 'image/png' });
+}
+
 /** Publishing: the browser sends the rendered card, the server re-checks everything. */
 export function PublishPanel({ eventId, publish, cardUrl, revision, saved }: PublishPanelProps) {
     const { errors } = usePage<SharedPageProps>().props;
     const [confirming, setConfirming] = useState(false);
     const [sending, setSending] = useState(false);
     const [localError, setLocalError] = useState<string | null>(null);
+    const [copied, setCopied] = useState(false);
     const ready = publish.canPublish && cardUrl !== null && saved && !sending;
     const serverError = errors.publish ?? errors.render ?? errors.expectedRevision ?? null;
 
-    async function submit(): Promise<void> {
+    function submit(): void {
         if (cardUrl === null) return;
         setSending(true);
         setLocalError(null);
         try {
-            const blob = await (await fetch(cardUrl)).blob();
             router.post(
                 `/app/events/${eventId}/publish`,
-                { render: new File([blob], 'card.png', { type: 'image/png' }), expectedRevision: revision },
+                { render: pngFileFromDataUrl(cardUrl), expectedRevision: revision },
                 { forceFormData: true, preserveScroll: true, onFinish: () => { setSending(false); setConfirming(false); } },
             );
         } catch {
@@ -40,11 +50,27 @@ export function PublishPanel({ eventId, publish, cardUrl, revision, saved }: Pub
         }
     }
 
+    async function copyLink(): Promise<void> {
+        try {
+            await navigator.clipboard.writeText(publish.invitationUrl);
+            setCopied(true);
+            window.setTimeout(() => setCopied(false), 2500);
+        } catch {
+            setLocalError('تعذّر النسخ تلقائياً. حدّدي الرابط وانسخيه يدوياً.');
+        }
+    }
+
     if (publish.state === 'published') {
         return <section className="presentation-publish is-published" aria-labelledby="publish-title">
             <h2 id="publish-title">دعوتك منشورة</h2>
             <p>شاركي هذا الرابط مع ضيوفك. يُغلق تلقائياً بعد المناسبة.</p>
-            <a href={publish.invitationUrl} dir="ltr" target="_blank" rel="noreferrer">{publish.invitationUrl}</a>
+            <div className="presentation-publish-link">
+                <input readOnly dir="ltr" value={publish.invitationUrl} aria-label="رابط الدعوة" onFocus={(event) => event.currentTarget.select()} />
+                <button type="button" onClick={() => void copyLink()}>{copied ? 'تم النسخ ✓' : 'نسخ الرابط'}</button>
+                <a href={publish.invitationUrl} target="_blank" rel="noreferrer">فتح الدعوة</a>
+            </div>
+            <p role="status">{copied ? 'نُسخ رابط الدعوة.' : ''}</p>
+            {localError && <p className="presentation-publish-error" role="alert">{localError}</p>}
         </section>;
     }
 
@@ -60,7 +86,7 @@ export function PublishPanel({ eventId, publish, cardUrl, revision, saved }: Pub
                 ? <button type="button" disabled={!ready} onClick={() => setConfirming(true)}>نشر الدعوة</button>
                 : <div className="presentation-publish-confirm" role="group" aria-label="تأكيد النشر">
                     <strong>هل تريدين نشر الدعوة الآن؟</strong>
-                    <button type="button" disabled={!ready} onClick={() => void submit()}>{sending ? 'جاري النشر…' : 'نعم، انشري'}</button>
+                    <button type="button" disabled={!ready} onClick={submit}>{sending ? 'جاري النشر…' : 'نعم، انشري'}</button>
                     <button type="button" disabled={sending} onClick={() => setConfirming(false)}>إلغاء</button>
                 </div>}
         </>}
