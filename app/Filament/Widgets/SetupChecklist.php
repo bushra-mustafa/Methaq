@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Domains\Editor\Models\Template;
+use App\Domains\Payments\Models\BankAccount;
 use App\Domains\Users\Enums\UserRole;
 use App\Domains\Users\Enums\UserStatus;
 use App\Domains\Users\Models\User;
+use App\Filament\Resources\BankAccounts\BankAccountResource;
 use App\Filament\Resources\Templates\TemplateResource;
 use App\Filament\Resources\Users\UserResource;
 use Filament\Support\Icons\Heroicon;
@@ -49,7 +51,8 @@ final class SetupChecklist extends TableWidget
     private function items(): array
     {
         $bank = (array) config('methaq.payment.bank_transfer', []);
-        $bankReady = filled($bank['bank_name'] ?? null) && filled($bank['account_name'] ?? null) && (filled($bank['account_number'] ?? null) || filled($bank['iban'] ?? null));
+        $bankReady = BankAccount::query()->where('is_active', true)->exists()
+            || (filled($bank['bank_name'] ?? null) && filled($bank['account_name'] ?? null) && (filled($bank['account_number'] ?? null) || filled($bank['iban'] ?? null)));
 
         $active = Template::query()->where('is_active', true);
         $unpriced = (clone $active)->where('price_minor', 0)->count();
@@ -63,8 +66,8 @@ final class SetupChecklist extends TableWidget
             'bank' => [
                 'ok' => $bankReady,
                 'title' => 'حساب استلام التحويلات',
-                'detail' => $bankReady ? 'مضبوط ويظهر للعميلات في صفحة الدفع.' : 'غير مكتمل: اضبطي METHAQ_BANK_* في ملف البيئة، وإلا تبقى صفحة الدفع مقفلة.',
-                'url' => null,
+                'detail' => $bankReady ? 'مضبوط ويظهر للعميلات في صفحة الدفع.' : 'غير مكتمل: أضيفي حساباً من «الحسابات البنكية»، وإلا تبقى صفحة الدفع مقفلة.',
+                'url' => BankAccountResource::getUrl('index'),
             ],
             'prices' => [
                 'ok' => $unpriced === 0,

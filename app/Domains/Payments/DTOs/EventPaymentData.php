@@ -20,7 +20,7 @@ final readonly class EventPaymentData
 {
     /**
      * @param  'paid'|'pending_review'|'rejected'|'awaiting_receipt'  $state
-     * @param  array{bankName: string|null, accountName: string|null, accountNumber: string, iban: string|null}|null  $bankAccount
+     * @param  list<array{bankName: string|null, accountName: string|null, accountNumber: string|null, iban: string|null}>  $bankAccounts
      * @param  list<string>  $includedFeatures
      * @param  list<string>  $lockedFeatures
      * @param  array{amountLabel: string, status: string, submittedAt: string, reviewedAt: string|null}|null  $latestOrder
@@ -28,7 +28,7 @@ final readonly class EventPaymentData
     public function __construct(
         public string $state,
         public ?string $priceLabel,
-        public ?array $bankAccount,
+        public array $bankAccounts,
         public array $includedFeatures,
         public array $lockedFeatures,
         public bool $canSubmit,
@@ -55,7 +55,7 @@ final readonly class EventPaymentData
         return new self(
             state: $state,
             priceLabel: $priceMinor > 0 ? LydAmount::format($priceMinor) : null,
-            bankAccount: $eligibility->bankAccount(),
+            bankAccounts: $eligibility->bankAccounts(),
             includedFeatures: array_map(fn (TemplateFeature $feature): string => $feature->getLabel(), $included),
             lockedFeatures: array_values(array_map(
                 fn (TemplateFeature $feature): string => $feature->getLabel(),
@@ -79,7 +79,7 @@ final readonly class EventPaymentData
         return [
             'state' => $this->state,
             'priceLabel' => $this->priceLabel,
-            'bankAccount' => $this->bankAccount,
+            'bankAccounts' => $this->bankAccounts,
             'includedFeatures' => $this->includedFeatures,
             'lockedFeatures' => $this->lockedFeatures,
             'canSubmit' => $this->canSubmit,

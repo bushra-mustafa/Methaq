@@ -91,7 +91,7 @@ final class ManualPaymentTest extends TestCase
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->where('payment.state', 'awaiting_receipt')
                 ->where('payment.priceLabel', '25.5 د.ل')
-                ->where('payment.bankAccount.accountNumber', '0012345678')
+                ->where('payment.bankAccounts.0.accountNumber', '0012345678')
                 ->where('payment.lockedFeatures', ['التحميل بدقة عالية'])
                 ->where('payment.canSubmit', true));
 

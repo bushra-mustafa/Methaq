@@ -216,7 +216,7 @@ mv -Tf current.rollback current
 
 ## قائمة أول تشغيل (بالترتيب)
 
-1. في `shared/.env`: `APP_ENV=production` و`APP_DEBUG=false` و`APP_KEY` و`APP_URL` و`METHAQ_INVITATION_DOMAIN` و`SESSION_SECURE_COOKIE=true` و`LOG_LEVEL=warning` و`LOG_STACK=daily` و`TRUSTED_PROXIES` (خلف Cloudflare) و`METHAQ_BANK_*`، وإعدادات البريد الحقيقية `MAIL_MAILER=smtp` مع `MAIL_HOST` و`MAIL_PORT` و`MAIL_USERNAME` و`MAIL_PASSWORD` و`MAIL_FROM_ADDRESS` من نطاق ميثاق (وSPF وDKIM للنطاق). ومعها `METHAQ_SUPPORT_INBOX` (بريد إشعارات الرسائل؛ فارغ يوقف الإشعار) والمفتاحان `TURNSTILE_*`.
+1. في `shared/.env`: `APP_ENV=production` و`APP_DEBUG=false` و`APP_KEY` و`APP_URL` و`METHAQ_INVITATION_DOMAIN` و`SESSION_SECURE_COOKIE=true` و`LOG_LEVEL=warning` و`LOG_STACK=daily` و`TRUSTED_PROXIES` (خلف Cloudflare) و`METHAQ_BANK_*` (احتياطي فقط، والأفضل إضافة الحسابات من `/admin/bank-accounts`)، وإعدادات البريد الحقيقية `MAIL_MAILER=smtp` مع `MAIL_HOST` و`MAIL_PORT` و`MAIL_USERNAME` و`MAIL_PASSWORD` و`MAIL_FROM_ADDRESS` من نطاق ميثاق (وSPF وDKIM للنطاق). ومعها `METHAQ_SUPPORT_INBOX` (بريد إشعارات الرسائل؛ فارغ يوقف الإشعار) والمفتاحان `TURNSTILE_*`.
 2. بعد اكتمال النشر: `php artisan migrate --force` ثم `php artisan db:seed --force` (يضيف القوالب والصوتيات وبريد التواصل، وإعادته آمنة) ثم `php artisan config:cache`.
 3. سجّلي حسابك من الموقع، ثم `php artisan methaq:promote-admin بريدك`، ثم فعّلي المصادقة الثنائية من إعدادات الحساب قبل فتح `/admin`.
 4. من `/admin/templates` ضعي **سعراً لكل قالب** تريدين عرضه. القالب بسعر 0 مخفي عن الصفحة الرئيسية وصفحة القوالب وإنشاء المناسبة.
@@ -226,3 +226,5 @@ mv -Tf current.rollback current
 8. اضبطي cron: `* * * * * cd .../current && php artisan schedule:run`.
 
 بعد كل إصدار يحمل ترحيلاً: خذي نسخة احتياطية، ثم `php artisan migrate --force`، ثم `config:cache` إن تغيّر `.env`.
+
+الحسابات البنكية: بعد `migrate --force` أضيفي حساباً أو أكثر من `/admin/bank-accounts` (الحسابات الظاهرة تُعرض للعميلة في صفحة الدفع بالترتيب). إن لم يوجد حساب مخزّن تُستعمل `METHAQ_BANK_*`، وإن لم تكن مضبوطة تُقفل صفحة الدفع. كل تعديل يُسجَّل في سجل التدقيق برقم مقنّع (آخر 4 أرقام).

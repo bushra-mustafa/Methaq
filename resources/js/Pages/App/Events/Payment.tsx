@@ -35,7 +35,7 @@ export default function EventPayment({ event, payment }: PaymentPageProps) {
         form.post(`/app/events/${event.id}/payment`, { forceFormData: true, preserveScroll: true, onSuccess: () => form.reset() });
     }
 
-    const account = payment.bankAccount;
+    const accounts = payment.bankAccounts;
 
     return <AppShell eyebrow={event.title} title="الدفع بالتحويل البنكي">
         <Head title={`الدفع · ${event.title}`} />
@@ -61,15 +61,15 @@ export default function EventPayment({ event, payment }: PaymentPageProps) {
                 {payment.state === 'rejected' && payment.canSubmit && <p className="account-error" role="alert">{payment.rejectionMessage}</p>}
                 {payment.blocker && payment.state !== 'paid' && payment.state !== 'pending_review' && <p className="account-error" role="alert">{payment.blocker}</p>}
 
-                {payment.canSubmit && account && <>
+                {payment.canSubmit && accounts.length > 0 && <>
                     <ol className="payment-steps">
-                        <li><strong>حوّلي المبلغ {payment.priceLabel}</strong><span>إلى الحساب التالي:</span>
-                            <dl className="payment-account">
+                        <li><strong>حوّلي المبلغ {payment.priceLabel}</strong><span>{accounts.length > 1 ? 'إلى أحد الحسابات التالية:' : 'إلى الحساب التالي:'}</span>
+                            {accounts.map((account, index) => <dl className="payment-account" key={`${account.bankName}-${account.accountNumber ?? account.iban}-${index}`}>
                                 {account.bankName && <div><dt>المصرف</dt><dd>{account.bankName}</dd></div>}
                                 {account.accountName && <div><dt>اسم الحساب</dt><dd>{account.accountName}</dd></div>}
-                                <div><dt>رقم الحساب</dt><dd dir="ltr">{account.accountNumber}</dd></div>
+                                {account.accountNumber && <div><dt>رقم الحساب</dt><dd dir="ltr">{account.accountNumber}</dd></div>}
                                 {account.iban && <div><dt>IBAN</dt><dd dir="ltr">{account.iban}</dd></div>}
-                            </dl>
+                            </dl>)}
                         </li>
                         <li><strong>ارفعي صورة القسيمة</strong><span>صورة واضحة (JPG أو PNG أو WEBP) أو PDF، حتى 5 ميغابايت. تُحفظ بشكل خاص ولا يراها إلا فريق المراجعة.</span></li>
                     </ol>

@@ -12,7 +12,9 @@ use App\Domains\Editor\Policies\TemplateAssetPolicy;
 use App\Domains\Editor\Policies\TemplatePolicy;
 use App\Domains\Events\Models\Event;
 use App\Domains\Events\Policies\EventPolicy;
+use App\Domains\Payments\Models\BankAccount;
 use App\Domains\Payments\Models\Order;
+use App\Domains\Payments\Policies\BankAccountPolicy;
 use App\Domains\Payments\Policies\OrderPolicy;
 use App\Domains\Users\Listeners\SendWelcomeEmail;
 use App\Domains\Users\Models\AuditLog;
@@ -76,5 +78,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(AuditLog::class, AuditLogPolicy::class);
         Gate::policy(SupportThread::class, SupportThreadPolicy::class);
         Gate::policy(ContactChannel::class, ContactChannelPolicy::class);
+        Gate::policy(BankAccount::class, BankAccountPolicy::class);
     }
 }

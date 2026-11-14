@@ -4,7 +4,7 @@ export type OrderStatus = 'pending' | 'completed' | 'failed';
 export interface BankAccountDTO {
     bankName: string | null;
     accountName: string | null;
-    accountNumber: string;
+    accountNumber: string | null;
     iban: string | null;
 }
 
@@ -18,7 +18,7 @@ export interface LatestOrderDTO {
 export interface EventPaymentDTO {
     state: PaymentState;
     priceLabel: string | null;
-    bankAccount: BankAccountDTO | null;
+    bankAccounts: BankAccountDTO[];
     includedFeatures: string[];
     lockedFeatures: string[];
     canSubmit: boolean;

@@ -8,6 +8,7 @@ use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Events\Enums\EventStatus;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
+use App\Domains\Payments\Models\BankAccount;
 use App\Domains\Payments\Models\Order;
 
 /**
@@ -17,22 +18,36 @@ use App\Domains\Payments\Models\Order;
  */
 final class ManualPaymentEligibility
 {
-    /** @return array{bankName: string|null, accountName: string|null, accountNumber: string, iban: string|null}|null */
-    public function bankAccount(): ?array
+    /**
+     * The accounts customers may pay into: the ones an administrator added (active, in order), or, while there are none,
+     * the single account from the server settings.
+     *
+     * @return list<array{bankName: string|null, accountName: string|null, accountNumber: string|null, iban: string|null}>
+     */
+    public function bankAccounts(): array
     {
-        $account = (array) config('methaq.payment.bank_transfer', []);
-        $accountNumber = trim((string) ($account['account_number'] ?? ''));
-
-        if ($accountNumber === '') {
-            return null;
+        $stored = BankAccount::query()->visible()->get();
+        if ($stored->isNotEmpty()) {
+            return $stored->map(fn (BankAccount $account): array => [
+                'bankName' => $this->optional($account->bank_name),
+                'accountName' => $this->optional($account->account_name),
+                'accountNumber' => $this->optional($account->account_number),
+                'iban' => $this->optional($account->iban),
+            ])->values()->all();
         }
 
-        return [
+        $account = (array) config('methaq.payment.bank_transfer', []);
+        $accountNumber = trim((string) ($account['account_number'] ?? ''));
+        if ($accountNumber === '') {
+            return [];
+        }
+
+        return [[
             'bankName' => $this->optional($account['bank_name'] ?? null),
             'accountName' => $this->optional($account['account_name'] ?? null),
             'accountNumber' => $accountNumber,
             'iban' => $this->optional($account['iban'] ?? null),
-        ];
+        ]];
     }
 
     public function currency(): string
@@ -78,7 +93,7 @@ final class ManualPaymentEligibility
             $event->status !== EventStatus::Draft => 'يمكن الدفع للمناسبات التي لم تُنشر بعد فقط.',
             $event->event_date->lessThanOrEqualTo(now()) => 'موعد المناسبة مضى، فلا يمكن الدفع لها.',
             $this->priceMinor($event) <= 0 => 'لم يُحدَّد سعر لهذه المناسبة بعد. تواصلي معنا لإكمال الدفع.',
-            $this->bankAccount() === null => 'بيانات الحساب البنكي غير متاحة حالياً. حاولي لاحقاً.',
+            $this->bankAccounts() === [] => 'بيانات الحساب البنكي غير متاحة حالياً. حاولي لاحقاً.',
             default => null,
         };
     }
