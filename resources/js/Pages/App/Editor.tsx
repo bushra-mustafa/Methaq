@@ -172,7 +172,7 @@ function EditorWorkspace({ subject, document: initialDocument, revision, assets,
         const url = canvasState.capturePreview();
         if (!url || subject.kind !== 'template') return;
         setThumbnailStatus('saving');
-        void watermarkPreview(url, 540)
+        void watermarkPreview(url, 540, 'subtle')
             .then((marked) => uploadTemplateThumbnail(subject.id, marked))
             .then(() => setThumbnailStatus('saved'))
             .catch(() => setThumbnailStatus('error'));

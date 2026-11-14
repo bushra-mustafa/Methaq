@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Http\Support\TurnstileVerifier;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -25,6 +26,9 @@ final class GuardPublicForms
         'rsvp' => 10,
     ];
 
+    /** Forms that also need a passed Turnstile challenge when it is configured. The guests' reply stays light. */
+    private const TURNSTILE_PATHS = ['register', 'forgot-password'];
+
     public function handle(Request $request, Closure $next): Response
     {
         $path = trim($request->path(), '/');
@@ -43,6 +47,11 @@ final class GuardPublicForms
 
         if (filled($request->input('website'))) {
             throw ValidationException::withMessages(['website' => 'تعذّر إرسال النموذج. حدّثي الصفحة وحاولي مرة أخرى.']);
+        }
+
+        $turnstile = app(TurnstileVerifier::class);
+        if (in_array($path, self::TURNSTILE_PATHS, true) && $turnstile->enabled() && ! $turnstile->passes($request->input(TurnstileVerifier::FIELD), $request->ip())) {
+            throw ValidationException::withMessages([TurnstileVerifier::FIELD => 'تعذّر التحقق من أنك لست روبوتاً. حدّثي الصفحة وحاولي مرة أخرى.']);
         }
 
         return $next($request);

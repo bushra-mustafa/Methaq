@@ -31,13 +31,17 @@ export default function useAuthForm<T extends AuthFormData>(
     url: string,
     initial: T,
     clearOnFinish: (keyof T & string)[] = [],
+    afterSubmit?: () => void,
 ) {
     const form = useForm<AuthFormData>(initial) as unknown as AuthForm<T>;
 
     const submit = (event: FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         form.post(url, {
-            onFinish: () => form.reset(...clearOnFinish),
+            onFinish: () => {
+                form.reset(...clearOnFinish);
+                afterSubmit?.();
+            },
             onError: focusFirstInvalidField,
         });
     };

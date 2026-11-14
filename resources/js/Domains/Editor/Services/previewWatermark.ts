@@ -32,7 +32,16 @@ function loadImage(url: string): Promise<HTMLImageElement> {
 
 /** Burns the tiled brand watermark into a PNG data URL. Used for every downloadable preview. */
 /** `targetWidth` shrinks the marked image (keeping its ratio), e.g. for the 540px library preview. */
-export async function watermarkPreview(dataUrl: string, targetWidth?: number): Promise<string> {
+export type WatermarkStrength = 'strong' | 'subtle';
+
+const STRENGTHS: Record<WatermarkStrength, { font: number; stepX: number; stepY: number; alpha: number }> = {
+    // Downloads: dense, hard to crop out.
+    strong: { font: 58, stepX: 430, stepY: 128, alpha: 0.26 },
+    // Library previews shown on the public site: discreet, so the design still reads.
+    subtle: { font: 46, stepX: 700, stepY: 406, alpha: 0.2 },
+};
+
+export async function watermarkPreview(dataUrl: string, targetWidth?: number, strength: WatermarkStrength = 'strong'): Promise<string> {
     const image = await loadImage(dataUrl);
     const canvas = document.createElement('canvas');
     canvas.width = image.naturalWidth;
@@ -41,18 +50,19 @@ export async function watermarkPreview(dataUrl: string, targetWidth?: number): P
     if (!context) throw new Error('Canvas is not available.');
 
     const unit = canvas.width / 1080;
-    const fontSize = Math.round(58 * unit);
+    const look = STRENGTHS[strength];
+    const fontSize = Math.round(look.font * unit);
     await document.fonts.load(`700 ${fontSize}px "Reem Kufi"`).catch(() => []);
     context.drawImage(image, 0, 0);
     context.font = `700 ${fontSize}px "Reem Kufi", "Noto Sans Arabic", sans-serif`;
     context.textBaseline = 'middle';
-    context.fillStyle = 'rgba(110, 110, 110, 0.26)';
+    context.fillStyle = `rgba(110, 110, 110, ${look.alpha})`;
     context.shadowColor = 'rgba(255, 255, 255, 0.35)';
     context.shadowBlur = 2 * unit;
     context.translate(canvas.width / 2, canvas.height / 2);
     context.rotate(ANGLE);
-    const stepX = Math.round(430 * unit);
-    const stepY = Math.round(128 * unit);
+    const stepX = Math.round(look.stepX * unit);
+    const stepY = Math.round(look.stepY * unit);
     for (const tile of watermarkTiles(canvas.width, canvas.height, stepX, stepY)) context.fillText(WATERMARK_TEXT, tile.x, tile.y);
 
     if (targetWidth === undefined || targetWidth >= canvas.width) return canvas.toDataURL('image/png');

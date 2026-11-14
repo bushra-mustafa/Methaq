@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Domains\Users\Models\User;
 use App\Http\Support\PageMeta;
+use App\Http\Support\TurnstileVerifier;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,6 +30,7 @@ class HandleInertiaRequests extends Middleware
                     'emailVerified' => $user->hasVerifiedEmail(),
                 ] : null,
             ],
+            'turnstile' => ($siteKey = app(TurnstileVerifier::class)->siteKey()) === null ? null : ['siteKey' => $siteKey],
             'analytics' => [
                 'enabled' => (bool) config('methaq.analytics.enabled') && filled(config('methaq.analytics.domain')),
                 'domain' => config('methaq.analytics.domain'),

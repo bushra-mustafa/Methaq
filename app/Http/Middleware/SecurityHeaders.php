@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Http\Support\TurnstileVerifier;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,6 +51,14 @@ final class SecurityHeaders
             $connections[] = $analytics;
         }
 
+        $frames = [];
+        if (app(TurnstileVerifier::class)->enabled()) {
+            // The Turnstile widget: its script, its frame and its verification calls.
+            $scripts[] = 'https://challenges.cloudflare.com';
+            $connections[] = 'https://challenges.cloudflare.com';
+            $frames[] = 'https://challenges.cloudflare.com';
+        }
+
         $styles = ["'self'", "'unsafe-inline'"];
         $images = ["'self'", 'data:', 'blob:'];
         $fonts = ["'self'"];
@@ -60,6 +69,7 @@ final class SecurityHeaders
             'style-src '.implode(' ', $styles),
             'img-src '.implode(' ', $images),
             'font-src '.implode(' ', $fonts),
+            ...($frames === [] ? [] : ['frame-src '.implode(' ', $frames)]),
             "media-src 'self' blob:",
             'connect-src '.implode(' ', $connections),
             "frame-ancestors 'self'",

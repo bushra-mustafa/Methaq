@@ -41,6 +41,16 @@ return [
         'exclude' => '/app/*,/admin/*,/login,/register,/forgot-password,/reset-password/*,/two-factor-challenge,/user/*,/email/*,/start/*',
     ],
 
+    /*
+     * Cloudflare Turnstile (a CAPTCHA without puzzles) on sign-up and password-reset requests.
+     * It switches on only when both keys are set; without them the honeypot and rate limits remain.
+     */
+    'turnstile' => [
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+        'verify_url' => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+    ],
+
     /* Addresses of the reverse proxy / Cloudflare whose forwarded scheme and host are trusted: comma list or *. */
     'trusted_proxies' => env('TRUSTED_PROXIES'),
 
