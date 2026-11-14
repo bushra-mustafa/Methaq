@@ -44,6 +44,7 @@
 
 <body>
     @inertia
+    <div id="boot-loader" role="status" aria-label="جارٍ التحميل"><img src="/brand/logos/methaq-symbol-small-flat.svg" alt="" width="64" height="64"></div>
     <noscript>يرجى تفعيل JavaScript لعرض منصة ميثاق.</noscript>
 </body>
 

@@ -65,7 +65,7 @@ export default function CreateEvent({ templates, categories, timezones, selected
                 {templates.map((template) => <button className={form.data.template_id === template.id ? 'is-selected' : ''} type="button" key={template.id} onClick={() => selectTemplate(template)}><img src={template.thumbnailUrl} alt="" /><strong>{template.name}</strong><small>{categories.find((category) => category.value === template.category)?.label}</small></button>)}
             </div></section>
 
-            <footer className="event-form-actions"><Link href="/app">إلغاء</Link><div><p>يُحجز رابط فريد، ويُغلق رابط الدعوة تلقائياً {graceLabel(graceDays)} بتوقيت ليبيا.</p><button className="account-primary" type="submit" disabled={form.processing}>{form.processing ? 'جاري إنشاء المناسبة…' : 'إنشاء المسودة'}</button></div></footer>
+            <footer className="event-form-actions"><Link href="/app">إلغاء</Link><div><p>يُحجز رابط فريد، ويُغلق رابط الدعوة تلقائياً {graceLabel(graceDays)} بتوقيت ليبيا.</p><button className="account-primary" type="submit" disabled={form.processing} aria-busy={form.processing}>{form.processing ? 'جاري إنشاء المناسبة…' : 'إنشاء المسودة'}</button></div></footer>
         </form>
     </AppShell>;
 }

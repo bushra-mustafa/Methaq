@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import { LoadingState } from '../../Components/Loading/Spinner';
 import { EventJourney } from '../../Domains/Events/Components/EventJourney';
 import { PublishPanel } from '../../Domains/Events/Components/PublishPanel';
 import { InvitationPlayer } from '../../Domains/Editor/Components/InvitationPlayer';
@@ -45,7 +46,7 @@ function PresentationWorkspace({ event, document, revision, assets, publish }: O
                 </div>
                 <aside className="presentation-live-preview" aria-label="معاينة مباشرة للظرف">
                     <div className="presentation-preview-heading"><strong>هكذا تبدأ دعوتك</strong><span>تتحدث المعاينة مع اختياراتك</span></div>
-                    {canPreview && card.cardUrl ? <InvitationPlayer audioAllowed={!fullPreview} assets={assets} cardParts={card.parts} manageFocus={false} key={sceneKey} scene={history.value.scene} palette={history.value.palette} cardUrl={card.cardUrl} title={event.title} viewport="phone" /> : <div className="presentation-loading" role={card.error ? 'alert' : 'status'}>{card.error || 'نجهّز معاينة بطاقتك…'}</div>}
+                    {canPreview && card.cardUrl ? <InvitationPlayer audioAllowed={!fullPreview} assets={assets} cardParts={card.parts} manageFocus={false} key={sceneKey} scene={history.value.scene} palette={history.value.palette} cardUrl={card.cardUrl} title={event.title} viewport="phone" /> : card.error ? <div className="presentation-loading" role="alert">{card.error}</div> : <LoadingState message="نجهّز معاينة بطاقتك…" />}
                 </aside>
             </div>
             <PublishPanel eventId={event.id} publish={publish} cardUrl={card.cardUrl} revision={autosave.revision} saved={autosave.status === 'saved' && !autosave.hasUnsavedChanges} />

@@ -76,7 +76,7 @@ export function TwoFactorPanel({ enabled, pendingConfirmation }: TwoFactorPanelP
             {qrSvg && <img className="two-factor-qr" src={`data:image/svg+xml,${encodeURIComponent(qrSvg)}`} alt="رمز QR لإضافة حساب ميثاق إلى تطبيق المصادقة" />}
             <form className="account-inline-form" onSubmit={confirm}>
                 <FormField label="رمز التحقق" name="code" inputMode="numeric" autoComplete="one-time-code" value={confirmation.data.code} onChange={(event) => confirmation.setData('code', event.target.value.replace(/\D/g, '').slice(0, 6))} error={confirmation.errors.code} required />
-                <button className="account-primary" type="submit" disabled={confirmation.processing}>تأكيد التفعيل</button>
+                <button className="account-primary" type="submit" disabled={confirmation.processing} aria-busy={confirmation.processing}>تأكيد التفعيل</button>
             </form>
         </div>}
         {enabled && <div className="two-factor-enabled">

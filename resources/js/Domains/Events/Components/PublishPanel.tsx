@@ -1,5 +1,6 @@
 import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { LoadingState } from '../../../Components/Loading/Spinner';
 import type { SharedPageProps } from '../../../Types/PageProps';
 import type { PublishStateDTO } from '../../../Types/PublishDTO';
 
@@ -54,7 +55,7 @@ export function PublishPanel({ eventId, publish, cardUrl, revision, saved }: Pub
             <p>عند النشر تُحفظ نسخة الدعوة الحالية ويصبح الرابط متاحاً لضيوفك. تعديلاتك بعد النشر تبقى في المسودة ولا تغيّر النسخة المنشورة.</p>
             {publish.willRemove.length > 0 && <p className="presentation-publish-warning" role="note">لن تظهر في النسخة المنشورة (غير متاحة في قالبك): {publish.willRemove.join('، ')}.</p>}
             {!saved && <p role="status">انتظري اكتمال الحفظ قبل النشر.</p>}
-            {saved && cardUrl === null && <p role="status">نجهّز صورة البطاقة…</p>}
+            {saved && cardUrl === null && <LoadingState message="نجهّز صورة البطاقة…" />}
             {!confirming
                 ? <button type="button" disabled={!ready} onClick={() => setConfirming(true)}>نشر الدعوة</button>
                 : <div className="presentation-publish-confirm" role="group" aria-label="تأكيد النشر">

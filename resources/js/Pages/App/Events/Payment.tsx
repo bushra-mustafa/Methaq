@@ -76,7 +76,7 @@ export default function EventPayment({ event, payment }: PaymentPageProps) {
                     <form className="payment-form" onSubmit={submit} noValidate>
                         <label className="account-field" htmlFor="payment-receipt"><span>صورة القسيمة</span><input id="payment-receipt" name="receipt" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" onChange={chooseFile} required />{form.errors.receipt && <small role="alert">{form.errors.receipt}</small>}</label>
                         {form.progress && <progress value={form.progress.percentage} max={100}>{form.progress.percentage}%</progress>}
-                        <button className="account-primary" type="submit" disabled={form.processing || form.data.receipt === null}>{form.processing ? 'جاري رفع القسيمة…' : 'إرسال القسيمة للمراجعة'}</button>
+                        <button className="account-primary" type="submit" disabled={form.processing || form.data.receipt === null} aria-busy={form.processing}>{form.processing ? 'جاري رفع القسيمة…' : 'إرسال القسيمة للمراجعة'}</button>
                     </form>
                 </>}
 

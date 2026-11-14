@@ -38,7 +38,7 @@ export default function SupportShow({ thread, messages }: SupportShowProps) {
                 <textarea id="support-reply" name="body" rows={4} maxLength={3000} value={form.data.body} onChange={(event) => form.setData('body', event.target.value)} aria-invalid={Boolean(form.errors.body)} aria-describedby={form.errors.body ? 'support-reply-error' : undefined} required />
                 {form.errors.body && <small id="support-reply-error" role="alert">{form.errors.body}</small>}
             </label>
-            <button className="account-primary" type="submit" disabled={form.processing}>إرسال الرد</button>
+            <button className="account-primary" type="submit" disabled={form.processing} aria-busy={form.processing}>إرسال الرد</button>
         </form>}
     </AppShell>;
 }

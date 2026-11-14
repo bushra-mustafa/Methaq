@@ -53,7 +53,7 @@ export function RsvpForm() {
             <label htmlFor={`${formId}-notes`}>رسالة لأصحاب المناسبة <small>اختياري</small><textarea id={`${formId}-notes`} value={form.data.notes} onChange={(event) => form.setData('notes', event.target.value)} maxLength={1000} rows={3} /></label>
             {form.errors.notes && <p className="rsvp-error">{form.errors.notes}</p>}
             <Honeypot value={form.data.website} onChange={(event) => form.setData('website', event.target.value)} />
-            <button type="submit" disabled={form.processing}>{form.processing ? 'يجري الإرسال…' : 'تأكيد الرد'}</button>
+            <button type="submit" disabled={form.processing} aria-busy={form.processing}>{form.processing ? 'يجري الإرسال…' : 'تأكيد الرد'}</button>
         </form>
     </section>;
 }

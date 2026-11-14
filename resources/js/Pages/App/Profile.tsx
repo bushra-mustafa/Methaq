@@ -42,7 +42,7 @@ export default function Profile({ user, sessions, twoFactor, status }: ProfilePr
                     <FormField label="البريد الإلكتروني" name="email" type="email" value={profile.data.email} onChange={(event) => profile.setData('email', event.target.value)} autoComplete="email" error={profile.errors.email} required />
                     {profile.data.email.trim().toLowerCase() !== user.email.toLowerCase() && <FormField label="كلمة المرور الحالية · لتأكيد تغيير البريد" name="profile_current_password" type="password" value={profile.data.current_password} onChange={(event) => profile.setData('current_password', event.target.value)} autoComplete="current-password" error={profile.errors.current_password} required />}
                     <FormField label="رقم الهاتف · اختياري" name="phone" type="tel" value={profile.data.phone} onChange={(event) => profile.setData('phone', event.target.value)} autoComplete="tel" error={profile.errors.phone} />
-                    <button className="account-primary" type="submit" disabled={profile.processing || !profile.isDirty}>حفظ البيانات</button>
+                    <button className="account-primary" type="submit" disabled={profile.processing || !profile.isDirty} aria-busy={profile.processing}>حفظ البيانات</button>
                 </form>
             </section>
             <section className="account-section" aria-labelledby="password-title">
@@ -51,7 +51,7 @@ export default function Profile({ user, sessions, twoFactor, status }: ProfilePr
                     <FormField label="كلمة المرور الحالية" name="current_password" type="password" value={password.data.current_password} onChange={(event) => password.setData('current_password', event.target.value)} autoComplete="current-password" error={password.errors.current_password} required />
                     <FormField label="كلمة المرور الجديدة" name="password" type="password" value={password.data.password} onChange={(event) => password.setData('password', event.target.value)} autoComplete="new-password" error={password.errors.password} required />
                     <FormField label="تأكيد كلمة المرور" name="password_confirmation" type="password" value={password.data.password_confirmation} onChange={(event) => password.setData('password_confirmation', event.target.value)} autoComplete="new-password" error={password.errors.password_confirmation} required />
-                    <button className="account-primary" type="submit" disabled={password.processing}>تغيير كلمة المرور</button>
+                    <button className="account-primary" type="submit" disabled={password.processing} aria-busy={password.processing}>تغيير كلمة المرور</button>
                 </form>
             </section>
             <TwoFactorPanel {...twoFactor} />
@@ -60,7 +60,7 @@ export default function Profile({ user, sessions, twoFactor, status }: ProfilePr
                 {sessions.length === 0 ? <p>لا توجد جلسات أخرى ظاهرة الآن.</p> : <ul>{sessions.map((session) => <li key={session.fingerprint}><div><strong>{session.isCurrentDevice ? 'هذا الجهاز' : 'جلسة أخرى'}</strong><span dir="ltr">{session.ipAddress ?? 'IP غير متاح'}</span></div><p>{session.userAgent}</p><time dateTime={session.lastActiveAt}>{new Intl.DateTimeFormat('ar-LY', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(session.lastActiveAt))}</time></li>)}</ul>}
                 <form className="account-inline-form" onSubmit={logoutOthers}>
                     <FormField label="كلمة المرور لتسجيل خروج الأجهزة الأخرى" name="session_password" type="password" value={sessionsForm.data.password} onChange={(event) => sessionsForm.setData('password', event.target.value)} autoComplete="current-password" error={sessionsForm.errors.password} required />
-                    <button className="account-secondary" type="submit" disabled={sessionsForm.processing}>تسجيل خروج الأجهزة الأخرى</button>
+                    <button className="account-secondary" type="submit" disabled={sessionsForm.processing} aria-busy={sessionsForm.processing}>تسجيل خروج الأجهزة الأخرى</button>
                 </form>
             </section>
         </div>

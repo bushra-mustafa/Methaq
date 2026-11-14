@@ -1,0 +1,112 @@
+/* One loading language for the whole site: a green and gold ring, and the Methaq mark while the app starts. */
+@keyframes methaq-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes methaq-pulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
+}
+
+.methaq-spinner,
+button[aria-busy='true']::before {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 1.25em;
+    height: 1.25em;
+    flex: none;
+    border: 2px solid rgb(184 151 95 / 35%);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: methaq-spin 0.8s linear infinite;
+}
+
+.methaq-spinner {
+    color: #203322;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-width: 3px;
+}
+
+button[aria-busy='true']::before {
+    content: '';
+    margin-inline-end: 0.6em;
+    vertical-align: -0.2em;
+}
+
+button[aria-busy='true'] {
+    cursor: progress;
+}
+
+.methaq-loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 28px 16px;
+    color: #434842;
+    text-align: center;
+}
+
+.methaq-nav-loader {
+    position: fixed;
+    inset-block-end: 24px;
+    inset-inline: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.methaq-nav-loader > div {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgb(184 151 95 / 55%);
+    border-radius: 999px;
+    padding: 8px 18px;
+    background: #fffdf8;
+    box-shadow: 0 8px 24px rgb(32 51 34 / 16%);
+    color: #203322;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.methaq-nav-loader .methaq-spinner {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-width: 2px;
+}
+
+#boot-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: grid;
+    place-items: center;
+    background: #f6fbf2;
+}
+
+#boot-loader img {
+    width: 64px;
+    height: auto;
+    animation: methaq-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .methaq-spinner,
+    button[aria-busy='true']::before {
+        animation: methaq-pulse 1.6s ease-in-out infinite;
+        border-top-color: rgb(184 151 95 / 35%);
+        background: currentColor;
+        border-radius: 50%;
+        border-color: transparent;
+        width: 0.7em;
+        height: 0.7em;
+    }
+
+    #boot-loader img {
+        animation: none;
+    }
+}

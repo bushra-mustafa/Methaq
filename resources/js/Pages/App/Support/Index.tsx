@@ -40,7 +40,7 @@ export default function SupportIndex({ threads, topics }: SupportIndexProps) {
                         <textarea id="support-body" name="body" rows={6} maxLength={3000} value={form.data.body} onChange={(event) => form.setData('body', event.target.value)} aria-invalid={Boolean(form.errors.body)} aria-describedby={form.errors.body ? 'support-body-error' : undefined} required />
                         {form.errors.body && <small id="support-body-error" role="alert">{form.errors.body}</small>}
                     </label>
-                    <button className="account-primary" type="submit" disabled={form.processing}>إرسال الرسالة</button>
+                    <button className="account-primary" type="submit" disabled={form.processing} aria-busy={form.processing}>إرسال الرسالة</button>
                 </form>
             </section>
             <section className="account-section" aria-labelledby="support-list">
