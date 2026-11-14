@@ -12,6 +12,7 @@ import { toFabricObject } from '../Services/FabricAdapter';
 import { renderCardMaterial } from '../Services/renderCardMaterial';
 import { imagePlacement } from '../Services/imagePlacement';
 import { DESIGN_CONTRACT } from '../Services/designContract';
+import { normalizeTextScale } from '../Services/textScaling';
 
 interface UseCanvasOptions {
     document: DesignDocument;
@@ -112,7 +113,7 @@ function layerFromObject(source: Layer, object: FabricObject): Layer {
     };
 
     if (source.type === 'text' && object instanceof Textbox) {
-        return { ...source, frame, content: Array.from(object.text).slice(0, DESIGN_CONTRACT.maximumTextLength).join('') };
+        return { ...source, frame, fontSize: Math.round(object.fontSize), content: Array.from(object.text).slice(0, DESIGN_CONTRACT.maximumTextLength).join('') };
     }
 
     return { ...source, frame };
@@ -198,6 +199,11 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
         });
         const persistObject = (target: FabricObject): void => {
             if (synchronizing.current) return;
+            if (target instanceof Textbox && (Math.abs(target.scaleX - 1) > 0.001 || Math.abs(target.scaleY - 1) > 0.001)) {
+                const resized = normalizeTextScale({ width: target.width, fontSize: target.fontSize, scaleX: target.scaleX, scaleY: target.scaleY }, DESIGN_CONTRACT.maximumCanvasDimension);
+                target.set({ width: resized.width, fontSize: resized.fontSize, scaleX: 1, scaleY: 1 });
+                target.setCoords();
+            }
             const id = layerIds.current.get(target);
             const source = latestDesign.current.canvas.layers.find((layer) => layer.id === id);
             if (id && source) latestChange.current(id, layerFromObject(source, target));
@@ -287,6 +293,7 @@ export function useCanvas({ document: design, assets, selectedLayerId, onSelect,
                             lineHeight: textLineHeight(asset?.slug),
                             editable: !layer.locked,
                         });
+                        (object as Textbox).setControlsVisibility({ mt: false, mb: false });
                         (object as Textbox).on('editing:exited', () => {
                             const textbox = object as Textbox;
                             const id = layerIds.current.get(textbox);

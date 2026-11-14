@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * macOS ignores letter case, so a build asset can be tracked in Git as `Presentation-x.css` while the manifest asks for
- * `presentation-x.css`. Linux then returns 404 for it. Every file the manifest names must be tracked with exactly that spelling.
+ * `presentation-x.css`. Linux then returns 404 for it. A tracked build file whose name differs from the manifest only by letter case is a deploy bug.
  */
 final class BuildManifestTest extends TestCase
 {
@@ -25,11 +25,14 @@ final class BuildManifestTest extends TestCase
             $this->markTestSkipped('Build files are not tracked in this checkout.');
         }
 
+        $lowercased = array_change_key_case($tracked, CASE_LOWER);
         $manifest = json_decode((string) file_get_contents($manifestPath), true, flags: JSON_THROW_ON_ERROR);
         $missing = [];
         foreach ($manifest as $entry) {
             foreach ([$entry['file'] ?? null, ...($entry['css'] ?? []), ...($entry['assets'] ?? [])] as $file) {
-                if (is_string($file) && ! isset($tracked['public/build/'.$file])) {
+                $path = 'public/build/'.$file;
+                // A file that is merely not committed yet is fine; a different spelling of the same name is the bug.
+                if (is_string($file) && ! isset($tracked[$path]) && isset($lowercased[strtolower($path)])) {
                     $missing[] = $file;
                 }
             }

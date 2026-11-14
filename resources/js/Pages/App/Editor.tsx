@@ -1,7 +1,7 @@
 import { EventJourney } from '../../Domains/Events/Components/EventJourney';
 import type { PresentationCard } from '../../Types/PresentationCard';
 import { Head, Link } from '@inertiajs/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { EditorControlPanel } from '../../Domains/Editor/Components/EditorControlPanel';
 import { EditorMobilePanel } from '../../Domains/Editor/Components/EditorMobilePanel';
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
@@ -87,6 +87,8 @@ function EditorWorkspace({ subject, document: initialDocument, revision, assets,
         if (id) setTab('properties');
     }, []);
     const selectedLayer = history.value.canvas.layers.find((layer) => layer.id === selectedLayerId) ?? null;
+    const sidebar = useRef<HTMLElement>(null);
+    useEffect(() => { sidebar.current?.scrollTo({ top: 0 }); }, [selectedLayerId]);
     const fonts = useMemo(() => assets.filter((asset) => asset.type === 'font'), [assets]);
     const visualAssets = useMemo(() => assets.filter((asset) => asset.type !== 'font' && asset.type !== 'audio'), [assets]);
     const placedAssetIds = useMemo(() => history.value.canvas.layers.flatMap((layer) => layer.type === 'image' ? [layer.asset.assetId] : []), [history.value]);
@@ -256,7 +258,7 @@ function EditorWorkspace({ subject, document: initialDocument, revision, assets,
                 {warnings.length > 0 && <ul className="editor-warnings">{warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>}
                 <p className="editor-caption">اختاري عنصراً واسحبيه، أو عدّلي تفاصيله من القائمة.</p>
             </section>
-            <aside className="editor-sidebar" aria-label="لوحة تحرير البطاقة">{!mobileOpen && controls}</aside>
+            <aside ref={sidebar} className="editor-sidebar" aria-label="لوحة تحرير البطاقة">{!mobileOpen && controls}</aside>
         </div>
         <EditorMobilePanel open={mobileOpen} onClose={closeMobile}>{controls}</EditorMobilePanel>
         {preview && <InvitationPreview assets={assets} cardParts={preview.parts} scene={preview.document.scene} palette={preview.document.palette} cardUrl={preview.cardUrl} title={subject.title} onClose={() => setPreview(null)} />}

@@ -85,7 +85,8 @@ final readonly class EditorAssetData
 
     private static function previewUrl(TemplateAsset $asset): string
     {
-        $modifiedAt = filemtime(public_path($asset->preview_path));
+        $file = public_path($asset->preview_path);
+        $modifiedAt = is_file($file) ? filemtime($file) : false;
         $cacheVersion = is_int($modifiedAt) ? $modifiedAt : 0;
 
         return '/'.ltrim($asset->preview_path, '/').'?v='.$asset->asset_version.'-'.$cacheVersion;

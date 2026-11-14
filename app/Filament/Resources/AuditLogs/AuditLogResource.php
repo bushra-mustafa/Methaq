@@ -117,6 +117,7 @@ final class AuditLogResource extends Resource
             AuditAction::TemplateCreated->value => 'إنشاء قالب جديد',
             AuditAction::TemplateDesigned->value => 'تعديل تصميم قالب',
             AuditAction::TemplateThumbnailUpdated->value => 'تحديث صورة معاينة قالب',
+            AuditAction::TemplateAssetUploaded->value => 'رفع صوتية',
             AuditAction::TemplateAssetActivated->value => 'تفعيل عنصر',
             AuditAction::TemplateAssetDeactivated->value => 'إيقاف عنصر',
             AuditAction::AssetCollectionActivated->value => 'تفعيل مجموعة',

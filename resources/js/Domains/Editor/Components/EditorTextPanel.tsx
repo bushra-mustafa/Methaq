@@ -2,6 +2,8 @@ import type { EditorAsset } from '../../../Types/Editor';
 import type { TextLayer } from '../../../Types/Layer';
 import { PALETTE_ROLES, type PaletteRole } from '../../../Types/Palette';
 import { DESIGN_CONTRACT } from '../Services/designContract';
+import { TEXT_SIZE_LIMITS } from '../Services/textScaling';
+import { NumberField } from './NumberField';
 
 interface EditorTextPanelProps {
     mode?: 'add' | 'edit' | 'both';
@@ -14,11 +16,6 @@ interface EditorTextPanelProps {
 const paletteLabels: Record<PaletteRole, string> = {
     background: 'الخلفية', surface: 'سطح البطاقة', primaryText: 'النص الأساسي', secondaryText: 'النص الثانوي', accent: 'اللون البارز', effect: 'المؤثرات',
 };
-
-function boundedNumber(value: string, minimum: number, maximum: number, fallback: number): number {
-    const parsed = Number(value);
-    return Number.isFinite(parsed) ? Math.min(maximum, Math.max(minimum, parsed)) : fallback;
-}
 
 export function EditorTextPanel({ fonts, selected, onAdd, onChange, mode = 'both' }: EditorTextPanelProps) {
     return <section className="editor-panel-section" aria-labelledby="text-title">
@@ -34,7 +31,7 @@ export function EditorTextPanel({ fonts, selected, onAdd, onChange, mode = 'both
                 <label><span>الاتجاه</span><select value={selected.direction} onChange={(event) => onChange((layer) => ({ ...layer, direction: event.target.value as TextLayer['direction'] }))}><option value="rtl">من اليمين</option><option value="ltr">من اليسار</option><option value="auto">تلقائي</option></select></label>
                 <label><span>المحاذاة</span><select value={selected.alignment} onChange={(event) => onChange((layer) => ({ ...layer, alignment: event.target.value as TextLayer['alignment'] }))}><option value="right">يمين</option><option value="center">وسط</option><option value="left">يسار</option></select></label>
                 <label><span>الخط</span><select value={selected.font.assetId} onChange={(event) => { const font = fonts.find((candidate) => candidate.id === event.target.value); if (font) onChange((layer) => ({ ...layer, font: { assetId: font.id, version: font.version } })); }}>{fonts.map((font) => <option key={font.id} value={font.id}>{font.name}</option>)}</select></label>
-                <label><span>الحجم</span><input type="number" min="8" max="512" value={selected.fontSize} onChange={(event) => onChange((layer) => ({ ...layer, fontSize: boundedNumber(event.target.value, 8, 512, layer.fontSize) }))} /></label>
+                <NumberField label="الحجم" value={selected.fontSize} minimum={TEXT_SIZE_LIMITS.minimumFontSize} maximum={TEXT_SIZE_LIMITS.maximumFontSize} onCommit={(fontSize) => onChange((layer) => ({ ...layer, fontSize: Math.round(fontSize) }))} />
                 <label><span>السماكة</span><select value={selected.fontWeight} onChange={(event) => onChange((layer) => ({ ...layer, fontWeight: Number(event.target.value) }))}><option value="400">عادي</option><option value="500">متوسط</option><option value="600">بارز</option><option value="700">عريض</option></select></label>
             </div>
             <fieldset className="editor-color-source"><legend>لون النص</legend><label><input type="radio" checked={selected.fill.source === 'palette'} onChange={() => onChange((layer) => ({ ...layer, fill: { source: 'palette', role: 'primaryText' } }))} /> من لوحة الألوان</label><label><input type="radio" checked={selected.fill.source === 'literal'} onChange={() => onChange((layer) => ({ ...layer, fill: { source: 'literal', value: '#074b36' } }))} /> لون خاص</label>
