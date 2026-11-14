@@ -1,0 +1,1 @@
+<div dir="ltr" style="margin:24px 0;border:1px dashed #b8975f;border-radius:6px;background:#f6fbf2;padding:18px;text-align:center;font-family:'SFMono-Regular',Consolas,'Courier New',monospace;font-size:34px;letter-spacing:10px;font-weight:bold;color:#203322;">{{ $slot }}</div>

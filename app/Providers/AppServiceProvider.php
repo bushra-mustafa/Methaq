@@ -14,6 +14,7 @@ use App\Domains\Events\Models\Event;
 use App\Domains\Events\Policies\EventPolicy;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Policies\OrderPolicy;
+use App\Domains\Users\Listeners\SendWelcomeEmail;
 use App\Domains\Users\Models\AuditLog;
 use App\Domains\Users\Models\ContactChannel;
 use App\Domains\Users\Models\SupportThread;
@@ -22,7 +23,11 @@ use App\Domains\Users\Policies\AuditLogPolicy;
 use App\Domains\Users\Policies\ContactChannelPolicy;
 use App\Domains\Users\Policies\SupportThreadPolicy;
 use App\Domains\Users\Policies\UserPolicy;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Middleware\TrustProxies;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Event as EventBus;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +56,16 @@ class AppServiceProvider extends ServiceProvider
         if (config('methaq.force_https')) {
             URL::forceScheme('https');
         }
+
+        EventBus::listen(Registered::class, SendWelcomeEmail::class);
+
+        ResetPassword::toMailUsing(fn (object $notifiable, string $token): MailMessage => (new MailMessage)
+            ->subject('إعادة تعيين كلمة المرور | ميثاق')
+            ->view('mail.reset-password', [
+                'name' => (string) ($notifiable->name ?? ''),
+                'url' => url(route('password.reset', ['token' => $token, 'email' => $notifiable->getEmailForPasswordReset()], false)),
+                'minutes' => (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire'),
+            ]));
 
         Gate::policy(Event::class, EventPolicy::class);
         Gate::policy(Template::class, TemplatePolicy::class);
