@@ -3,6 +3,7 @@ import type { PresentationCard } from '../../Types/PresentationCard';
 import { Head, Link } from '@inertiajs/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { EditorControlPanel } from '../../Domains/Editor/Components/EditorControlPanel';
+import { BackLink } from '../../Domains/Editor/Components/BackLink';
 import { EditorMobilePanel } from '../../Domains/Editor/Components/EditorMobilePanel';
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
 import { EditorInspector } from '../../Domains/Editor/Components/EditorInspector';
@@ -220,7 +221,7 @@ function EditorWorkspace({ subject, document: initialDocument, revision, assets,
     return <main className="editor-page" dir="rtl">
         <Head title={subject.kind === 'template' ? `استوديو القالب ${subject.title}` : `تصميم ${subject.title}`} />
         <header className="editor-topbar">
-            <div className="editor-brand"><Link href={subject.backHref} onBefore={goBack} aria-label={subject.backLabel} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل المغادرة' : subject.backLabel} aria-disabled={autosave.hasUnsavedChanges}>→</Link><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><span>{subject.kind === 'template' ? 'استوديو القوالب' : 'تصميم البطاقة'}</span></div>
+            <div className="editor-brand"><BackLink href={subject.backHref} canLeave={!autosave.hasUnsavedChanges} label={subject.backLabel} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل المغادرة' : subject.backLabel}>→</BackLink><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><span>{subject.kind === 'template' ? 'استوديو القوالب' : 'تصميم البطاقة'}</span></div>
             <div className="editor-history-actions">
                 <span className={`editor-save-status is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} role="status">{autosave.message}</span>
                 <button type="button" disabled={!autosave.hasUnsavedChanges || autosave.status === 'saving' || autosave.status === 'conflict'} onClick={autosave.retry}>حفظ التعديلات</button>
@@ -271,6 +272,6 @@ export default function Editor(props: EditorProps) {
         if (!subject) throw new Error('Missing editor subject');
         return <EditorWorkspace subject={subject} document={parseDesignDocument(props.document)} revision={props.revision} assets={props.assets} collections={props.collections} recommendedAssetIds={props.recommendedAssetIds} />;
     } catch {
-        return <main className="editor-contract-error" dir="rtl"><Head title="تعذّر فتح التصميم" /><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><h1>تعذّر فتح التصميم</h1><p>بيانات البطاقة تحتاج مراجعة قبل بدء التعديل.</p><Link href={subject?.backHref ?? '/app'}>{subject?.backLabel ?? 'الرجوع'}</Link></main>;
+        return <main className="editor-contract-error" dir="rtl"><Head title="تعذّر فتح التصميم" /><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><h1>تعذّر فتح التصميم</h1><p>بيانات البطاقة تحتاج مراجعة قبل بدء التعديل.</p><BackLink href={subject?.backHref ?? '/app'}>{subject?.backLabel ?? 'الرجوع'}</BackLink></main>;
     }
 }
