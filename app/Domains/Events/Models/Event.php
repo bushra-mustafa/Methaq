@@ -70,6 +70,12 @@ class Event extends Model
         return $this->hasMany(Order::class);
     }
 
+    /** @return HasMany<EventVisitDay, $this> */
+    public function visitDays(): HasMany
+    {
+        return $this->hasMany(EventVisitDay::class);
+    }
+
     /** @return HasMany<Rsvp, $this> */
     public function rsvps(): HasMany
     {

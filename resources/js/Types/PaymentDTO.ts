@@ -1,3 +1,5 @@
+import type { FreeOfferDTO } from './FreeOffer';
+
 export type PaymentState = 'paid' | 'pending_review' | 'rejected' | 'awaiting_receipt';
 export type OrderStatus = 'pending' | 'completed' | 'failed';
 
@@ -25,4 +27,6 @@ export interface EventPaymentDTO {
     blocker: string | null;
     latestOrder: LatestOrderDTO | null;
     rejectionMessage: string | null;
+    freeOffer: FreeOfferDTO | null;
+    paidByOffer: boolean;
 }

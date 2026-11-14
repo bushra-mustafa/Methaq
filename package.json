@@ -18,7 +18,8 @@
         "test:save-client": "node --experimental-strip-types --test tests/Frontend/design-save-client.test.ts",
         "test:save-client": "node --experimental-strip-types --test tests/Frontend/design-save-client.test.ts",
         "test:numbers": "node --experimental-strip-types --test tests/Frontend/number-input.test.ts",
-        "test:frontend": "npm run test:numbers && npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope && npm run test:consent && npm run test:suggestions && npm run test:wrapping && npm run test:watermark && npm run test:save-client"
+        "test:offer-time": "node --experimental-strip-types --test tests/Frontend/offer-time.test.ts",
+        "test:frontend": "npm run test:numbers && npm run test:offer-time && npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope && npm run test:consent && npm run test:suggestions && npm run test:wrapping && npm run test:watermark && npm run test:save-client"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

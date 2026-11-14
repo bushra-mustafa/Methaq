@@ -15,4 +15,6 @@ enum AuditSubjectType: string
     case SupportThread = 'support_thread';
     case ContactChannel = 'contact_channel';
     case BankAccount = 'bank_account';
+    case Setting = 'setting';
+    case FreeOffer = 'free_offer';
 }

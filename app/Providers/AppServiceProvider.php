@@ -13,9 +13,12 @@ use App\Domains\Editor\Policies\TemplatePolicy;
 use App\Domains\Events\Models\Event;
 use App\Domains\Events\Policies\EventPolicy;
 use App\Domains\Payments\Models\BankAccount;
+use App\Domains\Payments\Models\FreeOffer;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Policies\BankAccountPolicy;
+use App\Domains\Payments\Policies\FreeOfferPolicy;
 use App\Domains\Payments\Policies\OrderPolicy;
+use App\Domains\Users\Enums\UserRole;
 use App\Domains\Users\Listeners\SendWelcomeEmail;
 use App\Domains\Users\Models\AuditLog;
 use App\Domains\Users\Models\ContactChannel;
@@ -69,6 +72,8 @@ class AppServiceProvider extends ServiceProvider
                 'minutes' => (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire'),
             ]));
 
+        Gate::define('manage-pricing', fn (User $user): bool => $user->isActive() && $user->role === UserRole::Admin);
+
         Gate::policy(Event::class, EventPolicy::class);
         Gate::policy(Template::class, TemplatePolicy::class);
         Gate::policy(TemplateAsset::class, TemplateAssetPolicy::class);
@@ -79,5 +84,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(SupportThread::class, SupportThreadPolicy::class);
         Gate::policy(ContactChannel::class, ContactChannelPolicy::class);
         Gate::policy(BankAccount::class, BankAccountPolicy::class);
+        Gate::policy(FreeOffer::class, FreeOfferPolicy::class);
     }
 }

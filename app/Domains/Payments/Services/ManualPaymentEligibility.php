@@ -55,10 +55,12 @@ final class ManualPaymentEligibility
         return (string) config('methaq.payment.currency', 'LYD');
     }
 
-    /** The current template price in LYD minor units; blank cards have no price yet. */
+    public function __construct(private readonly PricingSettings $pricing) {}
+
+    /** The price in LYD minor units: the template's price, or the blank-card price for an event that started from nothing. */
     public function priceMinor(Event $event): int
     {
-        return $event->template?->price_minor ?? 0;
+        return $event->template_id === null ? $this->pricing->blankCardPriceMinor() : ($event->template?->price_minor ?? 0);
     }
 
     /** @return list<TemplateFeature> features the template leaves unlocked for its invitations */
@@ -83,8 +85,8 @@ final class ManualPaymentEligibility
             ->first();
     }
 
-    /** Why a new receipt cannot be submitted now, or null when it can. */
-    public function blocker(Event $event, ?Order $openOrder): ?string
+    /** Why this event cannot be paid for or activated now (already paid, pending, suspended, published, past), or null. Price and bank do not matter here. */
+    public function stateBlocker(Event $event, ?Order $openOrder): ?string
     {
         return match (true) {
             $event->is_paid || $openOrder?->status === OrderStatus::Completed => 'تم اعتماد الدفع لهذه المناسبة.',
@@ -92,6 +94,14 @@ final class ManualPaymentEligibility
             $event->suspended_at !== null => 'هذه المناسبة موقوفة حالياً ولا يمكن الدفع لها.',
             $event->status !== EventStatus::Draft => 'يمكن الدفع للمناسبات التي لم تُنشر بعد فقط.',
             $event->event_date->lessThanOrEqualTo(now()) => 'موعد المناسبة مضى، فلا يمكن الدفع لها.',
+            default => null,
+        };
+    }
+
+    /** Why a new receipt cannot be submitted now, or null when it can. */
+    public function blocker(Event $event, ?Order $openOrder): ?string
+    {
+        return $this->stateBlocker($event, $openOrder) ?? match (true) {
             $this->priceMinor($event) <= 0 => 'لم يُحدَّد سعر لهذه المناسبة بعد. تواصلي معنا لإكمال الدفع.',
             $this->bankAccounts() === [] => 'بيانات الحساب البنكي غير متاحة حالياً. حاولي لاحقاً.',
             default => null,

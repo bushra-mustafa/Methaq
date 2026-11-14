@@ -1,6 +1,7 @@
 import { EventJourney } from '../../../Domains/Events/Components/EventJourney';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import type { ChangeEvent, FormEvent } from 'react';
+import { FreeOfferCard } from '../../../Domains/Payments/Components/FreeOfferCard';
 import { paymentStateLabels } from '../../../Domains/Payments/Services/paymentState';
 import { AppShell } from '../../../Domains/Users/Components/AppShell';
 import type { EventDTO } from '../../../Types/EventDTO';
@@ -40,6 +41,7 @@ export default function EventPayment({ event, payment }: PaymentPageProps) {
     return <AppShell eyebrow={event.title} title="الدفع بالتحويل البنكي">
         <Head title={`الدفع · ${event.title}`} />
         <EventJourney event={event} current="payment" />
+        {flash.status === 'free-offer-claimed' && <aside className="event-success" role="status"><strong>فُعّلت مناسبتك مجاناً</strong><span>استفدتِ من العرض. جهّزي دعوتك وانشريها من صفحة الظرف والفتح.</span></aside>}
         {flash.status === 'receipt-submitted' && <aside className="event-success" role="status"><strong>وصلتنا القسيمة</strong><span>سنراجعها بعد التأكد من وصول المبلغ، ويظهر القرار في هذه الصفحة.</span></aside>}
 
         <section className="payment-layout">
@@ -52,11 +54,12 @@ export default function EventPayment({ event, payment }: PaymentPageProps) {
                 </dl>
                 {payment.includedFeatures.length > 0 && <div className="payment-features"><strong>يشمل الدفع</strong><ul>{payment.includedFeatures.map((feature) => <li key={feature}>{feature}</li>)}</ul></div>}
                 {payment.lockedFeatures.length > 0 && <div className="payment-features is-locked"><strong>غير متاح في هذا القالب</strong><ul>{payment.lockedFeatures.map((feature) => <li key={feature}>{feature}</li>)}</ul></div>}
-                {payment.latestOrder && <div className="payment-latest"><strong>آخر قسيمة</strong><p>{payment.latestOrder.amountLabel} · أُرسلت {formatDate(payment.latestOrder.submittedAt, event.timezone)}{payment.latestOrder.reviewedAt && <> · رُوجعت {formatDate(payment.latestOrder.reviewedAt, event.timezone)}</>}</p></div>}
+                {payment.latestOrder && !payment.paidByOffer && <div className="payment-latest"><strong>آخر قسيمة</strong><p>{payment.latestOrder.amountLabel} · أُرسلت {formatDate(payment.latestOrder.submittedAt, event.timezone)}{payment.latestOrder.reviewedAt && <> · رُوجعت {formatDate(payment.latestOrder.reviewedAt, event.timezone)}</>}</p></div>}
             </div>
 
             <div className="payment-action">
-                {payment.state === 'paid' && <div className="event-next-step"><strong>تم اعتماد الدفع</strong><p>جهّزي دعوتك وانشريها من صفحة الظرف والفتح.</p><Link className="account-primary" href={`/app/events/${event.id}/presentation`}>الانتقال إلى النشر</Link></div>}
+                {payment.freeOffer && payment.state !== 'paid' && <FreeOfferCard eventId={event.id} offer={payment.freeOffer} />}
+                {payment.state === 'paid' && <div className="event-next-step"><strong>{payment.paidByOffer ? 'فُعّلت مناسبتك مجاناً ضمن العرض' : 'تم اعتماد الدفع'}</strong><p>جهّزي دعوتك وانشريها من صفحة الظرف والفتح.</p><Link className="account-primary" href={`/app/events/${event.id}/presentation`}>الانتقال إلى النشر</Link></div>}
                 {payment.state === 'pending_review' && <div className="event-next-step"><strong>القسيمة قيد المراجعة</strong><p>نتحقق من وصول المبلغ إلى الحساب، ثم يظهر القرار هنا. لا حاجة لإرسالها مرة أخرى.</p></div>}
                 {payment.state === 'rejected' && payment.canSubmit && <p className="account-error" role="alert">{payment.rejectionMessage}</p>}
                 {payment.blocker && payment.state !== 'paid' && payment.state !== 'pending_review' && <p className="account-error" role="alert">{payment.blocker}</p>}

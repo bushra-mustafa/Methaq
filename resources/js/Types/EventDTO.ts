@@ -35,11 +35,19 @@ export interface EventTemplateOption {
     name: string;
     category: EventCategory;
     thumbnailUrl: string;
+    priceLabel: string;
 }
 
 export interface SelectOption<TValue extends string> {
     value: TValue;
     label: string;
+}
+
+export interface VisitSummary {
+    views: number;
+    visitors: number;
+    last7Views: number;
+    last7Visitors: number;
 }
 
 export interface RsvpSummary {

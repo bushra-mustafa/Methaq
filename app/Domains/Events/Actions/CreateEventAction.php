@@ -12,6 +12,7 @@ use App\Domains\Events\Enums\EventStatus;
 use App\Domains\Events\Models\Event;
 use App\Domains\Events\Services\EventSubdomainGenerator;
 use App\Domains\Events\Services\InvitationExpiry;
+use App\Domains\Payments\Services\PricingSettings;
 use App\Domains\Users\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,7 @@ final class CreateEventAction
         private readonly EventSubdomainGenerator $subdomains,
         private readonly BlankDesignFactory $blankDesignFactory,
         private readonly InvitationExpiry $expiry,
+        private readonly PricingSettings $pricing,
     ) {}
 
     public function execute(User $owner, CreateEventData $data): Event
@@ -101,6 +103,12 @@ final class CreateEventAction
     private function activeTemplate(?int $templateId): ?Template
     {
         if ($templateId === null) {
+            if ($this->pricing->blankCardPriceMinor() <= 0) {
+                throw ValidationException::withMessages([
+                    'template_id' => 'البطاقة الفارغة غير متاحة حالياً. اختاري قالباً.',
+                ]);
+            }
+
             return null;
         }
 

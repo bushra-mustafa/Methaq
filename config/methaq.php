@@ -76,6 +76,8 @@ return [
      */
     'payment' => [
         'currency' => 'LYD',
+        /* Price of starting a design from a blank card, in LYD minor units (50000 = 50 د.ل). An administrator can change it; 0 closes the blank card. */
+        'blank_card_price_minor' => (int) env('METHAQ_BLANK_CARD_PRICE_MINOR', 50_000),
         'bank_transfer' => [
             'bank_name' => env('METHAQ_BANK_NAME'),
             'account_name' => env('METHAQ_BANK_ACCOUNT_NAME'),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Domains\Editor\Exceptions\DesignRevisionConflict;
 use App\Domains\Editor\Exceptions\InvalidDesignAssetReference;
 use App\Domains\Editor\Exceptions\ProposalRevisionConflict;
+use App\Http\Middleware\CountSiteVisit;
 use App\Http\Middleware\EnforceHttps;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\GuardPublicForms;
@@ -47,7 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ])),
             subdomains: true,
         );
-        $middleware->web(append: [GuardPublicForms::class, HandleInertiaRequests::class]);
+        $middleware->web(append: [GuardPublicForms::class, HandleInertiaRequests::class, CountSiteVisit::class]);
         // A changed password ends every session that still holds the old one.
         $middleware->authenticateSessions();
         $middleware->alias([

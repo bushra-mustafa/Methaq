@@ -31,6 +31,10 @@ enum AuditAction: string
     case AssetCollectionDeactivated = 'asset_collection.deactivated';
     case SupportThreadClosed = 'support_thread.closed';
     case SupportThreadReopened = 'support_thread.reopened';
+    case BlankCardPriceUpdated = 'pricing.blank_card_updated';
+    case FreeOfferSaved = 'free_offer.saved';
+    case FreeOfferDeleted = 'free_offer.deleted';
+    case FreeOfferClaimed = 'free_offer.claimed';
     case BankAccountSaved = 'bank_account.saved';
     case BankAccountDeleted = 'bank_account.deleted';
     case ContactChannelSaved = 'contact_channel.saved';

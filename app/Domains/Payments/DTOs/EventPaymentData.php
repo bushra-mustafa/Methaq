@@ -7,8 +7,10 @@ namespace App\Domains\Payments\DTOs;
 use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
+use App\Domains\Payments\Enums\PaymentGateway;
 use App\Domains\Payments\Enums\PaymentRejectionReason;
 use App\Domains\Payments\Models\Order;
+use App\Domains\Payments\Services\FreeOffers;
 use App\Domains\Payments\Services\LydAmount;
 use App\Domains\Payments\Services\ManualPaymentEligibility;
 
@@ -21,6 +23,7 @@ final readonly class EventPaymentData
     /**
      * @param  'paid'|'pending_review'|'rejected'|'awaiting_receipt'  $state
      * @param  list<array{bankName: string|null, accountName: string|null, accountNumber: string|null, iban: string|null}>  $bankAccounts
+     * @param  array{title: string, description: string|null, spotsTotal: int, spotsLeft: int, endsAt: string}|null  $freeOffer
      * @param  list<string>  $includedFeatures
      * @param  list<string>  $lockedFeatures
      * @param  array{amountLabel: string, status: string, submittedAt: string, reviewedAt: string|null}|null  $latestOrder
@@ -35,9 +38,11 @@ final readonly class EventPaymentData
         public ?string $blocker,
         public ?array $latestOrder,
         public ?string $rejectionMessage = null,
+        public ?array $freeOffer = null,
+        public bool $paidByOffer = false,
     ) {}
 
-    public static function fromEvent(Event $event, ManualPaymentEligibility $eligibility): self
+    public static function fromEvent(Event $event, ManualPaymentEligibility $eligibility, ?FreeOffers $offers = null): self
     {
         $openOrder = $eligibility->openOrder($event);
         $latestOrder = Order::query()->where('event_id', $event->getKey())->latest('id')->first();
@@ -70,6 +75,8 @@ final readonly class EventPaymentData
                 'reviewedAt' => $latestOrder->reviewed_at?->setTimezone($event->timezone)->toIso8601String(),
             ],
             rejectionMessage: $state === 'rejected' ? self::rejectionMessage($latestOrder) : null,
+            freeOffer: $eligibility->stateBlocker($event, $openOrder) === null ? $offers?->forEvent($event) : null,
+            paidByOffer: $state === 'paid' && $latestOrder?->gateway === PaymentGateway::FreeOffer,
         );
     }
 
@@ -86,6 +93,8 @@ final readonly class EventPaymentData
             'blocker' => $this->blocker,
             'latestOrder' => $this->latestOrder,
             'rejectionMessage' => $this->rejectionMessage,
+            'freeOffer' => $this->freeOffer,
+            'paidByOffer' => $this->paidByOffer,
         ];
     }
 

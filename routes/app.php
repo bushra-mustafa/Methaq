@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SaveTemplateDesignController;
 use App\Http\Controllers\Admin\ShowEventDraftReviewController;
 use App\Http\Controllers\Admin\ShowTemplateStudioController;
 use App\Http\Controllers\Admin\StoreTemplateThumbnailController;
+use App\Http\Controllers\App\ClaimFreeOfferController;
 use App\Http\Controllers\App\CreateEventController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\EventEditorController;
@@ -72,6 +73,11 @@ Route::post('/events/{event}/payment', SubmitPaymentReceiptController::class)
     ->whereNumber('event')
     ->middleware('throttle:6,1')
     ->name('events.payment.store');
+
+Route::post('/events/{event}/free-offer', ClaimFreeOfferController::class)
+    ->whereNumber('event')
+    ->middleware('throttle:6,1')
+    ->name('events.free-offer.claim');
 
 Route::post('/events/{event}/publish', PublishEventController::class)
     ->whereNumber('event')

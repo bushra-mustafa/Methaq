@@ -944,3 +944,13 @@
 .rsvp-status.is-attending { color: #1d5a2a; }
 .rsvp-status.is-declined { color: #8a2b2b; }
 .rsvp-status.is-maybe { color: #6a5321; }
+
+/* Free offer on the payment page */
+.free-offer-card { display: grid; gap: 10px; margin-block-end: 22px; padding: 22px; border: 1px solid var(--color-methaq-gold, #7a613b); border-radius: 12px; background: #fffdf8; box-shadow: inset 0 0 0 4px #fffdf8, inset 0 0 0 5px rgb(184 151 95 / 45%); }
+.free-offer-card h2 { margin: 0; color: var(--color-methaq-primary, #203322); font-size: 24px; line-height: 1.4; }
+.free-offer-card p { margin: 0; color: #434842; line-height: 1.9; }
+.free-offer-badge { justify-self: start; border-radius: 999px; padding: 3px 12px; background: var(--color-methaq-primary, #203322); color: #fffdf8; font-size: 13px; font-weight: 600; }
+.free-offer-meta { display: flex; flex-wrap: wrap; gap: 6px 10px; }
+.free-offer-meta strong { color: var(--color-methaq-primary, #203322); font-variant-numeric: tabular-nums; }
+.free-offer-card form { display: grid; gap: 8px; justify-items: start; margin-block-start: 6px; }
+.free-offer-card small { color: #434842; line-height: 1.7; }

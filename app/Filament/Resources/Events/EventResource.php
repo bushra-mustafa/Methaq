@@ -64,7 +64,7 @@ final class EventResource extends Resource
     /** @return Builder<Event> */
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with(['user', 'template'])->withCount('rsvps');
+        return parent::getEloquentQuery()->with(['user', 'template'])->withCount('rsvps')->withSum('visitDays as views_total', 'views')->withSum('visitDays as visitors_total', 'visitors');
     }
 
     public static function table(Table $table): Table
@@ -100,6 +100,8 @@ final class EventResource extends Resource
                     ->trueColor('danger')
                     ->falseColor('gray'),
                 TextColumn::make('event_date')->label('موعد المناسبة')->dateTime('d/m/Y H:i')->timezone($timezone)->sortable(),
+                TextColumn::make('visitors_total')->label('الزوار')->numeric()->state(fn (Event $record): int => (int) $record->visitors_total)->icon(Heroicon::OutlinedUsers)->sortable(),
+                TextColumn::make('views_total')->label('الفتحات')->numeric()->state(fn (Event $record): int => (int) $record->views_total)->icon(Heroicon::OutlinedEye)->sortable(),
                 TextColumn::make('rsvps_count')->label('ردود الضيوف')->numeric()->icon(Heroicon::OutlinedChatBubbleLeftRight),
                 TextColumn::make('published_at')->label('نُشرت')->dateTime('d/m/Y')->timezone($timezone)->placeholder('—')->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -8,13 +8,16 @@ import HomeSteps from "../../Components/Public/Home/HomeSteps";
 import HomeEnvelopeSpotlight from "../../Components/Public/Home/HomeEnvelopeSpotlight";
 import HomeFeatures from "../../Components/Public/Home/HomeFeatures";
 import HomeClosing from "../../Components/Public/Home/HomeClosing";
+import HomeFreeOffer from "../../Components/Public/Home/HomeFreeOffer";
+import type { HomeFreeOfferDTO } from "../../Types/FreeOffer";
 
 interface HomeProps {
     showPrototype: boolean;
     featuredTemplates: LibraryTemplate[];
+    freeOffer: HomeFreeOfferDTO | null;
 }
 
-export default function Home({ showPrototype, featuredTemplates }: HomeProps) {
+export default function Home({ showPrototype, featuredTemplates, freeOffer }: HomeProps) {
     const { auth } = usePage<SharedPageProps>().props;
     const isAuthenticated = Boolean(auth.user);
 
@@ -30,6 +33,7 @@ export default function Home({ showPrototype, featuredTemplates }: HomeProps) {
                 isAuthenticated={isAuthenticated}
                 showPrototype={showPrototype}
             />
+            {freeOffer && <HomeFreeOffer offer={freeOffer} isAuthenticated={isAuthenticated} />}
             <HomeTemplates
                 templates={featuredTemplates}
                 isAuthenticated={isAuthenticated}

@@ -9,4 +9,5 @@ enum PaymentGateway: string
     case Stripe = 'stripe';
     case Tap = 'tap';
     case ManualTransfer = 'manual_transfer';
+    case FreeOffer = 'free_offer';
 }
