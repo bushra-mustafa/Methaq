@@ -1,1 +1,0 @@
-import{j as e}from"./app-YNjUXXDf.js";function a({value:t,onChange:s}){return e.jsx("div",{"aria-hidden":"true",className:"absolute -start-[9999px] size-px overflow-hidden",children:e.jsxs("label",{children:["الموقع الإلكتروني",e.jsx("input",{type:"text",name:"website",value:t,onChange:s,tabIndex:-1,autoComplete:"off"})]})})}export{a as H};

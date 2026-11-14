@@ -1,1 +1,0 @@
-import{j as o,L as u}from"./app-YNjUXXDf.js";function f({href:i,children:r,canLeave:a=!0,label:t,title:s}){return i.startsWith("/admin")?o.jsx("a",{href:i,"aria-label":t,title:s,"aria-disabled":!a,onClick:n=>{a||n.preventDefault()},children:r}):o.jsx(u,{href:i,"aria-label":t,title:s,"aria-disabled":!a,onBefore:()=>a,children:r})}export{f as B};
