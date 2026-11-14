@@ -1,1 +1,0 @@
-import{j as e}from"./app-D2EwbvTK.js";function r({children:t}){return e.jsx("p",{role:"status",className:"m-0 mb-6 rounded-methaq-button border border-methaq-gold/40 bg-methaq-gold-soft/40 px-4 py-3 text-[15px] leading-[1.8] text-methaq-ink",children:t})}export{r as A};
