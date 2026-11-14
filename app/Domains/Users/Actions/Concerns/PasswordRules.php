@@ -11,6 +11,6 @@ trait PasswordRules
     /** @return array<int, mixed> */
     private function passwordRules(): array
     {
-        return ['required', 'string', Password::min(12)->mixedCase()->numbers()->symbols(), 'confirmed'];
+        return ['required', 'string', Password::min(8), 'confirmed'];
     }
 }

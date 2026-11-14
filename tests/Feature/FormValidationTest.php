@@ -71,6 +71,17 @@ final class FormValidationTest extends TestCase
         $this->assertSame('customer', User::query()->where('email', 'a@example.com')->firstOrFail()->role->value);
     }
 
+    public function test_a_password_needs_only_eight_characters_with_no_character_mix(): void
+    {
+        $this->post('/register', ['name' => 'سارة', 'email' => 'seven@example.com', 'password' => 'abcdefg', 'password_confirmation' => 'abcdefg'])
+            ->assertSessionHasErrors('password');
+        $this->assertDatabaseMissing('users', ['email' => 'seven@example.com']);
+
+        $this->post('/register', ['name' => 'سارة', 'email' => 'eight@example.com', 'password' => 'abcdefgh', 'password_confirmation' => 'abcdefgh'])
+            ->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('users', ['email' => 'eight@example.com']);
+    }
+
     public function test_event_creation_refuses_forbidden_fields_bad_dates_and_foreign_ownership(): void
     {
         $user = User::factory()->create();

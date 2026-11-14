@@ -21,7 +21,7 @@ export default function Register() {
             <AuthField icon={User} label="الاسم" autoComplete="name" autoFocus required {...bind('name')} />
             <AuthField icon={Mail} label="البريد الإلكتروني" type="email" autoComplete="email" required {...bind('email')} />
             <AuthField icon={Phone} label="رقم الهاتف (اختياري)" type="tel" autoComplete="tel" {...bind('phone')} />
-            <PasswordField label="كلمة المرور" autoComplete="new-password" required hint="12 حرفاً على الأقل، مع حرف كبير ورقم ورمز." {...bind('password')} />
+            <PasswordField label="كلمة المرور" autoComplete="new-password" required hint="8 أحرف على الأقل." {...bind('password')} />
             <PasswordField label="تأكيد كلمة المرور" autoComplete="new-password" required {...bind('password_confirmation')} />
             <Honeypot {...bind('website')} />
             {turnstile && <Turnstile siteKey={turnstile.siteKey} round={round} onToken={(token) => form.setData('cf-turnstile-response', token)} error={form.errors['cf-turnstile-response']} />}
