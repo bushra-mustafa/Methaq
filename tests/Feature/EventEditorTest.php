@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Editor\Models\EventDesign;
 use App\Domains\Editor\Models\Template;
 use App\Domains\Editor\Models\TemplateAsset;
@@ -78,6 +79,47 @@ final class EventEditorTest extends TestCase
             ->where('revision', 1)
             ->where('document.scene.opening.type', 'envelope')
             ->has('assets'));
+    }
+
+    public function test_editor_offers_the_library_sound_tracks_with_a_preview_the_owner_can_play(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+        $owner = User::factory()->create();
+        $template = Template::query()->where('slug', 'powder-gold')->sole();
+        $event = $this->eventFromTemplate($owner, $template);
+        $library = TemplateAsset::query()->where('type', 'audio')->orderBy('id')->get();
+        $this->assertGreaterThan(1, $library->count());
+        $library->last()->forceFill(['is_active' => false])->save();
+        $expected = $library->slice(0, -1)->pluck('slug')->sort()->values()->all();
+
+        $this->actingAs($owner)->withoutVite()->get("/app/events/{$event->getKey()}/editor")
+            ->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('assets', fn ($assets): bool => collect($assets)->where('type', 'audio')->pluck('slug')->sort()->values()->all() === $expected)
+            ->where('assets', fn ($assets): bool => collect($assets)->where('type', 'audio')->every(fn (array $track): bool => is_file(public_path(ltrim((string) parse_url($track['previewUrl'], PHP_URL_PATH), '/'))))));
+    }
+
+    public function test_editor_tells_the_owner_which_features_the_template_leaves_out(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+        $owner = User::factory()->create();
+        $template = Template::query()->where('slug', 'powder-gold')->sole();
+        $template->forceFill(['locked_features' => [TemplateFeature::Music]])->save();
+        $event = $this->eventFromTemplate($owner, $template);
+
+        $this->actingAs($owner)->withoutVite()->get("/app/events/{$event->getKey()}/editor")
+            ->assertOk()->assertInertia(fn (AssertableInertia $page) => $page->where('lockedFeatures', ['music']));
+    }
+
+    public function test_nothing_is_reported_as_locked_when_the_template_leaves_nothing_out(): void
+    {
+        $this->seed(TemplateLibrarySeeder::class);
+        $owner = User::factory()->create();
+        $template = Template::query()->where('slug', 'powder-gold')->sole();
+        $template->forceFill(['locked_features' => []])->save();
+        $event = $this->eventFromTemplate($owner, $template);
+
+        $this->actingAs($owner)->withoutVite()->get("/app/events/{$event->getKey()}/editor")
+            ->assertOk()->assertInertia(fn (AssertableInertia $page) => $page->where('lockedFeatures', []));
     }
 
     public function test_inactive_referenced_assets_remain_renderable_without_exposing_unrelated_assets(): void

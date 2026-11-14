@@ -17,6 +17,7 @@ const tools: Array<{ value: EditorPanel; label: string }> = [
     { value: 'phrases', label: 'آيات وعبارات' },
     { value: 'colors', label: 'الألوان' },
     { value: 'material', label: 'الخامة' },
+    { value: 'audio', label: 'الصوت' },
 ];
 
 export function EditorControlPanel({ tab, tool, hasSelection, onTab, onTool, children }: Props) {

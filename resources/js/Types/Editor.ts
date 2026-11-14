@@ -38,7 +38,7 @@ export interface EditorCollection {
     items: EditorCollectionItem[];
 }
 
-export type EditorPanel = 'elements' | 'text' | 'layers' | 'colors' | 'material' | 'phrases';
+export type EditorPanel = 'elements' | 'text' | 'layers' | 'colors' | 'material' | 'phrases' | 'audio';
 
 export interface CanvasGuides {
     horizontal: number | null;

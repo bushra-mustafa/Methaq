@@ -172,3 +172,6 @@
 .invitation-ambience-smoke.is-ready { opacity: 1; }
 .invitation-ambience-veil { background: radial-gradient(ellipse at 50% 46%, #25051259 0%, #2e0a181f 33%, transparent 72%), linear-gradient(to bottom, #220a121a, transparent 18%, transparent 78%, #1f08116b); }
 .invitation-ambience-sparks { z-index: 8; }
+.invitation-player-tools .invitation-audio-icon { display: grid; width: 38px; min-width: 38px; min-height: 38px; place-items: center; padding: 0; }
+.invitation-player-tools button svg { width: 18px; height: 18px; }
+.invitation-audio-status { margin: 0; min-height: 1.4em; text-align: center; font-size: 12px; }

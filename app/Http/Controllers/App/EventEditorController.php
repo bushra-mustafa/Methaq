@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App;
 
 use App\Domains\Editor\Actions\GetEventEditorAction;
+use App\Domains\Events\Actions\GetEventLockedFeaturesAction;
 use App\Domains\Events\Models\Event;
 use App\Domains\Users\Models\User;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,14 @@ use Inertia\Response;
 
 final class EventEditorController extends Controller
 {
-    public function __invoke(Request $request, Event $event, GetEventEditorAction $getEditor): Response
+    public function __invoke(Request $request, Event $event, GetEventEditorAction $getEditor, GetEventLockedFeaturesAction $getLockedFeatures): Response
     {
         $owner = $request->user();
         abort_unless($owner instanceof User, 401);
 
-        return Inertia::render('App/Editor', $getEditor->execute($owner, $event));
+        return Inertia::render('App/Editor', [
+            ...$getEditor->execute($owner, $event),
+            'lockedFeatures' => $getLockedFeatures->execute($owner, $event),
+        ]);
     }
 }

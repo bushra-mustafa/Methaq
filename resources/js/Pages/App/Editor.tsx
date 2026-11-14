@@ -8,6 +8,7 @@ import { EditorMobilePanel } from '../../Domains/Editor/Components/EditorMobileP
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
 import { EditorInspector } from '../../Domains/Editor/Components/EditorInspector';
 import { EditorLayersPanel } from '../../Domains/Editor/Components/EditorLayersPanel';
+import { EditorAudioPanel } from '../../Domains/Editor/Components/EditorAudioPanel';
 import { EditorLibraryPanel } from '../../Domains/Editor/Components/EditorLibraryPanel';
 import { EditorPalettePanel } from '../../Domains/Editor/Components/EditorPalettePanel';
 import { EditorMaterialPanel } from '../../Domains/Editor/Components/EditorMaterialPanel';
@@ -22,6 +23,7 @@ import { useCanvas } from '../../Domains/Editor/Hooks/useCanvas';
 import { useAutosave } from '../../Domains/Editor/Hooks/useAutosave';
 import { useDesignHistory } from '../../Domains/Editor/Hooks/useDesignHistory';
 import { parseDesignDocument } from '../../Domains/Editor/Services/DesignDocumentSerializer';
+import { withAudio } from '../../Domains/Editor/Services/sceneAudio';
 import { addAsset, addCollection, addText, layerWarnings, moveLayer, removeLayer, replaceImageAsset, updateLayer, updatePaletteColor } from '../../Domains/Editor/Services/editorDocument';
 import type { DesignDocument } from '../../Types/DesignDocument';
 import type { EditorAsset, EditorCollection, EditorPanel, EditorTemplate } from '../../Types/Editor';
@@ -41,6 +43,8 @@ interface EditorProps {
     assets: EditorAsset[];
     collections: EditorCollection[];
     recommendedAssetIds: string[];
+    /** Features the event's template leaves out of the published invitation (owner's editor only). */
+    lockedFeatures?: string[];
 }
 
 function acceptsShortcut(target: EventTarget | null): boolean {
@@ -73,7 +77,7 @@ function buildSubject(props: EditorProps): EditorSubject | null {
     return null;
 }
 
-function EditorWorkspace({ subject, document: initialDocument, revision, assets, collections, recommendedAssetIds }: Omit<EditorProps, 'document' | 'event' | 'template' | 'mode'> & { subject: EditorSubject; document: DesignDocument }) {
+function EditorWorkspace({ subject, document: initialDocument, revision, assets, collections, recommendedAssetIds, musicLocked }: Omit<EditorProps, 'document' | 'event' | 'template' | 'mode' | 'lockedFeatures'> & { subject: EditorSubject; document: DesignDocument; musicLocked: boolean }) {
     const history = useDesignHistory(initialDocument);
     const autosave = useAutosave(subject.saveUrl, history.value, revision);
     const [thumbnailStatus, setThumbnailStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
@@ -206,6 +210,7 @@ function EditorWorkspace({ subject, document: initialDocument, revision, assets,
             {panel === 'phrases' && <EditorSuggestionsPanel category={subject.category} fonts={fonts} onInsert={insertSuggestion} />}
             {panel === 'colors' && <EditorPalettePanel palette={history.value.palette} onChange={(role: PaletteRole, color: HexColor) => history.commit((document) => updatePaletteColor(document, role, color))} />}
             {panel === 'material' && <EditorMaterialPanel material={history.value.canvas.material} background={resolveColor(history.value.canvas.background, history.value)} onChange={(material) => history.commit((document) => updateCardMaterial(document, material))} onColorChange={(color) => history.commit((document) => updateCardBackground(document, color))} />}
+            {panel === 'audio' && <EditorAudioPanel audio={history.value.scene.audio} assets={assets} locked={musicLocked} previewOpen={preview !== null} onChange={(audio) => history.commit((document) => withAudio(document, audio))} />}
         </> : selectedLayer ? <div className="editor-details">
             <div className="editor-selection-options">
                 <label><input type="checkbox" checked={selectedLayer.visible} onChange={() => changeSelected((layer) => ({ ...layer, visible: !layer.visible }))} />إظهار العنصر</label>
@@ -270,7 +275,7 @@ export default function Editor(props: EditorProps) {
     const subject = buildSubject(props);
     try {
         if (!subject) throw new Error('Missing editor subject');
-        return <EditorWorkspace subject={subject} document={parseDesignDocument(props.document)} revision={props.revision} assets={props.assets} collections={props.collections} recommendedAssetIds={props.recommendedAssetIds} />;
+        return <EditorWorkspace subject={subject} document={parseDesignDocument(props.document)} revision={props.revision} assets={props.assets} collections={props.collections} recommendedAssetIds={props.recommendedAssetIds} musicLocked={props.lockedFeatures?.includes('music') ?? false} />;
     } catch {
         return <main className="editor-contract-error" dir="rtl"><Head title="تعذّر فتح التصميم" /><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><h1>تعذّر فتح التصميم</h1><p>بيانات البطاقة تحتاج مراجعة قبل بدء التعديل.</p><BackLink href={subject?.backHref ?? '/app'}>{subject?.backLabel ?? 'الرجوع'}</BackLink></main>;
     }

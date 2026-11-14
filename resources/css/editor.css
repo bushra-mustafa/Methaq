@@ -182,3 +182,20 @@
 .editor-suggestion-text { white-space: pre-line; font-size: 19px; line-height: 2; }
 .editor-suggestion-list small { font-size: 12px; color: #434842; }
 .editor-suggestion-credit { margin: 14px 0 0; font-size: 12px; color: #434842; }
+
+/* Sound: hear each library track, then choose one */
+.editor-audio-note { margin: 0 0 16px; border: 1px solid #dfc9b4; border-radius: 8px; padding: 10px 12px; background: #fff4ea; color: #823e30; font-size: 12px; line-height: 1.8; }
+.editor-audio-choices { display: grid; gap: 8px; min-width: 0; margin: 0 0 18px; border: 0; padding: 0; }
+.editor-audio-choices legend { margin-bottom: 8px; padding: 0; color: #434842; font-size: 12px; }
+.editor-audio-row { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 4px; min-height: 52px; border: 1px solid #6b7068; border-radius: 10px; padding-inline: 12px 4px; background: #fff; transition: background-color 160ms ease, border-color 160ms ease; }
+.editor-audio-row.is-none { grid-template-columns: minmax(0, 1fr); padding-inline: 12px; }
+.editor-audio-row.is-selected { border-color: #203322; background: #e9efe7; }
+.editor-audio-row label { display: flex; align-items: center; gap: 10px; min-height: 50px; cursor: pointer; color: #203322; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.editor-audio-row input[type=radio] { flex: 0 0 auto; width: 18px; height: 18px; margin: 0; accent-color: #203322; }
+.editor-page .editor-audio-play { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; transition: background-color 160ms ease, color 160ms ease; }
+.editor-page .editor-audio-play.is-playing { border-color: #203322; background: #203322; color: #fffdf8; }
+.editor-audio-panel .editor-control-stack { margin-bottom: 16px; }
+.editor-audio-panel input[type=range] { accent-color: #203322; }
+.editor-audio-hint, .editor-audio-status { margin: 0; color: #57534b; font-size: 12px; line-height: 1.8; }
+.editor-audio-status { min-height: 1.8em; margin-top: 8px; color: #923e2b; }
+@media (hover: hover) { .editor-audio-row:not(.is-selected):hover { border-color: #203322; background: #f6fbf2; } }
