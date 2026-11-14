@@ -79,7 +79,7 @@ final readonly class EditorAssetData
             'font-amiri-quran' => '/brand/fonts/AmiriQuran-Regular.ttf',
             'font-reem-kufi' => '/brand/fonts/ReemKufi.ttf',
             'font-el-messiri' => '/brand/fonts/ElMessiri.ttf',
-            default => null,
+            default => is_array($asset->metadata) && is_string($asset->metadata['publicPath'] ?? null) ? '/'.ltrim($asset->metadata['publicPath'], '/') : null,
         };
     }
 

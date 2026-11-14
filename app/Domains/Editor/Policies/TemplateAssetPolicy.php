@@ -30,9 +30,10 @@ final class TemplateAssetPolicy
         return $this->canManage($user);
     }
 
+    /** Deleting is an administrator's call; DeleteLibraryAssetAction also refuses assets that are in use. */
     public function delete(User $user, TemplateAsset $asset): bool
     {
-        return false;
+        return $this->canManage($user);
     }
 
     private function canManage(?User $user): bool
