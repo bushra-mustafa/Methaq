@@ -37,6 +37,7 @@
     <link rel="preload" href="/brand/fonts/NotoSansArabic.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/brand/fonts/Amiri-Bold.woff2" as="font" type="font/woff2" crossorigin>
 
+    <noscript><style>#boot-loader{display:none}</style></noscript>
     @viteReactRefresh
     @vite('resources/js/app.tsx')
     @inertiaHead
@@ -44,7 +45,7 @@
 
 <body>
     @inertia
-    <div id="boot-loader" role="status" aria-label="جارٍ التحميل"><img src="/brand/logos/methaq-symbol-small-flat.svg" alt="" width="64" height="64"></div>
+    <div id="boot-loader" role="status" aria-label="جارٍ التحميل"><img src="/brand/logos/methaq-symbol-small-flat.svg" alt="" width="64" height="64"><p class="boot-slow">تأخر التحميل. <a href="">أعيدي تحميل الصفحة</a></p></div>
     <noscript>يرجى تفعيل JavaScript لعرض منصة ميثاق.</noscript>
 </body>
 

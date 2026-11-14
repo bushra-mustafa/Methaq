@@ -23,7 +23,8 @@ final class ReplyToSupportThreadAction
 
     public function execute(User $actor, int $threadId, string $body): SupportMessage
     {
-        [$message, $thread] = DB::transaction(function () use ($actor, $threadId, $body): array {
+        $alreadyNotified = false;
+        [$message, $thread] = DB::transaction(function () use ($actor, $threadId, $body, &$alreadyNotified): array {
             $thread = SupportThread::query()->lockForUpdate()->findOrFail($threadId);
             Gate::forUser($actor)->authorize('reply', $thread);
 
@@ -36,6 +37,8 @@ final class ReplyToSupportThreadAction
             }
 
             $fromAdmin = $actor->role === UserRole::Admin && $thread->user_id !== $actor->getKey();
+            // The team is already told while the customer's earlier message is still unread.
+            $alreadyNotified = $thread->admin_unread;
 
             $message = SupportMessage::query()->create([
                 'support_thread_id' => $thread->getKey(),
@@ -53,7 +56,7 @@ final class ReplyToSupportThreadAction
             return [$message, $thread];
         });
 
-        if (! $message->from_admin) {
+        if (! $message->from_admin && ! $alreadyNotified) {
             $this->mailer->notifyTeam($thread, isReply: true);
         }
 

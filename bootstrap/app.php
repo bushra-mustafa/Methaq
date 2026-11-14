@@ -10,6 +10,7 @@ use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\GuardPublicForms;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireAdminWithTwoFactor;
+use App\Http\Middleware\RestrictInvitationHosts;
 use App\Http\Middleware\RestrictPrototypeRoutes;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
@@ -32,6 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->convertEmptyStringsToNull(except: [$designPayload]);
         $middleware->trimStrings(except: [$designPayload]);
         $middleware->prepend(RestrictPrototypeRoutes::class);
+        // Global and first, so an invitation address never reaches sign-in, the account area or the admin panel.
+        $middleware->prepend(RestrictInvitationHosts::class);
         // After TrustProxies, so the forwarded scheme is known before deciding whether to redirect.
         $middleware->append(EnforceHttps::class);
         $middleware->append(SecurityHeaders::class);
@@ -40,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             at: static fn (): array => array_values(array_filter([
                 parse_url((string) config('app.url'), PHP_URL_HOST) ?: null,
                 config('methaq.invitation_domain'),
-                ...array_map('trim', explode(',', (string) env('METHAQ_TRUSTED_HOSTS', ''))),
+                ...array_map('trim', explode(',', (string) config('methaq.trusted_hosts', ''))),
             ])),
             subdomains: true,
         );

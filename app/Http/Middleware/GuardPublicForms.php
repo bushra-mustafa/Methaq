@@ -23,7 +23,7 @@ final class GuardPublicForms
         'register' => 5,
         'forgot-password' => 5,
         'reset-password' => 10,
-        'rsvp' => 10,
+        'rsvp' => 20,
     ];
 
     /** Forms that also need a passed Turnstile challenge when it is configured. The guests' reply stays light. */
@@ -37,7 +37,8 @@ final class GuardPublicForms
             return $next($request);
         }
 
-        $key = 'public-form:'.$path.':'.$request->ip();
+        // Guests of one event often share a venue network, so the reply form is limited per event and address.
+        $key = 'public-form:'.$path.':'.($path === 'rsvp' ? $request->getHost().':' : '').$request->ip();
 
         if (RateLimiter::tooManyAttempts($key, self::LIMITS[$path])) {
             abort(429, 'محاولات كثيرة خلال وقت قصير. انتظري دقيقة ثم حاولي مجدداً.');

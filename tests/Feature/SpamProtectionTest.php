@@ -57,12 +57,12 @@ final class SpamProtectionTest extends TestCase
         $this->post($url, [...$payload('f9e2c48a-dc0b-4a78-a441-6df84c7dc801'), 'website' => 'spam'])->assertSessionHasErrors('website');
         $this->assertDatabaseCount('rsvps', 0);
 
-        foreach (range(2, 10) as $number) {
+        foreach (range(2, 20) as $number) {
             $this->post($url, $payload(sprintf('f9e2c48a-dc0b-4a78-a441-6df84c7dc8%02d', $number)))->assertRedirect();
         }
 
         $this->post($url, $payload('f9e2c48a-dc0b-4a78-a441-6df84c7dc899'))->assertStatus(429);
-        $this->assertDatabaseCount('rsvps', 9);
+        $this->assertDatabaseCount('rsvps', 19);
     }
 
     private function publishedEvent(): Event

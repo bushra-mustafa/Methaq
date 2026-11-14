@@ -19,6 +19,7 @@ return [
     'limits' => [
         'max_open_events' => (int) env('METHAQ_MAX_OPEN_EVENTS', 25),
         'max_pending_receipts' => (int) env('METHAQ_MAX_PENDING_RECEIPTS', 3),
+        'max_rsvps_per_event' => (int) env('METHAQ_MAX_RSVPS_PER_EVENT', 2000),
         'max_open_support_threads' => (int) env('METHAQ_MAX_OPEN_SUPPORT_THREADS', 5),
         'max_event_years_ahead' => (int) env('METHAQ_MAX_EVENT_YEARS_AHEAD', 3),
     ],
@@ -28,7 +29,7 @@ return [
      * Leave it empty to switch the notices off (the customer's automatic acknowledgement stays on).
      */
     'support' => [
-        'inbox' => env('METHAQ_SUPPORT_INBOX', 'methq98@gmail.com'),
+        'inbox' => env('METHAQ_SUPPORT_INBOX', ''),
     ],
 
     'invitation_timezone' => env('METHAQ_INVITATION_TIMEZONE', 'Africa/Tripoli'),
@@ -59,6 +60,9 @@ return [
         'secret_key' => env('TURNSTILE_SECRET_KEY'),
         'verify_url' => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
     ],
+
+    /* Extra host names the app may answer to (comma list), for example a staging domain. Read here so config:cache keeps it. */
+    'trusted_hosts' => env('METHAQ_TRUSTED_HOSTS', ''),
 
     /* Addresses of the reverse proxy / Cloudflare whose forwarded scheme and host are trusted: comma list or *. */
     'trusted_proxies' => env('TRUSTED_PROXIES'),

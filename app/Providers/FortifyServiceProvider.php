@@ -65,10 +65,14 @@ final class FortifyServiceProvider extends ServiceProvider
 
     private function configureRateLimits(): void
     {
-        RateLimiter::for('login', function (Request $request): Limit {
+        RateLimiter::for('login', function (Request $request): array {
             $email = Str::lower($request->string(Fortify::username())->toString());
 
-            return Limit::perMinute(5)->by(Str::transliterate($email).'|'.$request->ip());
+            // Five tries per account and address, and twenty per address across all accounts (credential stuffing).
+            return [
+                Limit::perMinute(5)->by(Str::transliterate($email).'|'.$request->ip()),
+                Limit::perMinute(20)->by('login-ip|'.$request->ip()),
+            ];
         });
         RateLimiter::for('two-factor', fn (Request $request): Limit => Limit::perMinute(5)
             ->by((string) $request->session()->get('login.id').'|'.$request->ip()));

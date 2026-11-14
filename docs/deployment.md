@@ -213,3 +213,16 @@ mv -Tf current.rollback current
 ## الرسائل ووسائل التواصل
 
 بعد `php artisan migrate --force` (ثلاثة جداول جديدة: `contact_channels` و`support_threads` و`support_messages`) نفّذي مرة واحدة `php artisan db:seed --class=ContactChannelSeeder --force` لإضافة البريد `info@methq.ly`. يمكن إعادة تشغيله دون تكرار. بعدها تُدار وسائل التواصل من `/admin/contact-channels` والرسائل من `/admin/support-threads`. متغيرات اختيارية: `METHAQ_MAX_OPEN_SUPPORT_THREADS` (الافتراضي 5) و`METHAQ_SUPPORT_INBOX` (البريد الذي تصله إشعارات الرسائل بعنوان الرسالة فقط؛ الافتراضي methq98@gmail.com، وتركه فارغاً يوقف الإشعار). الرد التلقائي للعميلة والإشعار يحتاجان إعدادات `MAIL_*` حقيقية في `shared/.env` (الافتراضي `MAIL_MAILER=log` لا يرسل شيئاً).
+
+## قائمة أول تشغيل (بالترتيب)
+
+1. في `shared/.env`: `APP_ENV=production` و`APP_DEBUG=false` و`APP_KEY` و`APP_URL` و`METHAQ_INVITATION_DOMAIN` و`SESSION_SECURE_COOKIE=true` و`LOG_LEVEL=warning` و`LOG_STACK=daily` و`TRUSTED_PROXIES` (خلف Cloudflare) و`METHAQ_BANK_*`، وإعدادات البريد الحقيقية `MAIL_MAILER=smtp` مع `MAIL_HOST` و`MAIL_PORT` و`MAIL_USERNAME` و`MAIL_PASSWORD` و`MAIL_FROM_ADDRESS` من نطاق ميثاق (وSPF وDKIM للنطاق). ومعها `METHAQ_SUPPORT_INBOX` (بريد إشعارات الرسائل؛ فارغ يوقف الإشعار) والمفتاحان `TURNSTILE_*`.
+2. بعد اكتمال النشر: `php artisan migrate --force` ثم `php artisan db:seed --force` (يضيف القوالب والصوتيات وبريد التواصل، وإعادته آمنة) ثم `php artisan config:cache`.
+3. سجّلي حسابك من الموقع، ثم `php artisan methaq:promote-admin بريدك`، ثم فعّلي المصادقة الثنائية من إعدادات الحساب قبل فتح `/admin`.
+4. من `/admin/templates` ضعي **سعراً لكل قالب** تريدين عرضه. القالب بسعر 0 مخفي عن الصفحة الرئيسية وصفحة القوالب وإنشاء المناسبة.
+5. أرسلي «نسيت كلمة المرور» لحسابك للتأكد أن البريد يصل فعلاً (فشل البريد لا يُظهر خطأ في الموقع).
+6. جرّبي رابط دعوة حقيقياً على نطاق فرعي بـ https (شهادة تغطي `*.النطاق`، وCloudflare بنمط Full (strict))، وتأكدي أن `www` يتحول إلى النطاق الرئيسي.
+7. جدولي نسخاً احتياطياً لقاعدة البيانات ولمجلد `shared/storage` (القسائم الخاصة والبطاقات المنشورة)، وجرّبي استعادة واحدة.
+8. اضبطي cron: `* * * * * cd .../current && php artisan schedule:run`.
+
+بعد كل إصدار يحمل ترحيلاً: خذي نسخة احتياطية، ثم `php artisan migrate --force`، ثم `config:cache` إن تغيّر `.env`.

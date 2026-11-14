@@ -110,3 +110,28 @@ button[aria-busy='true'] {
         animation: none;
     }
 }
+
+/* If the app has not started after 15 seconds, the loader offers a reload instead of pulsing forever. */
+#boot-loader {
+    grid-auto-flow: row;
+    align-content: center;
+    justify-items: center;
+    gap: 18px;
+}
+
+#boot-loader .boot-slow {
+    margin: 0;
+    color: #203322;
+    font-size: 15px;
+    visibility: hidden;
+    animation: boot-slow-show 0s 15s forwards;
+}
+
+#boot-loader .boot-slow a {
+    color: #7a613b;
+    text-underline-offset: 4px;
+}
+
+@keyframes boot-slow-show {
+    to { visibility: visible; }
+}

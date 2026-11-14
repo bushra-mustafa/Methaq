@@ -186,11 +186,15 @@ final class SupportMessagesTest extends TestCase
         Mail::fake();
         config(['methaq.support.inbox' => 'inbox@example.test']);
         $customer = User::factory()->create();
-        $thread = SupportThread::factory()->create(['user_id' => $customer->getKey()]);
+        $thread = SupportThread::factory()->create(['user_id' => $customer->getKey(), 'admin_unread' => false]);
 
         $this->actingAs($customer)->post("/app/support/{$thread->getKey()}/reply", ['body' => 'إضافة'])->assertRedirect();
         Mail::assertSent(SupportMessageReceivedMail::class, fn (SupportMessageReceivedMail $mail): bool => $mail->isReply);
         Mail::assertNotSent(SupportAcknowledgementMail::class);
+
+        // While that message is still unread the team is not told again, so one account cannot flood the inbox.
+        $this->actingAs($customer)->post("/app/support/{$thread->getKey()}/reply", ['body' => 'وأخرى'])->assertRedirect();
+        Mail::assertSentCount(1);
 
         $this->actingAs($this->administrator());
         Livewire::test(ManageSupportThreads::class)->callAction(TestAction::make('conversation')->table($thread), ['body' => 'رد الفريق']);

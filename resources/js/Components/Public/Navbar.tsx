@@ -85,7 +85,7 @@ export default function Navbar() {
                     />
                 </Link>
 
-                <div className="hidden items-center gap-8 lg:flex">
+                <div className="hidden items-center gap-8 xl:flex">
                     {navigation.map((item) => {
                         const current = !item.section && currentPath === item.href;
 
@@ -104,7 +104,7 @@ export default function Navbar() {
                     })}
                 </div>
 
-                <div className="hidden items-center gap-4 lg:flex">
+                <div className="hidden items-center gap-4 xl:flex">
                     {!auth.user && (
                         <Link
                             href="/login"
@@ -129,7 +129,7 @@ export default function Navbar() {
                 <button
                     ref={toggle}
                     type="button"
-                    className="grid size-11 place-items-center rounded-lg text-methaq-primary lg:hidden"
+                    className="grid size-11 place-items-center rounded-lg text-methaq-primary xl:hidden"
                     onClick={() => setMenuOpen((current) => !current)}
                     aria-label={menuOpen ? "إغلاق القائمة" : "فتح القائمة"}
                     aria-expanded={menuOpen}
@@ -142,7 +142,7 @@ export default function Navbar() {
             {menuOpen && (
                 <nav
                     id="methaq-mobile-menu"
-                    className="border-t border-methaq-border bg-methaq-ivory px-6 py-4 lg:hidden"
+                    className="border-t border-methaq-border bg-methaq-ivory px-6 py-4 xl:hidden"
                     aria-label="التنقل عبر الهاتف"
                 >
                     <div className="flex flex-col gap-4">
