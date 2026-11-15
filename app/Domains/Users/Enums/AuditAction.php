@@ -6,6 +6,8 @@ namespace App\Domains\Users\Enums;
 
 enum AuditAction: string
 {
+    case WhatsAppMessageRetried = 'whatsapp.message_retried';
+    case WhatsAppConnectionTested = 'whatsapp.connection_tested';
     case WhatsAppSettingsUpdated = 'whatsapp.settings_updated';
 
     case UserPromotedToAdmin = 'user.promoted_to_admin';

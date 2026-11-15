@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Domains\Editor\Models\Template;
+use App\Domains\Users\Services\WhatsAppFailures;
 use App\Filament\Resources\Templates\TemplateResource;
+use App\Filament\Resources\WhatsAppMessages\WhatsAppMessageResource;
 use App\Http\Controllers\Admin\ShowPaymentReceiptController;
 use App\Http\Middleware\SendAdministratorsToTwoFactorSetup;
 use Filament\FontProviders\LocalFontProvider;
@@ -56,6 +58,19 @@ final class AdminPanelProvider extends PanelProvider
         );
     }
 
+    private static function whatsappFailuresNotice(): HtmlString
+    {
+        $count = WhatsAppFailures::count();
+        if ($count === 0) {
+            return new HtmlString('');
+        }
+        $link = e(WhatsAppMessageResource::getUrl('index'));
+
+        return new HtmlString('<div role="status" style="display:flex;flex-wrap:wrap;gap:12px;padding:16px;margin-bottom:16px;border:1px solid #efb3b3;border-radius:12px;background:#fff1f1;color:#802323;">'
+            .'<strong>تعذّر إرسال '.$count.' من رسائل واتساب خلال آخر 24 ساعة.</strong>'
+            .'<a href="'.$link.'" style="font-weight:700;text-decoration:underline;">مراجعة الرسائل وإعادة الإرسال</a></div>');
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -74,6 +89,7 @@ final class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Stone,
             ])
             ->renderHook(PanelsRenderHook::CONTENT_BEFORE, fn (): HtmlString => self::unpricedTemplatesNotice())
+            ->renderHook(PanelsRenderHook::CONTENT_BEFORE, fn (): HtmlString => self::whatsappFailuresNotice())
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): HtmlString => new HtmlString('<link rel="stylesheet" href="'.e(asset('css/admin-methaq.css')).'">'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

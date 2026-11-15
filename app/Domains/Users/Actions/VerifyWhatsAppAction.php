@@ -43,7 +43,7 @@ final class VerifyWhatsAppAction
             WhatsAppMessage::query()->where('user_id', $user->getKey())->where('deduplication_key', 'like', 'verify-'.$user->getKey().'-%')
                 ->where('status', 'pending')->update(['status' => 'cancelled']);
             $this->outbox->record('verify-'.$user->getKey().'-'.Str::uuid(), $phone,
-                'رمز تأكيد رقم واتساب في ميثاق: '.$code.'. صالح لمدة 10 دقائق. لا تشاركيه مع أي شخص.', (int) $user->getKey(), 10);
+                'رمز تأكيد رقم واتساب في ميثاق: '.$code.'. صالح لمدة 10 دقائق. لا تشاركيه مع أي شخص.', (int) $user->getKey(), 10, 'verification');
         }, 3);
     }
 

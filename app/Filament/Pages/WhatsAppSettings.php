@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Domains\Users\Actions\SaveCloudMsgSettingsAction;
+use App\Domains\Users\Actions\TestCloudMsgConnectionAction;
 use App\Domains\Users\Models\User;
 use App\Domains\Users\Services\CloudMsgSettings;
+use App\Domains\Users\Services\WhatsAppFailures;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -45,6 +48,26 @@ final class WhatsAppSettings extends Page
     {
         abort_unless(self::canAccess(), 403);
         $this->form->fill(app(CloudMsgSettings::class)->formValues());
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [Action::make('testConnection')->label('اختبار الاتصال وإرسال رسالة')->icon(Heroicon::OutlinedSignal)
+            ->modalHeading('اختبار إعدادات واتساب المحفوظة')
+            ->modalDescription('يفحص اتصال رقم الإرسال ويرسل رسالة واحدة إلى رقم استقبال الإشعارات المحفوظ، حتى لو الإرسال العادي مطفّي. احفظي أي تعديل قبل الاختبار. تُرسل رسالة اختبار واحدة في الدقيقة. قبول الرسالة لا يؤكد تسليمها؛ تأكدي من وصولها على الهاتف.')
+            ->requiresConfirmation()
+            ->fillForm(fn (): array => ['recipient' => CloudMsgSettings::get('admin_phone')])
+            ->schema([TextInput::make('recipient')->label('رقم استقبال رسالة الاختبار')->readOnly()->required()->extraInputAttributes(['dir' => 'ltr'])])
+            ->action(function (array $data): void {
+                $actor = Filament::auth()->user();
+                abort_unless($actor instanceof User, 403);
+                $message = app(TestCloudMsgConnectionAction::class)->execute($actor, (string) $data['recipient']);
+                if (in_array($message->status, ['queued', 'sent', 'acknowledged'], true)) {
+                    Notification::make()->success()->title('الخدمة متصلة وقبلت رسالة الاختبار')->body('تأكدي من وصول الرسالة على هاتفك. الاختبار لا يثبت تشغيل المعالجة التلقائية.')->send();
+                } else {
+                    Notification::make()->danger()->title('لم تُقبل رسالة الاختبار بعد')->body(WhatsAppFailures::label($message->failure_code))->send();
+                }
+            })];
     }
 
     public function form(Schema $schema): Schema

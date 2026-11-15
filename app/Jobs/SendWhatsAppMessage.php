@@ -35,7 +35,7 @@ final class SendWhatsAppMessage implements ShouldBeUnique, ShouldQueue
     {
         DB::transaction(function () use ($client): void {
             $message = WhatsAppMessage::query()->lockForUpdate()->findOrFail($this->messageId);
-            if (! CloudMsgSettings::get('enabled') || $message->status !== 'pending' || $message->next_attempt_at?->isFuture()) {
+            if ((! CloudMsgSettings::get('enabled') && $message->kind !== 'test') || $message->status !== 'pending' || $message->next_attempt_at?->isFuture()) {
                 return;
             }
             if ($message->expires_at->isPast()) {

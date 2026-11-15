@@ -102,6 +102,8 @@ final class AuditLogResource extends Resource
     {
         return match ($action) {
             AuditAction::PaymentApproved->value => 'اعتماد دفع',
+            AuditAction::WhatsAppMessageRetried->value => 'إعادة رسالة واتساب',
+            AuditAction::WhatsAppConnectionTested->value => 'اختبار ربط واتساب',
             AuditAction::WhatsAppSettingsUpdated->value => 'تحديث إعدادات واتساب',
             AuditAction::PaymentRejected->value => 'رفض قسيمة',
             AuditAction::EventPublished->value => 'نشر دعوة',
