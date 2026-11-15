@@ -19,7 +19,7 @@ Fabric edits the static card. React implements the configurable invitation scene
 
 Server-side payment verification controls publishing and access to high resolution assets. Enforce expiry on every guest/content/RSVP request as well as the daily command. Watermarks deter copying but do not guarantee prevention.
 
-## Current implementation snapshot (verified 2026-11-10)
+## Current implementation snapshot (implementation recorded through 2026-11-14; documentation reconciled 2026-11-15)
 
 The codebase has `app/Domains/{Events,Editor,Payments,RSVP,Users}` and matching frontend domain boundaries under `resources/js/Domains`. Their contents and completion status differ; a domain directory does not mean every planned feature in that domain is implemented. Backend HTTP adapters are grouped under `app/Http/Controllers/{Web,App,Admin,Guest}`; Inertia pages are under `resources/js/Pages`, and shared TypeScript contracts are under `resources/js/Types`.
 
@@ -47,13 +47,21 @@ Follow the execution checklist and update completed boxes only with implementati
 
 Reference projects outside Methaq are read-only design references; do not alter them or copy their personal invitation details as production defaults. Check asset licensing before reuse. Keep credentials and generated dependencies out of version control.
 
-Payment integration is the final implementation phase (14), followed by final verification/release (15). Use isolated test fixtures beforehand, never a production payment bypass. Fixed customer/admin roles and guest access follow document 11. Admin is not a blanket owner-policy override. Include limited administration and audit_logs (13 business tables total).
+Manual bank transfer is the first-release payment path. Phase 14 covers the deferred online gateway; phase 15 validates the manual-payment release without requiring that gateway. Use isolated test fixtures beforehand, never a production payment bypass. Fixed customer/admin roles and guest access follow document 11. Admin is not a blanket owner-policy override. Include administration and audit_logs. The original baseline had 13 business tables; approved additions bring the documented total to 22, excluding Laravel operational tables.
+
+## Documentation authority and release status
+
+Read requirements/README.md for the current scope and requirements/08-decisions.md for dated amendments. Later explicit approved decisions amend the original plan; an old paragraph must not override a newer recorded decision. Historical implementation reports retain their original verification dates. Documentation reconciliation is not fresh implementation verification.
+
+The first release includes manual transfers and limited free offers recorded as completed zero-amount orders, never an arbitrary payment bypass. Admin draft review is a narrow, read-only, audited exception requiring active admin status and confirmed two-factor authentication. Email verification is not enforced in the current release. Phase 15 and unresolved operational/security acceptance checks remain pending.
 
 ## Payment webhook invariants
 
 When payment integration begins, webhook controllers must remain thin: receive the provider request, invoke a dedicated Action, and return only the required acknowledgment. The Action is responsible for verifying the provider signature, validating the provider event identity, and enforcing idempotency before any state change. `Order` and `PaymentWebhook` records may be created or updated only through Actions; controllers, jobs, and gateways must not write them directly. A repeated webhook must return safely without duplicating payment, publishing, or rendering work.
 
 ## Asset access policy
+
+Target policy below remains the acceptance requirement. Current published card PNGs are served from the public disk. Suspension moves them to private held storage; expiry does so through the daily command, allowing the old image URL to remain available for up to 24 hours after expiry although the guest page and RSVP close immediately (decision 2026-11-14). This is an unresolved gap, not compliance with immediate asset expiry. Do not mark checklist 11.04 complete or describe all asset requests as expiry-checked until corrected and verified.
 
 `public/` contains only browser-deliverable assets: editor and template previews, approved public fonts and audio, trusted client-rendered material textures, and published renders that are explicitly safe to expose. Source SVG files, original high-resolution artwork, owner drafts, render snapshots, unapproved assets, and any asset whose entitlement depends on payment, ownership, suspension, or expiry belong under `storage/app/private/`. Private assets are served only through an authorized application response or a short-lived signed storage URL after the relevant policy and entitlement checks; never through the public storage symlink or a stored permanent public URL. Database records store paths, not public URLs, and DTOs expose only the delivery URL appropriate to the current viewer.
 
