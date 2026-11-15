@@ -7,6 +7,7 @@ namespace App\Http\Requests\Payments;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Actions\CreateManualPaymentAction;
 use App\Domains\Users\Models\User;
+use App\Domains\Users\Services\CloudMsgSettings;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 
@@ -25,6 +26,8 @@ final class SubmitPaymentReceiptRequest extends FormRequest
     {
         return [
             'receipt' => ['required', 'file', 'mimes:'.implode(',', [...CreateManualPaymentAction::RECEIPT_EXTENSIONS, 'jpeg']), 'max:'.CreateManualPaymentAction::MAX_RECEIPT_KILOBYTES],
+            'render' => [CloudMsgSettings::get('enabled') ? 'required' : 'nullable', 'file', 'mimetypes:image/png', 'max:6144'],
+            'expectedRevision' => [CloudMsgSettings::get('enabled') ? 'required' : 'nullable', 'integer', 'min:1', 'max:4294967295'],
             'amount' => ['prohibited'],
             'currency' => ['prohibited'],
             'gateway' => ['prohibited'],

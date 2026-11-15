@@ -16,6 +16,7 @@ use App\Http\Controllers\App\ExportEventRsvpsController;
 use App\Http\Controllers\App\IvoryProposalController;
 use App\Http\Controllers\App\ListSupportThreadsController;
 use App\Http\Controllers\App\LogoutOtherSessionsController;
+use App\Http\Controllers\App\PrepareInvitationController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\PublishEventController;
 use App\Http\Controllers\App\ReplySupportThreadController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\App\ShowSupportThreadController;
 use App\Http\Controllers\App\StoreEventController;
 use App\Http\Controllers\App\StoreSupportThreadController;
 use App\Http\Controllers\App\SubmitPaymentReceiptController;
+use App\Http\Controllers\App\WhatsAppVerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', DashboardController::class)
@@ -109,3 +111,10 @@ Route::prefix('studio/templates/{template}')->whereNumber('template')->group(fun
 
 // Administrators read a customer's draft here, read-only. The policy needs an active admin with confirmed two-factor; every view is audited.
 Route::get('/review/events/{event}', ShowEventDraftReviewController::class)->whereNumber('event')->name('review.events.show');
+
+Route::post('/whatsapp/send-code', WhatsAppVerificationController::class.'@send')
+    ->middleware('throttle:3,1')->name('whatsapp.send-code');
+Route::post('/whatsapp/confirm', WhatsAppVerificationController::class.'@confirm')
+    ->middleware('throttle:10,1')->name('whatsapp.confirm');
+Route::post('/events/{event}/prepare', PrepareInvitationController::class)
+    ->whereNumber('event')->middleware('throttle:6,1')->name('events.prepare');

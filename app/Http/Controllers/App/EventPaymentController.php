@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App;
 
+use App\Domains\Editor\Actions\GetEventEditorAction;
 use App\Domains\Events\Actions\GetEventAction;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Actions\GetEventPaymentAction;
 use App\Domains\Users\Models\User;
+use App\Domains\Users\Services\CloudMsgSettings;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,7 +17,7 @@ use Inertia\Response;
 
 final class EventPaymentController extends Controller
 {
-    public function __invoke(Request $request, Event $event, GetEventAction $getEvent, GetEventPaymentAction $getPayment): Response
+    public function __invoke(Request $request, Event $event, GetEventAction $getEvent, GetEventPaymentAction $getPayment, GetEventEditorAction $getEditor): Response
     {
         $owner = $request->user();
         abort_unless($owner instanceof User, 401);
@@ -23,6 +25,13 @@ final class EventPaymentController extends Controller
         return Inertia::render('App/Events/Payment', [
             'event' => $getEvent->execute($owner, $event)->toArray(),
             'payment' => $getPayment->execute($owner, $event)->toArray(),
+            'whatsapp' => [
+                'enabled' => (bool) CloudMsgSettings::get('enabled'),
+                'phone' => $owner->whatsapp_pending_phone ?? ($owner->whatsapp_verified_at !== null ? $owner->whatsapp_phone : $owner->phone) ?? '',
+                'verified' => $owner->whatsapp_verified_at !== null,
+                'prepared' => $event->design?->prepared_revision !== null && $event->design->prepared_revision === $event->design->revision,
+            ],
+            'preparation' => CloudMsgSettings::get('enabled') ? $getEditor->execute($owner, $event) : null,
         ]);
     }
 }

@@ -49,6 +49,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'remember_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'whatsapp_code_hash',
+        'whatsapp_code_expires_at',
+        'whatsapp_code_sent_at',
+        'whatsapp_code_attempts',
     ];
 
     protected static function newFactory(): UserFactory
@@ -80,6 +84,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected function casts(): array
     {
         return [
+            'whatsapp_verified_at' => 'immutable_datetime',
+            'whatsapp_code_expires_at' => 'immutable_datetime',
+            'whatsapp_code_sent_at' => 'immutable_datetime',
+            'whatsapp_code_attempts' => 'integer',
             'created_at' => 'immutable_datetime',
             'updated_at' => 'immutable_datetime',
             'email_verified_at' => 'immutable_datetime',

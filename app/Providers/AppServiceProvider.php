@@ -28,6 +28,7 @@ use App\Domains\Users\Policies\AuditLogPolicy;
 use App\Domains\Users\Policies\ContactChannelPolicy;
 use App\Domains\Users\Policies\SupportThreadPolicy;
 use App\Domains\Users\Policies\UserPolicy;
+use App\Domains\Users\Services\CloudMsgSettings;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Middleware\TrustProxies;
@@ -44,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->scoped(CloudMsgSettings::class);
     }
 
     /**
@@ -71,6 +72,8 @@ class AppServiceProvider extends ServiceProvider
                 'url' => url(route('password.reset', ['token' => $token, 'email' => $notifiable->getEmailForPasswordReset()], false)),
                 'minutes' => (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire'),
             ]));
+
+        Gate::define('manage-whatsapp-settings', fn (User $user): bool => $user->isActive() && $user->role === UserRole::Admin && $user->hasEnabledTwoFactorAuthentication());
 
         Gate::define('manage-pricing', fn (User $user): bool => $user->isActive() && $user->role === UserRole::Admin);
 

@@ -51,6 +51,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [GuardPublicForms::class, HandleInertiaRequests::class, CountSiteVisit::class]);
         // A changed password ends every session that still holds the old one.
         $middleware->authenticateSessions();
+        $middleware->validateCsrfTokens(except: ['hooks/cloudmsg']);
         $middleware->alias([
             'active' => EnsureUserIsActive::class,
             'admin.2fa' => RequireAdminWithTwoFactor::class,

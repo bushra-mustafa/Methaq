@@ -954,3 +954,6 @@
 .free-offer-meta strong { color: var(--color-methaq-primary, #203322); font-variant-numeric: tabular-nums; }
 .free-offer-card form { display: grid; gap: 8px; justify-items: start; margin-block-start: 6px; }
 .free-offer-card small { color: #434842; line-height: 1.7; }
+
+.payment-whatsapp { margin-block: 1.5rem; padding: 1.25rem; border: 1px solid var(--brand-border, #d9dfd9); border-radius: 1rem; display: grid; gap: .75rem; }
+.payment-whatsapp .payment-form { max-width: 32rem; }

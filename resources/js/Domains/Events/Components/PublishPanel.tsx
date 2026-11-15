@@ -1,3 +1,4 @@
+import { pngFileFromDataUrl } from '../../Editor/Services/pngFileFromDataUrl';
 import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { LoadingState } from '../../../Components/Loading/Spinner';
@@ -12,16 +13,6 @@ interface PublishPanelProps {
     /** Latest revision the server has saved; the server rejects a stale one. */
     revision: number;
     saved: boolean;
-}
-
-/** Decodes a PNG data URL directly: `fetch(data:)` is blocked by the page's connect-src policy. */
-function pngFileFromDataUrl(dataUrl: string): File {
-    const [header = '', body = ''] = dataUrl.split(',');
-    if (!header.startsWith('data:image/png') || !header.endsWith(';base64')) throw new Error('Unexpected card image');
-    const binary = atob(body);
-    const bytes = new Uint8Array(binary.length);
-    for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
-    return new File([bytes], 'card.png', { type: 'image/png' });
 }
 
 /** Publishing: the browser sends the rendered card, the server re-checks everything. */

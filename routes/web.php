@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\App\DesignLabController;
+use App\Http\Controllers\Hooks\CloudMsgWebhookController;
 use App\Http\Middleware\LocalDevelopmentOnly;
 use App\Http\Middleware\ResolvePublishedEvent;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,5 @@ Route::middleware(['auth', 'active'])
 Route::get('/dev/design-lab', DesignLabController::class)
     ->middleware(LocalDevelopmentOnly::class)
     ->name('dev.design-lab');
+
+Route::post('/hooks/cloudmsg', CloudMsgWebhookController::class)->name('hooks.cloudmsg');

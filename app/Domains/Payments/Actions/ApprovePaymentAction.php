@@ -13,6 +13,7 @@ use App\Domains\Users\Enums\AuditAction;
 use App\Domains\Users\Enums\AuditSubjectType;
 use App\Domains\Users\Models\User;
 use App\Domains\Users\Services\AuditLogger;
+use App\Domains\Users\Services\WhatsAppOutbox;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Gate;
  */
 final class ApprovePaymentAction
 {
-    public function __construct(private readonly AuditLogger $auditLogger) {}
+    public function __construct(private readonly AuditLogger $auditLogger, private readonly WhatsAppOutbox $outbox) {}
 
     public function execute(User $actor, int $orderId): Order
     {
@@ -72,6 +73,8 @@ final class ApprovePaymentAction
                     'currency' => $order->currency,
                 ],
             );
+
+            $this->outbox->paymentApproved($order);
 
             return $order;
         });

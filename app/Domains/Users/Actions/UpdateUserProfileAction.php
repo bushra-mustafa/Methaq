@@ -37,6 +37,7 @@ final class UpdateUserProfileAction implements UpdatesUserProfileInformation
             'name' => trim((string) $input['name']),
             'email' => $email,
             'phone' => $phone,
+            ...($phone !== $user->phone ? ['whatsapp_pending_phone' => null, 'whatsapp_verified_at' => null, 'whatsapp_code_hash' => null, 'whatsapp_code_expires_at' => null] : []),
             ...($changesEmail ? ['email_verified_at' => null] : []),
         ])->save();
     }

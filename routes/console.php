@@ -18,3 +18,6 @@ Schedule::command('methaq:expire-invitations')
     ->dailyAt('00:05')
     ->timezone((string) config('methaq.invitation_timezone', 'Africa/Tripoli'))
     ->withoutOverlapping();
+
+// Durable inbox/outbox recovery also covers queue outages during requests.
+Schedule::command('methaq:dispatch-whatsapp')->everyMinute()->withoutOverlapping();

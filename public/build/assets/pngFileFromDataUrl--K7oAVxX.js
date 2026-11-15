@@ -1,0 +1,1 @@
+function o(a){const[n="",i=""]=a.split(",");if(!n.startsWith("data:image/png")||!n.endsWith(";base64"))throw new Error("Unexpected card image");const t=atob(i),r=new Uint8Array(t.length);for(let e=0;e<t.length;e++)r[e]=t.charCodeAt(e);return new File([r],"card.png",{type:"image/png"})}export{o as p};

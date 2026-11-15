@@ -18,7 +18,7 @@ class EventDesign extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
-    protected $hidden = ['design_json', 'scene_json', 'palette_json', 'published_scene_json', 'published_palette_json', 'final_render_path', 'watermarked_preview_path'];
+    protected $hidden = ['design_json', 'scene_json', 'palette_json', 'published_scene_json', 'published_palette_json', 'final_render_path', 'watermarked_preview_path', 'prepared_render_path'];
 
     protected static function newFactory(): EventDesignFactory
     {
@@ -37,6 +37,7 @@ class EventDesign extends Model
             'published_palette_json' => 'array',
             'schema_version' => 'integer',
             'revision' => 'integer',
+            'prepared_revision' => 'integer',
             'preview_revision' => 'integer',
             'published_revision' => 'integer',
             'rendered_at' => 'immutable_datetime',

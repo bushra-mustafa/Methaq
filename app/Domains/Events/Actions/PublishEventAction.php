@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Events\Actions;
 
-use App\Domains\Editor\Contracts\DesignSchema;
 use App\Domains\Editor\Enums\TemplateFeature;
 use App\Domains\Editor\Models\EventDesign;
 use App\Domains\Editor\Services\DesignDocumentHydrator;
+use App\Domains\Editor\Services\InvitationPng;
 use App\Domains\Editor\Services\PublishedFeatureSanitizer;
 use App\Domains\Events\Enums\EventStatus;
 use App\Domains\Events\Models\Event;
@@ -18,6 +18,7 @@ use App\Domains\Users\Enums\AuditAction;
 use App\Domains\Users\Enums\AuditSubjectType;
 use App\Domains\Users\Models\User;
 use App\Domains\Users\Services\AuditLogger;
+use App\Domains\Users\Services\WhatsAppOutbox;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -46,9 +47,11 @@ final class PublishEventAction
         private readonly PublishedFeatureSanitizer $sanitizer,
         private readonly InvitationExpiry $expiry,
         private readonly AuditLogger $auditLogger,
+        private readonly InvitationPng $png,
+        private readonly WhatsAppOutbox $outbox,
     ) {}
 
-    public function execute(User $owner, Event $event, UploadedFile $render, int $expectedRevision): Event
+    public function execute(User $owner, Event $event, ?UploadedFile $render, int $expectedRevision): Event
     {
         Gate::forUser($owner)->authorize('publish', $event);
 
@@ -58,6 +61,13 @@ final class PublishEventAction
             return DB::transaction(function () use ($owner, $event, $render, $expectedRevision, &$storedPath): Event {
                 $lockedEvent = Event::query()->with('template')->lockForUpdate()->findOrFail($event->getKey());
                 Gate::forUser($owner)->authorize('publish', $lockedEvent);
+                if ($render === null) {
+                    $currentOwner = User::query()->lockForUpdate()->findOrFail($owner->getKey());
+                    Gate::forUser($currentOwner)->authorize('publish', $lockedEvent);
+                    if (! $this->outbox->verified($currentOwner) || $currentOwner->whatsapp_phone !== $owner->whatsapp_phone) {
+                        throw ValidationException::withMessages(['publish' => 'أكدي رقم واتساب من الموقع قبل النشر.']);
+                    }
+                }
 
                 $order = $this->entitlements->completedOrder($lockedEvent);
                 $blocker = $this->eligibility->blocker($lockedEvent, $order);
@@ -88,7 +98,10 @@ final class PublishEventAction
                 ['scene' => $scene, 'removed' => $removed] = $this->sanitizer->sanitize($document->scene, $lockedFeatures);
 
                 $relativePath = 'renders/invitations/'.$design->event_id.'/'.Str::uuid()->toString().'.png';
-                Storage::disk(self::DISK)->put($relativePath, $this->normalisedPng($render));
+                $bytes = $render !== null ? $this->png->normalise($render) : $this->preparedBytes($design);
+                if (! Storage::disk(self::DISK)->put($relativePath, $bytes)) {
+                    throw new RuntimeException('Unable to store the published invitation.');
+                }
                 $storedPath = $relativePath;
 
                 $now = now();
@@ -119,6 +132,8 @@ final class PublishEventAction
                     ],
                 );
 
+                $this->outbox->published($published);
+
                 return $published;
             }, 3);
         } catch (Throwable $exception) {
@@ -130,33 +145,12 @@ final class PublishEventAction
         }
     }
 
-    /** Accepts only a real 1080x1920 PNG and returns it re-encoded without any embedded metadata. */
-    private function normalisedPng(UploadedFile $render): string
+    private function preparedBytes(EventDesign $design): string
     {
-        $invalid = ValidationException::withMessages(['render' => 'صورة البطاقة غير صالحة. حدّثي الصفحة وحاولي مرة أخرى.']);
-        $path = (string) $render->getRealPath();
-        $info = @getimagesize($path);
-
-        if ($info === false || $info[2] !== IMAGETYPE_PNG || $info[0] !== DesignSchema::CANVAS_WIDTH || $info[1] !== DesignSchema::CANVAS_HEIGHT) {
-            throw $invalid;
+        if ($design->prepared_revision !== $design->revision || ! $design->prepared_render_path || ! Storage::disk('local')->exists($design->prepared_render_path)) {
+            throw ValidationException::withMessages(['publish' => 'تغيّر التصميم أو لم تجهزي النسخة بعد. افتحي صفحة الدفع وجهّزي الدعوة من جديد، دون إعادة الدفع.']);
         }
 
-        $image = @imagecreatefrompng($path);
-        if ($image === false) {
-            throw $invalid;
-        }
-
-        imagealphablending($image, false);
-        imagesavealpha($image, true);
-        ob_start();
-        $encoded = imagepng($image, null, 6);
-        $bytes = (string) ob_get_clean();
-        imagedestroy($image);
-
-        if (! $encoded || $bytes === '') {
-            throw $invalid;
-        }
-
-        return $bytes;
+        return Storage::disk('local')->get($design->prepared_render_path);
     }
 }

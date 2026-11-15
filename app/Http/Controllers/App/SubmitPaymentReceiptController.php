@@ -18,7 +18,7 @@ final class SubmitPaymentReceiptController extends Controller
         $owner = $request->user();
         abort_unless($owner instanceof User, 401);
 
-        $createPayment->execute($owner, $event, $request->receipt());
+        $createPayment->execute($owner, $event, $request->receipt(), $request->file('render'), $request->filled('expectedRevision') ? (int) $request->validated('expectedRevision') : null);
 
         return redirect()->route('app.events.payment', $event)->with('status', 'receipt-submitted');
     }

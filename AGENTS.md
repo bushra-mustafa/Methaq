@@ -276,3 +276,9 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
 
 </laravel-boost-guidelines>
+
+## WhatsApp publishing addition — 2026-11-15
+
+CloudMsg is opt-in through `config/cloudmsg.php` (`CLOUDMSG_ENABLED=false` by default). When enabled, payment uploads require a verified international WhatsApp number and a real 1080x1920 PNG tied to the current design revision. `PrepareInvitationAction` stores it privately; revision mismatch invalidates readiness without repeating payment. `ApprovePaymentAction` still never publishes: it records a WhatsApp approval notification. Signed `/hooks/cloudmsg` events are persisted and processed in the background; verified direct senders may publish their own eligible invitation with «نشر» (an ID is required for ambiguous drafts). Publication reuses `PublishEventAction` and records a link notification in the same transaction; the website publish button still works. Webhook IDs and notification keys prevent duplicate work. `methaq:dispatch-whatsapp` runs every minute and uses the database queue; production requires both scheduler and worker. `WhatsAppMessageResource` is read-only monitoring. Deployment details and pending real-device checks are in requirements/10. These are messaging webhooks, not payment-provider confirmations; they cannot approve payments.
+
+CloudMsg settings may also be managed at `/admin/whatsapp-settings` (active administrator with confirmed 2FA). `CloudMsgSettings` is scoped per request/job, reads encrypted overrides from the existing settings table, and falls back to config for unset fields. All runtime messaging code must use it rather than reading `config('cloudmsg.*')` directly. Secrets are write-only in the form; blank input retains them. Changes are audited without secret values.

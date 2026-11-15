@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domains\Payments\Actions;
 
+use App\Domains\Events\Actions\PrepareInvitationAction;
 use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
 use App\Domains\Payments\Enums\PaymentGateway;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Services\ManualPaymentEligibility;
 use App\Domains\Users\Models\User;
+use App\Domains\Users\Services\CloudMsgSettings;
+use App\Domains\Users\Services\WhatsAppOutbox;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -33,9 +36,9 @@ final class CreateManualPaymentAction
     /** Content-detected extensions accepted for a receipt. */
     public const RECEIPT_EXTENSIONS = ['jpg', 'png', 'webp', 'pdf'];
 
-    public function __construct(private readonly ManualPaymentEligibility $eligibility) {}
+    public function __construct(private readonly ManualPaymentEligibility $eligibility, private readonly PrepareInvitationAction $prepare, private readonly WhatsAppOutbox $outbox) {}
 
-    public function execute(User $owner, Event $event, UploadedFile $receipt): Order
+    public function execute(User $owner, Event $event, UploadedFile $receipt, ?UploadedFile $render = null, ?int $revision = null): Order
     {
         Gate::forUser($owner)->authorize('update', $event);
 
@@ -50,8 +53,9 @@ final class CreateManualPaymentAction
             throw new RuntimeException('Unable to store the payment receipt.');
         }
 
+        $preparedPath = null;
         try {
-            return DB::transaction(function () use ($owner, $event, $path, $hash): Order {
+            return DB::transaction(function () use ($owner, $event, $path, $hash, $render, $revision, &$preparedPath): Order {
                 $locked = Event::query()->with('template')->lockForUpdate()->findOrFail($event->getKey());
                 Gate::forUser($owner)->authorize('update', $locked);
 
@@ -65,6 +69,19 @@ final class CreateManualPaymentAction
                     throw ValidationException::withMessages(['receipt' => 'لديك عدة قسائم قيد المراجعة. انتظري قرار الإدارة عليها قبل رفع قسيمة أخرى.']);
                 }
 
+                $whatsappPhone = null;
+                if (CloudMsgSettings::get('enabled')) {
+                    $currentOwner = $owner->fresh();
+                    if (! $this->outbox->verified($currentOwner)) {
+                        throw ValidationException::withMessages(['phone' => 'أكدي رقم واتساب قبل رفع القسيمة.']);
+                    }
+                    if ($render === null || $revision === null) {
+                        throw ValidationException::withMessages(['render' => 'انتظري تجهيز صورة الدعوة قبل رفع القسيمة.']);
+                    }
+                    $preparedPath = $this->prepare->execute($currentOwner, $locked, $render, $revision);
+                    $whatsappPhone = $currentOwner->whatsapp_phone;
+                }
+
                 $order = new Order;
                 $order->forceFill([
                     'user_id' => $owner->getKey(),
@@ -76,13 +93,19 @@ final class CreateManualPaymentAction
                     'idempotency_key' => Str::uuid()->toString(),
                     'receipt_path' => $path,
                     'receipt_sha256' => $hash,
+                    'whatsapp_phone' => $whatsappPhone,
                     'entitlements' => $this->eligibility->entitlements($locked),
                 ])->save();
+
+                $this->outbox->receiptSubmitted($order);
 
                 return $order;
             });
         } catch (Throwable $exception) {
             Storage::disk(self::DISK)->delete($path);
+            if ($preparedPath !== null) {
+                Storage::disk(self::DISK)->delete($preparedPath);
+            }
 
             throw $exception;
         }

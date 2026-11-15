@@ -23,7 +23,7 @@ class Order extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s.u';
 
-    protected $hidden = ['transaction_id', 'checkout_id', 'idempotency_key', 'receipt_path', 'receipt_sha256'];
+    protected $hidden = ['transaction_id', 'checkout_id', 'idempotency_key', 'receipt_path', 'receipt_sha256', 'whatsapp_phone'];
 
     protected static function newFactory(): OrderFactory
     {
