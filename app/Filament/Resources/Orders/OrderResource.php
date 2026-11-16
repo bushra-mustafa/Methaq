@@ -12,6 +12,7 @@ use App\Domains\Payments\Enums\PaymentRejectionReason;
 use App\Domains\Payments\Exceptions\PaymentReviewException;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Services\LydAmount;
+use App\Domains\Payments\Services\PaymentReviewSettings;
 use App\Domains\Users\Models\User;
 use App\Filament\Resources\Orders\Pages\ManageOrders;
 use BackedEnum;
@@ -23,6 +24,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -93,6 +95,8 @@ final class OrderResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->paginated([25, 50])
             ->filters([
+                Filter::make('overdue')->label('تأخرت مراجعتها')
+                    ->query(fn (Builder $query): Builder => $query->where('status', OrderStatus::Pending->value)->where('created_at', '<=', now()->subHours(app(PaymentReviewSettings::class)->hours()))),
                 SelectFilter::make('status')
                     ->label('الحالة')
                     ->options(self::statusLabels())

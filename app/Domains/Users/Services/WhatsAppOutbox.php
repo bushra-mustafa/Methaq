@@ -58,7 +58,7 @@ final class WhatsAppOutbox
         $owner = $event->user;
         if ($this->verified($owner)) {
             $this->record('invitation-published-'.$event->getKey(), $owner->whatsapp_phone,
-                'تم نشر دعوتك رقم '.$event->getKey().' بنجاح 🎉'."\n".InvitationAddress::url($event->subdomain), (int) $owner->getKey(), kind: 'publication');
+                'تم نشر دعوتك رقم '.$event->getKey().' بنجاح 🎉'."\n".InvitationAddress::url($event->subdomain)."\n".'ينتهي الرابط: '.$event->expires_at->setTimezone($event->timezone)->format('d/m/Y H:i').' ('.$event->timezone.').'."\n".'تابعي ردود الضيوف من حسابك: '.route('app.events.rsvps', $event), (int) $owner->getKey(), kind: 'publication');
         }
     }
 

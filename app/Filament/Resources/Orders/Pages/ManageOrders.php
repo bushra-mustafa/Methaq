@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Orders\Pages;
 
+use App\Domains\Payments\Actions\UpdatePaymentReviewHoursAction;
 use App\Domains\Payments\Enums\OrderStatus;
 use App\Domains\Payments\Models\Order;
 use App\Domains\Payments\Services\LydAmount;
+use App\Domains\Payments\Services\PaymentReviewSettings;
+use App\Domains\Users\Models\User;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Http\Support\CsvCell;
 use Filament\Actions\Action;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Gate;
@@ -22,6 +28,18 @@ final class ManageOrders extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('reviewHours')
+                ->label('مدة متابعة القسائم')
+                ->visible(fn (): bool => Gate::allows('manage-payment-settings'))
+                ->modalHeading('التنبيه إلى تأخر مراجعة الدفع')
+                ->modalDescription('يظهر تنبيه في الإدارة بعد هذه المدة. لا تتم الموافقة على الدفع تلقائياً.')
+                ->schema([TextInput::make('hours')->label('المدة بالساعات')->numeric()->integer()->minValue(1)->maxValue(168)->required()->default(fn (): int => app(PaymentReviewSettings::class)->hours())])
+                ->action(function (array $data): void {
+                    $actor = Filament::auth()->user();
+                    abort_unless($actor instanceof User, 403);
+                    app(UpdatePaymentReviewHoursAction::class)->execute($actor, (int) $data['hours']);
+                    Notification::make()->success()->title('حُفظت مدة المتابعة')->send();
+                }),
             Action::make('export')
                 ->label('تصدير إلى Excel')
                 ->icon(Heroicon::OutlinedArrowDownTray)

@@ -1,6 +1,9 @@
+import { InvitationProgressPanel } from '../../../Domains/Events/Components/InvitationProgressPanel';
+import type { InvitationProgress } from '../../../Types/InvitationProgress';
+import { InvitationPreview } from '../../../Domains/Editor/Components/InvitationPreview';
 import { EventJourney } from '../../../Domains/Events/Components/EventJourney';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react';
 import { WhatsAppVerification, type WhatsAppState } from '../../../Domains/Users/Components/WhatsAppVerification';
 import { usePresentationCard } from '../../../Domains/Editor/Hooks/usePresentationCard';
 import { parseDesignDocument } from '../../../Domains/Editor/Services/DesignDocumentSerializer';
@@ -20,6 +23,7 @@ interface PaymentPageProps {
     event: EventDTO;
     payment: EventPaymentDTO;
     whatsapp: WhatsAppState;
+    progress: InvitationProgress;
     preparation: { document: unknown; revision: number; assets: EditorAsset[] } | null;
 }
 
@@ -31,7 +35,7 @@ function formatDate(value: string, timezone: string): string {
     return new Intl.DateTimeFormat('ar-LY', { dateStyle: 'medium', timeStyle: 'short', timeZone: timezone }).format(new Date(value));
 }
 
-function PaymentForm({ event, payment, whatsapp, cardUrl = null, revision = null, preparationError = null }: PaymentPageProps & { cardUrl?: string | null; revision?: number | null; preparationError?: string | null }) {
+function PaymentForm({ event, payment, whatsapp, progress, preview = null, reviewConfirmed = false, cardUrl = null, revision = null, preparationError = null }: PaymentPageProps & { cardUrl?: string | null; revision?: number | null; preparationError?: string | null; preview?: ReactNode; reviewConfirmed?: boolean }) {
     const [preparing, setPreparing] = useState(false);
     const [localError, setLocalError] = useState<string | null>(null);
     const { flash, errors } = usePage<SharedPageProps>().props;
@@ -45,6 +49,7 @@ function PaymentForm({ event, payment, whatsapp, cardUrl = null, revision = null
     function submit(submitEvent: FormEvent<HTMLFormElement>): void {
         submitEvent.preventDefault();
         setLocalError(null);
+        if (!reviewConfirmed) { setLocalError('افتحي المعاينة وأكدي الأسماء والموعد قبل إرسال القسيمة.'); return; }
         if (whatsapp.enabled && (!whatsapp.verified || !cardUrl || revision === null)) return;
         try {
             form.transform((data) => ({ ...data, ...(whatsapp.enabled && cardUrl ? { render: pngFileFromDataUrl(cardUrl), expectedRevision: revision } : {}) }));
@@ -66,12 +71,15 @@ function PaymentForm({ event, payment, whatsapp, cardUrl = null, revision = null
         }
     }
     const accounts = payment.bankAccounts;
-    const ready = !whatsapp.enabled || (whatsapp.verified && cardUrl !== null && !preparationError);
+    const ready = reviewConfirmed && (!whatsapp.enabled || (whatsapp.verified && cardUrl !== null && !preparationError));
     const error = localError ?? preparationError ?? errors.render ?? errors.expectedRevision ?? errors.phone;
 
     return <AppShell eyebrow={event.title} title="الدفع بالتحويل البنكي">
         <Head title={`الدفع · ${event.title}`} />
         <EventJourney event={event} current="payment" />
+        <InvitationProgressPanel progress={progress} timezone={event.timezone} />
+        {preview}
+        {payment.canSubmit && !preview && <p className="account-error" role="alert">افتحي محرر البطاقة واحفظي التصميم لتظهر المعاينة قبل الدفع. <Link href={`/app/events/${event.id}/editor`}>الذهاب للمحرر</Link></p>}
         {flash.status === 'free-offer-claimed' && <aside className="event-success" role="status"><strong>فُعّلت مناسبتك مجاناً</strong><span>استفدتِ من العرض. جهّزي دعوتك وانشريها من صفحة الظرف والفتح.</span></aside>}
         {flash.status === 'receipt-submitted' && <aside className="event-success" role="status"><strong>وصلتنا القسيمة</strong><span>سنراجعها بعد التأكد من وصول المبلغ، ويظهر القرار في هذه الصفحة.</span></aside>}
 
@@ -133,11 +141,16 @@ function PaymentForm({ event, payment, whatsapp, cardUrl = null, revision = null
 
 function PreparedPayment(props: PaymentPageProps & { parsedDocument: DesignDocument; preparation: NonNullable<PaymentPageProps['preparation']> }) {
     const card = usePresentationCard(props.parsedDocument, props.preparation.assets);
-    return <><PaymentForm {...props} cardUrl={card.cardUrl} revision={props.preparation.revision} preparationError={card.error} /><div className="presentation-render-source" ref={card.host} aria-hidden="true" inert /></>;
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [openedRevision, setOpenedRevision] = useState<number | null>(null);
+    const [reviewedRevision, setReviewedRevision] = useState<number | null>(null);
+    const revision = props.preparation.revision;
+    const preview = <section className="payment-final-preview" aria-labelledby="payment-preview-title"><div><p>قبل التحويل ورفع القسيمة</p><h2 id="payment-preview-title">راجعي دعوتك كما سيشوفها ضيوفك</h2><p>تأكدي من الأسماء والموعد وشكل الدعوة. المعاينة تعرض الميزات المشمولة فقط، ولا تنشر الرابط.</p></div><button type="button" className="account-secondary" disabled={!card.cardUrl || Boolean(card.error)} onClick={() => { setOpenedRevision(revision); setPreviewOpen(true); }}>فتح المعاينة النهائية</button>{!card.cardUrl && !card.error && <p role="status">نجهّز المعاينة…</p>}{props.payment.canSubmit && <label className="payment-preview-confirm"><input type="checkbox" disabled={openedRevision !== revision} checked={reviewedRevision === revision} onChange={(event) => setReviewedRevision(event.target.checked ? revision : null)} /><span>راجعت الأسماء والموعد ومعاينة الدعوة الحالية.</span></label>}</section>;
+    return <><PaymentForm {...props} preview={preview} reviewConfirmed={reviewedRevision === revision} cardUrl={card.cardUrl} revision={revision} preparationError={card.error} /><div className="presentation-render-source" ref={card.host} aria-hidden="true" inert />{previewOpen && card.cardUrl && <InvitationPreview assets={props.preparation.assets} cardParts={card.parts} scene={props.parsedDocument.scene} palette={props.parsedDocument.palette} cardUrl={card.cardUrl} title={props.event.title} onClose={() => setPreviewOpen(false)} />}</>;
 }
 
 export default function EventPayment(props: PaymentPageProps) {
-    if (!props.whatsapp.enabled || !props.preparation || props.event.status !== 'draft') return <PaymentForm {...props} />;
+    if (!props.preparation || props.event.status !== 'draft') return <PaymentForm {...props} />;
     try {
         return <PreparedPayment {...props} preparation={props.preparation} parsedDocument={parseDesignDocument(props.preparation.document)} />;
     } catch {

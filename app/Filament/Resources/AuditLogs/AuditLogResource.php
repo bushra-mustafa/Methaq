@@ -101,6 +101,7 @@ final class AuditLogResource extends Resource
     private static function actionLabel(string $action): string
     {
         return match ($action) {
+            AuditAction::PaymentReviewHoursUpdated->value => 'تعديل مدة تنبيه مراجعة القسائم',
             AuditAction::PaymentApproved->value => 'اعتماد دفع',
             AuditAction::WhatsAppMessageRetried->value => 'إعادة رسالة واتساب',
             AuditAction::WhatsAppConnectionTested->value => 'اختبار ربط واتساب',

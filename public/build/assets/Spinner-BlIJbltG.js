@@ -1,1 +1,0 @@
-import{j as s}from"./app-CDGTZT_G.js";function n({message:a,role:t="status"}){return s.jsxs("div",{className:"methaq-loading-state",role:t,children:[s.jsx("span",{className:"methaq-spinner","aria-hidden":"true"}),s.jsx("p",{style:{margin:0},children:a})]})}export{n as L};

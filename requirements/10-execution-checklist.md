@@ -393,3 +393,8 @@ Laravel Framework 12.69.2 على PHP 8.4.3. composer validate --strict وcheck-p
 - إعادة رسالة الإدارة إلى رقم مصحح تنشئ رسالة جديدة؛ إعادة الرسالة إلى الوجهة نفسها تستعمل `/messages/{id}/resend` إن كان لها معرّف لدى CloudMsg، وإلا تستعمل الإرسال العادي بمفتاح بديل ثابت. الضغط المتكرر لا ينشئ نسخاً إضافية، ويمكن إعادة البديل نفسه إذا فشل لاحقاً.
 - اختبار الإعدادات من زر أعلى صفحة واتساب ينفّذ مباشرة دون انتظار العامل، فلا يعتبر دليلاً على تشغيل Cron. قبول الاختبار ليس تأكيد تسليم؛ وصول الهاتف وأحداث التسليم هما الدليل. حفظ الإعدادات يسبق الاختبار.
 - تفعيل أحداث `message.failed`, `message.invalid`, `message.expired`, `message.cancelled`, `message.sent`, `message.ack`, `message.received` في CloudMsg ضروري لمتابعة الحالات الجديدة. لا يُغيَّر قرار دفع أو نشر بسبب رسالة فاشلة.
+
+
+## Invitation journey — 2026-11-16
+
+Owner overview and payment pages now show the authoritative invitation state and next action, including rejection, suspension and expiry. Before uploading a receipt the owner opens the current revision's entitlement-filtered preview and confirms its details; the draft is unchanged. This confirmation is a user-experience checkpoint, not proof of payment or server authorization. Publication WhatsApp notices include expiry in the event timezone and an authenticated RSVP-management link. Administrators can configure a 1–168 hour review reminder (default 24) in Orders; pending manual receipts older than the threshold trigger a panel banner and an overdue filter. Updates require an active administrator with confirmed two-factor authentication and are audited. No automatic approval and no new migration.

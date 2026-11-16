@@ -25,6 +25,7 @@ enum AuditAction: string
     case TemplateThumbnailUpdated = 'template.thumbnail_updated';
     case EventPublished = 'event.published';
     case EventDraftViewed = 'event.draft_viewed';
+    case PaymentReviewHoursUpdated = 'payment.review_hours_updated';
     case PaymentApproved = 'payment.approved';
     case PaymentRejected = 'payment.rejected';
     case TemplateAssetUploaded = 'template_asset.uploaded';

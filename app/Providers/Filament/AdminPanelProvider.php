@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Domains\Editor\Models\Template;
+use App\Domains\Payments\Services\PaymentReviewSettings;
 use App\Domains\Users\Services\WhatsAppFailures;
+use App\Filament\Resources\Orders\OrderResource;
 use App\Filament\Resources\Templates\TemplateResource;
 use App\Filament\Resources\WhatsAppMessages\WhatsAppMessageResource;
 use App\Http\Controllers\Admin\ShowPaymentReceiptController;
@@ -71,6 +73,20 @@ final class AdminPanelProvider extends PanelProvider
             .'<a href="'.$link.'" style="font-weight:700;text-decoration:underline;">مراجعة الرسائل وإعادة الإرسال</a></div>');
     }
 
+    private static function overduePaymentsNotice(): HtmlString
+    {
+        $settings = app(PaymentReviewSettings::class);
+        $count = $settings->overdue()->count();
+        if ($count === 0) {
+            return new HtmlString('');
+        }
+        $link = e(OrderResource::getUrl('index', ['filters' => ['overdue' => ['isActive' => true]]]));
+
+        return new HtmlString('<div role="status" style="display:flex;flex-wrap:wrap;gap:12px;padding:16px;margin-bottom:16px;border:1px solid #d9b779;border-radius:12px;background:#fff7e6;color:#5c4a1f;">'
+            .'<strong>'.$count.' قسيمة بانتظار المراجعة منذ أكثر من '.$settings->hours().' ساعة.</strong>'
+            .'<a href="'.$link.'" style="font-weight:700;text-decoration:underline;">مراجعة القسائم المتأخرة</a></div>');
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -90,6 +106,7 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(PanelsRenderHook::CONTENT_BEFORE, fn (): HtmlString => self::unpricedTemplatesNotice())
             ->renderHook(PanelsRenderHook::CONTENT_BEFORE, fn (): HtmlString => self::whatsappFailuresNotice())
+            ->renderHook(PanelsRenderHook::CONTENT_BEFORE, fn (): HtmlString => self::overduePaymentsNotice())
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): HtmlString => new HtmlString('<link rel="stylesheet" href="'.e(asset('css/admin-methaq.css')).'">'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

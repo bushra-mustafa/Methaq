@@ -73,6 +73,7 @@ class AppServiceProvider extends ServiceProvider
                 'minutes' => (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire'),
             ]));
 
+        Gate::define('manage-payment-settings', fn (User $user): bool => $user->isActive() && $user->role === UserRole::Admin && $user->hasEnabledTwoFactorAuthentication());
         Gate::define('manage-whatsapp-settings', fn (User $user): bool => $user->isActive() && $user->role === UserRole::Admin && $user->hasEnabledTwoFactorAuthentication());
 
         Gate::define('manage-pricing', fn (User $user): bool => $user->isActive() && $user->role === UserRole::Admin);

@@ -957,3 +957,21 @@
 
 .payment-whatsapp { margin-block: 1.5rem; padding: 1.25rem; border: 1px solid var(--brand-border, #d9dfd9); border-radius: 1rem; display: grid; gap: .75rem; }
 .payment-whatsapp .payment-form { max-width: 32rem; }
+
+.invitation-progress, .payment-final-preview { margin-block: 1.5rem; padding: clamp(1rem, 3vw, 1.75rem); background: var(--brand-paper, #f7f8f3); border: 1px solid var(--brand-border, #d9dfd9); border-radius: 1rem; }
+.invitation-progress-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem; }
+.invitation-progress-heading > div { flex: 1 1 20rem; }
+.invitation-progress h2, .payment-final-preview h2 { margin-block: .25rem .75rem; font-size: clamp(1.25rem, 3vw, 1.75rem); }
+.invitation-progress p, .payment-final-preview p { line-height: 1.8; max-width: 65ch; }
+.invitation-progress-eyebrow { font-size: .85rem; color: #56614f; }
+.invitation-progress-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .75rem; list-style: none; padding: 0; margin-block: 1.75rem 1rem; }
+.invitation-progress-steps li { display: flex; align-items: center; gap: .5rem; font-size: .9rem; color: #687165; }
+.invitation-progress-steps li > span { display: grid; place-items: center; flex: 0 0 1.8rem; height: 1.8rem; border: 1px solid currentColor; border-radius: 50%; }
+.invitation-progress-steps .is-current { color: #24452e; font-weight: 700; }
+.invitation-progress-steps .is-current > span, .invitation-progress-steps .is-done > span { background: #24452e; color: white; border-color: #24452e; }
+.invitation-progress-review { font-size: .9rem; }
+.payment-final-preview { display: grid; gap: 1rem; }
+.payment-final-preview > button { justify-self: start; }
+.payment-preview-confirm { display: flex; align-items: center; gap: .75rem; min-height: 44px; cursor: pointer; }
+.payment-preview-confirm input { width: 1.25rem; height: 1.25rem; flex-shrink: 0; accent-color: #24452e; }
+@media (max-width: 640px) { .invitation-progress-steps { grid-template-columns: 1fr; gap: .85rem; } .invitation-progress-heading > .account-primary { width: 100%; justify-content: center; } }

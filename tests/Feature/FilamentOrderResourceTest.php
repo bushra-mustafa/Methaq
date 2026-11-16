@@ -8,6 +8,7 @@ use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
 use App\Domains\Payments\Enums\PaymentRejectionReason;
 use App\Domains\Payments\Models\Order;
+use App\Domains\Payments\Services\PaymentReviewSettings;
 use App\Domains\Users\Enums\UserRole;
 use App\Domains\Users\Models\User;
 use App\Filament\Resources\Orders\OrderResource;
@@ -39,6 +40,23 @@ final class FilamentOrderResourceTest extends TestCase
     {
         parent::setUp();
         Filament::setCurrentPanel('admin');
+    }
+
+    public function test_overdue_banner_filter_and_configurable_review_duration(): void
+    {
+        $old = $this->order();
+        $old->forceFill(['created_at' => now()->subHours(25)])->save();
+        $recent = $this->order();
+        $this->actingAs($this->administrator());
+        $this->get('/admin/orders')->assertOk()->assertSee('قسيمة بانتظار المراجعة منذ أكثر من');
+        Livewire::test(ManageOrders::class)
+            ->filterTable('overdue', true)
+            ->assertCanSeeTableRecords([$old])
+            ->assertCanNotSeeTableRecords([$recent])
+            ->callAction('reviewHours', data: ['hours' => 48])
+            ->assertHasNoActionErrors();
+        $this->assertSame(48, app(PaymentReviewSettings::class)->hours());
+        $this->get('/admin/orders')->assertOk()->assertDontSee('قسيمة بانتظار المراجعة منذ أكثر من');
     }
 
     public function test_pending_manual_receipts_are_listed_without_create_edit_or_delete_and_other_gateways_are_hidden(): void
