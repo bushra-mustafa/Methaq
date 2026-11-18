@@ -8,7 +8,7 @@ use InvalidArgumentException;
 
 final readonly class EnvelopeAppearanceData
 {
-    public const STYLES = ['classic', 'luxury', 'minimal', 'rounded', 'gatefold', 'portrait', 'wallet', 'scalloped'];
+    public const STYLES = ['classic', 'luxury', 'minimal', 'rounded', 'gatefold', 'portrait', 'wallet', 'scalloped', 'wedding-relief', 'graduation'];
 
     public const SEAL_STYLES = ['wax', 'wax-oval', 'wax-heart', 'wax-square', 'wax-flower', 'medallion', 'medallion-octagon', 'embossed', 'methaq', 'none'];
 

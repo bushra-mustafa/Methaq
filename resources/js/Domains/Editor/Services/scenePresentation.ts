@@ -40,3 +40,16 @@ export function changeOpeningType(current: OpeningConfig, type: OpeningConfig['t
     if (type === 'fade') return { type, durationMs };
     return { type, durationMs, envelope: createEnvelope() };
 }
+
+export function applyEnvelopeStyle(envelope: EnvelopeConfig, style: EnvelopeAppearance['style']): EnvelopeConfig {
+    const appearance = { ...(envelope.appearance ?? DEFAULT_ENVELOPE_APPEARANCE), style };
+    if (style !== 'wedding-relief' && style !== 'graduation') return { ...envelope, appearance };
+    const wedding = style === 'wedding-relief';
+    return {
+        ...envelope,
+        appearance: { ...appearance, sealStyle: 'wax', sealX: 50, sealY: 57, sealSize: 16 },
+        paperColor: { source: 'literal', value: wedding ? '#eee8dd' : '#1e293b' },
+        liningColor: { source: 'literal', value: wedding ? '#faf5eb' : '#f6efde' },
+        sealColor: { source: 'literal', value: wedding ? '#cbbd9e' : '#bfa16a' },
+    };
+}

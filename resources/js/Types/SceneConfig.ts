@@ -6,7 +6,7 @@ export type EnvelopePresetId = 'classic-fold';
 export type EffectId = 'sparkle' | 'smoke';
 export type SceneBackdropPreset = 'inherit' | 'burgundy-nebula' | 'blush-cloud' | 'midnight-gold' | 'emerald-silk' | 'henna-noir';
 
-export const ENVELOPE_STYLES = ['classic', 'luxury', 'minimal', 'rounded', 'gatefold', 'portrait', 'wallet', 'scalloped'] as const;
+export const ENVELOPE_STYLES = ['classic', 'luxury', 'minimal', 'rounded', 'gatefold', 'portrait', 'wallet', 'scalloped', 'wedding-relief', 'graduation'] as const;
 export const SEAL_STYLES = ['wax', 'wax-oval', 'wax-heart', 'wax-square', 'wax-flower', 'medallion', 'medallion-octagon', 'embossed', 'methaq', 'none'] as const;
 
 export interface EnvelopeAppearance {

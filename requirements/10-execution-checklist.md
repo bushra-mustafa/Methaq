@@ -398,3 +398,8 @@ Laravel Framework 12.69.2 على PHP 8.4.3. composer validate --strict وcheck-p
 ## Invitation journey — 2026-11-16
 
 Owner overview and payment pages now show the authoritative invitation state and next action, including rejection, suspension and expiry. Before uploading a receipt the owner opens the current revision's entitlement-filtered preview and confirms its details; the draft is unchanged. This confirmation is a user-experience checkpoint, not proof of payment or server authorization. Publication WhatsApp notices include expiry in the event timezone and an authenticated RSVP-management link. Administrators can configure a 1–168 hour review reminder (default 24) in Orders; pending manual receipts older than the threshold trigger a panel banner and an overdue filter. Updates require an active administrator with confirmed two-factor authentication and are audited. No automatic approval and no new migration.
+
+
+## Envelope appearance additions — 2026-11-18
+
+Added optional `wedding-relief` and `graduation` shapes to the existing envelope contract and picker. The wedding style uses original vector botanical relief inspired by the supplied reference; graduation uses a cap and gold laurels. Selecting either applies editable suggested colours and a centred seal. Existing saved styles and colours remain unchanged until selection. Decorations stay attached to the current flap/front/fold layers; opening state, timings, reduced-motion behavior, publication and payment logic are unchanged. Validation: frontend types and envelope tests, PHP full appearance/seal roundtrip tests, production build, and local visual opening/closing preview.

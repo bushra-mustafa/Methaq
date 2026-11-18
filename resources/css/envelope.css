@@ -42,6 +42,18 @@
 .invitation-envelope.is-scalloped .invitation-envelope-front { clip-path: none; background: var(--envelope-paper); }
 .invitation-envelope.is-scalloped .invitation-envelope-flap { inset: 0 0 40%; clip-path: polygon(0 0, 100% 0, 100% 70%, 98% 78%, 95% 82%, 92% 78%, 90% 72%, 87% 81%, 83% 85%, 79% 81%, 76% 76%, 73% 85%, 69% 90%, 65% 86%, 62% 81%, 59% 91%, 55% 96%, 50% 100%, 45% 96%, 41% 91%, 38% 81%, 35% 86%, 31% 90%, 27% 85%, 24% 76%, 21% 81%, 17% 85%, 13% 81%, 10% 72%, 8% 78%, 5% 82%, 2% 78%, 0 70%); }
 
+/* Layer decorations follow the existing flap and pocket transitions. */
+.invitation-envelope:is(.is-wedding-relief, .is-graduation) { aspect-ratio: 1.58; }
+.invitation-envelope:is(.is-wedding-relief, .is-graduation) :is(.invitation-envelope-front, .invitation-envelope-fold, .invitation-envelope-flap)::after { content: ''; position: absolute; inset: 0; pointer-events: none; background-position: center; background-size: 100% 100%; background-repeat: no-repeat; }
+.invitation-envelope.is-wedding-relief .invitation-envelope-flap { clip-path: polygon(0 0,100% 0,98% 12%,94% 23%,88% 32%,79% 40%,67% 49%,50% 59%,33% 49%,21% 40%,12% 32%,6% 23%,2% 12%); }
+.invitation-envelope.is-wedding-relief .invitation-envelope-flap::after { background-image: url('/brand/envelopes/wedding-relief.svg'); filter: drop-shadow(1px 2px 1px #6f62574d) drop-shadow(-1px -1px 0 #fff); }
+.invitation-envelope.is-wedding-relief :is(.invitation-envelope-front, .invitation-envelope-fold)::after { background-image: url('/brand/envelopes/wedding-pocket.svg'); filter: drop-shadow(1px 2px 1px #6f62574d) drop-shadow(-1px -1px 0 #fff); }
+.invitation-envelope.is-wedding-relief .invitation-envelope-letter { border: 3px double #cbbfa9; box-shadow: 0 0 0 5px var(--envelope-lining), 0 0 0 6px #cbbfa9; }
+.invitation-envelope.is-graduation .invitation-envelope-flap::after { background-image: url('/brand/envelopes/graduation-cap.svg'); }
+.invitation-envelope.is-graduation .invitation-envelope-front::after { background-image: url('/brand/envelopes/graduation-laurel.svg'); }
+.invitation-envelope.is-graduation .invitation-envelope-fold { background: linear-gradient(15deg, color-mix(in srgb, var(--envelope-paper), white 12%), var(--envelope-paper)); }
+.invitation-envelope.is-graduation .invitation-envelope-fold::after { background-image: url('/brand/envelopes/graduation-laurel.svg'); }
+
 /* Seal: fixed Methaq logo, configurable shape and colour */
 .invitation-seal { position: absolute; z-index: 5; left: var(--seal-x); top: var(--seal-y); display: grid; place-items: center; width: var(--seal-size); aspect-ratio: 1; transform: translate(-50%, -50%); border: 0; padding: 0; border-radius: 45% 51% 44% 49% / 49% 44% 53% 47%; color: #231506; background: radial-gradient(ellipse at 35% 25%, #ffffff66, transparent 50%), var(--seal-color); box-shadow: 2px 6px 9px #17091e55, inset 2px 3px 3px #fff6, inset -3px -3px 5px #0004; }
 button.invitation-seal { cursor: pointer; }

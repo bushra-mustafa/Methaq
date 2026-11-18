@@ -1,9 +1,11 @@
 import type { Palette } from '../../../Types/Palette';
 import type { EnvelopeAppearance, EnvelopeConfig } from '../../../Types/SceneConfig';
-import { DEFAULT_ENVELOPE_APPEARANCE, envelopeColors } from '../Services/scenePresentation';
+import { applyEnvelopeStyle, DEFAULT_ENVELOPE_APPEARANCE, envelopeColors } from '../Services/scenePresentation';
 import { InvitationEnvelope } from './InvitationEnvelope';
 
 const styles: Array<{ id: EnvelopeAppearance['style']; name: string; detail: string }> = [
+    { id: 'wedding-relief', name: 'زفاف بارز', detail: 'زخارف نباتية بارزة وطية منحنية' },
+    { id: 'graduation', name: 'تخرّج', detail: 'قبعة التخرّج وأغصان الغار الذهبية' },
     { id: 'classic', name: 'كلاسيكي', detail: 'طية مثلثة تقليدية' },
     { id: 'luxury', name: 'إطار ذهبي', detail: 'لمعة ناعمة وحواف ذهبية' },
     { id: 'minimal', name: 'بسيط', detail: 'طية قصيرة بخطوط هادئة' },
@@ -30,11 +32,11 @@ export function EnvelopeStylePicker({ envelope, palette, onChange, active, cardU
         <div className="envelope-style-grid">
             {styles.map((style) => <label key={style.id} className={`envelope-style-option ${active && style.id === appearance.style ? 'is-selected' : ''}`}>
                 <input type="radio" name="envelope-style" value={style.id} checked={active && style.id === appearance.style} onChange={() => onChange(style.id)} />
-                <span className="envelope-style-thumbnail" aria-hidden="true"><InvitationEnvelope colors={colors} appearance={{ ...appearance, style: style.id }} letter={letter} /></span>
+                <span className="envelope-style-thumbnail" aria-hidden="true"><InvitationEnvelope colors={envelopeColors(applyEnvelopeStyle(envelope, style.id), palette)} appearance={applyEnvelopeStyle(envelope, style.id).appearance} letter={letter} /></span>
                 <span className="envelope-style-name">{style.name}<span aria-hidden="true">{active && style.id === appearance.style ? '✓' : ''}</span></span>
                 <small>{style.detail}</small>
             </label>)}
         </div>
-        <p>{active ? 'الأشكال تعرض نفس ألوانك وختمك. اختاري شكلاً ثم «معاينة كضيف» لتجربة فتحه.' : 'اختيار أي نموذج يفعّل فتح الدعوة بظرف.'}</p>
+        <p>{active ? 'الأشكال الجديدة تبدأ بألوان مقترحة تقدري تغيّريها، وبقية الأشكال تحافظ على ألوانك وختمك. اختاري شكلاً ثم «معاينة كضيف» لتجربة فتحه.' : 'اختيار أي نموذج يفعّل فتح الدعوة بظرف.'}</p>
     </fieldset>;
 }

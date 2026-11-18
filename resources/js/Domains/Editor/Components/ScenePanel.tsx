@@ -8,7 +8,7 @@ import { SealStylePicker } from './SealStylePicker';
 import type { ColorValue, HexColor, Palette } from '../../../Types/Palette';
 import type { EnvelopeAppearance, EnvelopeConfig, SceneConfig } from '../../../Types/SceneConfig';
 import { resolveColor } from '../Services/editorDocument';
-import { changeOpeningType, createEnvelope, DEFAULT_ENVELOPE_APPEARANCE } from '../Services/scenePresentation';
+import { applyEnvelopeStyle, changeOpeningType, createEnvelope, DEFAULT_ENVELOPE_APPEARANCE } from '../Services/scenePresentation';
 
 interface Props { assets: EditorAsset[]; cardUrl?: string; scene: SceneConfig; palette: Palette; onChange: (scene: SceneConfig) => void; onPreview: () => void; previewReady: boolean }
 
@@ -26,8 +26,8 @@ export function ScenePanel({ assets, scene, palette, onChange, onPreview, previe
         <header><span aria-hidden="true">✉</span><div><h2>العرض والفتح</h2><p>جهّزي اللحظة الأولى التي يراها ضيوفك.</p></div></header>
         <div className="editor-control-stack">
             <EnvelopeStylePicker cardUrl={cardUrl} envelope={previewEnvelope} palette={palette} active={envelope !== null} onChange={(style) => {
-                if (envelope) { updateAppearance({ style }); return; }
-                onChange({ ...scene, opening: { type: 'envelope', durationMs: scene.opening.durationMs || 1800, envelope: { ...previewEnvelope, appearance: { ...appearance, style } } } });
+                const selectedEnvelope = applyEnvelopeStyle(previewEnvelope, style);
+                onChange({ ...scene, opening: { type: 'envelope', durationMs: scene.opening.durationMs || 1800, envelope: selectedEnvelope } });
             }} />
             <fieldset className="scene-choice-group"><legend>كيف تبدأ الدعوة؟</legend>
                 {([{ value: 'envelope', label: 'ظرف بختم', detail: 'يفتح الضيف الختم لتظهر البطاقة' }, { value: 'fade', label: 'ظهور ناعم', detail: 'غلاف بسيط يتلاشى عند الفتح' }, { value: 'direct', label: 'عرض مباشر', detail: 'تظهر البطاقة فوراً' }] as const).map((option) => <label key={option.value} className={scene.opening.type === option.value ? 'is-selected' : ''}><input type="radio" name="opening-type" checked={scene.opening.type === option.value} onChange={() => onChange({ ...scene, opening: changeOpeningType(scene.opening, option.value) })} /><span><strong>{option.label}</strong><small>{option.detail}</small></span></label>)}
