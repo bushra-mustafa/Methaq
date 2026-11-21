@@ -31,8 +31,11 @@ Thumbs.db
 
 # Third-party agent skills (reinstall from skills-lock.json)
 /.agents/
+/.claude/skills/core-web-vitals
 /.claude/skills/frontend-design
+/.claude/skills/performance
 /.claude/skills/security-audit
+/.claude/skills/vercel-react-best-practices
 /.claude/skills/web-design-guidelines
 
 /public/css/filament
