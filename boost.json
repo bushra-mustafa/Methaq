@@ -19,6 +19,7 @@
         "inertia-react-development",
         "tailwindcss-development",
         "filament-development",
-        "methaq-editor"
+        "methaq-editor",
+        "methaq-card-designer"
     ]
 }
