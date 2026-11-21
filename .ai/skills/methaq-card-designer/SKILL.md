@@ -43,14 +43,14 @@ Run `context.mjs` with `--sheet` and look at the sheet. Decide what makes this c
 
 1. Write `source/gen.mjs` and `spec.json` ([references/svg-craft.md](references/svg-craft.md), [references/spec.md](references/spec.md)).
 2. `node <draft>/source/gen.mjs && node $S/build.mjs <draft>`; fix every `ERROR`.
-3. Look at `preview.png` (shrunk) and at crops of the top, middle and bottom.
-4. Review it against the art-direction checklist in [references/design-rules.md](references/design-rules.md), note the round in `brief.md`, fix, repeat.
+3. Inspect `preview.png` at card size and in top, middle and bottom crops. Check Arabic letter joining and RTL reading order, names and date legibility, wrapping, margins, contrast, and whether longer replacement names still fit. Keep the user's wording intact; don't silently shorten it to make the layout pass.
+4. Review it against the art-direction checklist in [references/design-rules.md](references/design-rules.md), note the round's main issue and fix in `brief.md`, then rebuild and inspect again.
 
 Done means: `PASS`, every remaining warning understood and justified, the full card and the crops inspected, and a card you would be proud to see in a stationery shop. For an important design, ask a fresh subagent (if your client has them) to critique `preview.png` against `brief.md` without your reasoning, and apply the fixes worth making.
 
 ### 5. Show it and iterate with the user
 
-Send `card.jpg` (or `preview.png`) with your client's file or image tool; otherwise give its absolute path. In a few lines say the concept, palette, fonts, envelope and the assumptions you made, then ask for changes or for approval to add it to the library. Apply feedback in the same draft, rebuild, and show again. Nothing enters the project before an explicit approval.
+Show `card.jpg` (or `preview.png`) with your client's file or image tool; otherwise give its absolute path. Briefly describe the concept, palette, fonts, envelope and assumptions. First ask whether the user approves the visual design or wants changes. Apply feedback in the same draft, rebuild, and show the updated result. Approval of the appearance is not permission to import: after the user approves the final appearance, ask separately whether to add it to the library. Do not import until they explicitly approve that step.
 
 ### 6. Import after approval
 

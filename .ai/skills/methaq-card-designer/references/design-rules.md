@@ -91,7 +91,7 @@ Look at `preview.png` whole and in crops, then answer honestly:
 2. **Balance and spacing**: even margins, no crowded zone, no dead empty zone; centred things exactly on x = 540.
 3. **Ornament**: smooth curves without kinks, consistent stroke weights, symmetry where it is meant, crisp details in the crops, nothing that looks programmatic or accidental.
 4. **Colour**: harmonious palette, believable metal gradients, enough contrast for every line of text.
-5. **Text**: no overflow, no awkward wraps, verse marks not clipped, room for longer names.
+5. **Text**: Arabic letters join correctly and read right-to-left; names, date and venue are legible in the full-card preview; no overflow or awkward wraps; verse marks are not clipped; longer replacement names still fit. Compare the rendered copy with the brief so user-provided wording is not silently changed.
 6. **Editability**: no text trapped on ornament; boxes that survive real names.
 7. **Scene**: envelope, seal and effects belong to this design.
 8. **The shop test**: would it sell in a stationery shop next to professional work? If not, keep going.
