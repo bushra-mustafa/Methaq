@@ -53,7 +53,6 @@ const features: Feature[] = [
         title: "تأكيد الحضور",
         description:
             "يرد ضيوفك بالحضور أو الاعتذار وعدد المرافقين دون إنشاء حساب.",
-        comingSoon: true,
     },
 ];
 

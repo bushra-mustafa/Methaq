@@ -5,7 +5,7 @@ import HomeEnvelopeShowcase from "./HomeEnvelopeShowcase";
 const guestMoments: { text: string; comingSoon?: boolean }[] = [
     { text: "يفتح ضيفك الرابط فيستقبله ظرفك بختم ميثاق وألوانك." },
     { text: "تنكشف بطاقتك على موسيقى ترحيبية تختارينها." },
-    { text: "يؤكد حضوره من صفحة الدعوة نفسها.", comingSoon: true },
+    { text: "يؤكد حضوره من صفحة الدعوة نفسها." },
 ];
 
 /** The guests' moment, on the dark ink band so the envelope colours stand out. */
