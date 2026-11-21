@@ -28,7 +28,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Every customer invitation, with who owns it, whether it is paid and live. Administrators can
- * open a published invitation or take it offline with a reason; content is never edited here.
+ * open a published invitation or take it offline with a reason. Designs are edited in the studio
+ * (`/app/studio/events/{id}`), never in this table.
  */
 final class EventResource extends Resource
 {
@@ -124,6 +125,13 @@ final class EventResource extends Resource
                     ->color('gray')
                     ->authorize('reviewDraft')
                     ->url(fn (Event $record): string => route('app.review.events.show', $record))
+                    ->openUrlInNewTab(),
+                Action::make('design')
+                    ->label('تعديل التصميم')
+                    ->icon(Heroicon::OutlinedPencilSquare)
+                    ->color('gray')
+                    ->authorize('administerDesign')
+                    ->url(fn (Event $record): string => route('app.studio.events.show', $record))
                     ->openUrlInNewTab(),
                 self::suspendAction(),
                 self::reinstateAction(),

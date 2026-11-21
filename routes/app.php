@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\RefreshPublishedInvitationController;
+use App\Http\Controllers\Admin\SaveEventStudioDesignController;
 use App\Http\Controllers\Admin\SaveTemplateDesignController;
 use App\Http\Controllers\Admin\ShowEventDraftReviewController;
+use App\Http\Controllers\Admin\ShowEventStudioController;
+use App\Http\Controllers\Admin\ShowEventStudioPresentationController;
 use App\Http\Controllers\Admin\ShowTemplateStudioController;
 use App\Http\Controllers\Admin\StoreTemplateThumbnailController;
 use App\Http\Controllers\App\ClaimFreeOfferController;
@@ -111,6 +115,15 @@ Route::prefix('studio/templates/{template}')->whereNumber('template')->group(fun
 
 // Administrators read a customer's draft here, read-only. The policy needs an active admin with confirmed two-factor; every view is audited.
 Route::get('/review/events/{event}', ShowEventDraftReviewController::class)->whereNumber('event')->name('review.events.show');
+
+// Administrators edit a customer's design in the same editor, before or after publishing, and refresh a live invitation
+// from the saved draft. Policy `administerDesign` (active admin with confirmed two-factor); every opening, save and refresh is audited.
+Route::prefix('studio/events/{event}')->whereNumber('event')->group(function (): void {
+    Route::get('/', ShowEventStudioController::class)->name('studio.events.show');
+    Route::get('/presentation', ShowEventStudioPresentationController::class)->name('studio.events.presentation');
+    Route::patch('/design', SaveEventStudioDesignController::class)->name('studio.events.design');
+    Route::post('/refresh', RefreshPublishedInvitationController::class)->middleware('throttle:6,1')->name('studio.events.refresh');
+});
 
 Route::post('/whatsapp/send-code', WhatsAppVerificationController::class.'@send')
     ->middleware('throttle:3,1')->name('whatsapp.send-code');

@@ -6,57 +6,29 @@ namespace App\Domains\Editor\Actions;
 
 use App\Domains\Editor\DTOs\DesignSnapshotData;
 use App\Domains\Editor\DTOs\SaveDesignData;
-use App\Domains\Editor\Exceptions\DesignRevisionConflict;
-use App\Domains\Editor\Models\EventDesign;
-use App\Domains\Editor\Services\DesignAssetReferenceValidator;
-use App\Domains\Editor\Services\DesignDocumentHydrator;
+use App\Domains\Editor\Services\EventDesignWriter;
 use App\Domains\Events\Models\Event;
 use App\Domains\Users\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use RuntimeException;
 
+/**
+ * The owner saves her draft. Allowed only while the invitation is a draft (`editDesign`); the rule is checked
+ * again under the event lock, so a save that races the publish request cannot slip in after it.
+ */
 final class SaveDesignAction
 {
-    public function __construct(
-        private readonly DesignDocumentHydrator $hydrator,
-        private readonly DesignAssetReferenceValidator $assetValidator,
-    ) {}
+    public function __construct(private readonly EventDesignWriter $writer) {}
 
     public function execute(User $owner, Event $event, SaveDesignData $data): DesignSnapshotData
     {
-        Gate::forUser($owner)->authorize('update', $event);
+        Gate::forUser($owner)->authorize('editDesign', $event);
 
-        return DB::transaction(function () use ($event, $data): DesignSnapshotData {
-            $design = EventDesign::query()
-                ->where('event_id', $event->getKey())
-                ->lockForUpdate()
-                ->first();
-            if (! $design instanceof EventDesign) {
-                throw new RuntimeException('The event design is unavailable.');
-            }
-            if ($design->revision !== $data->expectedRevision) {
-                throw new DesignRevisionConflict($this->snapshot($design));
-            }
+        return DB::transaction(function () use ($owner, $event, $data): DesignSnapshotData {
+            $lockedEvent = Event::query()->lockForUpdate()->findOrFail($event->getKey());
+            Gate::forUser($owner)->authorize('editDesign', $lockedEvent);
 
-            $this->assetValidator->assertValid($data->document, $design);
-            $columns = $data->document->toStorageColumns();
-            $nextRevision = $design->revision + 1;
-            $design->forceFill([...$columns, 'revision' => $nextRevision])->save();
-
-            return new DesignSnapshotData($data->document, $nextRevision);
+            return $this->writer->write($lockedEvent, $data);
         }, 3);
-    }
-
-    private function snapshot(EventDesign $design): DesignSnapshotData
-    {
-        $document = $this->hydrator->hydrate([
-            'schemaVersion' => $design->schema_version,
-            'canvas' => $design->design_json,
-            'palette' => $design->palette_json,
-            'scene' => $design->scene_json,
-        ]);
-
-        return new DesignSnapshotData($document, $design->revision);
     }
 }

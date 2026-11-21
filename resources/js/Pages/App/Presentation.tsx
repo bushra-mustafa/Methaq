@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { LoadingState } from '../../Components/Loading/Spinner';
 import { EventJourney } from '../../Domains/Events/Components/EventJourney';
 import { PublishPanel } from '../../Domains/Events/Components/PublishPanel';
+import { RefreshPublishedPanel } from '../../Domains/Events/Components/RefreshPublishedPanel';
 import { InvitationPlayer } from '../../Domains/Editor/Components/InvitationPlayer';
 import { InvitationPreview } from '../../Domains/Editor/Components/InvitationPreview';
 import { ScenePanel } from '../../Domains/Editor/Components/ScenePanel';
@@ -13,15 +14,18 @@ import { parseDesignDocument } from '../../Domains/Editor/Services/DesignDocumen
 import type { DesignDocument } from '../../Types/DesignDocument';
 import type { EditorAsset } from '../../Types/Editor';
 import type { EventDTO } from '../../Types/EventDTO';
-import type { PublishStateDTO } from '../../Types/PublishDTO';
+import type { PublishedRefreshStateDTO, PublishStateDTO, StudioOwnerDTO } from '../../Types/PublishDTO';
 import '../../../css/editor.css';
 import '../../../css/presentation.css';
 
-interface Props { event: EventDTO; document: unknown; revision: number; assets: EditorAsset[]; publish: PublishStateDTO }
+/** The owner's step carries `publish`; the administrator's event studio carries `mode`, `owner` and `refresh`. */
+interface Props { event: EventDTO; document: unknown; revision: number; assets: EditorAsset[]; publish?: PublishStateDTO; mode?: 'event-studio'; owner?: StudioOwnerDTO; refresh?: PublishedRefreshStateDTO }
 
-function PresentationWorkspace({ event, document, revision, assets, publish }: Omit<Props, 'document'> & { document: DesignDocument }) {
+function PresentationWorkspace({ event, document, revision, assets, publish, mode, owner, refresh }: Omit<Props, 'document'> & { document: DesignDocument }) {
+    const studio = mode === 'event-studio';
+    const base = studio ? `/app/studio/events/${event.id}` : `/app/events/${event.id}`;
     const history = useHistory(document);
-    const autosave = useAutosave(`/app/events/${event.id}/design`, history.value, revision);
+    const autosave = useAutosave(`${base}/design`, history.value, revision);
     const card = usePresentationCard(history.value, assets);
     const [fullPreview, setFullPreview] = useState(false);
     const sceneKey = JSON.stringify({ scene: history.value.scene, palette: history.value.palette });
@@ -33,12 +37,13 @@ function PresentationWorkspace({ event, document, revision, assets, publish }: O
     return <main className="presentation-page" dir="rtl">
         <Head title={`الظرف والفتح · ${event.title}`} />
         <header className="presentation-topbar">
-            <Link href={`/app/events/${event.id}/editor`} onBefore={() => !autosave.hasUnsavedChanges} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الرجوع' : 'الرجوع إلى محرر البطاقة'}>→ الرجوع للبطاقة</Link>
+            <Link href={studio ? base : `${base}/editor`} onBefore={() => !autosave.hasUnsavedChanges} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الرجوع' : 'الرجوع إلى محرر البطاقة'}>→ الرجوع للبطاقة</Link>
             <img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" />
             <div className="presentation-topbar-actions"><span className={`is-${autosave.status}`} role="status">{autosave.message}</span><button type="button" onClick={history.undo} disabled={!history.canUndo}>تراجع</button><button type="button" onClick={history.redo} disabled={!history.canRedo}>إعادة</button></div>
         </header>
-        <EventJourney event={event} current="envelope" canLeave={!autosave.hasUnsavedChanges} />
+        {!studio && <EventJourney event={event} current="envelope" canLeave={!autosave.hasUnsavedChanges} />}
         <div className="presentation-content">
+            {studio && owner && <p className="account-status" role="note">أنتِ تعدّلين ظرف مناسبة {owner.name} (<bdi dir="ltr">{owner.email}</bdi>). يُحفظ التعديل في مسودتها ويُسجَّل في سجل التدقيق.</p>}
             <header className="presentation-heading"><div><p>{event.title}</p><h1>قبل أن تبدأ الحكاية</h1><p>اختاري الظرف، ضعي ختمك، وجرّبي اللحظة الأولى لفتح الدعوة.</p></div><div className="presentation-preview-actions"><button type="button" disabled={!canPreview} onClick={() => setFullPreview(true)}>معاينة كاملة ↗</button></div></header>
             <div className="presentation-layout">
                 <div className="presentation-settings">
@@ -49,7 +54,8 @@ function PresentationWorkspace({ event, document, revision, assets, publish }: O
                     {canPreview && card.cardUrl ? <InvitationPlayer audioAllowed={!fullPreview} assets={assets} cardParts={card.parts} manageFocus={false} key={sceneKey} scene={history.value.scene} palette={history.value.palette} cardUrl={card.cardUrl} title={event.title} viewport="phone" /> : card.error ? <div className="presentation-loading" role="alert">{card.error}</div> : <LoadingState message="نجهّز معاينة بطاقتك…" />}
                 </aside>
             </div>
-            <PublishPanel eventId={event.id} publish={publish} cardUrl={card.cardUrl} revision={autosave.revision} saved={autosave.status === 'saved' && !autosave.hasUnsavedChanges} />
+            {studio && refresh && <RefreshPublishedPanel eventId={event.id} refresh={refresh} cardUrl={card.cardUrl} revision={autosave.revision} saved={autosave.status === 'saved' && !autosave.hasUnsavedChanges} />}
+            {!studio && publish && <PublishPanel eventId={event.id} publish={publish} cardUrl={card.cardUrl} revision={autosave.revision} saved={autosave.status === 'saved' && !autosave.hasUnsavedChanges} />}
             <div className={`presentation-save-status is-${autosave.status}`} aria-live="polite">
                 <strong>{autosave.message}</strong>
                 {autosave.hasUnsavedChanges && <p>انتظري اكتمال الحفظ قبل الرجوع إلى محرر البطاقة.</p>}
@@ -67,6 +73,6 @@ export default function Presentation(props: Props) {
     try {
         return <PresentationWorkspace {...props} document={parseDesignDocument(props.document)} />;
     } catch {
-        return <main className="editor-contract-error" dir="rtl"><Head title="تعذّر عرض الظرف" /><h1>تعذّر تحميل التصميم</h1><p>بيانات البطاقة تحتاج مراجعة قبل ضبط العرض.</p><Link href={`/app/events/${props.event.id}`}>الرجوع للمناسبة</Link></main>;
+        return <main className="editor-contract-error" dir="rtl"><Head title="تعذّر عرض الظرف" /><h1>تعذّر تحميل التصميم</h1><p>بيانات البطاقة تحتاج مراجعة قبل ضبط العرض.</p><Link href={props.mode === 'event-studio' ? '/admin/events' : `/app/events/${props.event.id}`}>الرجوع للمناسبة</Link></main>;
     }
 }

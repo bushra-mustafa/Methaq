@@ -60,4 +60,5 @@ The browser parses everything it receives (`parseDesignDocument`, `parseDesignSn
 | Owner editor and presentation step (`app/Http/Controllers/App/EventEditorController.php`, `app/Http/Controllers/App/EventPresentationController.php`) | Draft document and `revision` |
 | Template studio | Template defaults and `design_revision` |
 | Admin draft review (`Pages/App/DraftReview.tsx`) | Draft, read-only, audited |
+| Admin event studio (`/app/studio/events/{id}`, `Pages/App/Editor.tsx` and `Pages/App/Presentation.tsx` with `mode: 'event-studio'`) | Draft and `revision` (shared with the owner), audited; «تحديث الدعوة المنشورة» rewrites the published columns through `app/Domains/Events/Services/PublishedSnapshotWriter.php` |
 | Guest page (`app/Domains/Events/Actions/GetPublicInvitationAction.php` → `Pages/Guest/Show.tsx`) | `final_render_path`, `published_scene_json`, `published_palette_json` only |

@@ -69,7 +69,7 @@ export function PublishPanel({ eventId, publish, cardUrl, revision, saved }: Pub
         <h2 id="publish-title">نشر الدعوة</h2>
         {publish.state === 'blocked' && <p role="status">{publish.blocker}</p>}
         {publish.state === 'ready' && <>
-            <p>عند النشر تُحفظ نسخة الدعوة الحالية ويصبح الرابط متاحاً لضيوفك. تعديلاتك بعد النشر تبقى في المسودة ولا تغيّر النسخة المنشورة.</p>
+            <p>عند النشر تُحفظ نسخة الدعوة الحالية ويصبح الرابط متاحاً لضيوفك. بعد النشر يُقفل تعديل التصميم، ولأي تعديل لاحق راسلي فريق ميثاق.</p>
             {publish.willRemove.length > 0 && <p className="presentation-publish-warning" role="note">لن تظهر في النسخة المنشورة (غير متاحة في قالبك): {publish.willRemove.join('، ')}.</p>}
             {!saved && <p role="status">انتظري اكتمال الحفظ قبل النشر.</p>}
             {saved && cardUrl === null && <LoadingState message="نجهّز صورة البطاقة…" />}
