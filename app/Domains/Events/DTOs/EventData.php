@@ -31,6 +31,7 @@ final readonly class EventData
         public ?array $template,
         public int $designRevision,
         public string $invitationUrl,
+        public bool $designLocked,
     ) {}
 
     public static function fromModel(Event $event): self
@@ -60,6 +61,7 @@ final readonly class EventData
             ],
             designRevision: $design?->revision ?? 1,
             invitationUrl: InvitationAddress::url($event->subdomain),
+            designLocked: $event->isDesignLockedForOwner(),
         );
     }
 
@@ -81,6 +83,7 @@ final readonly class EventData
             'template' => $this->template,
             'designRevision' => $this->designRevision,
             'invitationUrl' => $this->invitationUrl,
+            'designLocked' => $this->designLocked,
         ];
     }
 

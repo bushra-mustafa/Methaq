@@ -46,6 +46,12 @@ class Event extends Model
         ];
     }
 
+    /** Once the invitation has been published (and after it expires) only the Methaq team edits its design. */
+    public function isDesignLockedForOwner(): bool
+    {
+        return $this->status !== EventStatus::Draft;
+    }
+
     /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {

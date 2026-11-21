@@ -1,0 +1,28 @@
+{
+  "slug": "example-golden-arch",
+  "name": "قوس ذهبي",
+  "category": "wedding",
+  "concept": "Reference spec that shows every field: a metallic double border, a pointed arch with a soft glow and a mirrored vine, with the names inside the arch.",
+  "tags": ["example"],
+  "palette": { "background": "#fbf7ee", "surface": "#ffffff", "primaryText": "#3a2c1a", "secondaryText": "#6b5a40", "accent": "#a8812f", "effect": "#f1dca0" },
+  "canvas": { "background": "background" },
+  "assets": {
+    "frame": { "name": "إطار القوس الذهبي", "type": "frame", "file": "assets/frame.svg", "width": 1080, "height": 1920 }
+  },
+  "layers": [
+    { "id": "frame", "kind": "image", "asset": "frame", "x": 0, "y": 0, "w": 1080, "h": 1920 },
+    { "id": "names", "kind": "text", "font": "font-aref-ruqaa", "text": "يوسف وملاك", "x": 190, "y": 430, "w": 700, "h": 230, "size": 128, "fill": "primaryText", "expectLines": 1 },
+    { "id": "invite", "kind": "text", "font": "font-amiri", "text": "يتشرفان بدعوتكم لحضور حفل زفافهما", "x": 220, "y": 690, "w": 640, "h": 150, "size": 46, "fill": "secondaryText" },
+    { "id": "verse", "kind": "verse", "verse": "verse-30-21-p", "x": 200, "y": 860, "w": 680, "h": 230, "size": 36, "fill": "secondaryText" },
+    { "id": "details", "kind": "text", "font": "font-noto-arabic", "text": "الخميس 14/8/2027 · الثامنة مساءً\nقاعة الياسمين · طرابلس", "x": 190, "y": 1160, "w": 700, "h": 140, "size": 38, "weight": 500, "fill": "primaryText" }
+  ],
+  "scene": {
+    "opening": "envelope",
+    "durationMs": 1700,
+    "envelope": { "paper": "#e9d9c0", "lining": "surface", "seal": "accent", "monogram": "ي م", "style": "luxury", "sealStyle": "wax-flower", "sealX": 50, "sealY": 52, "sealSize": 20 },
+    "effects": { "sparkle": { "enabled": true, "color": "effect", "intensity": 0.5, "speed": 0.9 } },
+    "audio": null,
+    "backdrop": null
+  },
+  "notes": "Optional import notes."
+}

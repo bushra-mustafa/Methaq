@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $designPayload = static fn (Request $request): bool => $request->isMethod('PATCH') && ($request->is('app/events/*/design') || $request->is('app/proposals/ivory-wedding'));
+        $designPayload = static fn (Request $request): bool => $request->isMethod('PATCH') && ($request->is('app/events/*/design') || $request->is('app/studio/events/*/design') || $request->is('app/proposals/ivory-wedding'));
         $middleware->convertEmptyStringsToNull(except: [$designPayload]);
         $middleware->trimStrings(except: [$designPayload]);
         $middleware->prepend(RestrictPrototypeRoutes::class);

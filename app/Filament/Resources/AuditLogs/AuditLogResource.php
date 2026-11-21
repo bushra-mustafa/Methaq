@@ -108,6 +108,8 @@ final class AuditLogResource extends Resource
             AuditAction::WhatsAppSettingsUpdated->value => 'تحديث إعدادات واتساب',
             AuditAction::PaymentRejected->value => 'رفض قسيمة',
             AuditAction::EventPublished->value => 'نشر دعوة',
+            AuditAction::EventDesignEditedByAdmin->value => 'تعديل تصميم مناسبة من الإدارة',
+            AuditAction::EventInvitationRefreshed->value => 'تحديث دعوة منشورة',
             AuditAction::EventSuspended->value => 'إيقاف دعوة',
             AuditAction::EventReinstated->value => 'إعادة تفعيل دعوة',
             AuditAction::UserSuspended->value => 'إيقاف حساب',

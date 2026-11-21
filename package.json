@@ -17,10 +17,11 @@
         "test:watermark": "node --experimental-strip-types --test tests/Frontend/preview-watermark.test.ts",
         "test:save-client": "node --experimental-strip-types --test tests/Frontend/design-save-client.test.ts",
         "test:save-client": "node --experimental-strip-types --test tests/Frontend/design-save-client.test.ts",
+        "test:thumbnail-client": "node --experimental-strip-types --test tests/Frontend/template-thumbnail-client.test.ts",
         "test:numbers": "node --experimental-strip-types --test tests/Frontend/number-input.test.ts",
         "test:offer-time": "node --experimental-strip-types --test tests/Frontend/offer-time.test.ts",
         "test:scene-audio": "node --experimental-strip-types --test tests/Frontend/scene-audio.test.ts",
-        "test:frontend": "npm run test:numbers && npm run test:offer-time && npm run test:scene-audio &&npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope && npm run test:consent && npm run test:suggestions && npm run test:wrapping && npm run test:watermark && npm run test:save-client"
+        "test:frontend": "npm run test:numbers && npm run test:offer-time && npm run test:scene-audio &&npm run test:prototype && npm run test:contracts && npm run test:editor && npm run test:proposals && npm run test:envelope && npm run test:consent && npm run test:suggestions && npm run test:wrapping && npm run test:watermark && npm run test:save-client && npm run test:thumbnail-client"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

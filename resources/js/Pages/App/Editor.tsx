@@ -30,6 +30,7 @@ import type { EditorAsset, EditorCollection, EditorPanel, EditorTemplate } from 
 import type { EventDTO } from '../../Types/EventDTO';
 import type { Layer, TextLayer } from '../../Types/Layer';
 import type { HexColor, PaletteRole } from '../../Types/Palette';
+import type { StudioOwnerDTO } from '../../Types/PublishDTO';
 import '../../../css/editor.css';
 
 interface EditorProps {
@@ -37,7 +38,10 @@ interface EditorProps {
     event?: EventDTO;
     /** Present, with mode 'template', when an administrator designs a library template. */
     template?: EditorTemplate;
-    mode?: 'template';
+    /** 'template': the template studio. 'event-studio': an administrator edits a customer's event design. */
+    mode?: 'template' | 'event-studio';
+    /** The customer whose design the administrator edits (event studio only). */
+    owner?: StudioOwnerDTO;
     document: unknown;
     revision: number;
     assets: EditorAsset[];
@@ -53,7 +57,7 @@ function acceptsShortcut(target: EventTarget | null): boolean {
 
 /** What the editor is working on: an owner's event card, or a library template in the studio. */
 interface EditorSubject {
-    kind: 'event' | 'template';
+    kind: 'event' | 'event-studio' | 'template';
     id: string;
     title: string;
     category: EventDTO['category'];
@@ -62,22 +66,29 @@ interface EditorSubject {
     backHref: string;
     backLabel: string;
     exportName: string;
+    /** The presentation step, or null in the template studio. */
+    presentationHref: string | null;
     event: EventDTO | null;
+    owner: StudioOwnerDTO | null;
 }
 
 function buildSubject(props: EditorProps): EditorSubject | null {
     if (props.mode === 'template' && props.template) {
         const template = props.template;
-        return { kind: 'template', id: String(template.id), title: template.name, category: template.category, categoryLabel: template.categoryLabel, saveUrl: `/app/studio/templates/${template.id}/design`, backHref: '/admin/templates', backLabel: 'الرجوع إلى القوالب', exportName: `template-${template.id}`, event: null };
+        return { kind: 'template', id: String(template.id), title: template.name, category: template.category, categoryLabel: template.categoryLabel, saveUrl: `/app/studio/templates/${template.id}/design`, backHref: '/admin/templates', backLabel: 'الرجوع إلى القوالب', exportName: `template-${template.id}`, presentationHref: null, event: null, owner: null };
+    }
+    if (props.mode === 'event-studio' && props.event && props.owner) {
+        const event = props.event;
+        return { kind: 'event-studio', id: event.id, title: event.title, category: event.category, categoryLabel: event.categoryLabel, saveUrl: `/app/studio/events/${event.id}/design`, backHref: '/admin/events', backLabel: 'الرجوع إلى المناسبات', exportName: `preview-${event.id}`, presentationHref: `/app/studio/events/${event.id}/presentation`, event, owner: props.owner };
     }
     if (props.event) {
         const event = props.event;
-        return { kind: 'event', id: event.id, title: event.title, category: event.category, categoryLabel: event.categoryLabel, saveUrl: `/app/events/${event.id}/design`, backHref: `/app/events/${event.id}`, backLabel: 'الرجوع إلى المناسبة', exportName: `preview-${event.id}`, event };
+        return { kind: 'event', id: event.id, title: event.title, category: event.category, categoryLabel: event.categoryLabel, saveUrl: `/app/events/${event.id}/design`, backHref: `/app/events/${event.id}`, backLabel: 'الرجوع إلى المناسبة', exportName: `preview-${event.id}`, presentationHref: `/app/events/${event.id}/presentation`, event, owner: null };
     }
     return null;
 }
 
-function EditorWorkspace({ subject, document: initialDocument, revision, assets, collections, recommendedAssetIds, musicLocked }: Omit<EditorProps, 'document' | 'event' | 'template' | 'mode' | 'lockedFeatures'> & { subject: EditorSubject; document: DesignDocument; musicLocked: boolean }) {
+function EditorWorkspace({ subject, document: initialDocument, revision, assets, collections, recommendedAssetIds, musicLocked }: Omit<EditorProps, 'document' | 'event' | 'template' | 'mode' | 'lockedFeatures' | 'owner'> & { subject: EditorSubject; document: DesignDocument; musicLocked: boolean }) {
     const history = useDesignHistory(initialDocument);
     const autosave = useAutosave(subject.saveUrl, history.value, revision);
     const [thumbnailStatus, setThumbnailStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
@@ -224,9 +235,9 @@ function EditorWorkspace({ subject, document: initialDocument, revision, assets,
     </EditorControlPanel>;
 
     return <main className="editor-page" dir="rtl">
-        <Head title={subject.kind === 'template' ? `استوديو القالب ${subject.title}` : `تصميم ${subject.title}`} />
+        <Head title={subject.kind === 'template' ? `استوديو القالب ${subject.title}` : subject.kind === 'event-studio' ? `استوديو المناسبة ${subject.title}` : `تصميم ${subject.title}`} />
         <header className="editor-topbar">
-            <div className="editor-brand"><BackLink href={subject.backHref} canLeave={!autosave.hasUnsavedChanges} label={subject.backLabel} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل المغادرة' : subject.backLabel}>→</BackLink><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><span>{subject.kind === 'template' ? 'استوديو القوالب' : 'تصميم البطاقة'}</span></div>
+            <div className="editor-brand"><BackLink href={subject.backHref} canLeave={!autosave.hasUnsavedChanges} label={subject.backLabel} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل المغادرة' : subject.backLabel}>→</BackLink><img src="/brand/logos/methaq-horizontal-compact-flat.svg" alt="ميثاق" /><span>{subject.kind === 'template' ? 'استوديو القوالب' : subject.kind === 'event-studio' ? 'استوديو المناسبات' : 'تصميم البطاقة'}</span></div>
             <div className="editor-history-actions">
                 <span className={`editor-save-status is-${autosave.status}`} title={`نسخة التصميم ${autosave.revision}`} role="status">{autosave.message}</span>
                 <button type="button" disabled={!autosave.hasUnsavedChanges || autosave.status === 'saving' || autosave.status === 'conflict'} onClick={autosave.retry}>حفظ التعديلات</button>
@@ -235,14 +246,15 @@ function EditorWorkspace({ subject, document: initialDocument, revision, assets,
                 <button className="editor-preview-button" type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={showPreview}>معاينة الدعوة</button>
             </div>
         </header>
-        {subject.event && <EventJourney event={subject.event} current="card" canLeave={!autosave.hasUnsavedChanges} />}
+        {subject.kind === 'event' && subject.event && <EventJourney event={subject.event} current="card" canLeave={!autosave.hasUnsavedChanges} />}
         {subject.kind === 'template' && <aside className="editor-notice editor-studio-note" role="note">أنتِ تعدّلين قالباً في المكتبة. تظهر التعديلات في المناسبات الجديدة فقط، والمناسبات القائمة تحتفظ بنسختها. احفظي صورة المعاينة بعد الانتهاء.</aside>}
+        {subject.kind === 'event-studio' && subject.owner && <aside className="editor-notice editor-studio-note" role="note">أنتِ تعدّلين تصميم مناسبة {subject.owner.name} (<bdi dir="ltr">{subject.owner.email}</bdi>). يُحفظ التعديل في مسودتها ويُسجَّل في سجل التدقيق، ويرى الضيوف النسخة المنشورة كما هي حتى تضغطي «تحديث الدعوة المنشورة» في صفحة الظرف.</aside>}
         <section className="editor-heading">
-            <div><p>ميثاق · {subject.categoryLabel}</p><h1>{subject.title}</h1><span>{subject.kind === 'template' ? 'قالب في مكتبة ميثاق.' : 'بطاقتك، بتفاصيل تشبهك.'}</span></div>
+            <div><p>ميثاق · {subject.categoryLabel}</p><h1>{subject.title}</h1><span>{subject.kind === 'template' ? 'قالب في مكتبة ميثاق.' : subject.kind === 'event-studio' ? 'تعديل من فريق ميثاق.' : 'بطاقتك، بتفاصيل تشبهك.'}</span></div>
             <div className="editor-heading-tools">
                 <button className="editor-mobile-open" type="button" aria-haspopup="dialog" onClick={() => setMobileOpen(true)}>العناصر والتفاصيل ☷</button>
                 <button type="button" disabled={!canvasState.ready || Boolean(canvasState.error)} onClick={exportPng}>تنزيل المعاينة PNG ↓</button>
-                {subject.kind === 'template' ? <button className="editor-next" type="button" disabled={!canvasState.ready || Boolean(canvasState.error) || autosave.hasUnsavedChanges || thumbnailStatus === 'saving'} onClick={saveThumbnail}>{thumbnailStatus === 'saving' ? 'جارٍ حفظ المعاينة…' : thumbnailStatus === 'saved' ? 'حُفظت المعاينة ✓' : thumbnailStatus === 'error' ? 'تعذّر الحفظ، حاولي مجدداً' : 'حفظ صورة المعاينة'}</button> : <Link className="editor-next" href={`/app/events/${subject.id}/presentation`} onBefore={goBack} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>التالي: اختيار الظرف ←</Link>}
+                {subject.kind === 'template' ? <button className="editor-next" type="button" disabled={!canvasState.ready || Boolean(canvasState.error) || autosave.hasUnsavedChanges || thumbnailStatus === 'saving'} onClick={saveThumbnail}>{thumbnailStatus === 'saving' ? 'جارٍ حفظ المعاينة…' : thumbnailStatus === 'saved' ? 'حُفظت المعاينة ✓' : thumbnailStatus === 'error' ? 'تعذّر الحفظ، حاولي مجدداً' : 'حفظ صورة المعاينة'}</button> : <Link className="editor-next" href={subject.presentationHref ?? subject.backHref} onBefore={goBack} aria-disabled={autosave.hasUnsavedChanges} title={autosave.hasUnsavedChanges ? 'انتظري اكتمال الحفظ قبل الانتقال' : 'اختيار الظرف وتجربة الفتح'}>التالي: اختيار الظرف ←</Link>}
             </div>
         </section>
         {history.error && <aside className="editor-notice" role="alert">{history.error}<button type="button" onClick={history.dismissError}>إغلاق التنبيه</button></aside>}

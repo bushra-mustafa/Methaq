@@ -16,13 +16,20 @@ final class EventSubdomainGenerator
         'register', 'smtp', 'staging', 'static', 'status', 'support', 'www',
     ];
 
-    public function generate(CreateEventData $data, EventCategory $category, int $attempt): string
+    /** The brand word stays in administrators' addresses only; customers' addresses never contain it. */
+    private const BRAND = 'methaq';
+
+    public function generate(CreateEventData $data, EventCategory $category, int $attempt, bool $administrator = false): string
     {
         $base = Str::slug($data->title);
+        if (! $administrator) {
+            $base = trim((string) preg_replace('/-{2,}/', '-', str_replace(self::BRAND, '', $base)), '-');
+        }
         if ($base === '') {
             $base = str_replace('_', '-', $category->value);
         }
-        if (in_array($base, self::RESERVED, true)) {
+        $reserved = $administrator ? array_values(array_diff(self::RESERVED, [self::BRAND])) : self::RESERVED;
+        if (in_array($base, $reserved, true)) {
             $base = 'event-'.$base;
         }
 

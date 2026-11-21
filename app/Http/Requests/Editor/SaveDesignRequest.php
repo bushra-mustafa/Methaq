@@ -9,20 +9,26 @@ use App\Domains\Editor\DTOs\SaveDesignData;
 use App\Domains\Editor\Services\DesignDocumentHydrator;
 use App\Domains\Events\Models\Event;
 use App\Domains\Users\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Validator;
 use InvalidArgumentException;
 use JsonException;
 
 class SaveDesignRequest extends FormRequest
 {
-    public function authorize(): bool
+    /** The owner edits only her draft; after publishing the policy's message explains that the design is closed. */
+    public function authorize(): bool|Response
     {
         $owner = $this->user();
         $event = $this->route('event');
+        if (! $owner instanceof User || ! $event instanceof Event) {
+            return false;
+        }
 
-        return $owner instanceof User && $event instanceof Event && $owner->can('update', $event);
+        return Gate::forUser($owner)->inspect('editDesign', $event);
     }
 
     /** @return array<string, ValidationRule|array<mixed>|string> */

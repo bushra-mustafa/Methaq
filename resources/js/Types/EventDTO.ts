@@ -27,6 +27,8 @@ export interface EventDTO {
     template: EventTemplateDTO | null;
     designRevision: number;
     invitationUrl: string;
+    /** True once the invitation has been published: the owner no longer edits the design, only the Methaq team does. */
+    designLocked: boolean;
 }
 
 export interface EventTemplateOption {

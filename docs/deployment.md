@@ -154,7 +154,7 @@ mv -Tf current.rollback current
 1. شهادة SSL فعّالة للنطاق الرئيسي **ونطاقات الدعوات الفرعية** (`*.النطاق`)، لأن روابط الدعوات تُولَّد بـ`https` في الإنتاج.
 2. في `.env` الإنتاج: `APP_ENV=production` و`APP_DEBUG=false` و`APP_URL=https://…` و`METHAQ_INVITATION_DOMAIN=` نطاق الدعوات، و`SESSION_SECURE_COOKIE=true`.
 3. `METHAQ_FORCE_HTTPS` يعمل تلقائياً في الإنتاج: يحوّل http إلى https بإعادة توجيه 301 ويرسل HSTS (سنة، مع النطاقات الفرعية). لا تفعّلي HSTS preload قبل التأكد أن كل النطاقات الفرعية تعمل بـhttps.
-4. خلف Cloudflare أو وسيط: اضبطي `TRUSTED_PROXIES` (قائمة عناوين مفصولة بفواصل، أو `*` إن كان كل الوصول يمر بالوسيط فقط) حتى يعرف Laravel أن الطلب الأصلي https. بدونها قد تحدث حلقة إعادة توجيه.
+4. خلف Cloudflare أو وسيط: اضبطي `TRUSTED_PROXIES` (قائمة عناوين الوسيط مفصولة بفواصل، وCIDR مقبول، ولا يُستعمل `*` لأن الفحص يرفضه، ويجب حجب الاتصال المباشر بالأصل) حتى يعرف Laravel أن الطلب الأصلي https. بدونها قد تحدث حلقة إعادة توجيه.
 5. لا تغيّري DNS أو Cloudflare أو الشهادات من الكود؛ هذه خطوات يدوية في لوحة الاستضافة.
 
 ### الملفات والتخزين
@@ -212,11 +212,11 @@ mv -Tf current.rollback current
 
 ## الرسائل ووسائل التواصل
 
-بعد `php artisan migrate --force` (ثلاثة جداول جديدة: `contact_channels` و`support_threads` و`support_messages`) نفّذي مرة واحدة `php artisan db:seed --class=ContactChannelSeeder --force` لإضافة البريد `info@methq.ly`. يمكن إعادة تشغيله دون تكرار. بعدها تُدار وسائل التواصل من `/admin/contact-channels` والرسائل من `/admin/support-threads`. متغيرات اختيارية: `METHAQ_MAX_OPEN_SUPPORT_THREADS` (الافتراضي 5) و`METHAQ_SUPPORT_INBOX` (البريد الذي تصله إشعارات الرسائل بعنوان الرسالة فقط؛ الافتراضي methq98@gmail.com، وتركه فارغاً يوقف الإشعار). الرد التلقائي للعميلة والإشعار يحتاجان إعدادات `MAIL_*` حقيقية في `shared/.env` (الافتراضي `MAIL_MAILER=log` لا يرسل شيئاً).
+بعد `php artisan migrate --force` (ثلاثة جداول جديدة: `contact_channels` و`support_threads` و`support_messages`) نفّذي مرة واحدة `php artisan db:seed --class=ContactChannelSeeder --force` لإضافة البريد `info@methq.ly`. يمكن إعادة تشغيله دون تكرار. بعدها تُدار وسائل التواصل من `/admin/contact-channels` والرسائل من `/admin/support-threads`. متغيرات اختيارية: `METHAQ_MAX_OPEN_SUPPORT_THREADS` (الافتراضي 5) و`METHAQ_SUPPORT_INBOX` (البريد الذي تصله إشعارات الرسائل بعنوان الرسالة فقط؛ الافتراضي فارغ فيوقف الإشعار، فاضبطيه في shared/.env على بريد الفريق فقط). الرد التلقائي للعميلة والإشعار يحتاجان إعدادات `MAIL_*` حقيقية في `shared/.env` (الافتراضي `MAIL_MAILER=log` لا يرسل بريداً، لكنه يكتب نص الرسالة كاملاً، بما فيه رابط إعادة كلمة المرور، في سجلات الخادم، فلا يُستعمل على الخادم).
 
 ## قائمة أول تشغيل (بالترتيب)
 
-1. في `shared/.env`: `APP_ENV=production` و`APP_DEBUG=false` و`APP_KEY` و`APP_URL` و`METHAQ_INVITATION_DOMAIN` و`SESSION_SECURE_COOKIE=true` و`LOG_LEVEL=warning` و`LOG_STACK=daily` و`TRUSTED_PROXIES` (خلف Cloudflare) و`METHAQ_BANK_*` (احتياطي فقط، والأفضل إضافة الحسابات من `/admin/bank-accounts`)، وإعدادات البريد الحقيقية `MAIL_MAILER=smtp` مع `MAIL_HOST` و`MAIL_PORT` و`MAIL_USERNAME` و`MAIL_PASSWORD` و`MAIL_FROM_ADDRESS` من نطاق ميثاق (وSPF وDKIM للنطاق). ومعها `METHAQ_SUPPORT_INBOX` (بريد إشعارات الرسائل؛ فارغ يوقف الإشعار) والمفتاحان `TURNSTILE_*`.
+1. في `shared/.env`: `APP_ENV=production` و`APP_DEBUG=false` و`APP_KEY` و`APP_URL` و`METHAQ_INVITATION_DOMAIN` و`SESSION_SECURE_COOKIE=true` و`SESSION_COOKIE=__Host-methaq_app_session` (إلزامي عند مشاركة نطاق الدعوات نطاق التطبيق) و`LOG_LEVEL=warning` و`LOG_STACK=daily` و`TRUSTED_PROXIES` (خلف Cloudflare) و`METHAQ_BANK_*` (احتياطي فقط، والأفضل إضافة الحسابات من `/admin/bank-accounts`)، وإعدادات البريد الحقيقية `MAIL_MAILER=smtp` مع `MAIL_HOST` و`MAIL_PORT` و`MAIL_USERNAME` و`MAIL_PASSWORD` و`MAIL_FROM_ADDRESS` من نطاق ميثاق (وSPF وDKIM للنطاق). ومعها `METHAQ_SUPPORT_INBOX` (بريد إشعارات الرسائل؛ فارغ يوقف الإشعار) والمفتاحان `TURNSTILE_*`. قبل المتابعة شغّلي `php artisan methaq:check-production-env` وأصلحي كل بند يُعرض؛ الأمر يعرض أسماء الإعدادات فقط ولا يطبع قيمها.
 2. بعد اكتمال النشر: `php artisan migrate --force` ثم `php artisan db:seed --force` (يضيف القوالب والصوتيات وبريد التواصل، وإعادته آمنة) ثم `php artisan config:cache`.
 3. سجّلي حسابك من الموقع، ثم `php artisan methaq:promote-admin بريدك`، ثم فعّلي المصادقة الثنائية من إعدادات الحساب قبل فتح `/admin`.
 4. من `/admin/templates` ضعي **سعراً لكل قالب** تريدين عرضه. القالب بسعر 0 مخفي عن الصفحة الرئيسية وصفحة القوالب وإنشاء المناسبة.

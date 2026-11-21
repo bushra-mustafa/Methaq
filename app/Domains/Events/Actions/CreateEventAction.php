@@ -13,6 +13,7 @@ use App\Domains\Events\Models\Event;
 use App\Domains\Events\Services\EventSubdomainGenerator;
 use App\Domains\Events\Services\InvitationExpiry;
 use App\Domains\Payments\Services\PricingSettings;
+use App\Domains\Users\Enums\UserRole;
 use App\Domains\Users\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -35,9 +36,11 @@ final class CreateEventAction
     {
         Gate::forUser($owner)->authorize('create', Event::class);
 
+        $administrator = $owner->isActive() && $owner->role === UserRole::Admin;
+
         for ($attempt = 0; $attempt < self::MAXIMUM_SLUG_ATTEMPTS; $attempt++) {
             try {
-                return DB::transaction(function () use ($owner, $data, $attempt): Event {
+                return DB::transaction(function () use ($owner, $data, $attempt, $administrator): Event {
                     $this->assertUnderOpenEventLimit($owner);
                     $template = $this->activeTemplate($data->templateId);
                     $document = $template === null
@@ -58,7 +61,7 @@ final class CreateEventAction
                         'template_id' => $template?->getKey(),
                         'category' => $category,
                         'title' => $data->title,
-                        'subdomain' => $this->subdomains->generate($data, $category, $attempt),
+                        'subdomain' => $this->subdomains->generate($data, $category, $attempt, $administrator),
                         'event_date' => $eventDate,
                         'timezone' => $data->timezone,
                         'expires_at' => $expiresAt,
