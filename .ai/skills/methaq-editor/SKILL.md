@@ -69,7 +69,7 @@ Paths: `Editor/…` = `resources/js/Domains/Editor/…`, `Types/…` = `resource
 
 - `capturePreview()` in `useCanvas.ts` calls `toDataURL({ format: 'png', multiplier: 1, enableRetinaScaling: false })`. With the backstore at document size this is exactly 1080×1920, the only size `app/Domains/Editor/Services/InvitationPng.php` accepts for publishing and WhatsApp preparation. Don't change multiplier, retina scaling or backstore size on this path.
 - Capture only when the canvas is `ready`, has no `error` and is not synchronizing. Pages outside the editor render a hidden card with `usePresentationCard` into a `.presentation-render-source` host (`aria-hidden`, `inert`), as `Presentation.tsx`, `Pages/App/Events/Payment.tsx` and `Pages/App/DraftReview.tsx` do.
-- Convert the data URL with `pngFileFromDataUrl` and send it with `expectedRevision`. Don't `fetch(dataUrl)`: `connect-src 'self'` in `app/Http/Middleware/SecurityHeaders.php` blocks that outside `local`. `Editor/Services/templateThumbnailClient.ts` still does it; don't copy it.
+- Turn a data URL into a file with `pngFileFromDataUrl`, as `PublishPanel.tsx`, `Pages/App/Events/Payment.tsx` and `Editor/Services/templateThumbnailClient.ts` do, and send publish and prepare images with `expectedRevision`. Never `fetch(dataUrl)`: `connect-src 'self'` in `app/Http/Middleware/SecurityHeaders.php` blocks it everywhere except `local`, so it works on a developer machine and fails in production.
 - Downloads and library thumbnails are watermarked with `watermarkPreview` (`Editor/Services/previewWatermark.ts`): the default strong mark for downloads, `(url, 540, 'subtle')` for studio thumbnails. The publish and prepare PNG is the clean card, so keep the watermark off it.
 
 ## 8. Guests see only the published snapshot
