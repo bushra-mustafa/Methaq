@@ -22,4 +22,5 @@ enum TemplatePreset: string
     case NewbornBlush = 'newborn-blush';
     case GraduationNavy = 'graduation-navy';
     case QiranSand = 'qiran-sand';
+    case GraduationDawn = 'graduation-dawn';
 }

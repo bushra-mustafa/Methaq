@@ -8,9 +8,11 @@ use App\Domains\Editor\Contracts\DesignSchema;
 use App\Domains\Editor\DTOs\AssetReferenceData;
 use App\Domains\Editor\DTOs\AudioData;
 use App\Domains\Editor\DTOs\CanvasData;
+use App\Domains\Editor\DTOs\CardMaterialData;
 use App\Domains\Editor\DTOs\ColorValueData;
 use App\Domains\Editor\DTOs\DesignDocumentData;
 use App\Domains\Editor\DTOs\EffectData;
+use App\Domains\Editor\DTOs\EnvelopeAppearanceData;
 use App\Domains\Editor\DTOs\EnvelopeData;
 use App\Domains\Editor\DTOs\ImageLayerData;
 use App\Domains\Editor\DTOs\InvitationCoverData;
@@ -22,6 +24,7 @@ use App\Domains\Editor\DTOs\SceneBackdropData;
 use App\Domains\Editor\DTOs\SceneConfigData;
 use App\Domains\Editor\DTOs\ShapeLayerData;
 use App\Domains\Editor\DTOs\TextLayerData;
+use App\Domains\Editor\Enums\CardMaterialPreset;
 use App\Domains\Editor\Enums\EffectId;
 use App\Domains\Editor\Enums\EnvelopePresetId;
 use App\Domains\Editor\Enums\ImageFit;
@@ -62,6 +65,7 @@ final class TemplateDesignFactory
             TemplatePreset::NewbornBlush => $this->newbornBlush($assets),
             TemplatePreset::GraduationNavy => $this->graduationNavy($assets),
             TemplatePreset::QiranSand => $this->qiranSand($assets),
+            TemplatePreset::GraduationDawn => $this->graduationDawn($assets),
         };
     }
 
@@ -445,6 +449,41 @@ final class TemplateDesignFactory
             $layers,
             new PaletteData(1, '#eadcc0', '#f4ead5', '#3d3d22', '#5a5838', '#7a6a3e', '#c9b88c'),
             $this->envelopeScene('#d9c9a3', 'ق', false, false),
+        );
+    }
+
+    /** «خطوة للنور». @param array<string, TemplateAsset> $assets */
+    private function graduationDawn(array $assets): DesignDocumentData
+    {
+        $layers = [
+            $this->image('frame', $assets, 'graduation-dawn-frame', 0, 0, 1080, 1920, true),
+            $this->text('eyebrow', $assets, 'font-noto-arabic', 'بكل فخر وامتنان', Language::Arabic, TextDirection::RightToLeft, 170, 555, 740, 70, 39, 500, PaletteRole::SecondaryText),
+            $this->text('heading', $assets, 'font-reem-kufi', 'دعوة لحضور التخرّج', Language::Arabic, TextDirection::RightToLeft, 125, 640, 830, 108, 62, 500, PaletteRole::PrimaryText),
+            $this->text('graduate-name', $assets, 'font-aref-ruqaa', 'مريم سالم', Language::Arabic, TextDirection::RightToLeft, 150, 790, 780, 190, 132, 400, PaletteRole::Accent),
+            $this->text('message', $assets, 'font-amiri', 'سنواتٌ من السعي، ويومٌ يليق بالحلم', Language::Arabic, TextDirection::RightToLeft, 155, 1010, 770, 104, 43, 400, PaletteRole::PrimaryText),
+            $this->text('verse', $assets, 'font-amiri-quran', TemplateScripture::content('verse-20-114'), Language::Arabic, TextDirection::RightToLeft, 205, 1160, 670, 175, 43, 400, PaletteRole::SecondaryText),
+            $this->text('invitation', $assets, 'font-noto-arabic', 'يسعدنا حضوركم ومشاركتكم فرحة هذا الإنجاز', Language::Arabic, TextDirection::RightToLeft, 165, 1370, 750, 84, 36, 500, PaletteRole::SecondaryText),
+            $this->text('details', $assets, 'font-noto-arabic', "السبت 12/6/2027 · السادسة مساءً\nقاعة ميثاق · طرابلس", Language::Arabic, TextDirection::RightToLeft, 190, 1485, 700, 132, 36, 500, PaletteRole::PrimaryText),
+        ];
+
+        return new DesignDocumentData(
+            DesignSchema::VERSION,
+            new CanvasData(1, 1080, 1920, ColorValueData::palette(PaletteRole::Background), $layers, new CardMaterialData(CardMaterialPreset::Linen, 1, 0.24)),
+            new PaletteData(1, '#f6f1e7', '#fffdf8', '#1c4652', '#536d72', '#a95f40', '#d7a37f'),
+            new SceneConfigData(
+                1,
+                new OpeningData(
+                    OpeningType::Envelope,
+                    1700,
+                    new EnvelopeData(EnvelopePresetId::ClassicFold, 1, ColorValueData::literal('#e9e1d4'), ColorValueData::literal('#fffdf8'), ColorValueData::literal('#1c4652'), '2027', new EnvelopeAppearanceData('graduation', 'embossed', 50, 52, 20)),
+                ),
+                [
+                    new EffectData(EffectId::Sparkle, 1, true, ColorValueData::literal('#d7a37f'), 0.34, 0.8),
+                    new EffectData(EffectId::Smoke, 1, false, ColorValueData::palette(PaletteRole::Effect), 0.28, 0.65),
+                ],
+                new AudioData(false, null, 0.6),
+                MotionPolicy::System,
+            ),
         );
     }
 
