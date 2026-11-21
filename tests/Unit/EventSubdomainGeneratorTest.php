@@ -25,6 +25,17 @@ final class EventSubdomainGeneratorTest extends TestCase
         $this->assertMatchesRegularExpression('/^[a-z0-9]+(?:-[a-z0-9]+)*-2027-[a-z0-9]{6}$/', $longSlug);
     }
 
+    public function test_the_brand_word_is_kept_for_administrators_and_removed_from_customer_addresses(): void
+    {
+        $generator = new EventSubdomainGenerator;
+        $brandTitle = $this->data('Methaq Wedding');
+
+        $this->assertSame('wedding-2027', $generator->generate($brandTitle, EventCategory::Wedding, 0));
+        $this->assertSame('methaq-wedding-2027', $generator->generate($brandTitle, EventCategory::Wedding, 0, administrator: true));
+        $this->assertSame('wedding-2027', $generator->generate($this->data('Methaq'), EventCategory::Wedding, 0));
+        $this->assertSame('methaq-2027', $generator->generate($this->data('Methaq'), EventCategory::Wedding, 0, administrator: true));
+    }
+
     private function data(string $title): CreateEventData
     {
         return new CreateEventData(

@@ -10,6 +10,7 @@ use App\Domains\Events\Models\Event;
 use App\Domains\Payments\Enums\OrderStatus;
 use App\Domains\Payments\Enums\PaymentGateway;
 use App\Domains\Payments\Models\Order;
+use App\Domains\Payments\Services\ManualPaymentEligibility;
 use App\Domains\Users\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,6 +45,18 @@ final class ManualPaymentTest extends TestCase
             'account_number' => '0012345678',
             'iban' => null,
         ]]);
+    }
+
+    public function test_a_test_labelled_bank_account_from_the_settings_is_not_offered_in_production(): void
+    {
+        config(['app.env' => 'production', 'methaq.payment.bank_transfer' => [
+            'bank_name' => 'مصرف الوحدة (تجريبي)',
+            'account_name' => 'ميثاق للتجربة',
+            'account_number' => '0000123456789',
+            'iban' => null,
+        ]]);
+
+        $this->assertSame([], app(ManualPaymentEligibility::class)->bankAccounts());
     }
 
     public function test_owner_uploads_a_receipt_as_a_pending_order_with_a_price_and_feature_snapshot(): void

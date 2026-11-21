@@ -20,7 +20,8 @@ final class ManualPaymentEligibility
 {
     /**
      * The accounts customers may pay into: the ones an administrator added (active, in order), or, while there are none,
-     * the single account from the server settings.
+     * the single account from the server settings. In production a test-labelled account from the settings is never offered,
+     * so payments stay closed until an administrator stores a real account.
      *
      * @return list<array{bankName: string|null, accountName: string|null, accountNumber: string|null, iban: string|null}>
      */
@@ -39,6 +40,10 @@ final class ManualPaymentEligibility
         $account = (array) config('methaq.payment.bank_transfer', []);
         $accountNumber = trim((string) ($account['account_number'] ?? ''));
         if ($accountNumber === '') {
+            return [];
+        }
+
+        if (! self::mayOfferSettingsAccount($account, (string) config('app.env'))) {
             return [];
         }
 
@@ -106,6 +111,30 @@ final class ManualPaymentEligibility
             $this->bankAccounts() === [] => 'بيانات الحساب البنكي غير متاحة حالياً. حاولي لاحقاً.',
             default => null,
         };
+    }
+
+    /** Arabic and English labels that mark a bank account as a test account; the local development settings ship one. */
+    public static function isTestLabelled(mixed $text): bool
+    {
+        $value = trim((string) $text);
+
+        return $value !== ''
+            && (str_contains($value, 'تجريبي') || str_contains($value, 'تجربة') || preg_match('/\b(test|fake|demo)\b/iu', $value) === 1);
+    }
+
+    /**
+     * A test-labelled account from the server settings is never offered in production.
+     *
+     * @param  array<string, mixed>  $account
+     */
+    public static function mayOfferSettingsAccount(array $account, string $environment): bool
+    {
+        if ($environment !== 'production') {
+            return true;
+        }
+
+        return ! self::isTestLabelled($account['bank_name'] ?? null)
+            && ! self::isTestLabelled($account['account_name'] ?? null);
     }
 
     private function optional(mixed $value): ?string
